@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_concern_type_graph"
+    app:startDestination="@id/concernTypeFragment">
+
+    <fragment
+        android:id="@+id/concernTypeFragment"
+        android:name="kr.tekit.lion.daongil.presentation.concerntype.fragment.ConcernTypeFragment"
+        android:label="fragment_concern_type"
+        tools:layout="@layout/fragment_concern_type" >
+        <action
+            android:id="@+id/action_concernTypeFragment_to_concernTypeModifyFragment"
+            app:destination="@id/concernTypeModifyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/concernTypeModifyFragment"
+        android:name="kr.tekit.lion.daongil.presentation.concerntype.fragment.ConcernTypeModifyFragment"
+        android:label="fragment_concern_type_modify"
+        tools:layout="@layout/fragment_concern_type_modify" >
+        <action
+            android:id="@+id/action_concernTypeModifyFragment_to_concernTypeFragment"
+            app:destination="@id/concernTypeFragment" />
+    </fragment>
+</navigation>

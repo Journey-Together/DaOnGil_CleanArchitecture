@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_my_info_graph"
+    app:startDestination="@id/myInfoFragment">
+
+    <fragment
+        android:id="@+id/myInfoFragment"
+        android:name="kr.tekit.lion.daongil.presentation.myinfo.fragment.MyInfoFragment"
+        android:label="fragment_my_info"
+        tools:layout="@layout/fragment_my_info" >
+        <action
+            android:id="@+id/action_myInfoFragment_to_personalInfoModifyFragment"
+            app:destination="@id/personalInfoModifyFragment" />
+        <action
+            android:id="@+id/action_myInfoFragment_to_iceModifyFragment"
+            app:destination="@id/iceModifyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/personalInfoModifyFragment"
+        android:name="kr.tekit.lion.daongil.presentation.myinfo.fragment.PersonalInfoModifyFragment"
+        android:label="fragment_personal_info_modify"
+        tools:layout="@layout/fragment_personal_info_modify" >
+        <action
+            android:id="@+id/action_personalInfoModifyFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/iceModifyFragment"
+        android:name="kr.tekit.lion.daongil.presentation.myinfo.fragment.IceModifyFragment"
+        android:label="fragment_ice_modify"
+        tools:layout="@layout/fragment_ice_modify" >
+        <action
+            android:id="@+id/action_iceModifyFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+    </fragment>
+</navigation>

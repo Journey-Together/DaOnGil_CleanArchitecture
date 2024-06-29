@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="search_bar_height">50dp</dimen>
+    <dimen name="map_option_margin">5dp</dimen>
+
+    <!--margin-->
+    <dimen name="margin_basic">24dp</dimen>
+
+    <dimen name="margin_big1">36dp</dimen>
+    <dimen name="margin_big2">20dp</dimen>
+    <dimen name="margin_big3">16dp</dimen>
+    <dimen name="margin_big4">12dp</dimen>
+
+    <dimen name="margin_small1">8dp</dimen>
+    <dimen name="margin_small2">4dp</dimen>
+
+    <!--font size-->
+    <dimen name="font_small1">14dp</dimen>
+    <dimen name="font_small2">12dp</dimen>
+    <dimen name="font_small3">10dp</dimen>
+
+    <dimen name="font_big1">20dp</dimen>
+    <dimen name="font_big2">18dp</dimen>
+    <dimen name="font_big3">16dp</dimen>
+
+    <dimen name="category_option_height">50dp</dimen>
+</resources>

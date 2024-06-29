@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="semi_grey">#D9D9D9</color>
+
+    <color name="background_color">#F5F5F5</color>
+    <color name="primary">#FECC00</color>
+    <color name="text_primary">#000000</color>
+    <color name="primary_disabled">#D9D9D9</color>
+    <color name="text_secondary">#474747</color>
+    <color name="item_background">#FFFFFF</color>
+    <color name="navi_background">#FFFFFF</color>
+    <color name="text_tertiary">#666666</color>
+    <color name="text_quaternary">#999999</color>
+    <color name="text_quinary">#5F6368</color>
+    <color name="text_primary_reverse">#000000</color>
+
+    <color name="button_secondary">#E0E0E0</color>
+    <color name="toolbar_main_title">#5F6368</color>
+
+    <color name="card_background_color">#FFFFFFFF</color>
+
+    <color name="chip_title">#292C33</color>
+    <color name="chip_background">#FAE280</color>
+    <color name="reset_button">#FFFFFFFF</color>
+    <color name="search_view_background">#E8E8E9</color>
+
+    <color name="tab_layout_common_text">#8A8A8A</color>
+    <color name="tab_layout_background">#F5F5F5</color>
+    <color name="floating_action_button">#292C33</color>
+    <color name="floating_action_button_title">#E9E9EA</color>
+
+    <color name="box_stroke">#A3A5A9</color>
+    <color name="select_area">#E8E8E9</color>
+    <color name="select_area_text">#474747</color>
+    <color name="select_area_box_stroke">#A3A5A9</color>
+    <color name="select_area_end_icon">#898989</color>
+    <color name="category_unselected_button">#E8E8E9</color>
+    <color name="category_selected_button">#5F6368</color>
+
+    <color name="detail_category_title_text">#FF000000</color>
+
+    <color name="detail_category_unselected_color">#7F8286</color>
+    <color name="detail_category_selected_color">#FF4949</color>
+
+    <color name="total_cnt">#FF4949</color>
+    <color name="maker_overlay">#FFF0B1</color>
+
+    <color name="search_view">#E8E8E8</color>
+
+    <color name="category_bottom_sheet_background">#F5F5F5</color>
+
+    <!-- 플로팅버튼 배경색 (지도보기, 목록보기, 일정 추가하기)-->
+    <color name="fab_background">#292C33</color>
+    <!--남은 기간, 지난 기간 표기하는 텍스트의 색상값-->
+    <color name="days_remaining">#FF6D6D</color>
+    <color name="button_quaternary">#E7E7E7</color>
+    <color name="days_elapsed">#BDBDBD</color>
+
+    <color name="period_background">#000000</color>
+
+    <color name="empty_schedule_background">#F6F6F6</color>
+    <color name="profile_background_centerColor">#FECC00</color>
+    <color name="profile_background_endColor">#FFE317</color>
+
+    <color name="button_tertiary">#C92A2A</color>
+
+    <color name="schedule_image_overlay_primary">#66000000</color>
+    <color name="schedule_image_overlay_secondary">#1A000000</color>
+    <color name="schedule_image_overlay_tertiary">#00000000</color>
+
+    <color name="emergency_green">#008000</color>
+    <color name="emergency_red">#FF0000</color>
+    <color name="emergency_yellow">#FFFF00</color>
+
+    <color name="emergency_color">#F49494</color>
+    <color name="pharmcy_color">#F8B60B</color>
+
+    <color name="transparent">#00000000</color>
+</resources>

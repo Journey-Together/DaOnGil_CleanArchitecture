@@ -1,0 +1,32 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation_graph"
+    app:startDestination="@id/homeMainFragment">
+
+    <fragment
+        android:id="@+id/homeMainFragment"
+        android:name="kr.tekit.lion.daongil.presentation.main.fragment.HomeMainFragment"
+        android:label="fragment_home_main"
+        tools:layout="@layout/fragment_home_main" />
+    <fragment
+        android:id="@+id/searchListMainFragment"
+        android:name="kr.tekit.lion.daongil.presentation.main.fragment.SearchListMainFragment"
+        android:label="fragment_search_list_main"
+        tools:layout="@layout/fragment_search_list_main" />
+    <fragment
+        android:id="@+id/emergencyMainFragment"
+        android:name="kr.tekit.lion.daongil.presentation.main.fragment.EmergencyMainFragment"
+        android:label="fragment_emrgency_main"
+        tools:layout="@layout/fragment_emergency_main" />
+    <fragment
+        android:id="@+id/myInfoMainFragment"
+        android:name="kr.tekit.lion.daongil.presentation.main.fragment.MyInfoMainFragment"
+        android:label="fragment_my_info_main"
+        tools:layout="@layout/fragment_my_info_main" />
+    <fragment
+        android:id="@+id/scheduleMainFragment"
+        android:name="kr.tekit.lion.daongil.presentation.main.fragment.ScheduleMainFragment"
+        android:label="fragment_schedule_main"
+        tools:layout="@layout/fragment_schedule_main" />
+</navigation>

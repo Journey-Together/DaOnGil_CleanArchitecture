@@ -1,0 +1,68 @@
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="semi_grey">#D9D9D9</color>
+
+    <color name="background_color">#1C1B1F</color>
+    <color name="primary">#3181FF</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="primary_disabled">#828282</color>
+    <color name="item_background">#3A3A3A</color>
+    <color name="navi_background">#262626</color>
+    <color name="text_secondary">#A7A7A7</color>
+    <color name="text_tertiary">#949494</color>
+    <color name="text_quaternary">#6E6E6E</color>
+    <color name="text_quinary">#969390</color>
+    <color name="text_primary_reverse">#FFFFFF</color>
+
+    <color name="button_secondary">#999999</color>
+    <color name="toolbar_main_title">#969390</color>
+
+    <color name="card_background_color">#262626</color>
+
+    <color name="chip_title">#C7C5BF</color>
+    <color name="chip_background">#161615</color>
+    <color name="reset_button">#3C3C3A</color>
+    <color name="search_view_background">#4E4E4B</color>
+
+    <color name="box_stroke">#888887</color>
+    <color name="select_area">#363635</color>
+    <color name="select_area_text">#A7A7A7</color>
+    <color name="select_area_box_stroke">#3181FF</color>
+    <color name="select_area_end_icon">#797979</color>
+
+    <color name="detail_category_title_text">#C7C7C7</color>
+    <color name="detail_category_selected_color">#26A6A6</color>
+    <color name="detail_category_unselected_color">#807E7B</color>
+
+    <color name="total_cnt">#26A6A6</color>
+
+    <color name="tab_layout_background">#2D2D2D</color>
+    <color name="floating_action_button">#D9D9D9</color>
+    <color name="floating_action_button_title">#434342</color>
+    <color name="maker_overlay">#666666</color>
+
+    <color name="category_bottom_sheet_background">#262626</color>
+    <color name="search_view">#363635</color>
+
+    <!-- 플로팅버튼 배경색 (지도보기, 목록보기, 일정 추가하기)-->
+    <color name="fab_background">#BCBAB5</color>
+    <!--남은 기간, 지난 기간 표기하는 텍스트의 색상값-->
+    <color name="days_remaining">#268C8C</color>
+    <color name="button_quaternary">#E7E7E7</color>
+    <color name="days_elapsed">#545454</color>
+
+    <color name="period_background">#D0CCC9</color>
+
+    <color name="empty_schedule_background">#2C2C2C</color>
+    <color name="profile_background_centerColor">#294DE7</color>
+    <color name="profile_background_endColor">#1631DB</color>
+
+    <color name="button_tertiary">#C92A2A</color>
+
+    <color name="emergency_color">#26A6A6</color>
+    <color name="pharmcy_color">#2B59D1</color>
+
+    <color name="transparent">#00000000</color>
+
+</resources>

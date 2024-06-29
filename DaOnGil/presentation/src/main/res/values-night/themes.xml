@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.DaOnGil" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+
+        <item name="android:colorBackground">@color/background_color</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:statusBarColor">@color/background_color</item>
+        <!--  이 설정은 preview window를 보이게 할지 안할지 설정 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 이 설정은 window를 투명으로 설정할지 말지에 대한 설정 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
+
+    <style name="Theme.DaOnGil" parent="Base.Theme.DaOnGil" />
+</resources>
