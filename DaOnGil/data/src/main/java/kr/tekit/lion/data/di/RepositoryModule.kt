@@ -15,7 +15,12 @@ import kr.tekit.lion.domain.repository.SigunguCodeRepository
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
+    @Binds
+    abstract fun bindAreaCodeRepository(areaCodeRepositoryImpl: AreaCodeRepositoryImpl): AreaCodeRepository
 
     @Binds
     abstract fun bindKorWithRepository(korWithRepositoryImpl: KorWithRepositoryImpl): KorWithRepository
+
+    @Binds
+    abstract fun bindSigunguRepository(sigunguCodeRepositoryImpl: SigunguCodeRepositoryImpl): SigunguCodeRepository
 }
