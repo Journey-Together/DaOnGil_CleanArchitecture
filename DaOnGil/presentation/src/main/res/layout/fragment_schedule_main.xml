@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.main.fragment.ScheduleMainFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbarSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/margin_basic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/toolbar_app_name"
+                    android:src="@drawable/toolbar_clover_icon" />
+
+                <TextView
+                    style="@style/Theme.Toolbar.Main.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:text="@string/toolbar_app_name" />
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <TextView
+                android:id="@+id/textViewMySchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big3"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="@string/text_my_schedule"
+                android:textSize="@dimen/font_big1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarSchedule" />
+
+            <TextView
+                android:id="@+id/textViewMyScheduleMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_basic"
+                android:text="@string/text_view_more"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewMySchedule"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textViewMySchedule" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMySchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big3"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMySchedule" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewEmptySchedule"
+                style="@style/Widget.Material3.CardView.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big3"
+                android:layout_marginEnd="@dimen/margin_basic"
+                android:backgroundTint="@color/empty_schedule_background"
+                android:visibility="gone"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewMySchedule">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="228dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="아직 등록된 일정이 없어요"
+                        android:textColor="@color/text_quaternary"
+                        android:textSize="@dimen/font_big2" />
+
+                    <TextView
+                        android:id="@+id/textViewAddSchedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/margin_small1"
+                        android:text="@string/add_schedule"
+                        android:textColor="@color/text_quaternary"
+                        android:textSize="@dimen/font_small2" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textViewPublicSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="공개일정 둘러보기"
+                android:textSize="@dimen/font_big1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewEmptySchedule" />
+
+            <TextView
+                android:id="@+id/textViewPublicScheduleMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_basic"
+                android:text="@string/text_view_more"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewPublicSchedule"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textViewPublicSchedule" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPublicSchedule"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:layout_marginBottom="@dimen/margin_big1"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:paddingHorizontal="@dimen/margin_big3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPublicSchedule"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/buttonAddSchedule"
+        style="@style/RoundedExtendedFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:backgroundTint="@color/floating_action_button"
+        android:contentDescription="추가하기"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="추가하기"
+        android:textColor="@color/floating_action_button_title"
+        app:icon="@drawable/ic_add_24px"
+        app:iconTint="@color/floating_action_button_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

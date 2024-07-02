@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeMainFragment"
+        android:icon="@drawable/home_navi_icon"
+        android:visible="true"
+        android:title="홈" />
+    <item
+        android:id="@+id/searchPlaceMainFragment"
+        android:icon="@drawable/info_navi_icon"
+        android:visible="true"
+        android:title="관광정보" />
+    <item
+        android:id="@+id/emergencyMainFragment"
+        android:icon="@drawable/emer_navi_icon"
+        android:visible="true"
+        android:title="응급지원" />
+    <item
+        android:id="@+id/scheduleMainFragment"
+        android:icon="@drawable/sche_navi_icon"
+        android:visible="true"
+        android:title="여행일정" />
+    <item
+        android:id="@+id/myInfoMainFragment"
+        android:icon="@drawable/my_navi_icon"
+        android:visible="true"
+        android:title="마이" />
+</menu>

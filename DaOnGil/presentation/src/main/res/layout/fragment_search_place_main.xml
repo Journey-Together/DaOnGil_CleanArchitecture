@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.fragment.SearchPlaceMainFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/search_view_background"
+            android:layout_marginTop="@dimen/margin_big1"
+            android:layout_marginStart="@dimen/margin_big1"
+            android:layout_marginEnd="@dimen/margin_big1"
+            android:hint="@string/text_searbar_hint" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tab_layout_background"
+            android:elevation="5dp"
+            android:layout_gravity="start"
+            android:paddingStart="20dp"
+            app:tabGravity="start"
+            app:tabMode="scrollable"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorFullWidth="true"
+            app:tabIndicatorHeight="3dp"
+            app:tabIndicatorColor="@color/tab_indicator_color"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabSelectedTextColor="@color/tab_selected_text_color"
+            app:tabTextAppearance="@style/tabLayout_text_appearance">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tourist_spot" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/restaurant" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lodgment" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="kr.tekit.lion.presentation.main.fragment.SearchMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/mode_switch_btn"
+        style="@style/RoundedExtendedFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="@string/watching_map"
+        android:textColor="@color/floating_action_button_title"
+        app:backgroundTint="@color/floating_action_button"
+        app:icon="@drawable/map_icon" />
+</FrameLayout>
