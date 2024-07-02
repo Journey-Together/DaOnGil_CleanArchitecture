@@ -12,6 +12,7 @@ val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
 val kakaoApiKey = properties.getProperty("kakao_api_key") ?: ""
 val kakaoNativeKey = properties.getProperty("kakao_native_key") ?: ""
+val naverMapId = properties.getProperty("naver_map_id") ?: ""
 val naverClientId = properties.getProperty("naver_client_id") ?: ""
 val naverClientSecret = properties.getProperty("naver_client_secret") ?: ""
 val naverClientName = properties.getProperty("naver_client_name") ?: ""
@@ -38,6 +39,7 @@ android {
         buildConfigField("String", "NAVER_CLIENT_NAME", "\"$naverClientName\"")
         buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
         manifestPlaceholders["KAKAO_NATIVE_KEY"] = kakaoNativeKey
+        manifestPlaceholders["NAVER_MAP_ID"] = naverMapId
     }
 
     buildTypes {
