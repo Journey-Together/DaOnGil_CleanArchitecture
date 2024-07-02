@@ -26,10 +26,14 @@
     <color name="reset_button">#FFFFFFFF</color>
     <color name="search_view_background">#E8E8E9</color>
 
-    <color name="tab_layout_common_text">#8A8A8A</color>
     <color name="tab_layout_background">#F5F5F5</color>
-    <color name="floating_action_button">#292C33</color>
+    <color name="floating_action_button">#FF4949</color>
     <color name="floating_action_button_title">#E9E9EA</color>
+
+    <color name="search_view_main">#FF4949</color>
+    <color name="tab_selected_text_color">#FF4949</color>
+    <color name="tab_unselected_text_color">#999999</color>
+    <color name="tab_indicator_color">#FF4949</color>
 
     <color name="box_stroke">#A3A5A9</color>
     <color name="select_area">#E8E8E9</color>
@@ -48,6 +52,7 @@
     <color name="maker_overlay">#FFF0B1</color>
 
     <color name="search_view">#E8E8E8</color>
+    <color name="search_guide_text">#303030</color>
 
     <color name="category_bottom_sheet_background">#F5F5F5</color>
 

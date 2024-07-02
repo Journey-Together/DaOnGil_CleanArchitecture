@@ -1,0 +1,15 @@
+package kr.tekit.lion.presentation.ext
+
+import android.content.Context
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import kr.tekit.lion.presentation.R
+
+fun Context.setImage(imageView: ImageView, url: String?) {
+
+    Glide.with(this).load(url)
+        .placeholder(R.drawable.empty_view_small) // 로딩 중일 때
+        .error(R.drawable.empty_view_small) // 오류 발생 시
+        .into(imageView)
+
+}

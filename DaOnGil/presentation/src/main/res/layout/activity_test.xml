@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.naver.maps.map.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:paddingTop="5dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@android:color/transparent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:singleLine="true">
+
+            <ImageButton
+                android:id="@+id/btn_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_button_layout"
+                android:elevation="2dp"
+                android:padding="10dp"
+                android:src="@drawable/reset_icon" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_physical_disability"
+                style="@style/map_category_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_physical_disability" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_visual_impairment"
+                style="@style/map_category_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_visual_impairmnet" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_hearing_impairment"
+                style="@style/map_category_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_hearing_impairment" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_infant_familly"
+                style="@style/map_category_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_infant_family" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_elderly_people"
+                style="@style/map_category_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/text_elderly_person" />
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+</FrameLayout>
