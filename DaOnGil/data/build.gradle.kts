@@ -1,9 +1,9 @@
 import java.util.Properties
 
 plugins {
+    id("kotlinx-serialization")
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kapt)
     alias(libs.plugins.room)
     alias(libs.plugins.hilt)
@@ -73,7 +73,6 @@ dependencies {
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
 
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
@@ -84,7 +83,7 @@ dependencies {
     kapt(libs.room.compiler)
 
     implementation(libs.gson)
-
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.converter.moshi)
     implementation(libs.moshi.adapters)
     implementation(libs.moshi)

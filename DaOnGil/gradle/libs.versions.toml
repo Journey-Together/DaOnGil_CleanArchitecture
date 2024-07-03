@@ -29,13 +29,16 @@ droidsonroids = "1.2.28"
 glide = "4.16.0"
 gson = "2.10.1"
 navercorp = "5.9.1"
-kotlinxSerializationJson = "1.6.3"
+kotlinx-serialization = "1.6.3"
+kotlin-serialization-plugin = "1.9.22"
 navigationSafeArgs = "2.7.7"
 coroutines-core = "1.7.3"
 javaxInject="1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlin-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-serialization-plugin" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide-compiler" }
 google-services-v441 = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -70,7 +73,6 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 converter-moshi = { group="com.squareup.retrofit2", name="converter-moshi", version.ref="retrofit"}
 navigation-safe-args = { group="androidx.navigation", name="navigation-safe-args-gradle-plugin", version.ref="navigationSafeArgs" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson"}
 gson = { group="com.google.code.gson", name="gson", version.ref="gson" }
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref="coroutines-core"}
 coroutines-core-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core-jvm", version.ref="coroutines-core"}
@@ -83,7 +85,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "org-jetbrains-kotlin-android"}
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "org-jetbrains-kotlin-android" }
 navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref="navigationSafeArgs" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "org-jetbrains-kotlin-android"  }
 room = { id = "androidx.room", version.ref="room" }
