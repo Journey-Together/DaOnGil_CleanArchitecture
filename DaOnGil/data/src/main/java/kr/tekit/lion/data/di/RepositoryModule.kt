@@ -5,9 +5,11 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.repository.AreaCodeRepositoryImpl
+import kr.tekit.lion.data.repository.AuthRepositoryImpl
 import kr.tekit.lion.data.repository.KorWithRepositoryImpl
 import kr.tekit.lion.data.repository.SigunguCodeRepositoryImpl
 import kr.tekit.lion.domain.repository.AreaCodeRepository
+import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.KorWithRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 
@@ -23,4 +25,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindSigunguRepository(sigunguCodeRepositoryImpl: SigunguCodeRepositoryImpl): SigunguCodeRepository
+
+    @Binds
+    abstract fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 }
