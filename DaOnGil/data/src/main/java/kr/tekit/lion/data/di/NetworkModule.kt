@@ -14,6 +14,7 @@ import kr.tekit.lion.data.service.AuthAuthenticator
 import kr.tekit.lion.data.service.AuthInterceptor
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.KorWithService
+import kr.tekit.lion.data.service.MemberService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,6 +42,12 @@ internal class NetworkModule {
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMemberService(retrofit: Retrofit): MemberService{
+        return retrofit.create(MemberService::class.java)
     }
 
     @Singleton
