@@ -2,6 +2,7 @@ buildscript {
     dependencies{
         classpath(libs.navigation.safe.args)
         classpath (libs.google.services.v441)
+        classpath(libs.kotlin.serialization.plugin)
     }
 }
 
