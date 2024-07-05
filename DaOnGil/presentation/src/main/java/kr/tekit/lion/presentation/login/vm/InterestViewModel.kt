@@ -14,7 +14,11 @@ class InterestViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _concernType = MutableStateFlow(ConcernType(
-        false, false, false, false, false
+        isPhysical = false,
+        isHear = false,
+        isVisual = false,
+        isElderly = false,
+        isChild = false
     ))
 
     val concernType get() = _concernType.asStateFlow()
