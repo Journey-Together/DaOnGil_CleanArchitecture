@@ -61,19 +61,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-//    private fun kakaoLogin() = repeatOnViewStarted {
-//        UserApiClient.login(requireContext())
-//            .onSuccess {
-//                viewModel.onCompleteLogIn("KAKAO", it.accessToken)
-//            }
-//    }
-
     private fun kakaoLogin(){
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
-
-            } else if (token != null) {
-
+            if (token != null) {
+                viewModel.onCompleteLogIn("KAKAO", token.accessToken)
             }
         }
         // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
@@ -95,51 +86,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
-        }
-    }
-
-    private suspend fun UserApiClient.Companion.login(context: Context): Result<OAuthToken> = runCatching {
-        if (instance.isKakaoTalkLoginAvailable(context)) {
-            try {
-                UserApiClient.loginWithKakaoTalk(context)
-            } catch (error: Throwable) {
-                if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                    throw error
-                } else {
-                    UserApiClient.loginWithKakaoAccount(context)
-                }
-            }
-        } else {
-            UserApiClient.loginWithKakaoAccount(context)
-        }
-    }
-
-    // 카카오톡으로 로그인 시도
-    private suspend fun UserApiClient.Companion.loginWithKakaoTalk(context: Context): OAuthToken =
-        suspendCoroutine { continuation ->
-            instance.loginWithKakaoTalk(context) { token, error ->
-                continuation.resumeTokenOrException(token, error)
-            }
-        }
-
-    // 카카오 계정으로 로그인 시도
-    private suspend fun UserApiClient.Companion.loginWithKakaoAccount(context: Context): OAuthToken =
-        suspendCoroutine { continuation ->
-            instance.loginWithKakaoAccount(context) { token, error ->
-                continuation.resumeTokenOrException(token, error)
-            }
-        }
-
-    private fun Continuation<OAuthToken>.resumeTokenOrException(
-        token: OAuthToken?,
-        error: Throwable?
-    ) {
-        if (error != null) {
-            resumeWithException(error)
-        } else if (token != null) {
-            resume(token)
-        } else {
-            resumeWithException(RuntimeException("Can't Receive Kakao Access Token"))
         }
     }
 
