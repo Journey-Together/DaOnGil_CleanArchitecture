@@ -27,8 +27,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal class NetworkModule {
-
+internal object NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(@Named("auth") authClient: OkHttpClient, moshi: Moshi): Retrofit {
@@ -46,7 +45,7 @@ internal class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMemberService(retrofit: Retrofit): MemberService{
+    fun provideMemberService(retrofit: Retrofit): MemberService {
         return retrofit.create(MemberService::class.java)
     }
 
@@ -104,5 +103,4 @@ internal class NetworkModule {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
-
 }
