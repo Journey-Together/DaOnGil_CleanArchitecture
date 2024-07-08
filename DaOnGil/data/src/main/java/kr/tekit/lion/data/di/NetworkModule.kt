@@ -29,9 +29,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
+
     @Singleton
     @Provides
-    fun provideRetrofit(@Named("auth") authClient: OkHttpClient, moshi: Moshi): Retrofit {
+    fun provideRetrofit(@Auth authClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -66,9 +67,9 @@ internal object NetworkModule {
             .build()
             .create()
 
+    @Auth
     @Singleton
     @Provides
-    @Named("auth")
     fun provideAuthClient(tokenDataSource: TokenDataSource): OkHttpClient {
         return OkHttpClient.Builder()
             //.authenticator(AuthAuthenticator())
