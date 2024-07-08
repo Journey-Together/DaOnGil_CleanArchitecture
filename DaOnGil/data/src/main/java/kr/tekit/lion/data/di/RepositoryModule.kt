@@ -8,11 +8,13 @@ import kr.tekit.lion.data.repository.AreaCodeRepositoryImpl
 import kr.tekit.lion.data.repository.AuthRepositoryImpl
 import kr.tekit.lion.data.repository.KorWithRepositoryImpl
 import kr.tekit.lion.data.repository.MemberRepositoryImpl
+import kr.tekit.lion.data.repository.PlaceRepositoryImpl
 import kr.tekit.lion.data.repository.SigunguCodeRepositoryImpl
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.KorWithRepository
 import kr.tekit.lion.domain.repository.MemberRepository
+import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 
 @Module
@@ -33,4 +35,7 @@ internal abstract class RepositoryModule {
 
     @Binds
     abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
+
+    @Binds
+    abstract fun bindPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
 }
