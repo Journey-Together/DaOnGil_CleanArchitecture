@@ -31,6 +31,7 @@
     <color name="floating_action_button_title">#E9E9EA</color>
 
     <color name="search_view_main">#FF4949</color>
+    <color name="search_view_category_name">#A5A7AA</color>
     <color name="tab_selected_text_color">#FF4949</color>
     <color name="tab_unselected_text_color">#999999</color>
     <color name="tab_indicator_color">#FF4949</color>
@@ -40,6 +41,7 @@
     <color name="select_area_text">#474747</color>
     <color name="select_area_box_stroke">#A3A5A9</color>
     <color name="select_area_end_icon">#898989</color>
+
     <color name="category_unselected_button">#E8E8E9</color>
     <color name="category_selected_button">#5F6368</color>
 

@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_big3"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small2"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,10 +32,10 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@drawable/background_radius_10"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="@color/search_view_main"
             android:fontFamily="@font/pretendard_semibold"
             android:text="검색"
-            android:textColor="#262626"
+            android:textColor="@color/button_secondary"
             android:textSize="17sp" />
     </LinearLayout>
 
@@ -40,6 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small2"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -75,5 +80,81 @@
                 android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="@dimen/margin_big2"
+        android:background="@color/primary_disabled" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_big2"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp">
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="총"
+        android:textSize="@dimen/font_big3"
+        android:fontFamily="@font/pretendard_medium" />
+
+    <TextView
+        android:id="@+id/total_cnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:textSize="@dimen/font_big3"
+        android:textColor="@color/search_view_main"
+        android:fontFamily="@font/pretendard_medium"
+        android:layout_marginStart="@dimen/margin_small2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="건"
+        android:textSize="@dimen/font_big3" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/btn_latest"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_sort_recent"
+        android:textColor="@color/select_area_text"
+        android:textSize="@dimen/font_big3" />
+
+    <TextView
+        android:id="@+id/btn_letter"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_sort_ganada"
+        android:textSize="@dimen/font_big3"
+        android:layout_marginStart="@dimen/margin_small2"
+        android:textColor="@color/select_area_text"/>
+
+    <TextView
+        android:id="@+id/btn_popularity"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/pretendard_medium"
+        android:layout_marginEnd="@dimen/margin_big2"
+        android:layout_marginStart="@dimen/margin_small2"
+        android:text="@string/text_sort_popular"
+        android:textColor="@color/select_area_text"
+        android:textSize="@dimen/font_big3" />
+
+
     </LinearLayout>
 </LinearLayout>
