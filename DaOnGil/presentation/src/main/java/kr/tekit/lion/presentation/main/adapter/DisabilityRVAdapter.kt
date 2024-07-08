@@ -28,7 +28,7 @@ class DisabilityRVAdapter(private val typeList : List<String>)
             val typeId = when(item) {
                 "1" -> R.drawable.physical_disability_radius_icon
                 "2" -> R.drawable.visual_impairment_radius_icon
-                "3" -> R.drawable.hearing_impairment_radius_icon
+                "3" -> R.drawable.infant_familly_radius_icon
                 "4" -> R.drawable.infant_familly_radius_icon
                 else -> R.drawable.elderly_people_radius_icon
             }
