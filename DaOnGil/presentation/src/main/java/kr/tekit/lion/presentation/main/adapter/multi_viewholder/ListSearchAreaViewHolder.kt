@@ -30,21 +30,21 @@ class ListSearchAreaViewHolder(
             val selectedColor = root.context.getColor(R.color.search_view_main)
 
             btnPopularity.setClickEvent(uiScope){
-                onClickSortByPopularityBtn(SortByPopularity.sortCoed)
+                onClickSortByPopularityBtn(SortByPopularity.sortCode)
                 btnPopularity.setTextColor(selectedColor)
                 btnLatest.setTextColor(defaultColor)
                 btnLetter.setTextColor(defaultColor)
             }
 
             btnLatest.setClickEvent(uiScope){
-                onClickSortByLatestBtn(SortByLatest.sortCoed)
+                onClickSortByLatestBtn(SortByLatest.sortCode)
                 btnLatest.setTextColor(selectedColor)
                 btnLetter.setTextColor(defaultColor)
                 btnPopularity.setTextColor(defaultColor)
             }
 
             btnLetter.setClickEvent(uiScope){
-                onClickSortByLetterBtn(SortByLetter.sortCoed)
+                onClickSortByLetterBtn(SortByLetter.sortCode)
                 btnLetter.setTextColor(selectedColor)
                 btnPopularity.setTextColor(defaultColor)
                 btnLatest.setTextColor(defaultColor)
