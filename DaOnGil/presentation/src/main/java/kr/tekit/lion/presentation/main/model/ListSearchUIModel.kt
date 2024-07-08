@@ -1,5 +1,7 @@
 package kr.tekit.lion.presentation.main.model
 
+import kr.tekit.lion.domain.model.ListSearchResultList
+
 sealed class ListSearchUIModel
 
 data object CategoryModel : ListSearchUIModel()
@@ -13,3 +15,16 @@ data class PlaceModel(
     val placeImg: String,
     val disability: List<String>
 ) : ListSearchUIModel()
+
+fun ListSearchResultList.toUiModel(): List<PlaceModel> =
+    this.places.map {
+        PlaceModel(
+            placeName = it.place.name,
+            placeAddr = it.place.address,
+            placeId = it.place.placeId.toString(),
+            placeImg = it.place.image,
+            disability = it.place.disability
+        )
+    }
+
+
