@@ -1,4 +1,4 @@
-package kr.tekit.lion.daongil.data.dto.local
+package kr.tekit.lion.data.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

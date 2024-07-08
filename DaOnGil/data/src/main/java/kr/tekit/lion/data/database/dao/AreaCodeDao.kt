@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kr.tekit.lion.daongil.data.dto.local.AreaCodeEntity
+import kr.tekit.lion.data.database.entity.AreaCodeEntity
 
 @Dao
 interface AreaCodeDao {

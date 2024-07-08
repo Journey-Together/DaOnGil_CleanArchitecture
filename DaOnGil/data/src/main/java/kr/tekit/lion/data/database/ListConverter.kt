@@ -2,7 +2,7 @@ package kr.tekit.lion.data.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import kr.tekit.lion.daongil.data.dto.local.AreaCodeEntity
+import kr.tekit.lion.data.database.entity.AreaCodeEntity
 import kr.tekit.lion.data.database.entity.SigunguCodeEntity
 
 class ListConverter {
