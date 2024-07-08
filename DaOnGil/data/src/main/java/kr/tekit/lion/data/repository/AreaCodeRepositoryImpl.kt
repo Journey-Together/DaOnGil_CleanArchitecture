@@ -1,7 +1,7 @@
 package kr.tekit.lion.data.repository
 
-import kr.tekit.lion.daongil.data.dto.local.toDomainModel
-import kr.tekit.lion.daongil.data.dto.local.toEntity
+import kr.tekit.lion.data.database.entity.toDomainModel
+import kr.tekit.lion.data.database.entity.toEntity
 import kr.tekit.lion.data.datasource.AreaCodeDataSource
 import kr.tekit.lion.data.mapper.toFullAreaName
 import kr.tekit.lion.domain.model.AreaCode
