@@ -110,7 +110,7 @@
                 android:id="@+id/img_visual_disability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/sv_hearing_impaired_unselected_icon" />
+                android:src="@drawable/sv_visual_impairment_unselect_icon" />
 
             <TextView
                 android:id="@+id/text_visual_disability"

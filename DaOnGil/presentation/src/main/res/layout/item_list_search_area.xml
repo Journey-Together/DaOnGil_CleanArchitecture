@@ -21,22 +21,6 @@
             android:text="지역 선택"
             android:textSize="18sp" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/background_radius_10"
-            android:backgroundTint="@color/search_view_main"
-            android:fontFamily="@font/pretendard_semibold"
-            android:text="검색"
-            android:textColor="@color/button_secondary"
-            android:textSize="17sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -107,7 +91,6 @@
         android:id="@+id/total_cnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100"
         android:textSize="@dimen/font_big3"
         android:textColor="@color/search_view_main"
         android:fontFamily="@font/pretendard_medium"
@@ -154,7 +137,5 @@
         android:text="@string/text_sort_popular"
         android:textColor="@color/select_area_text"
         android:textSize="@dimen/font_big3" />
-
-
     </LinearLayout>
 </LinearLayout>

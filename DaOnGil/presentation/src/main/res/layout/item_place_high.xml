@@ -20,10 +20,17 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/img_place_high_background"
+                android:scaleType="centerCrop"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tourist_high_disability_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small2"
                 android:layout_marginBottom="@dimen/margin_small1"
                 android:layout_weight="1"
                 android:layout_gravity="start|bottom" />
@@ -46,7 +53,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/pretendard_semibold"
             android:textColor="@color/text_primary"
-            android:textSize="@dimen/font_big3" />
+            android:textSize="@dimen/font_small1" />
 
         <TextView
             android:id="@+id/tv_addr"
@@ -55,7 +62,7 @@
             android:layout_weight="2"
             android:fontFamily="@font/pretendard_regular"
             android:textColor="@color/text_secondary"
-            android:textSize="@dimen/font_small2" />
+            android:textSize="@dimen/font_small3" />
 
     </LinearLayout>
 </LinearLayout>
