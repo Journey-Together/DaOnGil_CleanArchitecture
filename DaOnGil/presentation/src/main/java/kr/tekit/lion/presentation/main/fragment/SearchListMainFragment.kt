@@ -1,15 +1,21 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchListMainBinding
+import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.main.CategoryBottomSheet
 import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter
@@ -35,7 +41,7 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
                 val options = viewModel.physicalDisabilityOptions.value
                 showBottomSheet(options, type)
             },
-            onClickVisualImpairment = { type ->
+            onClickVisualImpairment = { type->
                 val options = viewModel.visualImpairmentOptions.value
                 showBottomSheet(options, type)
             },
@@ -47,7 +53,7 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
                 val options = viewModel.infantFamilyOptions.value
                 showBottomSheet(options, type)
             },
-            onClickElderlyPeople = { type ->
+            onClickElderlyPeople = { type->
                 val options = viewModel.elderlyPersonOptions.value
                 showBottomSheet(options, type)
             },
@@ -56,9 +62,6 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
             },
             onSelectSigungu = {
                 viewModel.onSelectedSigungu(it)
-            },
-            onClickSearchButton = {
-                viewModel.onClickSearchButton()
             },
             onClickSortByLatestBtn = {
                 viewModel.onSelectedArrange(it)
@@ -86,17 +89,25 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
             }
         }
 
-        binding.rvSearchResult.adapter = mainAdapter
-        binding.rvSearchResult.layoutManager = layoutManager
-
-        repeatOnViewStarted {
-            viewModel.areaCode.collect {area->
-                mainAdapter.submitAreaList(area.map { it.name })
+        with(binding) {
+            rvSearchResult.adapter = mainAdapter
+            rvSearchResult.layoutManager = layoutManager
+            rvSearchResult.addOnScrollEndListener {
+                val pageState = viewModel.isLastPage.value
+                if (pageState){
+                    viewModel.whenLastPageReached()
+                }
             }
         }
 
         repeatOnViewStarted {
-            viewModel.sigunguCode.collect { result ->
+            viewModel.areaCode.collect{ area ->
+                mainAdapter.submitAreaList(area.areaList.map { it.name })
+            }
+        }
+
+        repeatOnViewStarted {
+            viewModel.sigunguCode.collect{ result ->
                 mainAdapter.submitSigunguList(
                     result.sigunguList.map {
                         it.sigunguName
@@ -106,7 +117,7 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
         }
 
         repeatOnViewStarted {
-            viewModel.place.collect{
+            viewModel.place.collect {
                 mainAdapter.submitList(it)
             }
         }
@@ -114,6 +125,13 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
         repeatOnViewStarted {
             viewModel.optionState.collect{
                 mainAdapter.modifyOptionState(it)
+            }
+        }
+
+        repeatOnViewStarted {
+            // 탭을 선택하면 화면을 맨위로 스크롤
+            viewModel.uiEvent.collect{
+                binding.rvSearchResult.scrollToPosition(0)
             }
         }
     }
