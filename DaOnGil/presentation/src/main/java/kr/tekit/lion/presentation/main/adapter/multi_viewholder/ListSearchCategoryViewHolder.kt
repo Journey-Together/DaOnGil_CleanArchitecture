@@ -25,6 +25,26 @@ class ListSearchCategoryViewHolder(
     private val onClickElderlyPeople: (ElderlyPeople) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    init {
+        with(binding) {
+            containerPhysicalDisability.setClickEvent(uiScope) {
+                onClickPhysicalDisability(PhysicalDisability)
+            }
+            containerVisualImpairment.setClickEvent(uiScope) {
+                onClickVisualImpairment(VisualImpairment)
+            }
+            containerHearingImpairment.setClickEvent(uiScope) {
+                onClickHearingDisability(HearingImpairment)
+            }
+            containerInfantFamily.setClickEvent(uiScope) {
+                onClickInfantFamily(InfantFamily)
+            }
+            containerElderlyPerson.setClickEvent(uiScope) {
+                onClickElderlyPeople(ElderlyPeople)
+            }
+        }
+    }
+
     fun bind(optionState: MutableMap<DisabilityType, Int>) {
         fun modifyDisabilityUI(
             type: DisabilityType,
@@ -96,22 +116,6 @@ class ListSearchCategoryViewHolder(
                 R.drawable.sv_elderly_selected_icon,
                 R.string.text_elderly_person
             )
-
-            containerPhysicalDisability.setClickEvent(uiScope) {
-                onClickPhysicalDisability(PhysicalDisability)
-            }
-            containerVisualImpairment.setClickEvent(uiScope) {
-                onClickVisualImpairment(VisualImpairment)
-            }
-            containerHearingImpairment.setClickEvent(uiScope) {
-                onClickHearingDisability(HearingImpairment)
-            }
-            containerInfantFamily.setClickEvent(uiScope) {
-                onClickInfantFamily(InfantFamily)
-            }
-            containerElderlyPerson.setClickEvent(uiScope) {
-                onClickElderlyPeople(ElderlyPeople)
-            }
         }
     }
 }
