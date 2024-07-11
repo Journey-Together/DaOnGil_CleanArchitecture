@@ -17,17 +17,28 @@ class ListSearchAreaViewHolder(
     private val binding: ItemListSearchAreaBinding,
     private val onSelectArea: (String) -> Unit,
     private val onSelectSigungu: (String) -> Unit,
-    private val onClickSearchButton: () -> Unit,
     private val onClickSortByLatestBtn: (String) -> Unit,
     private val onClickSortByPopularityBtn: (String) -> Unit,
     private val onClickSortByLetterBtn: (String) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(areaList: List<String>, sigunguList: List<String>) {
+    fun bind(placeCount: Int, areaList: List<String>, sigunguList: List<String>) {
 
         with(binding) {
             val defaultColor = root.context.getColor(R.color.select_area_text)
             val selectedColor = root.context.getColor(R.color.search_view_main)
+
+            totalCnt.text = placeCount.toString()
+
+            if (placeCount == 0){
+                btnLetter.visibility = View.GONE
+                btnLatest.visibility = View.GONE
+                btnPopularity.visibility = View.GONE
+            }else{
+                btnLetter.visibility = View.VISIBLE
+                btnLatest.visibility = View.VISIBLE
+                btnPopularity.visibility = View.VISIBLE
+            }
 
             btnPopularity.setClickEvent(uiScope){
                 onClickSortByPopularityBtn(SortByPopularity.sortCode)
@@ -73,10 +84,6 @@ class ListSearchAreaViewHolder(
                 if (it != null) {
                     onSelectSigungu(it.toString())
                 }
-            }
-
-            btnSearch.setOnClickListener {
-                onClickSearchButton()
             }
         }
     }
