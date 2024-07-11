@@ -6,8 +6,27 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.CategoryBottomSheetLayoutBinding
+import kr.tekit.lion.presentation.main.model.AudioGuide
+import kr.tekit.lion.presentation.main.model.BabySpareChair
+import kr.tekit.lion.presentation.main.model.Braileblock
 import kr.tekit.lion.presentation.main.model.DisabilityType
-import kr.tekit.lion.presentation.main.model.Options
+import kr.tekit.lion.presentation.main.model.Elevator
+import kr.tekit.lion.presentation.main.model.Guide
+import kr.tekit.lion.presentation.main.model.HelpDog
+import kr.tekit.lion.presentation.main.model.LactationRoom
+import kr.tekit.lion.presentation.main.model.Parking
+import kr.tekit.lion.presentation.main.model.PhysicalDisability
+import kr.tekit.lion.presentation.main.model.RestRoom
+import kr.tekit.lion.presentation.main.model.Seat
+import kr.tekit.lion.presentation.main.model.SignGuide
+import kr.tekit.lion.presentation.main.model.Stroller
+import kr.tekit.lion.presentation.main.model.VideoGuide
+import kr.tekit.lion.presentation.main.model.Wheelchair
+import kr.tekit.lion.presentation.main.model.WheelchairLent
+import kr.tekit.lion.presentation.main.model.ElderlyPeople
+import kr.tekit.lion.presentation.main.model.HearingImpairment
+import kr.tekit.lion.presentation.main.model.InfantFamily
+import kr.tekit.lion.presentation.main.model.VisualImpairment
 
 class CategoryBottomSheet(
     private val selectedOption: List<Int>,
@@ -28,27 +47,27 @@ class CategoryBottomSheet(
         if (selectedOption.isNotEmpty()) {
             selectedOption.map {
                 when (selectedCategory) {
-                    DisabilityType.PhysicalDisability -> {
+                    PhysicalDisability -> {
                         val chip = binding.chipGroupPhysicalDisability.findViewById<Chip>(it)
                         chip.isChecked = true
                     }
 
-                    DisabilityType.HearingImpairment -> {
+                    HearingImpairment -> {
                         val chip = binding.chipGroupHearingImpairment.findViewById<Chip>(it)
                         chip.isChecked = true
                     }
 
-                    DisabilityType.VisualImpairment -> {
+                    VisualImpairment -> {
                         val chip = binding.chipGroupVisualImpairment.findViewById<Chip>(it)
                         chip.isChecked = true
                     }
 
-                    DisabilityType.InfantFamily -> {
+                    InfantFamily -> {
                         val chip = binding.chipGroupInfantFamily.findViewById<Chip>(it)
                         chip.isChecked = true
                     }
 
-                    DisabilityType.ElderlyPeople -> {
+                    ElderlyPeople -> {
                         val chip = binding.chipGroupElderlyPerson.findViewById<Chip>(it)
                         chip.isChecked = true
                     }
@@ -61,7 +80,7 @@ class CategoryBottomSheet(
     private fun setOptions(binding: CategoryBottomSheetLayoutBinding) {
         with(binding) {
             when (selectedCategory) {
-                DisabilityType.PhysicalDisability -> {
+                PhysicalDisability -> {
                     chipGroupPhysicalDisability.visibility = View.VISIBLE
                     chipGroupVisualImpairment.visibility = View.GONE
                     chipGroupHearingImpairment.visibility = View.GONE
@@ -69,7 +88,7 @@ class CategoryBottomSheet(
                     chipGroupElderlyPerson.visibility = View.GONE
                 }
 
-                DisabilityType.HearingImpairment -> {
+                HearingImpairment -> {
                     chipGroupHearingImpairment.visibility = View.VISIBLE
                     chipGroupPhysicalDisability.visibility = View.GONE
                     chipGroupVisualImpairment.visibility = View.GONE
@@ -78,7 +97,7 @@ class CategoryBottomSheet(
 
                 }
 
-                DisabilityType.VisualImpairment -> {
+                VisualImpairment -> {
                     chipGroupVisualImpairment.visibility = View.VISIBLE
                     chipGroupPhysicalDisability.visibility = View.GONE
                     chipGroupHearingImpairment.visibility = View.GONE
@@ -87,7 +106,7 @@ class CategoryBottomSheet(
 
                 }
 
-                DisabilityType.InfantFamily -> {
+                InfantFamily -> {
                     chipGroupInfantFamily.visibility = View.VISIBLE
                     chipGroupPhysicalDisability.visibility = View.GONE
                     chipGroupVisualImpairment.visibility = View.GONE
@@ -96,7 +115,7 @@ class CategoryBottomSheet(
 
                 }
 
-                DisabilityType.ElderlyPeople -> {
+                ElderlyPeople -> {
                     chipGroupElderlyPerson.visibility = View.VISIBLE
                     chipGroupPhysicalDisability.visibility = View.GONE
                     chipGroupVisualImpairment.visibility = View.GONE
@@ -107,117 +126,103 @@ class CategoryBottomSheet(
 
             allChip.setOnClickListener {
                 selectedOptions.clear()
+                if (allChip.isChecked) allChip.isChecked = false
 
                 when (selectedCategory) {
-                    DisabilityType.PhysicalDisability -> {
-                        if (allChip.isChecked) allChip.isChecked = false
+                    PhysicalDisability -> {
                         chipGroupPhysicalDisability.check(R.id.wheelchair_chip)
                         chipGroupPhysicalDisability.check(R.id.parking_chip)
                         chipGroupPhysicalDisability.check(R.id.elevator_chip)
                         chipGroupPhysicalDisability.check(R.id.restroom_chip)
+                        chipGroupPhysicalDisability.check(R.id.seat_chip)
                     }
 
-                    DisabilityType.VisualImpairment -> {
-                        if (allChip.isChecked) allChip.isChecked = false
+                    VisualImpairment -> {
                         chipGroupVisualImpairment.check(R.id.braileblock_chip)
                         chipGroupVisualImpairment.check(R.id.help_dog_chip)
                         chipGroupVisualImpairment.check(R.id.guide_chip)
                         chipGroupVisualImpairment.check(R.id.audio_guide_chip)
                     }
 
-                    DisabilityType.HearingImpairment -> {
-                        if (allChip.isChecked) allChip.isChecked = false
+                    HearingImpairment -> {
                         chipGroupHearingImpairment.check(R.id.sign_guide_chip)
                         chipGroupHearingImpairment.check(R.id.video_guide_chip)
                     }
 
-                    DisabilityType.InfantFamily -> {
-                        if (allChip.isChecked) allChip.isChecked = false
+                    InfantFamily -> {
                         chipGroupInfantFamily.check(R.id.stroller_chip)
                         chipGroupInfantFamily.check(R.id.lactation_room_chip)
                         chipGroupInfantFamily.check(R.id.baby_spare_chair_chip)
                     }
 
-                    DisabilityType.ElderlyPeople -> {
-                        if (allChip.isChecked) allChip.isChecked = false
-                        chipGroupInfantFamily.check(R.id.lend_chip)
+                    ElderlyPeople -> {
+                        chipGroupElderlyPerson.check(R.id.lend_chip)
                     }
                 }
             }
 
             btnReset.setOnClickListener {
+                allChip.isChecked = false
                 when (selectedCategory) {
-                    DisabilityType.PhysicalDisability -> {
-                        allChip.isChecked = false
+                    PhysicalDisability -> {
                         chipGroupPhysicalDisability.clearCheck()
                     }
-
-                    DisabilityType.HearingImpairment -> {
-                        allChip.isChecked = false
+                    HearingImpairment -> {
                         chipGroupHearingImpairment.clearCheck()
                     }
-
-                    DisabilityType.VisualImpairment -> {
-                        allChip.isChecked = false
+                    VisualImpairment -> {
                         chipGroupVisualImpairment.clearCheck()
                     }
-
-                    DisabilityType.InfantFamily -> {
-                        allChip.isChecked = false
+                    InfantFamily -> {
                         chipGroupInfantFamily.clearCheck()
                     }
-
-                    DisabilityType.ElderlyPeople -> {
-                        allChip.isChecked = false
+                    ElderlyPeople -> {
                         chipGroupElderlyPerson.clearCheck()
                     }
                 }
             }
 
             btnSubmit.setOnClickListener {
+                allChip.isChecked = false
                 val selectedChipIds = when (selectedCategory) {
-                    is DisabilityType.PhysicalDisability -> {
+                    is PhysicalDisability -> {
                         chipGroupPhysicalDisability.checkedChipIds
                     }
 
-                    is DisabilityType.HearingImpairment -> {
-                        allChip.isChecked = false
+                    is HearingImpairment -> {
                         chipGroupHearingImpairment.checkedChipIds
                     }
 
-                    is DisabilityType.VisualImpairment -> {
-                        allChip.isChecked = false
+                    is VisualImpairment -> {
                         chipGroupVisualImpairment.checkedChipIds
                     }
 
-                    is DisabilityType.InfantFamily -> {
-                        allChip.isChecked = false
+                    is InfantFamily -> {
                         chipGroupInfantFamily.checkedChipIds
                     }
 
-                    is DisabilityType.ElderlyPeople -> {
-                        allChip.isChecked = false
+                    is ElderlyPeople -> {
                         chipGroupElderlyPerson.checkedChipIds
                     }
                 }
 
                 val selectedChipTexts = selectedChipIds.map { chipId ->
                     when(chipId){
-                        R.id.parking_chip -> Options.Parking.code
-                        R.id.wheelchair_chip -> Options.Wheelchair.code
-                        R.id.restroom_chip -> Options.RestRoom.code
-                        R.id.elevator_chip -> Options.Elevator.code
-                        R.id.seat_chip -> Options.Seat.code
-                        R.id.braileblock_chip -> Options.Braileblock.code
-                        R.id.help_dog_chip -> Options.HelpDog.code
-                        R.id.guide_chip -> Options.Guide.code
-                        R.id.audio_guide_chip -> Options.AudioGuide.code
-                        R.id.sign_guide_chip -> Options.SignGuide.code
-                        R.id.video_guide_chip -> Options.VideoGuide.code
-                        R.id.stroller_chip -> Options.Stroller.code
-                        R.id.lactation_room_chip -> Options.LactationRoom.code
-                        R.id.baby_spare_chair_chip -> Options.BabySpareChair.code
-                        else -> Options.WheelchairLent.code
+                        R.id.parking_chip -> Parking.code
+                        R.id.wheelchair_chip -> Wheelchair.code
+                        R.id.restroom_chip -> RestRoom.code
+                        R.id.elevator_chip -> Elevator.code
+                        R.id.seat_chip -> Seat.code
+                        R.id.braileblock_chip -> Braileblock.code
+                        R.id.help_dog_chip -> HelpDog.code
+                        R.id.guide_chip -> Guide.code
+                        R.id.audio_guide_chip -> AudioGuide.code
+                        R.id.sign_guide_chip -> SignGuide.code
+                        R.id.video_guide_chip -> VideoGuide.code
+                        R.id.stroller_chip -> Stroller.code
+                        R.id.lactation_room_chip -> LactationRoom.code
+                        R.id.baby_spare_chair_chip -> BabySpareChair.code
+                        else -> WheelchairLent.code
                     }
                 }
                 itemClick(selectedChipIds, selectedChipTexts)

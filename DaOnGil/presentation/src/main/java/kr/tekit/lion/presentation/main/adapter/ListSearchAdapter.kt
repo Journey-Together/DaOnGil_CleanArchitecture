@@ -7,26 +7,33 @@ import kotlinx.coroutines.CoroutineScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemListSearchAreaBinding
 import kr.tekit.lion.presentation.databinding.ItemListSearchCategoryBinding
+import kr.tekit.lion.presentation.databinding.ItemNoPlaceBinding
 import kr.tekit.lion.presentation.databinding.ItemPlaceHighBinding
 import kr.tekit.lion.presentation.main.adapter.multi_viewholder.ListSearchAreaViewHolder
 import kr.tekit.lion.presentation.main.adapter.multi_viewholder.ListSearchCategoryViewHolder
+import kr.tekit.lion.presentation.main.adapter.multi_viewholder.NoPlaceViewHolder
 import kr.tekit.lion.presentation.main.adapter.multi_viewholder.PlaceHighViewHolder
 import kr.tekit.lion.presentation.main.model.AreaModel
 import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
+import kr.tekit.lion.presentation.main.model.ElderlyPeople
+import kr.tekit.lion.presentation.main.model.HearingImpairment
+import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.ListSearchUIModel
+import kr.tekit.lion.presentation.main.model.NoPlaceModel
+import kr.tekit.lion.presentation.main.model.PhysicalDisability
 import kr.tekit.lion.presentation.main.model.PlaceModel
+import kr.tekit.lion.presentation.main.model.VisualImpairment
 
 class ListSearchAdapter(
     private val uiScope: CoroutineScope,
-    private val onClickPhysicalDisability: (DisabilityType.PhysicalDisability) -> Unit,
-    private val onClickVisualImpairment: (DisabilityType.VisualImpairment) -> Unit,
-    private val onClickHearingDisability: (DisabilityType.HearingImpairment) -> Unit,
-    private val onClickInfantFamily: (DisabilityType.InfantFamily) -> Unit,
-    private val onClickElderlyPeople: (DisabilityType.ElderlyPeople) -> Unit,
+    private val onClickPhysicalDisability: (PhysicalDisability) -> Unit,
+    private val onClickVisualImpairment: (VisualImpairment) -> Unit,
+    private val onClickHearingDisability: (HearingImpairment) -> Unit,
+    private val onClickInfantFamily: (InfantFamily) -> Unit,
+    private val onClickElderlyPeople: (ElderlyPeople) -> Unit,
     private val onSelectArea: (String) -> Unit,
     private val onSelectSigungu: (String) -> Unit,
-    private val onClickSearchButton: () -> Unit,
     private val onClickSortByLatestBtn: (String) -> Unit,
     private val onClickSortByPopularityBtn: (String) -> Unit,
     private val onClickSortByLetterBtn: (String) -> Unit,
@@ -38,9 +45,22 @@ class ListSearchAdapter(
     private val optionState: MutableMap<DisabilityType, Int> = HashMap()
 
     fun submitList(newData: List<ListSearchUIModel>) {
-        val placeModels = allDataList.filterIsInstance<PlaceModel>()
-        allDataList.removeAll(placeModels)
+        val oldPlaceModels = allDataList.filterIsInstance<PlaceModel>()
+        if (oldPlaceModels.isNotEmpty()) {
+            allDataList.removeAll(oldPlaceModels)
+        }
+
+        val oldNoPlaceModels = allDataList.filterIsInstance<NoPlaceModel>()
+        val newPlaceModels = newData.filterIsInstance<PlaceModel>()
+
         allDataList.addAll(newData)
+
+        if (newPlaceModels.isNotEmpty()) {
+            allDataList.removeAll(oldNoPlaceModels)
+        } else {
+            allDataList.add(NoPlaceModel)
+        }
+
         notifyDataSetChanged()
     }
 
@@ -65,6 +85,7 @@ class ListSearchAdapter(
             is CategoryModel -> VIEW_TYPE_CATEGORY
             is PlaceModel -> VIEW_TYPE_PLACE
             is AreaModel -> VIEW_TYPE_AREA
+            is NoPlaceModel -> VIEW_TYPE_NO_PLACE
         }
     }
 
@@ -82,19 +103,25 @@ class ListSearchAdapter(
                 onClickInfantFamily,
                 onClickElderlyPeople
             )
+
             VIEW_TYPE_PLACE -> PlaceHighViewHolder(
                 ItemPlaceHighBinding.bind(v)
             )
+
             VIEW_TYPE_AREA -> ListSearchAreaViewHolder(
                 uiScope,
                 ItemListSearchAreaBinding.bind(v),
                 onSelectArea,
                 onSelectSigungu,
-                onClickSearchButton,
                 onClickSortByLatestBtn,
                 onClickSortByPopularityBtn,
                 onClickSortByLetterBtn
             )
+
+            VIEW_TYPE_NO_PLACE -> NoPlaceViewHolder(
+                ItemNoPlaceBinding.bind(v)
+            )
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -105,14 +132,21 @@ class ListSearchAdapter(
         val item = allDataList[position]
         when (holder) {
             is ListSearchCategoryViewHolder -> holder.bind(optionState)
-            is ListSearchAreaViewHolder -> holder.bind(areaList, sigunguList)
+            is ListSearchAreaViewHolder -> holder.bind(
+                allDataList.filterIsInstance<PlaceModel>().size,
+                areaList,
+                sigunguList
+            )
+
             is PlaceHighViewHolder -> holder.bind(item as PlaceModel)
+            is NoPlaceViewHolder -> {}
         }
     }
 
     companion object {
         val VIEW_TYPE_CATEGORY = R.layout.item_list_search_category
         val VIEW_TYPE_PLACE = R.layout.item_place_high
+        val VIEW_TYPE_NO_PLACE = R.layout.item_no_place
         val VIEW_TYPE_AREA = R.layout.item_list_search_area
     }
 }

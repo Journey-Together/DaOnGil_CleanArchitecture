@@ -9,15 +9,20 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemListSearchCategoryBinding
 import kr.tekit.lion.presentation.ext.setClickEvent
 import kr.tekit.lion.presentation.main.model.DisabilityType
+import kr.tekit.lion.presentation.main.model.ElderlyPeople
+import kr.tekit.lion.presentation.main.model.HearingImpairment
+import kr.tekit.lion.presentation.main.model.InfantFamily
+import kr.tekit.lion.presentation.main.model.PhysicalDisability
+import kr.tekit.lion.presentation.main.model.VisualImpairment
 
 class ListSearchCategoryViewHolder(
     private val binding: ItemListSearchCategoryBinding,
     private val uiScope: CoroutineScope,
-    private val onClickPhysicalDisability: (DisabilityType.PhysicalDisability) -> Unit,
-    private val onClickVisualImpairment: (DisabilityType.VisualImpairment) -> Unit,
-    private val onClickHearingDisability: (DisabilityType.HearingImpairment) -> Unit,
-    private val onClickInfantFamily: (DisabilityType.InfantFamily) -> Unit,
-    private val onClickElderlyPeople: (DisabilityType.ElderlyPeople) -> Unit,
+    private val onClickPhysicalDisability: (PhysicalDisability) -> Unit,
+    private val onClickVisualImpairment: (VisualImpairment) -> Unit,
+    private val onClickHearingDisability: (HearingImpairment) -> Unit,
+    private val onClickInfantFamily: (InfantFamily) -> Unit,
+    private val onClickElderlyPeople: (ElderlyPeople) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(optionState: MutableMap<DisabilityType, Int>) {
@@ -34,9 +39,15 @@ class ListSearchCategoryViewHolder(
             when (count) {
                 0 -> {
                     textView.text = context.getString(textResId)
-                    textView.setTextColor(ContextCompat.getColor(context, R.color.search_view_category_name))
+                    textView.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.search_view_category_name
+                        )
+                    )
                     imageView.setImageDrawable(ContextCompat.getDrawable(context, unselectedIcon))
                 }
+
                 else -> {
                     textView.text = "${context.getString(textResId)}($count)"
                     textView.setTextColor(ContextCompat.getColor(context, R.color.search_view_main))
@@ -46,16 +57,23 @@ class ListSearchCategoryViewHolder(
         }
         with(binding) {
             modifyDisabilityUI(
-                DisabilityType.PhysicalDisability,
+                PhysicalDisability,
                 textPhysicalDisability,
                 imgPhysicalDisability,
                 R.drawable.sv_physical_disability_unselected_icon,
                 R.drawable.sv_physical_disability_selected_icon,
                 R.string.text_physical_disability
             )
-            //modifyDisabilityUI(DisabilityType.VisualImpairment, textVisualDisability, imgVisualDisability, R.drawable.sv_visual_disability_unselected_icon, R.drawable.sv_visual_disability_selected_icon, R.string.text_visual_impairment)
             modifyDisabilityUI(
-                DisabilityType.HearingImpairment,
+                VisualImpairment,
+                textVisualDisability,
+                imgVisualDisability,
+                R.drawable.sv_visual_impairment_unselect_icon,
+                R.drawable.sv_visual_impairment_select_icon,
+                R.string.text_visual_impairment
+            )
+            modifyDisabilityUI(
+                HearingImpairment,
                 textHearingDisability,
                 imgHearingDisability,
                 R.drawable.sv_hearing_impaired_unselected_icon,
@@ -63,7 +81,7 @@ class ListSearchCategoryViewHolder(
                 R.string.text_hearing_impairment
             )
             modifyDisabilityUI(
-                DisabilityType.InfantFamily,
+                InfantFamily,
                 textInfantFamily,
                 imgInfantFamily,
                 R.drawable.sv_child_unselected_icon,
@@ -71,7 +89,7 @@ class ListSearchCategoryViewHolder(
                 R.string.text_infant_family
             )
             modifyDisabilityUI(
-                DisabilityType.ElderlyPeople,
+                ElderlyPeople,
                 textElderlyPerson,
                 imgElderlyPerson,
                 R.drawable.sv_elderly_unselected_icon,
@@ -80,19 +98,19 @@ class ListSearchCategoryViewHolder(
             )
 
             containerPhysicalDisability.setClickEvent(uiScope) {
-                onClickPhysicalDisability(DisabilityType.PhysicalDisability)
+                onClickPhysicalDisability(PhysicalDisability)
             }
             containerVisualImpairment.setClickEvent(uiScope) {
-                onClickVisualImpairment(DisabilityType.VisualImpairment)
+                onClickVisualImpairment(VisualImpairment)
             }
             containerHearingImpairment.setClickEvent(uiScope) {
-                onClickHearingDisability(DisabilityType.HearingImpairment)
+                onClickHearingDisability(HearingImpairment)
             }
             containerInfantFamily.setClickEvent(uiScope) {
-                onClickInfantFamily(DisabilityType.InfantFamily)
+                onClickInfantFamily(InfantFamily)
             }
             containerElderlyPerson.setClickEvent(uiScope) {
-                onClickElderlyPeople(DisabilityType.ElderlyPeople)
+                onClickElderlyPeople(ElderlyPeople)
             }
         }
     }
