@@ -94,7 +94,7 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
             rvSearchResult.layoutManager = layoutManager
             rvSearchResult.addOnScrollEndListener {
                 val pageState = viewModel.isLastPage.value
-                if (pageState){
+                if (pageState.not()){
                     viewModel.whenLastPageReached()
                 }
             }
