@@ -4,7 +4,7 @@ import kr.tekit.lion.data.database.entity.toDomainModel
 import kr.tekit.lion.data.database.entity.toEntity
 import kr.tekit.lion.data.datasource.SigunguCodeDatasource
 import kr.tekit.lion.domain.model.SigunguCode
-import kr.tekit.lion.domain.model.SigunguList
+import kr.tekit.lion.domain.model.SigunguCodeList
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import javax.inject.Inject
 
@@ -16,13 +16,11 @@ class SigunguCodeRepositoryImpl @Inject constructor(
         return sigunguCodeDatasource.getSigunguCodeByVillageName(villageName)
     }
 
-    override suspend fun getAllSigunguCode(code: String): SigunguList {
-        return SigunguList(
-            sigunguCodeDatasource
-                .getAllSigunguInfoList(code)
-                .map {
-                    it.toDomainModel()
-                }
+    override suspend fun getAllSigunguCode(code: String): SigunguCodeList {
+        return SigunguCodeList(
+            sigunguCodeDatasource.getAllSigunguInfoList(code).map {
+                it.toDomainModel()
+            }
         )
     }
 

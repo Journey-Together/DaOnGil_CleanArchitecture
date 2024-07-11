@@ -6,7 +6,7 @@ data class SigunguCode (
     val sigunguName: String
 )
 
-data class SigunguList(
+data class SigunguCodeList(
     val sigunguList: List<SigunguCode>
 ){
     fun findSigunguCode(sigunguName: String): String? {
