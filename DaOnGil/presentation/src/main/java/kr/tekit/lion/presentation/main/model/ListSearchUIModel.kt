@@ -8,6 +8,8 @@ data object CategoryModel : ListSearchUIModel()
 
 data object AreaModel : ListSearchUIModel()
 
+data object NoPlaceModel : ListSearchUIModel()
+
 data class PlaceModel(
     val placeName: String,
     val placeAddr: String,
