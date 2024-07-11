@@ -1,20 +1,20 @@
 package kr.tekit.lion.presentation.main.vm
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kr.tekit.lion.domain.model.AreaCode
+import kr.tekit.lion.domain.model.AreaCodeList
 import kr.tekit.lion.domain.model.ListSearchOption
-import kr.tekit.lion.domain.model.SigunguCode
-import kr.tekit.lion.domain.model.SigunguList
+import kr.tekit.lion.domain.model.SigunguCodeList
+import kr.tekit.lion.domain.model.onError
+import kr.tekit.lion.domain.model.onSuccess
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
+import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.DisabilityType
 import kr.tekit.lion.presentation.main.model.PlaceModel
@@ -23,13 +23,19 @@ import kr.tekit.lion.presentation.main.model.SortByLatest
 import kr.tekit.lion.presentation.main.model.toUiModel
 import java.util.TreeSet
 import javax.inject.Inject
+import kr.tekit.lion.presentation.main.model.ElderlyPeople
+import kr.tekit.lion.presentation.main.model.HearingImpairment
+import kr.tekit.lion.presentation.main.model.InfantFamily
+import kr.tekit.lion.presentation.main.model.PhysicalDisability
+import kr.tekit.lion.presentation.main.model.UiEvent
+import kr.tekit.lion.presentation.main.model.VisualImpairment
 
 @HiltViewModel
 class SearchMainViewModel @Inject constructor(
     private val areaCodeRepository: AreaCodeRepository,
     private val sigunguCodeRepository: SigunguCodeRepository,
     private val placeRepository: PlaceRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     init {
         viewModelScope.launch {
@@ -41,22 +47,16 @@ class SearchMainViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.List)
     val screenState: StateFlow<ScreenState> get() = _screenState.asStateFlow()
 
-    private val _option = MutableStateFlow(ListSearchOption(
-            category = Category.PLACE.name,
-            size = 0,
-            page = 0,
-            arrange = SortByLatest.sortCoed
-        )
-    )
+    private val _option = MutableStateFlow(initOption())
     val option get() = _option.asStateFlow()
 
     private val _optionState = MutableStateFlow<Map<DisabilityType, Int>>(emptyMap())
     val optionState get() = _optionState.asStateFlow()
 
-    private val _areaCode = MutableStateFlow<List<AreaCode>>(emptyList())
+    private val _areaCode = MutableStateFlow(AreaCodeList(emptyList()))
     val areaCode get() = _areaCode.asStateFlow()
 
-    private val _sigunguCode = MutableStateFlow(SigunguList(emptyList()))
+    private val _sigunguCode = MutableStateFlow(SigunguCodeList(emptyList()))
     val sigunguCode get() = _sigunguCode.asStateFlow()
 
     // BottomSheet 에서 선택된 항목을 들을 유지하기 위한 layout ID
@@ -78,67 +78,79 @@ class SearchMainViewModel @Inject constructor(
     private val _place = MutableStateFlow<List<PlaceModel>>(emptyList())
     val place get() = _place.asStateFlow()
 
-    private suspend fun loadPlaces() {
-        option.collect{
-            val searchResult = placeRepository.getSearchPlaceResultByList(it)
+    private val _isLastPage = MutableStateFlow(false)
+    val isLastPage get() = _isLastPage.asStateFlow()
 
-            searchResult.onSuccess { result ->
-                val newPlaceModels = result.toUiModel()
-                _place.value = newPlaceModels
-            }.onFailure {
-                // 에러 처리 로직을 추가할 수 있습니다.
-            }
-        }
-    }
+    private val _uiEvent = MutableStateFlow<UiEvent?>(null)
+    val uiEvent: StateFlow<UiEvent?> get() = _uiEvent.asStateFlow()
 
     fun changeScreenState(state: ScreenState) {
         _screenState.value = state
     }
 
     fun onSelectedTab(category: String) {
-        _option.value = _option.value.copy(category = category)
+        _place.value.toMutableList().clear()
+        _option.value = _option.value.copy(category = category, page = 0)
+        _uiEvent.value = UiEvent.TabChanged
+        _uiEvent.value = null
+        loadPlaces()
     }
 
     fun onSelectedSigungu(sigunguName: String) {
+        _place.value.toMutableList().clear()
         val sigunguCode = _sigunguCode.value.findSigunguCode(sigunguName)
-        _option.value = _option.value.copy(sigunguCode = sigunguCode)
+        _option.value = _option.value.copy(sigunguCode = sigunguCode, page = 0)
+        loadPlaces()
     }
 
     fun onSelectedArrange(arrange: String) {
-        _option.value = _option.value.copy(arrange = arrange)
+        _place.value.toMutableList().clear()
+        _option.value = _option.value.copy(arrange = arrange, page = 0)
+        loadPlaces()
     }
 
     fun onSelectOption(optionIds: List<Int>, optionCodes: List<Long>, type: DisabilityType) {
+        _place.value.toMutableList().clear()
         val updatedTypes = _option.value.disabilityType ?: TreeSet()
-        val updatedOptions = _option.value.detailFilter?.toMutableSet() ?: mutableSetOf()
+        val updatedFilters = _option.value.detailFilter ?: TreeSet()
 
-        updatedOptions.clear()
-        updatedTypes.clear()
         updateOptionState(type, optionIds.size)
-
-        if(optionIds.isNotEmpty()) {
-            when (type) {
-                is DisabilityType.PhysicalDisability -> updatedTypes.add(DisabilityType.PhysicalDisability.type)
-                is DisabilityType.VisualImpairment -> updatedTypes.add(DisabilityType.VisualImpairment.type)
-                is DisabilityType.HearingImpairment -> updatedTypes.add(DisabilityType.HearingImpairment.type)
-                is DisabilityType.InfantFamily -> updatedTypes.add(DisabilityType.InfantFamily.type)
-                is DisabilityType.ElderlyPeople -> updatedTypes.add(DisabilityType.ElderlyPeople.type)
+        when (type) {
+            is PhysicalDisability ->{
+                updatedFilters.removeAll(PhysicalDisability.filterCodes)
+                _physicalDisabilityOptions.value = optionIds
             }
-            optionCodes.map { updatedOptions.add(it) }
+            is VisualImpairment -> {
+                updatedFilters.removeAll(VisualImpairment.filterCodes)
+                _visualImpairmentOptions.value = optionIds
+            }
+            is HearingImpairment -> {
+                updatedFilters.removeAll(HearingImpairment.filterCodes)
+                _hearingImpairmentOptions.value = optionIds
+            }
+            is InfantFamily -> {
+                updatedFilters.removeAll(InfantFamily.filterCodes)
+                _infantFamilyOptions.value = optionIds
+            }
+            is ElderlyPeople -> {
+                updatedFilters.removeAll(ElderlyPeople.filterCodes)
+                _elderlyPersonOptions.value = optionIds
+            }
         }
 
-        when (type) {
-            is DisabilityType.PhysicalDisability -> _physicalDisabilityOptions.value = optionIds
-            is DisabilityType.VisualImpairment -> _visualImpairmentOptions.value = optionIds
-            is DisabilityType.HearingImpairment -> _hearingImpairmentOptions.value = optionIds
-            is DisabilityType.InfantFamily -> _infantFamilyOptions.value = optionIds
-            is DisabilityType.ElderlyPeople -> _elderlyPersonOptions.value = optionIds
+        if(optionCodes.isNotEmpty()) {
+            updatedTypes.add(type.code)
+            updatedFilters.addAll(optionCodes)
+        }else{
+            updatedTypes.remove(type.code)
         }
 
         _option.value = _option.value.copy(
             disabilityType = updatedTypes,
-            detailFilter = updatedOptions
+            detailFilter = updatedFilters,
+            page = 0
         )
+        loadPlaces()
     }
 
     private fun updateOptionState(disabilityType: DisabilityType, cnt: Int) {
@@ -148,34 +160,38 @@ class SearchMainViewModel @Inject constructor(
     }
 
     fun onSelectedArea(areaName: String) = viewModelScope.launch{
-        _areaCode.value.find { it.name == areaName }?.let { areaCode ->
-            _option.value = _option.value.copy(areaCode = areaCode.code)
-            _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode.code)
+        _place.value.toMutableList().clear()
+
+        val areaCode = _areaCode.value.findAreaCode(areaName) ?: ""
+        _option.value = _option.value.copy(areaCode = areaCode)
+        _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode)
+        loadPlaces()
+    }
+
+    fun whenLastPageReached() = viewModelScope.launch{
+        val currentOption = option.value
+        val nextOption = currentOption.copy(page = currentOption.page + 1)
+
+        placeRepository.getSearchPlaceResultByList(nextOption)
+            .onSuccess { result ->
+                _place.value += result.toUiModel()
+                _option.value = nextOption
+                if (result.isLastPage) { _isLastPage.value = true }
+            }.onError {
+                handleNetworkError(it)
         }
     }
 
-    fun onClickSearchButton() = viewModelScope.launch {
-        option.collect { option ->
-            val searchResult = placeRepository.getSearchPlaceResultByList(option)
-            searchResult.onSuccess { result ->
-                val newPlaceModels = result.toUiModel()
-                val updatedPlaceList = _place.value + newPlaceModels
-                _place.value = updatedPlaceList
-            }.onFailure {
-                Log.d("MyOkhttpResult", it.toString())
-                Log.d("MyOkhttpResult", it.message.toString())
-                Log.d("MyOkhttpResult", it.localizedMessage.toString())
-                Log.d("MyOkhttpResult", it.cause.toString())
-            }
+    private fun loadPlaces() = viewModelScope.launch{
+        placeRepository.getSearchPlaceResultByList(option.value)
+            .onSuccess { result ->
+                _place.value = result.toUiModel()
+                if (result.isLastPage) {
+                    _isLastPage.value = true
+                }
+            }.onError {
+                handleNetworkError(it)
         }
-    }
-
-
-    fun whenLastPageReached() = viewModelScope.launch {
-        _option.value = _option.value.copy(
-            page = _option.value.page + 1
-        )
-
     }
 
     fun onClickResetIcon() {
@@ -190,5 +206,14 @@ class SearchMainViewModel @Inject constructor(
         _infantFamilyOptions.value = emptyList()
         _elderlyPersonOptions.value = emptyList()
 
+    }
+
+    private fun initOption(): ListSearchOption{
+        return ListSearchOption(
+            category = Category.PLACE.name,
+            size = 0,
+            page = 0,
+            arrange = SortByLatest.sortCode
+        )
     }
 }
