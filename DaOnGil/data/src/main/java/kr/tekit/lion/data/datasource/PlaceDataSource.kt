@@ -23,7 +23,7 @@ class PlaceDataSource @Inject constructor(
             arrange = request.arrange
         )
 
-        val result = if (request.page == response.data.totalPages) {
+        val result = if ((request.page * 10) == response.data.totalPages) {
             ListSearchResultList(response.toDomainModel(), true)
         } else {
             ListSearchResultList(response.toDomainModel(), false)
