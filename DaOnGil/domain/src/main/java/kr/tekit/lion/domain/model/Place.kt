@@ -1,9 +1,9 @@
 package kr.tekit.lion.domain.model
 
-data class AroundPlace (
+data class Place (
     val address: String,
     val disability: List<String>,
     val image: String,
     val name: String,
-    val placeId: Int
+    val placeId: Int,
 )

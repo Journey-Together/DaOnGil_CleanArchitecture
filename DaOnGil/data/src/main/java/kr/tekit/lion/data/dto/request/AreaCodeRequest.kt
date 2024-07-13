@@ -1,4 +1,4 @@
-package kr.tekit.lion.data.dto.remote.request
+package kr.tekit.lion.data.dto.request
 
 import kr.tekit.lion.data.BuildConfig
 

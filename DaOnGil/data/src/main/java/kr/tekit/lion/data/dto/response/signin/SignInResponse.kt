@@ -1,7 +1,7 @@
-package kr.tekit.lion.daongil.data.dto.remote.response.signin
-
+package kr.tekit.lion.data.dto.response.signin
 
 import com.squareup.moshi.JsonClass
+import kr.tekit.lion.data.dto.response.signin.Data
 
 @JsonClass(generateAdapter = true)
 data class SignInResponse(

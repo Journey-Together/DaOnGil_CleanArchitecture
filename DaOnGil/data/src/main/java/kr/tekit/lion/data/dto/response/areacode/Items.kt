@@ -1,7 +1,7 @@
-package kr.tekit.lion.data.dto.remote.response.areacode
+package kr.tekit.lion.data.dto.response.areacode
 
 import com.squareup.moshi.JsonClass
-import kr.tekit.lion.data.dto.remote.response.areacode.Item
+import kr.tekit.lion.data.dto.response.areacode.Item
 
 @JsonClass(generateAdapter = true)
 data class Items(

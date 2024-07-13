@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.service
 
-import kr.tekit.lion.data.dto.remote.response.searchplace.list.SearchPlaceResponse
+import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

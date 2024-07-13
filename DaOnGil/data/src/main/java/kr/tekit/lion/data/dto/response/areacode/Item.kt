@@ -1,4 +1,4 @@
-package kr.tekit.lion.data.dto.remote.response.areacode
+package kr.tekit.lion.data.dto.response.areacode
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

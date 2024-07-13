@@ -1,7 +1,7 @@
-package kr.tekit.lion.data.dto.remote.response.searchplace.list
+package kr.tekit.lion.data.dto.response.searchplace.list
 
 import com.squareup.moshi.JsonClass
-import kr.tekit.lion.domain.model.AroundPlace
+import kr.tekit.lion.domain.model.Place
 import kr.tekit.lion.domain.model.ListSearchResult
 
 @JsonClass(generateAdapter = true)
@@ -14,7 +14,7 @@ data class SearchPlaceResponse(
 fun SearchPlaceResponse.toDomainModel(): List<ListSearchResult> {
     return data.placeResList.map {
         ListSearchResult(
-            AroundPlace(
+            Place(
                 address = it.address,
                 disability = it.disability,
                 image = it.image,
