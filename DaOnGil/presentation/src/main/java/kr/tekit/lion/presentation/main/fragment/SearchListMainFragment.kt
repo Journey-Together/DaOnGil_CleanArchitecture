@@ -1,17 +1,12 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchListMainBinding
@@ -27,38 +22,37 @@ import kr.tekit.lion.presentation.main.vm.SearchMainViewModel
 
 @AndroidEntryPoint
 class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
-    private val viewModel: SearchMainViewModel by viewModels(
-        ownerProducer = { requireParentFragment() }
-    )
+    private val viewModel: SearchMainViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSearchListMainBinding.bind(view)
 
-        val mainAdapter = ListSearchAdapter(
-            viewLifecycleOwner.lifecycleScope,
-            onClickPhysicalDisability = { type->
+        val mainAdapter = ListSearchAdapter(viewLifecycleOwner.lifecycleScope,
+            onClickPhysicalDisability = { type ->
                 val options = viewModel.physicalDisabilityOptions.value
                 showBottomSheet(options, type)
             },
-            onClickVisualImpairment = { type->
+            onClickVisualImpairment = { type ->
                 val options = viewModel.visualImpairmentOptions.value
                 showBottomSheet(options, type)
             },
-            onClickHearingDisability = { type->
+            onClickHearingDisability = { type ->
                 val options = viewModel.hearingImpairmentOptions.value
                 showBottomSheet(options, type)
             },
-            onClickInfantFamily = { type->
+            onClickInfantFamily = { type ->
                 val options = viewModel.infantFamilyOptions.value
                 showBottomSheet(options, type)
             },
-            onClickElderlyPeople = { type->
+            onClickElderlyPeople = { type ->
                 val options = viewModel.elderlyPersonOptions.value
                 showBottomSheet(options, type)
             },
             onSelectArea = {
-                viewModel.onSelectedArea(it)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.onSelectedArea(it)
+                }
             },
             onSelectSigungu = {
                 viewModel.onSelectedSigungu(it)
@@ -71,8 +65,7 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
             },
             onClickSortByPopularityBtn = {
                 viewModel.onSelectedArrange(it)
-            }
-        )
+            })
 
         val arr = ArrayList<ListSearchUIModel>()
         arr.add(CategoryModel)
@@ -94,25 +87,23 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
             rvSearchResult.layoutManager = layoutManager
             rvSearchResult.addOnScrollEndListener {
                 val pageState = viewModel.isLastPage.value
-                if (pageState.not()){
+                if (pageState.not()) {
                     viewModel.whenLastPageReached()
                 }
             }
         }
 
         repeatOnViewStarted {
-            viewModel.areaCode.collect{ area ->
+            viewModel.areaCode.collect { area ->
                 mainAdapter.submitAreaList(area.areaList.map { it.name })
             }
         }
 
         repeatOnViewStarted {
-            viewModel.sigunguCode.collect{ result ->
-                mainAdapter.submitSigunguList(
-                    result.sigunguList.map {
-                        it.sigunguName
-                    }
-                )
+            viewModel.sigunguCode.collect { result ->
+                mainAdapter.submitSigunguList(result.sigunguList.map {
+                    it.sigunguName
+                })
             }
         }
 
@@ -123,14 +114,14 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
         }
 
         repeatOnViewStarted {
-            viewModel.optionState.collect{
+            viewModel.optionState.collect {
                 mainAdapter.modifyOptionState(it)
             }
         }
 
         repeatOnViewStarted {
             // 탭을 선택하면 화면을 맨위로 스크롤
-            viewModel.uiEvent.collect{
+            viewModel.uiEvent.collect {
                 binding.rvSearchResult.scrollToPosition(0)
             }
         }

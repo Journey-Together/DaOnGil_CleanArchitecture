@@ -93,20 +93,18 @@ class SearchMainViewModel @Inject constructor(
         _option.value = _option.value.copy(category = category, page = 0)
         _uiEvent.value = UiEvent.TabChanged
         _uiEvent.value = null
-        loadPlaces()
     }
-
     fun onSelectedSigungu(sigunguName: String) {
         _place.value.toMutableList().clear()
         val sigunguCode = _sigunguCode.value.findSigunguCode(sigunguName)
         _option.value = _option.value.copy(sigunguCode = sigunguCode, page = 0)
-        loadPlaces()
+        _isLastPage.value = false
     }
 
     fun onSelectedArrange(arrange: String) {
         _place.value.toMutableList().clear()
         _option.value = _option.value.copy(arrange = arrange, page = 0)
-        loadPlaces()
+        _isLastPage.value = false
     }
 
     fun onSelectOption(optionIds: List<Int>, optionCodes: List<Long>, type: DisabilityType) {
@@ -150,7 +148,7 @@ class SearchMainViewModel @Inject constructor(
             detailFilter = updatedFilters,
             page = 0
         )
-        loadPlaces()
+        _isLastPage.value = false
     }
 
     private fun updateOptionState(disabilityType: DisabilityType, cnt: Int) {
@@ -159,38 +157,45 @@ class SearchMainViewModel @Inject constructor(
         _optionState.value = currentOption.toMap()
     }
 
-    fun onSelectedArea(areaName: String) = viewModelScope.launch{
+    suspend fun onSelectedArea(areaName: String){
         _place.value.toMutableList().clear()
-
         val areaCode = _areaCode.value.findAreaCode(areaName) ?: ""
         _option.value = _option.value.copy(areaCode = areaCode)
-        _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode)
-        loadPlaces()
+        viewModelScope.launch {
+            _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode)
+        }
+        _isLastPage.value = false
     }
 
-    fun whenLastPageReached() = viewModelScope.launch{
+    fun whenLastPageReached() {
         val currentOption = option.value
         val nextOption = currentOption.copy(page = currentOption.page + 1)
 
-        placeRepository.getSearchPlaceResultByList(nextOption)
-            .onSuccess { result ->
-                _place.value += result.toUiModel()
-                _option.value = nextOption
-                if (result.isLastPage) { _isLastPage.value = true }
-            }.onError {
-                handleNetworkError(it)
+        viewModelScope.launch {
+            placeRepository.getSearchPlaceResultByList(nextOption)
+                .onSuccess { result ->
+                    _place.value += result.toUiModel()
+                    _option.value = nextOption
+                    if (result.isLastPage) _isLastPage.value = true
+                }.onError {
+                    handleNetworkError(it)
+                }
         }
     }
 
     private fun loadPlaces() = viewModelScope.launch{
-        placeRepository.getSearchPlaceResultByList(option.value)
-            .onSuccess { result ->
-                _place.value = result.toUiModel()
-                if (result.isLastPage) {
-                    _isLastPage.value = true
-                }
-            }.onError {
-                handleNetworkError(it)
+        option.collect{
+            if (it.page == 0) {
+                placeRepository.getSearchPlaceResultByList(it)
+                    .onSuccess { result ->
+                        _place.value = result.toUiModel()
+                        if (result.isLastPage or result.places.isEmpty()) {
+                            _isLastPage.value = true
+                        }
+                    }.onError { e ->
+                        handleNetworkError(e)
+                    }
+            }
         }
     }
 
