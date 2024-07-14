@@ -179,8 +179,8 @@
     <string name="text_category">유형</string>
     <string name="text_search_guide2">을 선택해 보세요!</string>
 
-    <string name="text_sort_ganada">가나다순 |</string>
-    <string name="text_sort_recent">최신순 |</string>
+    <string name="text_sort_ganada">가나다순</string>
+    <string name="text_sort_recent">최신순</string>
     <string name="text_sort_popular">인기순</string>
 <string name="hello_blank_fragment">d</string>
 </resources>
