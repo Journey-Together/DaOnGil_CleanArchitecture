@@ -15,7 +15,8 @@ data class PlaceModel(
     val placeAddr: String,
     val placeId: String,
     val placeImg: String,
-    val disability: List<String>
+    val disability: List<String>,
+    val itemCount: Int
 ) : ListSearchUIModel()
 
 fun ListSearchResultList.toUiModel(): List<PlaceModel> =
@@ -25,7 +26,8 @@ fun ListSearchResultList.toUiModel(): List<PlaceModel> =
             placeAddr = it.place.address,
             placeId = it.place.placeId.toString(),
             placeImg = it.place.image,
-            disability = it.place.disability
+            disability = it.place.disability,
+            itemCount = itemSize
         )
     }
 
