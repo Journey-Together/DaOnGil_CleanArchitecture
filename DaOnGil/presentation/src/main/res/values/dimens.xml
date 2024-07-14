@@ -13,6 +13,7 @@
 
     <dimen name="margin_small1">8dp</dimen>
     <dimen name="margin_small2">4dp</dimen>
+    <dimen name="margin_small3">2dp</dimen>
 
     <!--font size-->
     <dimen name="font_small1">14dp</dimen>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/bottom_sheet_head" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="상세 카테고리"
+        android:textColor="@color/detail_category_title_text"
+        android:textSize="18sp" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/all_chip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/detail_category_chip_state_color"
+        android:checkable="true"
+        android:fontFamily="@font/pretendard_semibold"
+        app:chipStrokeWidth="2dp"
+        app:chipStrokeColor="@color/detail_category_chip_state_color"
+        app:chipIconTint="@color/detail_category_chip_state_color"
+        app:chipBackgroundColor="@android:color/transparent"
+        app:chipCornerRadius="20dp"
+        android:text="@string/text_all" />
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_physical_disability"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_small1">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c8c8c8" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/parking_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_parking"
+            app:chipIcon="@drawable/chip_parking_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/wheelchair_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_wheelchair"
+            app:chipIcon="@drawable/chip_wheelchair_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/restroom_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_restroom"
+            app:chipIcon="@drawable/chip_restroom_icon" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/elevator_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_elevator"
+            app:chipIcon="@drawable/chip_elevator_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/seat_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_auditorium"
+            app:chipIcon="@drawable/chip_seat_icon" />
+    </com.google.android.material.chip.ChipGroup>
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_visual_impairment"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_marginTop="@dimen/margin_small1">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c8c8c8" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/braileblock_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_braile_block"
+            app:chipIcon="@drawable/chip_dot_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/help_dog_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_help_dog"
+            app:chipIcon="@drawable/chip_help_dog_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/guide_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_guide"
+            app:chipIcon="@drawable/chip_guide_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/audio_guide_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_audio_guide"
+            app:chipIcon="@drawable/chip_audio_guide_icon" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_hearing_impairment"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginTop="@dimen/margin_small1">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c8c8c8" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/sign_guide_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_sign_guide"
+            app:chipIcon="@drawable/chip_sign_icon"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/video_guide_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_video_guide"
+            app:chipIcon="@drawable/chip_cc_icon"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_infant_family"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="@dimen/margin_small1">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c8c8c8" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/stroller_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_stroller"
+            app:chipIcon="@drawable/chip_stroller_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/lactation_room_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_lactation"
+            app:chipIcon="@drawable/chip_lactationroom_icon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/baby_spare_chair_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_baby_spare_chair"
+            app:chipIcon="@drawable/chip_baby_spare_chair_icon" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_elderly_person"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="@dimen/margin_small1">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c8c8c8" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/lend_chip"
+            style="@style/detail_category_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/category_option_height"
+            android:text="@string/text_lend"
+            app:chipIcon="@drawable/chip_wheelchair_icon"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small1"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/background_radius_10"
+            android:backgroundTint="@color/button_secondary"
+            android:drawableStart="@drawable/reset_icon"
+            android:fontFamily="@font/pretendard_medium"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="@string/text_reset" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_basic"
+            android:layout_weight="8"
+            android:textSize="@dimen/font_big3"
+            android:background="@drawable/background_radius_10"
+            android:backgroundTint="@color/search_view_main"
+            android:fontFamily="@font/pretendard_bold"
+            android:textColor="#FFFFFF"
+            android:text="@string/text_apply" />
+    </LinearLayout>
+</LinearLayout>

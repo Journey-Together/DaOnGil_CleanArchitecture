@@ -57,7 +57,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
-            android:name="kr.tekit.lion.presentation.main.fragment.SearchMapFragment"
+            android:name="kr.tekit.lion.presentation.main.fragment.SearchListMainFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
@@ -71,8 +71,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="15dp"
         android:fontFamily="@font/pretendard_bold"
-        android:text="@string/watching_map"
         android:textColor="@color/floating_action_button_title"
         app:backgroundTint="@color/floating_action_button"
-        app:icon="@drawable/map_icon" />
+        app:icon="@drawable/list_icon" />
 </FrameLayout>

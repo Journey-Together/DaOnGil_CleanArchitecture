@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.datasource
 
-import kr.tekit.lion.daongil.data.dto.local.AreaCodeEntity
+import kr.tekit.lion.data.database.entity.AreaCodeEntity
 import kr.tekit.lion.data.database.dao.AreaCodeDao
 import javax.inject.Inject
 

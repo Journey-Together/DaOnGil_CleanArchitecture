@@ -25,11 +25,11 @@
     <string name="text_route">접근로</string>
     <string name="text_ticket_office">매표소</string>
     <string name="text_promotion">홍보물</string>
-    <string name="text_wheelchair">휠체어</string>
+    <string name="text_wheelchair">휠체어 대여</string>
     <string name="text_exit">출입통로</string>
     <string name="text_elevator">엘리베이터</string>
     <string name="text_restroom">화장실</string>
-    <string name="text_auditorium">관람석</string>
+    <string name="text_auditorium">휠체어석</string>
     <string name="text_room">객실</string>
     <string name="text_braile_block">점자블럭</string>
     <string name="text_help_dog">보조견동반</string>
@@ -48,7 +48,7 @@
     <string name="text_all">전체</string>
     <string name="text_lend">이동 보조도구 대여</string>
     <string name="text_physical_disability">지체장애</string>
-    <string name="text_visual_impairmnet">시각장애</string>
+    <string name="text_visual_impairment">시각장애</string>
     <string name="text_hearing_impairment">청각장애</string>
     <string name="text_infant_family">영유아동반</string>
     <string name="text_elderly_person">고령자</string>
@@ -178,7 +178,9 @@
     <string name="text_search_guide1">딱 맞는 여행을 찾을 수 있도록</string>
     <string name="text_category">유형</string>
     <string name="text_search_guide2">을 선택해 보세요!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="text_sort_ganada">가나다순</string>
+    <string name="text_sort_recent">최신순</string>
+    <string name="text_sort_popular">인기순</string>
+<string name="hello_blank_fragment">d</string>
 </resources>

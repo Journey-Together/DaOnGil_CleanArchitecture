@@ -15,6 +15,7 @@ import kr.tekit.lion.data.service.AuthInterceptor
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
+import kr.tekit.lion.data.service.PlaceService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,9 +29,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
+
     @Singleton
     @Provides
-    fun provideRetrofit(@Named("auth") authClient: OkHttpClient, moshi: Moshi): Retrofit {
+    fun provideRetrofit(@Auth authClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -49,6 +51,12 @@ internal object NetworkModule {
         return retrofit.create(MemberService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun providePlaceService(retrofit: Retrofit): PlaceService{
+        return retrofit.create(PlaceService::class.java)
+    }
+
     @Singleton
     @Provides
     fun provideKorWithService(okHttpClient: OkHttpClient): KorWithService =
@@ -59,9 +67,9 @@ internal object NetworkModule {
             .build()
             .create()
 
+    @Auth
     @Singleton
     @Provides
-    @Named("auth")
     fun provideAuthClient(tokenDataSource: TokenDataSource): OkHttpClient {
         return OkHttpClient.Builder()
             //.authenticator(AuthAuthenticator())

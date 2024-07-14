@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.service
 
-import kr.tekit.lion.daongil.data.dto.remote.response.signin.SignInResponse
+import kr.tekit.lion.data.dto.response.signin.SignInResponse
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query

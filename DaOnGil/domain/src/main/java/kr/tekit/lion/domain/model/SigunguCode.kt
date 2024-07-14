@@ -5,3 +5,11 @@ data class SigunguCode (
     val sigunguCode: String,
     val sigunguName: String
 )
+
+data class SigunguCodeList(
+    val sigunguList: List<SigunguCode>
+){
+    fun findSigunguCode(sigunguName: String): String? {
+        return sigunguList.find { it.sigunguName == sigunguName }?.sigunguCode
+    }
+}

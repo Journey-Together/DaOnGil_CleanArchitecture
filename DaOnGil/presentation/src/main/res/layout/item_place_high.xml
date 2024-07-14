@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_big2"
+    android:layout_marginStart="@dimen/margin_small1"
+    android:layout_marginEnd="@dimen/margin_small1"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="230dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/thumbnail_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/img_place_high_background"
+                android:scaleType="centerCrop"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tourist_high_disability_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small2"
+                android:layout_marginBottom="@dimen/margin_small1"
+                android:layout_weight="1"
+                android:layout_gravity="start|bottom" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_small2"
+        android:orientation="vertical"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small1"
+            android:layout_weight="1"
+            android:fontFamily="@font/pretendard_semibold"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_small1" />
+
+        <TextView
+            android:id="@+id/tv_addr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/pretendard_regular"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/font_small3" />
+
+    </LinearLayout>
+</LinearLayout>
