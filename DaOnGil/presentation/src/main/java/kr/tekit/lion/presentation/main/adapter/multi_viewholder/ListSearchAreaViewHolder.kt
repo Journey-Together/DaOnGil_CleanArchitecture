@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.main.adapter.multi_viewholder
 
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
@@ -27,6 +26,8 @@ class ListSearchAreaViewHolder(
         with(binding) {
             val defaultColor = root.context.getColor(R.color.select_area_text)
             val selectedColor = root.context.getColor(R.color.search_view_main)
+
+            btnLatest.setTextColor(selectedColor)
 
             btnPopularity.setClickEvent(uiScope) {
                 onClickSortByPopularityBtn(SortByPopularity.sortCode)
@@ -61,21 +62,13 @@ class ListSearchAreaViewHolder(
         }
     }
 
-    fun bind(placeCount: Int, areaList: List<String>, sigunguList: List<String>) {
+    fun bind(itemCount: Int, areaList: List<String>, sigunguList: List<String>) {
 
         with(binding) {
+            totalCnt.text = itemCount.toString()
 
-            totalCnt.text = placeCount.toString()
-
-            if (placeCount == 0) {
-                btnLetter.visibility = View.GONE
-                btnLatest.visibility = View.GONE
-                btnPopularity.visibility = View.GONE
-            } else {
-                btnLetter.visibility = View.VISIBLE
-                btnLatest.visibility = View.VISIBLE
-                btnPopularity.visibility = View.VISIBLE
-            }
+            if (itemCount == 0) sortContainer.visibility = View.GONE
+            else sortContainer.visibility = View.VISIBLE
 
             val areaAdapter = ArrayAdapter(
                 root.context,

@@ -130,14 +130,14 @@ class ListSearchAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = allDataList[position]
+        val place = allDataList.filterIsInstance<PlaceModel>()
         when (holder) {
             is ListSearchCategoryViewHolder -> holder.bind(optionState)
             is ListSearchAreaViewHolder -> holder.bind(
-                allDataList.filterIsInstance<PlaceModel>().size,
+                if (place.isEmpty()) 0 else place[0].itemCount,
                 areaList,
                 sigunguList
             )
-
             is PlaceHighViewHolder -> holder.bind(item as PlaceModel)
             is NoPlaceViewHolder -> {}
         }
