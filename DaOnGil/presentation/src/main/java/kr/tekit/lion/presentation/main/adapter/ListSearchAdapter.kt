@@ -58,9 +58,16 @@ class ListSearchAdapter(
         if (newPlaceModels.isNotEmpty()) {
             allDataList.removeAll(oldNoPlaceModels)
         } else {
-            allDataList.add(NoPlaceModel)
+            allDataList.removeAll(allDataList.filterIsInstance<NoPlaceModel>())
+            allDataList.add(NoPlaceModel())
         }
 
+        notifyDataSetChanged()
+    }
+
+    fun submitErrorMessage(errorMessage: String) {
+        allDataList.clear()
+        allDataList.add(NoPlaceModel(errorMessage))
         notifyDataSetChanged()
     }
 
@@ -82,10 +89,10 @@ class ListSearchAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (allDataList[position]) {
-            is CategoryModel -> VIEW_TYPE_CATEGORY
-            is PlaceModel -> VIEW_TYPE_PLACE
-            is AreaModel -> VIEW_TYPE_AREA
-            is NoPlaceModel -> VIEW_TYPE_NO_PLACE
+            is CategoryModel -> CategoryModel.id
+            is PlaceModel -> PlaceModel().id
+            is AreaModel -> AreaModel.id
+            is NoPlaceModel -> NoPlaceModel().id
         }
     }
 
@@ -94,7 +101,7 @@ class ListSearchAdapter(
         val v = layoutInflater.inflate(viewType, parent, false)
 
         return when (viewType) {
-            VIEW_TYPE_CATEGORY -> ListSearchCategoryViewHolder(
+            CategoryModel.id-> ListSearchCategoryViewHolder(
                 ItemListSearchCategoryBinding.bind(v),
                 uiScope,
                 onClickPhysicalDisability,
@@ -104,11 +111,11 @@ class ListSearchAdapter(
                 onClickElderlyPeople
             )
 
-            VIEW_TYPE_PLACE -> PlaceHighViewHolder(
+            PlaceModel().id -> PlaceHighViewHolder(
                 ItemPlaceHighBinding.bind(v)
             )
 
-            VIEW_TYPE_AREA -> ListSearchAreaViewHolder(
+            AreaModel.id -> ListSearchAreaViewHolder(
                 uiScope,
                 ItemListSearchAreaBinding.bind(v),
                 onSelectArea,
@@ -118,7 +125,7 @@ class ListSearchAdapter(
                 onClickSortByLetterBtn
             )
 
-            VIEW_TYPE_NO_PLACE -> NoPlaceViewHolder(
+            NoPlaceModel().id -> NoPlaceViewHolder(
                 ItemNoPlaceBinding.bind(v)
             )
 
@@ -131,6 +138,9 @@ class ListSearchAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = allDataList[position]
         val place = allDataList.filterIsInstance<PlaceModel>()
+        val msg = allDataList.filterIsInstance<NoPlaceModel>()
+            .firstOrNull()?.msg ?: NoPlaceModel().msg
+
         when (holder) {
             is ListSearchCategoryViewHolder -> holder.bind(optionState)
             is ListSearchAreaViewHolder -> holder.bind(
@@ -139,14 +149,7 @@ class ListSearchAdapter(
                 sigunguList
             )
             is PlaceHighViewHolder -> holder.bind(item as PlaceModel)
-            is NoPlaceViewHolder -> {}
+            is NoPlaceViewHolder -> holder.bind(msg)
         }
-    }
-
-    companion object {
-        val VIEW_TYPE_CATEGORY = R.layout.item_list_search_category
-        val VIEW_TYPE_PLACE = R.layout.item_place_high
-        val VIEW_TYPE_NO_PLACE = R.layout.item_no_place
-        val VIEW_TYPE_AREA = R.layout.item_list_search_area
     }
 }

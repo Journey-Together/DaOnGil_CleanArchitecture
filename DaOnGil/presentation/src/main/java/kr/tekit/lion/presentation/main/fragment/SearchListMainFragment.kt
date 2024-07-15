@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -8,6 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kr.tekit.lion.domain.model.ConnectError
+import kr.tekit.lion.domain.model.HttpError
+import kr.tekit.lion.domain.model.TimeoutError
+import kr.tekit.lion.domain.model.UnknownHostError
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchListMainBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
@@ -18,6 +23,8 @@ import kr.tekit.lion.presentation.main.model.AreaModel
 import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
 import kr.tekit.lion.presentation.main.model.ListSearchUIModel
+import kr.tekit.lion.presentation.main.model.NoPlaceModel
+import kr.tekit.lion.presentation.main.model.PlaceModel
 import kr.tekit.lion.presentation.main.vm.SearchMainViewModel
 
 @AndroidEntryPoint
@@ -76,7 +83,7 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (mainAdapter.getItemViewType(position)) {
-                    ListSearchAdapter.VIEW_TYPE_PLACE -> 1
+                    PlaceModel().id -> 1
                     else -> 2
                 }
             }
@@ -123,6 +130,22 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
             // 탭을 선택하면 화면을 맨위로 스크롤
             viewModel.uiEvent.collect {
                 binding.rvSearchResult.scrollToPosition(0)
+            }
+        }
+        repeatOnViewStarted {
+            viewModel.networkState.collect { err ->
+                err?.let { error ->
+                    val errorMessage = when (error) {
+                        is ConnectError -> error.message
+                        is TimeoutError -> error.message
+                        is UnknownHostError -> error.message
+                        is HttpError -> error.message
+                        else -> error.message
+                    }
+                    errorMessage?.let {
+                        mainAdapter.submitErrorMessage(errorMessage)
+                    }
+                }
             }
         }
     }

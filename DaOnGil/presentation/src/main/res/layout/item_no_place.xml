@@ -17,10 +17,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/text_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cafe24_oneprettynight"
             android:text="검색 결과가 없어요."
+            android:gravity="center"
             android:textSize="@dimen/font_big1" />
 
         <pl.droidsonroids.gif.GifImageView

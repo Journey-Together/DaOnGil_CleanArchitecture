@@ -17,29 +17,29 @@ import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.DisabilityType
-import kr.tekit.lion.presentation.main.model.PlaceModel
-import kr.tekit.lion.presentation.main.model.ScreenState
-import kr.tekit.lion.presentation.main.model.SortByLatest
-import kr.tekit.lion.presentation.main.model.toUiModel
-import java.util.TreeSet
-import javax.inject.Inject
 import kr.tekit.lion.presentation.main.model.ElderlyPeople
 import kr.tekit.lion.presentation.main.model.HearingImpairment
 import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.PhysicalDisability
+import kr.tekit.lion.presentation.main.model.PlaceModel
+import kr.tekit.lion.presentation.main.model.ScreenState
+import kr.tekit.lion.presentation.main.model.SortByLatest
 import kr.tekit.lion.presentation.main.model.UiEvent
 import kr.tekit.lion.presentation.main.model.VisualImpairment
+import kr.tekit.lion.presentation.main.model.toUiModel
+import java.util.TreeSet
+import javax.inject.Inject
 
 @HiltViewModel
 class SearchMainViewModel @Inject constructor(
     private val areaCodeRepository: AreaCodeRepository,
     private val sigunguCodeRepository: SigunguCodeRepository,
-    private val placeRepository: PlaceRepository
+    private val placeRepository: PlaceRepository,
 ) : BaseViewModel() {
 
     init {
         viewModelScope.launch {
-            _areaCode.value = areaCodeRepository.getAllAreaCodes()
+            loadAreaCodes()
             loadPlaces()
         }
     }
@@ -94,6 +94,7 @@ class SearchMainViewModel @Inject constructor(
         _uiEvent.value = UiEvent.TabChanged
         _uiEvent.value = null
     }
+
     fun onSelectedSigungu(sigunguName: String) {
         _place.value.toMutableList().clear()
         val sigunguCode = _sigunguCode.value.findSigunguCode(sigunguName)
@@ -114,7 +115,7 @@ class SearchMainViewModel @Inject constructor(
 
         updateOptionState(type, optionIds.size)
         when (type) {
-            is PhysicalDisability ->{
+            is PhysicalDisability -> {
                 updatedFilters.removeAll(PhysicalDisability.filterCodes)
                 _physicalDisabilityOptions.value = optionIds
             }
@@ -136,10 +137,10 @@ class SearchMainViewModel @Inject constructor(
             }
         }
 
-        if(optionCodes.isNotEmpty()) {
+        if (optionCodes.isNotEmpty()) {
             updatedTypes.add(type.code)
             updatedFilters.addAll(optionCodes)
-        }else{
+        } else {
             updatedTypes.remove(type.code)
         }
 
@@ -157,7 +158,7 @@ class SearchMainViewModel @Inject constructor(
         _optionState.value = currentOption.toMap()
     }
 
-    suspend fun onSelectedArea(areaName: String){
+    suspend fun onSelectedArea(areaName: String) {
         _place.value.toMutableList().clear()
         val areaCode = _areaCode.value.findAreaCode(areaName) ?: ""
         _option.value = _option.value.copy(areaCode = areaCode)
@@ -183,8 +184,13 @@ class SearchMainViewModel @Inject constructor(
         }
     }
 
-    private fun loadPlaces() = viewModelScope.launch{
-        option.collect{
+    private suspend fun loadAreaCodes() {
+        val areaCodes = areaCodeRepository.getAllAreaCodes()
+        _areaCode.value = areaCodes
+    }
+
+    private suspend fun loadPlaces() {
+        option.collect {
             if (it.page == 0) {
                 placeRepository.getSearchPlaceResultByList(it)
                     .onSuccess { result ->
@@ -213,7 +219,7 @@ class SearchMainViewModel @Inject constructor(
 
     }
 
-    private fun initOption(): ListSearchOption{
+    private fun initOption(): ListSearchOption {
         return ListSearchOption(
             category = Category.PLACE.name,
             size = 0,
