@@ -1,19 +1,27 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kr.tekit.lion.domain.model.ConnectError
+import kr.tekit.lion.domain.model.HttpError
+import kr.tekit.lion.domain.model.TimeoutError
+import kr.tekit.lion.domain.model.UnknownHostError
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchPlaceMainBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.ScreenState
 import kr.tekit.lion.presentation.main.vm.SearchMainViewModel
+import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
