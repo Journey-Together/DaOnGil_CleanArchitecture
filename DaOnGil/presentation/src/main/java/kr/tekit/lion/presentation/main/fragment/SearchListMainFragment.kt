@@ -1,7 +1,6 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -132,20 +131,10 @@ class SearchListMainFragment : Fragment(R.layout.fragment_search_list_main) {
                 binding.rvSearchResult.scrollToPosition(0)
             }
         }
+
         repeatOnViewStarted {
-            viewModel.networkState.collect { err ->
-                err?.let { error ->
-                    val errorMessage = when (error) {
-                        is ConnectError -> error.message
-                        is TimeoutError -> error.message
-                        is UnknownHostError -> error.message
-                        is HttpError -> error.message
-                        else -> error.message
-                    }
-                    errorMessage?.let {
-                        mainAdapter.submitErrorMessage(errorMessage)
-                    }
-                }
+            viewModel.errorMessage.collect { msg ->
+                msg?.let { mainAdapter.submitErrorMessage(it) }
             }
         }
     }
