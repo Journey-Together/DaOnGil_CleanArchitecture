@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.navigation)
 
     implementation(libs.google.services.v441)
+    implementation(libs.play.services.location)
     implementation(libs.simple.rating.bar)
     implementation(libs.droidsonroids)
     implementation(libs.glide)
