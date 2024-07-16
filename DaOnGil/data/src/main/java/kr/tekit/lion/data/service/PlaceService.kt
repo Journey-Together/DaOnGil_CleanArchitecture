@@ -1,6 +1,7 @@
 package kr.tekit.lion.data.service
 
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
+import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,4 +18,16 @@ interface PlaceService {
         @Query("sigungucode") sigunguCode: String?,
         @Query("arrange") arrange: String?,
     ): SearchPlaceResponse
+
+    @GET("place/search")
+    suspend fun searchByMap(
+        @Query("category") category: String,
+        @Query("minX") minX: Double,
+        @Query("maxX") maxX: Double,
+        @Query("minY") minY: Double,
+        @Query("maxY") maxY: Double,
+        @Query("disabilityType") disabilityType: List<Long>?,
+        @Query("detailFilter") detailFilter: List<Long>?,
+        @Query("arrange") arrange: String?,
+    ): MapSearchResponse
 }
