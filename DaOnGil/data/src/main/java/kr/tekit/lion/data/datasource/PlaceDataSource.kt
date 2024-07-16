@@ -10,9 +10,9 @@ import javax.inject.Inject
 class PlaceDataSource @Inject constructor(
     private val placeService: PlaceService
 ): BaseDataSource() {
-    suspend fun searchPlaceByList(request: SearchByListRequest) = execute {
+    suspend fun searchByList(request: ListSearchRequest) = execute {
 
-        val response = placeService.searchPlaceByList(
+        val response = placeService.searchByList(
             category = request.category,
             size = request.size,
             page = request.page,

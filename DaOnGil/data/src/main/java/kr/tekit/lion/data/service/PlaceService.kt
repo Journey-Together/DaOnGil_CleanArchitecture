@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface PlaceService {
     @GET("place/search")
-    suspend fun searchPlaceByList(
+    suspend fun searchByList(
         @Query("category") category: String,
         @Query("size") size: Int,
         @Query("page") page: Int,
