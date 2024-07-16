@@ -1,7 +1,8 @@
 package kr.tekit.lion.data.datasource
 
 import kr.tekit.lion.data.datasource.base.BaseDataSource
-import kr.tekit.lion.data.dto.request.SearchByListRequest
+import kr.tekit.lion.data.dto.request.ListSearchRequest
+import kr.tekit.lion.data.dto.request.MapSearchRequest
 import kr.tekit.lion.data.dto.response.searchplace.list.toDomainModel
 import kr.tekit.lion.data.service.PlaceService
 import kr.tekit.lion.domain.model.ListSearchResultList
@@ -32,4 +33,15 @@ class PlaceDataSource @Inject constructor(
 
         result
     }
+
+    suspend fun searchByMap(request: MapSearchRequest) = placeService.searchByMap(
+        category = request.category,
+        minX = request.minX,
+        minY = request.minY,
+        maxX = request.maxX,
+        maxY = request.maxX,
+        disabilityType = request.disabilityType,
+        detailFilter = request.detailFilter,
+        arrange = request.arrange
+    )
 }
