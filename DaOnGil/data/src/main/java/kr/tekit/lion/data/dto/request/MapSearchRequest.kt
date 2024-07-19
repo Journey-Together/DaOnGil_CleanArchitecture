@@ -8,8 +8,8 @@ data class MapSearchRequest (
     val maxX: Double,
     val minY: Double,
     val maxY: Double,
-    val disabilityType: List<Long>?,
-    val detailFilter: List<Long>?,
+    val disabilityType: List<Long>,
+    val detailFilter: List<Long>,
     val arrange: String
 )
 
@@ -19,8 +19,8 @@ fun MapSearchOption.toRequestModel() = MapSearchRequest(
     maxY = maxY,
     minX = minX,
     minY = minY,
-    disabilityType = disabilityType?.toList(),
-    detailFilter = detailFilter?.toList(),
+    disabilityType = disabilityType,
+    detailFilter = detailFilter,
     arrange = arrange
 )
 
