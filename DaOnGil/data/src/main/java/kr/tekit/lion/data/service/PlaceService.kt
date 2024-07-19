@@ -19,7 +19,7 @@ interface PlaceService {
         @Query("arrange") arrange: String?,
     ): SearchPlaceResponse
 
-    @GET("place/search")
+    @GET("place/search/map")
     suspend fun searchByMap(
         @Query("category") category: String,
         @Query("minX") minX: Double,
