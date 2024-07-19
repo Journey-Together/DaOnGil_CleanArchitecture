@@ -2,10 +2,18 @@ package kr.tekit.lion.domain.model
 
 data class MapSearchResult(
     val address: String,
-    val disability: List<Int>,
+    val disability: List<String>,
     val image: String,
-    val mapX: String,
-    val mapY: String,
+    val mapX: Double,
+    val mapY: Double,
     val name: String,
     val placeId: Int
 )
+
+data class MapSearchResultList(
+    val places: List<MapSearchResult>
+){
+    fun findPlaceDetail(placeId: Int): MapSearchResult? {
+        return places.find { it.placeId == placeId }
+    }
+}
