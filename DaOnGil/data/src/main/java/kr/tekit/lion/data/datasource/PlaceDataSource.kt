@@ -39,7 +39,7 @@ class PlaceDataSource @Inject constructor(
         minX = request.minX,
         minY = request.minY,
         maxX = request.maxX,
-        maxY = request.maxX,
+        maxY = request.maxY,
         disabilityType = request.disabilityType,
         detailFilter = request.detailFilter,
         arrange = request.arrange
