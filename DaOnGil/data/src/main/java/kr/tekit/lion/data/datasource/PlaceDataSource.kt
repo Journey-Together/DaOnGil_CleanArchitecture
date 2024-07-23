@@ -25,13 +25,11 @@ class PlaceDataSource @Inject constructor(
             arrange = request.arrange
         )
 
-        val result = if ((request.page * 10) == response.data.pageSize) {
-            ListSearchResultList(response.toDomainModel(), true, response.data.totalSize)
-        } else {
+        if ((request.page * 10) < response.data.totalSize) {
             ListSearchResultList(response.toDomainModel(), false, response.data.totalSize)
+        } else {
+            ListSearchResultList(response.toDomainModel(), true, response.data.totalSize)
         }
-
-        result
     }
 
     suspend fun searchByMap(request: MapSearchRequest) = placeService.searchByMap(
