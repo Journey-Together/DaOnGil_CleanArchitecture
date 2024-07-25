@@ -5,25 +5,23 @@ import java.util.TreeSet
 
 data class ListOptionState(
     val category: Category,
-    val size: Int,
     val page: Int,
-    val query: String? = null,
-    val disabilityType: TreeSet<Long>? = TreeSet<Long>(setOf(1)),
-    val detailFilter: TreeSet<Long>? = TreeSet<Long>(setOf(1, 6, 7, 8, 9)),
-    val areaCode: String? = null,
-    val sigunguCode: String? = null,
+    val disabilityType: TreeSet<Long>?,
+    val detailFilter: TreeSet<Long>?,
+    val areaCode: String?,
+    val sigunguCode: String?,
     val arrange: String
 ){
     fun toDomainModel(): ListSearchOption{
         return ListSearchOption(
             category = category.name,
             page = page,
-            size = size,
+            size = 0,
             disabilityType = disabilityType?.toList() ?: emptyList(),
             detailFilter = detailFilter?.toList() ?: emptyList(),
             areaCode = areaCode,
             sigunguCode = sigunguCode,
-            query = query,
+            query = null,
             arrange = arrange
         )
     }

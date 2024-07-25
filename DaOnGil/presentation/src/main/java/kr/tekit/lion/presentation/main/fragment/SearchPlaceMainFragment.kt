@@ -1,31 +1,34 @@
 package kr.tekit.lion.presentation.main.fragment
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchPlaceMainBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.ScreenState
-import kr.tekit.lion.presentation.main.vm.SearchMainViewModel
+import kr.tekit.lion.presentation.main.vm.search.SearchViewModel
+import kr.tekit.lion.presentation.main.vm.search.SharedViewModel
+import kr.tekit.lion.presentation.util.BlurUtil
 
 @AndroidEntryPoint
 class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
-    private val viewModel: SearchMainViewModel by viewModels()
-    private lateinit var listFragment: SearchListMainFragment
-    private lateinit var mapFragment: SearchMapFragment
+    private val sharedViewModel: SharedViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
+    private val listFragment by lazy { SearchListFragment() }
+    private val mapFragment by lazy { SearchMapFragment() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSearchPlaceMainBinding.bind(view)
-
-        // 프래그먼트 초기화 및 추가
-        listFragment = SearchListMainFragment()
-        mapFragment = SearchMapFragment()
 
         childFragmentManager.beginTransaction().apply {
             add(R.id.fragmentContainerView, listFragment, ScreenState.List.name)
@@ -35,13 +38,14 @@ class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
         }
 
         with(binding) {
+
             tabContainer.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     // 탭이 선택되었을 때 수행할 작업
                     when (tab.position) {
-                        0 -> viewModel.onSelectedTab(Category.PLACE)
-                        1 -> viewModel.onSelectedTab(Category.RESTAURANT)
-                        2 -> viewModel.onSelectedTab(Category.ROOM)
+                        0 -> sharedViewModel.onTabChanged(Category.PLACE)
+                        1 -> sharedViewModel.onTabChanged(Category.RESTAURANT)
+                        2 -> sharedViewModel.onTabChanged(Category.ROOM)
                     }
                 }
 
