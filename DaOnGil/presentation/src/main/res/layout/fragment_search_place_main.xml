@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.fragment.SearchPlaceMainFragment">
-
+    <ImageView
+        android:id="@+id/blurred_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:alpha="0.7"
+        android:background="@android:color/black" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -74,4 +81,17 @@
         android:textColor="@color/floating_action_button_title"
         app:backgroundTint="@color/floating_action_button"
         app:icon="@drawable/list_icon" />
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progressBar"-->
+<!--        style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:indeterminate="false"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:progressDrawable="@drawable/progress"-->
+<!--        android:background="@drawable/progress_background"-->
+<!--        android:max="500"-->
+<!--        tools:progress="200" />-->
+
 </FrameLayout>
