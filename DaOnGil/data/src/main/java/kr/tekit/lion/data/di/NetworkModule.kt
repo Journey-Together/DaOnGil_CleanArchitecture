@@ -23,7 +23,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.inject.Named
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -72,7 +72,9 @@ internal object NetworkModule {
     @Provides
     fun provideAuthClient(tokenDataSource: TokenDataSource): OkHttpClient {
         return OkHttpClient.Builder()
-            //.authenticator(AuthAuthenticator())
+            //.authenticator(AuthAuthenticator)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(AuthInterceptor(tokenDataSource))
             .addInterceptor(
                 HttpLoggingInterceptor()
@@ -84,6 +86,8 @@ internal object NetworkModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(
                 HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY)
