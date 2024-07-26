@@ -12,28 +12,27 @@ import kr.tekit.lion.domain.model.UnknownHostError
 
 open class BaseViewModel : ViewModel() {
 
-    private val _networkState = MutableStateFlow<NetworkError?>(null)
-    val networkState get() = _networkState.asStateFlow()
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage get() = _errorMessage.asStateFlow()
 
     protected open fun handleNetworkError(exception: NetworkError) {
-        val errorState: NetworkError = when (exception) {
+        val errorState: String? = when (exception) {
             is ConnectError -> {
-                ConnectError
+                ConnectError.message
             }
             is TimeoutError -> {
-                TimeoutError
+                TimeoutError.message
             }
             is UnknownHostError -> {
-                UnknownHostError
+                UnknownHostError.message
             }
             is HttpError -> {
-                HttpError(exception.code)
-                //Log.e("SearchMainViewModel", "HTTP Error ${exception.code}: ${exception.message}")
+                HttpError(exception.code).message
             }
             is UnknownError -> {
-                UnknownError
+                UnknownError.message
             }
         }
-        _networkState.value = errorState
+        _errorMessage.value = errorState
     }
 }

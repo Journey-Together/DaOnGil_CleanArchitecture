@@ -1,7 +1,6 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -139,6 +138,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
         }
 
         repeatOnViewStarted {
+<<<<<<< HEAD:DaOnGil/presentation/src/main/java/kr/tekit/lion/presentation/main/fragment/SearchListFragment.kt
             viewModel.networkState.collect { err ->
                 err?.let { error ->
                     val errorMessage = when (error) {
@@ -152,6 +152,17 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                         mainAdapter.submitErrorMessage(errorMessage)
                     }
                 }
+=======
+            // 탭을 선택하면 화면을 맨위로 스크롤
+            viewModel.uiEvent.collect {
+                binding.rvSearchResult.scrollToPosition(0)
+            }
+        }
+
+        repeatOnViewStarted {
+            viewModel.errorMessage.collect { msg ->
+                msg?.let { mainAdapter.submitErrorMessage(it) }
+>>>>>>> refs/remotes/origin/develop:DaOnGil/presentation/src/main/java/kr/tekit/lion/presentation/main/fragment/SearchListMainFragment.kt
             }
         }
     }
