@@ -1,8 +1,23 @@
 package kr.tekit.lion.presentation.main.model
 
+import java.util.TreeSet
+
 sealed class DisabilityType(val code: Long) {
     abstract val filterCodes: Set<Long>
+
+    companion object {
+        fun createDisabilityTypeCodes(): TreeSet<Long> {
+            return TreeSet(setOf(PhysicalDisability.code))
+        }
+
+        fun createFilterCodes(): TreeSet<Long> {
+            return TreeSet<Long>().apply {
+                addAll(PhysicalDisability.filterCodes)
+            }
+        }
+    }
 }
+
 data object PhysicalDisability : DisabilityType(1) {
     override val filterCodes: Set<Long>
         get() = setOf(Parking.code, Wheelchair.code, Elevator.code, RestRoom.code, Seat.code)

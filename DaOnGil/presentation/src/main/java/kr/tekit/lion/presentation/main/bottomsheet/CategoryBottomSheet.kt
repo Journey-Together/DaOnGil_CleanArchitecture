@@ -1,4 +1,4 @@
-package kr.tekit.lion.presentation.main
+package kr.tekit.lion.presentation.main.bottomsheet
 
 import android.os.Bundle
 import android.view.View
@@ -94,7 +94,6 @@ class CategoryBottomSheet(
                     chipGroupVisualImpairment.visibility = View.GONE
                     chipGroupInfantFamily.visibility = View.GONE
                     chipGroupElderlyPerson.visibility = View.GONE
-
                 }
 
                 VisualImpairment -> {
@@ -103,7 +102,6 @@ class CategoryBottomSheet(
                     chipGroupHearingImpairment.visibility = View.GONE
                     chipGroupInfantFamily.visibility = View.GONE
                     chipGroupElderlyPerson.visibility = View.GONE
-
                 }
 
                 InfantFamily -> {
@@ -112,7 +110,6 @@ class CategoryBottomSheet(
                     chipGroupVisualImpairment.visibility = View.GONE
                     chipGroupHearingImpairment.visibility = View.GONE
                     chipGroupElderlyPerson.visibility = View.GONE
-
                 }
 
                 ElderlyPeople -> {
