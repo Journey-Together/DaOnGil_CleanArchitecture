@@ -19,23 +19,23 @@ import kr.tekit.lion.domain.repository.SigunguCodeRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
+internal interface RepositoryModule {
 
     @Binds
-    abstract fun bindAreaCodeRepository(areaCodeRepositoryImpl: AreaCodeRepositoryImpl): AreaCodeRepository
+    fun bindAreaCodeRepository(areaCodeRepositoryImpl: AreaCodeRepositoryImpl): AreaCodeRepository
 
     @Binds
-    abstract fun bindKorWithRepository(korWithRepositoryImpl: KorWithRepositoryImpl): KorWithRepository
+    fun bindKorWithRepository(korWithRepositoryImpl: KorWithRepositoryImpl): KorWithRepository
 
     @Binds
-    abstract fun bindSigunguRepository(sigunguCodeRepositoryImpl: SigunguCodeRepositoryImpl): SigunguCodeRepository
+    fun bindSigunguRepository(sigunguCodeRepositoryImpl: SigunguCodeRepositoryImpl): SigunguCodeRepository
 
     @Binds
-    abstract fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+    fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 
     @Binds
-    abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
+    fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
 
     @Binds
-    abstract fun bindPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
+    fun bindPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
 }
