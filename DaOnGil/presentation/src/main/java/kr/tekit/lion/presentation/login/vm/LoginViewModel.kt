@@ -7,12 +7,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.repository.AuthRepository
+import kr.tekit.lion.domain.usecase.areacode.InitAreaCodeInfoUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val initAreaCodeInfoUseCase: InitAreaCodeInfoUseCase
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch {
+            initAreaCodeInfoUseCase()
+        }
+    }
 
     private val _sigInInUiState = MutableStateFlow(false)
     val sigInInUiState = _sigInInUiState.asStateFlow()

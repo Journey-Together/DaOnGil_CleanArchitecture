@@ -8,14 +8,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.repository.AuthRepository
-import kr.tekit.lion.domain.usecase.areacode.InitAreaCodeInfoUseCase
 import kr.tekit.lion.presentation.splash.model.LogInState
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val initAreaCodeInfoUseCase: InitAreaCodeInfoUseCase
 ): ViewModel() {
 
     private val _logInState = MutableStateFlow<LogInState>(LogInState.Checking)
@@ -23,7 +21,6 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            initAreaCodeInfoUseCase()
             checkLoginStatus()
         }
     }

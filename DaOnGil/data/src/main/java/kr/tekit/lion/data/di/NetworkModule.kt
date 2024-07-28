@@ -3,15 +3,12 @@ package kr.tekit.lion.data.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
-import kr.tekit.lion.data.datasource.AuthDataSource
-import kr.tekit.lion.data.datasource.TokenDataSource
-import kr.tekit.lion.data.service.AuthAuthenticator
-import kr.tekit.lion.data.service.AuthInterceptor
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
@@ -23,7 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.inject.Named
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -32,17 +29,12 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(@Auth authClient: OkHttpClient, moshi: Moshi): Retrofit {
+    fun provideRetrofit(@Auth client: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(authClient).build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideAuthService(retrofit: Retrofit): AuthService {
-        return retrofit.create(AuthService::class.java)
+            .client(client)
+            .build()
     }
 
     @Provides
@@ -53,9 +45,19 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun providePlaceService(retrofit: Retrofit): PlaceService{
+    fun providePlaceService(retrofit: Retrofit): PlaceService {
         return retrofit.create(PlaceService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideAuthService(okHttpClient: OkHttpClient): AuthService =
+         Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
 
     @Singleton
     @Provides
@@ -67,40 +69,22 @@ internal object NetworkModule {
             .build()
             .create()
 
-    @Auth
-    @Singleton
-    @Provides
-    fun provideAuthClient(tokenDataSource: TokenDataSource): OkHttpClient {
-        return OkHttpClient.Builder()
-            //.authenticator(AuthAuthenticator())
-            .addInterceptor(AuthInterceptor(tokenDataSource))
-            .addInterceptor(
-                HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY)
-            ).build()
-    }
-
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
         return OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY)
-            ).build()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
+            .build()
     }
-
-    @Singleton
-    @Provides
-    fun provideAuthInterceptor(tokenDataSource: TokenDataSource): AuthInterceptor =
-        AuthInterceptor(tokenDataSource)
-
-    @Singleton
-    @Provides
-    fun provideAuthenticator(
-        tokenDataSource: TokenDataSource,
-        authDataSource: AuthDataSource,
-    ): AuthAuthenticator = AuthAuthenticator(tokenDataSource, authDataSource)
 
     @Provides
     @Singleton

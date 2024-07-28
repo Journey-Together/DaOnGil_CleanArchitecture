@@ -19,9 +19,6 @@ class TokenDataSource @Inject constructor(
 
     suspend fun getAccessToken(): String = data.first().accessToken
 
-    suspend fun getToken(): Pair<String, String> =
-        data.first().run { Pair(accessToken, refreshToken) }
-
     suspend fun saveTokens(accessToken: String, refreshToken: String){
         dataStore.updateData {
             it.copy(
