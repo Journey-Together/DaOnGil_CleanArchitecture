@@ -6,7 +6,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
-data class ConcernTypeRequest(
+internal data class ConcernTypeRequest(
     val isPhysical: Boolean,
     val isHear: Boolean,
     val isVisual: Boolean,

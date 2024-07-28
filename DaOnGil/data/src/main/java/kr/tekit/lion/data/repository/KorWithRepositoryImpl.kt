@@ -5,7 +5,7 @@ import kr.tekit.lion.domain.model.AreaCode
 import kr.tekit.lion.domain.repository.KorWithRepository
 import javax.inject.Inject
 
-class KorWithRepositoryImpl @Inject constructor(
+internal class KorWithRepositoryImpl @Inject constructor(
     private val korWithDataSource: KorWithDataSource
 ): KorWithRepository {
 

@@ -4,6 +4,6 @@ import com.squareup.moshi.JsonClass
 import kr.tekit.lion.data.dto.response.areacode.Item
 
 @JsonClass(generateAdapter = true)
-data class Items(
+internal data class Items(
     val item: List<Item>
 )

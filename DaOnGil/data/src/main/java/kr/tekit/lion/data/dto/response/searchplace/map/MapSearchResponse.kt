@@ -5,7 +5,7 @@ import kr.tekit.lion.domain.model.MapSearchResult
 import kr.tekit.lion.domain.model.MapSearchResultList
 
 @JsonClass(generateAdapter = true)
-data class MapSearchResponse(
+internal data class MapSearchResponse(
     val code: Int,
     val data: List<PlaceRes>,
     val message: String

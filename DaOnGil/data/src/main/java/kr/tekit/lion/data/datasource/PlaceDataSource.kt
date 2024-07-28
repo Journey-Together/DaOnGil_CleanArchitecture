@@ -8,7 +8,7 @@ import kr.tekit.lion.data.common.execute
 import kr.tekit.lion.domain.model.ListSearchResultList
 import javax.inject.Inject
 
-class PlaceDataSource @Inject constructor(
+internal class PlaceDataSource @Inject constructor(
     private val placeService: PlaceService
 ){
     suspend fun searchByList(request: ListSearchRequest) = execute {

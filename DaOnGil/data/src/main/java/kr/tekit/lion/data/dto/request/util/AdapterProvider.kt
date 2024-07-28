@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
-class AdapterProvider {
+internal class AdapterProvider {
     companion object {
         fun <T> JsonAdapter(requestModel: Class<T>): JsonAdapter<T> {
             val moshi = Moshi.Builder()

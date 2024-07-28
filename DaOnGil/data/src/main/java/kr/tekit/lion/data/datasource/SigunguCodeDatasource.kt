@@ -4,7 +4,7 @@ import kr.tekit.lion.data.database.dao.SigunguCodeDao
 import kr.tekit.lion.data.database.entity.SigunguCodeEntity
 import javax.inject.Inject
 
-class SigunguCodeDatasource @Inject constructor(
+internal class SigunguCodeDatasource @Inject constructor(
     private val sigunguCodeDao: SigunguCodeDao
 ) {
     suspend fun addSigunguCodeInfoList(villageCodes: List<SigunguCodeEntity>) {

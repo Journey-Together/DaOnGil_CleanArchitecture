@@ -13,7 +13,7 @@ import kr.tekit.lion.data.database.dao.SigunguCodeDao
     entities = [AreaCodeEntity::class, SigunguCodeEntity::class],
     version = 1
 )
-abstract class MainDatabase: RoomDatabase()  {
+internal abstract class MainDatabase: RoomDatabase()  {
     abstract fun areaCodeDao(): AreaCodeDao
     abstract fun sigunguCodeDao(): SigunguCodeDao
 }

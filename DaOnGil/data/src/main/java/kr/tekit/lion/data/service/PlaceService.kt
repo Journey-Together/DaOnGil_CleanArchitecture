@@ -5,7 +5,7 @@ import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface PlaceService {
+internal interface PlaceService {
     @GET("place/search")
     suspend fun searchByList(
         @Query("category") category: String,

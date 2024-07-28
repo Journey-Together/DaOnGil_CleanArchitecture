@@ -11,7 +11,7 @@ import kr.tekit.lion.data.dto.response.SignUpResponse
 import kr.tekit.lion.data.service.AuthService
 import javax.inject.Inject
 
-class AuthDataSource @Inject constructor(
+internal class AuthDataSource @Inject constructor(
     private val context: Context,
     private val authService: AuthService
 ) {

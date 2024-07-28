@@ -7,7 +7,7 @@ import androidx.room.Query
 import kr.tekit.lion.data.database.entity.AreaCodeEntity
 
 @Dao
-interface AreaCodeDao {
+internal interface AreaCodeDao {
     @Query("SELECT * FROM area_code_table")
     suspend fun getAreaCodes(): List<AreaCodeEntity>
 

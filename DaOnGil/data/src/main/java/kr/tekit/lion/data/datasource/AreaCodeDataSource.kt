@@ -4,7 +4,7 @@ import kr.tekit.lion.data.database.entity.AreaCodeEntity
 import kr.tekit.lion.data.database.dao.AreaCodeDao
 import javax.inject.Inject
 
-class AreaCodeDataSource @Inject constructor(
+internal class AreaCodeDataSource @Inject constructor(
     private val areaCodeDao: AreaCodeDao,
 ) {
     suspend fun getAllAreaCodes(): List<AreaCodeEntity> {

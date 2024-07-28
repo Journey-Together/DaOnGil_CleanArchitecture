@@ -7,7 +7,7 @@ import androidx.room.Query
 import kr.tekit.lion.data.database.entity.SigunguCodeEntity
 
 @Dao
-interface SigunguCodeDao {
+internal interface SigunguCodeDao {
 
     @Query("SELECT sigunguCode FROM SIGUNGU_CODE_TABLE WHERE sigunguName LIKE :villageName || '%' ")
     suspend fun getSigunguCodeByVillageName(villageName: String): String?

@@ -7,7 +7,7 @@ import kr.tekit.lion.domain.model.Result
 import kr.tekit.lion.domain.repository.MemberRepository
 import javax.inject.Inject
 
-class MemberRepositoryImpl @Inject constructor(
+internal class MemberRepositoryImpl @Inject constructor(
     private val memberDataSource: MemberDataSource
 ): MemberRepository {
     override suspend fun updateConcernType(requestBody: ConcernType): Result<Unit> {

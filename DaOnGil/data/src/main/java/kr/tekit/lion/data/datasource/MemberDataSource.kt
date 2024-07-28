@@ -5,7 +5,7 @@ import kr.tekit.lion.data.common.execute
 import okhttp3.RequestBody
 import javax.inject.Inject
 
-class MemberDataSource @Inject constructor(
+internal class MemberDataSource @Inject constructor(
     private val memberService: MemberService
 ) {
     suspend fun updateConcernType(requestBody: RequestBody) = execute{

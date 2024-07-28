@@ -8,7 +8,7 @@ import kr.tekit.lion.data.database.AppSettings
 import kr.tekit.lion.data.database.dataStore
 import javax.inject.Inject
 
-class TokenDataSource @Inject constructor(
+internal class TokenDataSource @Inject constructor(
     private val context: Context
 ) {
     private val dataStore: DataStore<AppSettings>

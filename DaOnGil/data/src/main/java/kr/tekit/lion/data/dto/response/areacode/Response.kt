@@ -5,7 +5,7 @@ import kr.tekit.lion.data.dto.response.areacode.Body
 import kr.tekit.lion.data.dto.response.areacode.Header
 
 @JsonClass(generateAdapter = true)
-data class Response(
+internal data class Response(
     val body: Body,
     val header: Header
 )

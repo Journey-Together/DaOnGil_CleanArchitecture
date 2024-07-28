@@ -10,12 +10,12 @@ import java.io.InputStream
 import java.io.OutputStream
 
 @Serializable
-data class AppSettings(
+internal data class AppSettings(
     val accessToken: String = "",
     val refreshToken: String = "",
 )
 
-object AppSettingsSerializer: Serializer<AppSettings> {
+internal object AppSettingsSerializer: Serializer<AppSettings> {
     override val defaultValue: AppSettings = AppSettings()
 
     override suspend fun readFrom(input: InputStream): AppSettings {
