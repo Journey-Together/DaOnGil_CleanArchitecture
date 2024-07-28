@@ -1,15 +1,11 @@
 package kr.tekit.lion.presentation.main.fragment
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchPlaceMainBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
@@ -17,7 +13,6 @@ import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.ScreenState
 import kr.tekit.lion.presentation.main.vm.search.SearchViewModel
 import kr.tekit.lion.presentation.main.vm.search.SharedViewModel
-import kr.tekit.lion.presentation.util.BlurUtil
 
 @AndroidEntryPoint
 class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {

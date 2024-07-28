@@ -138,31 +138,8 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
         }
 
         repeatOnViewStarted {
-<<<<<<< HEAD:DaOnGil/presentation/src/main/java/kr/tekit/lion/presentation/main/fragment/SearchListFragment.kt
-            viewModel.networkState.collect { err ->
-                err?.let { error ->
-                    val errorMessage = when (error) {
-                        is ConnectError -> error.message
-                        is TimeoutError -> error.message
-                        is UnknownHostError -> error.message
-                        is HttpError -> error.message
-                        else -> error.message
-                    }
-                    errorMessage?.let {
-                        mainAdapter.submitErrorMessage(errorMessage)
-                    }
-                }
-=======
-            // 탭을 선택하면 화면을 맨위로 스크롤
-            viewModel.uiEvent.collect {
-                binding.rvSearchResult.scrollToPosition(0)
-            }
-        }
-
-        repeatOnViewStarted {
             viewModel.errorMessage.collect { msg ->
                 msg?.let { mainAdapter.submitErrorMessage(it) }
->>>>>>> refs/remotes/origin/develop:DaOnGil/presentation/src/main/java/kr/tekit/lion/presentation/main/fragment/SearchListMainFragment.kt
             }
         }
     }
