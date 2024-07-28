@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentLoginBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.login.model.LoginType
 import kr.tekit.lion.presentation.login.vm.LoginViewModel
-import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -44,7 +44,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     val result = runCatching { naverLogin() }
                     result.onSuccess { accessToken ->
-                        viewModel.onCompleteLogIn("NAVER", accessToken)
+                        viewModel.onCompleteLogIn(LoginType.NAVER.toString(), accessToken)
                     }.onFailure { error ->
                         error.printStackTrace()
                     }
@@ -62,9 +62,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun kakaoLogin(){
+        val kakao = LoginType.KAKAO.toString()
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (token != null) {
-                viewModel.onCompleteLogIn("KAKAO", token.accessToken)
+                viewModel.onCompleteLogIn(kakao, token.accessToken)
             }
         }
         // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
@@ -81,7 +82,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
                 } else if (token != null) {
-                    viewModel.onCompleteLogIn("KAKAO", token.accessToken)
+                    viewModel.onCompleteLogIn(kakao, token.accessToken)
                 }
             }
         } else {
