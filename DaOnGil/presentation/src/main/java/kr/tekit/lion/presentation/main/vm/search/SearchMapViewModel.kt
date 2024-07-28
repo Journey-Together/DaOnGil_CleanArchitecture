@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.main.vm.search
 
+import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,7 +13,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kr.tekit.lion.domain.repository.PlaceRepository
-import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.DisabilityType
 import kr.tekit.lion.presentation.main.model.ElderlyPeople
@@ -30,7 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchMapViewModel  @Inject constructor(
     private val placeRepository: PlaceRepository,
-) : BaseViewModel(){
+) : ViewModel(){
 
     private val _place = MutableStateFlow<List<PlaceModel>>(emptyList())
     val place get() = _place.asStateFlow()
