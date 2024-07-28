@@ -5,6 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.tekit.lion.domain.model.ConcernType
+import kr.tekit.lion.domain.model.onError
+import kr.tekit.lion.domain.model.onSuccess
 import kr.tekit.lion.domain.repository.MemberRepository
 import javax.inject.Inject
 
@@ -38,8 +40,10 @@ class InterestViewModel @Inject constructor(
         _concernType.value = updatedInterests
     }
 
-
     suspend fun onClickSubmitButton(){
         memberRepository.updateConcernType(_concernType.value)
+            .onError {
+                TODO("에러 처리 화면 디자인 및 구현 후 분기")
+            }
     }
 }
