@@ -34,8 +34,10 @@ kotlin-serialization-plugin = "1.9.22"
 navigationSafeArgs = "2.7.7"
 coroutines-core = "1.7.3"
 javaxInject="1"
+playServicesLocation = "18.0.0"
 
 [libraries]
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlin-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-serialization-plugin" }
