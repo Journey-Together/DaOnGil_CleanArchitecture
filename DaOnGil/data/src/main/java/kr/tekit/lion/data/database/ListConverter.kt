@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import kr.tekit.lion.data.database.entity.AreaCodeEntity
 import kr.tekit.lion.data.database.entity.SigunguCodeEntity
 
-class ListConverter {
+internal class ListConverter {
 
     @TypeConverter
     fun areaCodeListToJson(value: List<AreaCodeEntity>): String{

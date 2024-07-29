@@ -5,19 +5,19 @@ import androidx.room.PrimaryKey
 import kr.tekit.lion.domain.model.AreaCode
 
 @Entity(tableName = "area_code_table")
-data class AreaCodeEntity (
+internal data class AreaCodeEntity (
     @PrimaryKey
     val code: String,
     val name: String
 )
 
-fun AreaCodeEntity.toDomainModel(): AreaCode =
+internal fun AreaCodeEntity.toDomainModel(): AreaCode =
     AreaCode(
         code = code,
         name = name
     )
 
-fun AreaCode.toEntity(): AreaCodeEntity =
+internal fun AreaCode.toEntity(): AreaCodeEntity =
     AreaCodeEntity(
         code = code,
         name = name

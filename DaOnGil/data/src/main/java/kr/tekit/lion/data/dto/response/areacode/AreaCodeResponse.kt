@@ -4,7 +4,7 @@ import kr.tekit.lion.domain.model.AreaCode
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class AreaCodeResponse(
+internal data class AreaCodeResponse(
     val response: Response
 ){
     fun toDomainModel(): List<AreaCode> {

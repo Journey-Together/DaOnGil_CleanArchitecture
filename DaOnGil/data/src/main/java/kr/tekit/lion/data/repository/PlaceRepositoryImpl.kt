@@ -12,7 +12,7 @@ import kr.tekit.lion.domain.repository.PlaceRepository
 import javax.inject.Inject
 import kr.tekit.lion.domain.model.Result
 
-class PlaceRepositoryImpl @Inject constructor(
+internal class PlaceRepositoryImpl @Inject constructor(
     private val placeDataSource: PlaceDataSource
 ) : PlaceRepository {
 

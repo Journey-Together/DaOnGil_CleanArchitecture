@@ -7,7 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Tag
 
-interface AuthService {
+internal interface AuthService {
     @POST("auth/sign-in")
     suspend fun signIn(
         @Query("type") type: String,

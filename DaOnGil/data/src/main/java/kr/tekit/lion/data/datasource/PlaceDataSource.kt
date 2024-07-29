@@ -1,16 +1,16 @@
 package kr.tekit.lion.data.datasource
 
-import kr.tekit.lion.data.datasource.base.BaseDataSource
 import kr.tekit.lion.data.dto.request.ListSearchRequest
 import kr.tekit.lion.data.dto.request.MapSearchRequest
 import kr.tekit.lion.data.dto.response.searchplace.list.toDomainModel
 import kr.tekit.lion.data.service.PlaceService
+import kr.tekit.lion.data.common.execute
 import kr.tekit.lion.domain.model.ListSearchResultList
 import javax.inject.Inject
 
-class PlaceDataSource @Inject constructor(
+internal class PlaceDataSource @Inject constructor(
     private val placeService: PlaceService
-): BaseDataSource() {
+){
     suspend fun searchByList(request: ListSearchRequest) = execute {
 
         val response = placeService.searchByList(

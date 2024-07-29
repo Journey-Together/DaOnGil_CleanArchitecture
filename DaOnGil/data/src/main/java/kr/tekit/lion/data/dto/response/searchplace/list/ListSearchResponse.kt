@@ -5,13 +5,13 @@ import kr.tekit.lion.domain.model.Place
 import kr.tekit.lion.domain.model.ListSearchResult
 
 @JsonClass(generateAdapter = true)
-data class SearchPlaceResponse(
+internal data class SearchPlaceResponse(
     val code: Int,
     val data: Data,
     val message: String
 )
 
-fun SearchPlaceResponse.toDomainModel(): List<ListSearchResult> {
+internal fun SearchPlaceResponse.toDomainModel(): List<ListSearchResult> {
     return data.placeResList.map {
         ListSearchResult(
             Place(

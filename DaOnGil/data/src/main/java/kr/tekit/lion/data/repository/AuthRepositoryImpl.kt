@@ -6,7 +6,7 @@ import kr.tekit.lion.data.datasource.TokenDataSource
 import kr.tekit.lion.domain.repository.AuthRepository
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(
+internal class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
     private val tokenDataSource: TokenDataSource,
 ) : AuthRepository {

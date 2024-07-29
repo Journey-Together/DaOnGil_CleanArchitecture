@@ -2,7 +2,7 @@ package kr.tekit.lion.data.dto.request
 
 import kr.tekit.lion.domain.model.MapSearchOption
 
-data class MapSearchRequest (
+internal data class MapSearchRequest (
     val category: String,
     val minX: Double,
     val maxX: Double,
@@ -13,7 +13,7 @@ data class MapSearchRequest (
     val arrange: String
 )
 
-fun MapSearchOption.toRequestModel() = MapSearchRequest(
+internal fun MapSearchOption.toRequestModel() = MapSearchRequest(
     category = category,
     maxX = maxX,
     maxY = maxY,

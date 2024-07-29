@@ -8,7 +8,7 @@ import kr.tekit.lion.domain.model.SigunguCodeList
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import javax.inject.Inject
 
-class SigunguCodeRepositoryImpl @Inject constructor(
+internal class SigunguCodeRepositoryImpl @Inject constructor(
     private val sigunguCodeDatasource: SigunguCodeDatasource
 ) : SigunguCodeRepository {
 

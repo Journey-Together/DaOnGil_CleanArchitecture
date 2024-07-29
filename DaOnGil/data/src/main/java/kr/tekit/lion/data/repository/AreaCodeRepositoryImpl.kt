@@ -9,7 +9,7 @@ import kr.tekit.lion.domain.model.AreaCodeList
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import javax.inject.Inject
 
-class AreaCodeRepositoryImpl @Inject constructor(
+internal class AreaCodeRepositoryImpl @Inject constructor(
     private val areaCodeDataSource: AreaCodeDataSource,
 ) : AreaCodeRepository {
 

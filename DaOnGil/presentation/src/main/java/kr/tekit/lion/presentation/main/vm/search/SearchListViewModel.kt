@@ -1,17 +1,11 @@
 package kr.tekit.lion.presentation.main.vm.search
 
-import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.AreaCodeList
@@ -21,7 +15,7 @@ import kr.tekit.lion.domain.model.onSuccess
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
-import kr.tekit.lion.presentation.base.BaseViewModel
+import kr.tekit.lion.presentation.delegate.ViewModelDelegate
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.DisabilityType
 import kr.tekit.lion.presentation.main.model.ElderlyPeople
@@ -41,7 +35,10 @@ class SearchListViewModel @Inject constructor(
     private val areaCodeRepository: AreaCodeRepository,
     private val sigunguCodeRepository: SigunguCodeRepository,
     private val placeRepository: PlaceRepository,
-): BaseViewModel() {
+): ViewModel() {
+
+    @Inject
+    lateinit var viewModelDelegate: ViewModelDelegate
 
     init {
         viewModelScope.launch {
@@ -49,6 +46,8 @@ class SearchListViewModel @Inject constructor(
             loadPlaces()
         }
     }
+
+    val errorMessage: StateFlow<String?> get() = viewModelDelegate.errorMessage
 
     private val _areaCode = MutableStateFlow(AreaCodeList(emptyList()))
     val areaCode get() = _areaCode.asStateFlow()
@@ -111,7 +110,7 @@ class SearchListViewModel @Inject constructor(
                 _place.update { _place.value + result.toUiModel() }
                 if (result.isLastPage) _isLastPage.value = true
             }.onError { e ->
-                handleNetworkError(e)
+                viewModelDelegate.handleNetworkError(e)
             }
         }
     }

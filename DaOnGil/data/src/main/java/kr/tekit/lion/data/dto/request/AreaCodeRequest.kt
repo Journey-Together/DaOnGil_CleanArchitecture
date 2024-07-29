@@ -2,7 +2,7 @@ package kr.tekit.lion.data.dto.request
 
 import kr.tekit.lion.data.BuildConfig
 
-data class AreaCodeRequest(
+internal data class AreaCodeRequest(
     val areaCode: String,
 ){
     fun toRequestModel(): Map<String, String>{

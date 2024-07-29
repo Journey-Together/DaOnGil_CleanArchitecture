@@ -1,7 +1,7 @@
-package kr.tekit.lion.presentation.base
+package kr.tekit.lion.presentation.delegate
 
-import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.tekit.lion.domain.model.ConnectError
 import kr.tekit.lion.domain.model.HttpError
@@ -9,14 +9,14 @@ import kr.tekit.lion.domain.model.NetworkError
 import kr.tekit.lion.domain.model.TimeoutError
 import kr.tekit.lion.domain.model.UnknownError
 import kr.tekit.lion.domain.model.UnknownHostError
+import javax.inject.Inject
 
-open class BaseViewModel : ViewModel() {
-
+class ViewModelDelegate @Inject constructor() {
     private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage get() = _errorMessage.asStateFlow()
+    val errorMessage: StateFlow<String?> get() = _errorMessage.asStateFlow()
 
-    protected open fun handleNetworkError(exception: NetworkError) {
-        val errorState: String? = when (exception) {
+    fun handleNetworkError(exception: NetworkError) {
+        val errorState: String = when (exception) {
             is ConnectError -> {
                 ConnectError.message
             }
