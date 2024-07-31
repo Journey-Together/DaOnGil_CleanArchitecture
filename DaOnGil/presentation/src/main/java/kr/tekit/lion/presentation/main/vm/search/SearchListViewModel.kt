@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.main.vm.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -119,8 +118,6 @@ class SearchListViewModel @Inject constructor(
         listOptionState.collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
-                    Log.d("czxczas", "v place: $result")
-
                     _place.update { _place.value + result.toUiModel() }
                     if (result.isLastPage) _isLastPage.value = true
                 }
