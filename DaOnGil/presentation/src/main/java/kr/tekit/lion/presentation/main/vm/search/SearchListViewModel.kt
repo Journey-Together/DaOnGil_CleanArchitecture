@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.AreaCodeList
@@ -69,7 +70,7 @@ class SearchListViewModel @Inject constructor(
     private val _listOptionState = MutableStateFlow(initListOption())
     val listOptionState get() = _listOptionState.asStateFlow()
 
-    private val _place = MutableStateFlow<List<PlaceModel>>(emptyList())
+    private val _place = MutableStateFlow<Set<PlaceModel>>(emptySet())
     val place get() = _place.asStateFlow()
 
     private val _isLastPage = MutableStateFlow(false)
@@ -78,7 +79,7 @@ class SearchListViewModel @Inject constructor(
     private val mapChanged = MutableSharedFlow<Boolean>()
 
     fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
-        _place.update { emptyList() }
+        _place.update { emptySet() }
 
         val currentOptionState = _listOptionState.value
         val updatedDisabilityTypes = TreeSet(currentOptionState.disabilityType)
@@ -110,14 +111,28 @@ class SearchListViewModel @Inject constructor(
     }
 
     fun onSelectedTab(category: Category) {
-        _place.update { emptyList() }
+        _place.update { emptySet() }
         _listOptionState.update { it.copy(category = category, page = 0) }
     }
 
     private suspend fun loadPlaces() {
         listOptionState.collect { listOption ->
-            Log.d("Mapchanged", listOption.toString())
-            // 화면이 변경되지 않았을 때 수행할 로직
+            placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
+                .onSuccess { result ->
+                    Log.d("czxczas", "v place: $result")
+
+                    _place.update { _place.value + result.toUiModel() }
+                    if (result.isLastPage) _isLastPage.value = true
+                }
+                .onError { e ->
+                    viewModelDelegate.handleNetworkError(e)
+                }
+        }
+    }
+
+    private suspend fun clearPlace() = viewModelScope.launch {
+        _place.update { emptySet() }
+        listOptionState.take(1).collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
                     _place.update { _place.value + result.toUiModel() }
@@ -129,18 +144,12 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun clearPlace() = suspendCoroutine { continuation ->
-        _place.update { emptyList() }
-        _listOptionState.update { it.copy(page = 0) }
-        continuation.resume(Unit)
-    }
-
     fun onMapChanged(state: Boolean) = viewModelScope.launch{
         mapChanged.emit(state)
     }
 
     suspend fun onSelectedArea(areaName: String) {
-        _place.update { emptyList() }
+        _place.update { emptySet() }
         val areaCode = _areaCode.value.findAreaCode(areaName) ?: ""
         _listOptionState.update { _listOptionState.value.copy(areaCode = areaCode) }
         viewModelScope.launch {
@@ -150,14 +159,14 @@ class SearchListViewModel @Inject constructor(
     }
 
     fun onSelectedSigungu(sigunguName: String) {
-        _place.update { emptyList() }
+        _place.update { emptySet() }
         val sigunguCode = _sigunguCode.value.findSigunguCode(sigunguName)
         _listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
         _isLastPage.value = false
     }
 
     fun onSelectedArrange(arrange: String) {
-        _place.update { emptyList() }
+        _place.update { emptySet() }
         _listOptionState.update { it.copy(arrange = arrange, page = 0) }
         _isLastPage.value = false
     }

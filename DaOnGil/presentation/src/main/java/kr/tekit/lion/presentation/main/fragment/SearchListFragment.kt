@@ -71,7 +71,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                 viewModel.onSelectedArrange(it)
             })
 
-        val arr = ArrayList<ListSearchUIModel>()
+        val arr = mutableSetOf<ListSearchUIModel>()
         arr.add(CategoryModel)
         arr.add(AreaModel)
 
