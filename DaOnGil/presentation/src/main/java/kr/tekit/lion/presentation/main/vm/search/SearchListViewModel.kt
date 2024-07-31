@@ -1,8 +1,10 @@
 package kr.tekit.lion.presentation.main.vm.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,23 +26,32 @@ import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.ListOptionState
 import kr.tekit.lion.presentation.main.model.PhysicalDisability
 import kr.tekit.lion.presentation.main.model.PlaceModel
+import kr.tekit.lion.presentation.main.model.SharedOptionState
 import kr.tekit.lion.presentation.main.model.SortByLatest
 import kr.tekit.lion.presentation.main.model.VisualImpairment
 import kr.tekit.lion.presentation.main.model.toUiModel
 import java.util.TreeSet
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class SearchListViewModel @Inject constructor(
     private val areaCodeRepository: AreaCodeRepository,
     private val sigunguCodeRepository: SigunguCodeRepository,
     private val placeRepository: PlaceRepository,
-): ViewModel() {
+) : ViewModel() {
 
     @Inject
     lateinit var viewModelDelegate: ViewModelDelegate
 
     init {
+        viewModelScope.launch {
+            mapChanged.collect { changed ->
+                if (changed) clearPlace()
+            }
+        }
+
         viewModelScope.launch {
             loadAreaCodes()
             loadPlaces()
@@ -63,6 +74,8 @@ class SearchListViewModel @Inject constructor(
 
     private val _isLastPage = MutableStateFlow(false)
     val isLastPage get() = _isLastPage.asStateFlow()
+
+    private val mapChanged = MutableSharedFlow<Boolean>()
 
     fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
         _place.update { emptyList() }
@@ -87,7 +100,7 @@ class SearchListViewModel @Inject constructor(
         }
 
         _listOptionState.update {
-            currentOptionState.copy(
+            it.copy(
                 disabilityType = updatedDisabilityTypes,
                 detailFilter = updatedDetailFilters,
                 page = 0
@@ -98,29 +111,38 @@ class SearchListViewModel @Inject constructor(
 
     fun onSelectedTab(category: Category) {
         _place.update { emptyList() }
-        _listOptionState.update {
-            _listOptionState.value.copy(category = category, page = 0)
+        _listOptionState.update { it.copy(category = category, page = 0) }
+    }
+
+    private suspend fun loadPlaces() {
+        listOptionState.collect { listOption ->
+            Log.d("Mapchanged", listOption.toString())
+            // 화면이 변경되지 않았을 때 수행할 로직
+            placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
+                .onSuccess { result ->
+                    _place.update { _place.value + result.toUiModel() }
+                    if (result.isLastPage) _isLastPage.value = true
+                }
+                .onError { e ->
+                    viewModelDelegate.handleNetworkError(e)
+                }
         }
     }
 
-    private suspend fun loadPlaces(){
-        listOptionState.collect{
-            placeRepository.getSearchPlaceResultByList(it.toDomainModel())
-                .onSuccess { result ->
-                _place.update { _place.value + result.toUiModel() }
-                if (result.isLastPage) _isLastPage.value = true
-            }.onError { e ->
-                viewModelDelegate.handleNetworkError(e)
-            }
-        }
+    private suspend fun clearPlace() = suspendCoroutine { continuation ->
+        _place.update { emptyList() }
+        _listOptionState.update { it.copy(page = 0) }
+        continuation.resume(Unit)
+    }
+
+    fun onMapChanged(state: Boolean) = viewModelScope.launch{
+        mapChanged.emit(state)
     }
 
     suspend fun onSelectedArea(areaName: String) {
         _place.update { emptyList() }
         val areaCode = _areaCode.value.findAreaCode(areaName) ?: ""
-        _listOptionState.update {
-            _listOptionState.value.copy(areaCode = areaCode)
-        }
+        _listOptionState.update { _listOptionState.value.copy(areaCode = areaCode) }
         viewModelScope.launch {
             _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode)
         }
@@ -130,29 +152,38 @@ class SearchListViewModel @Inject constructor(
     fun onSelectedSigungu(sigunguName: String) {
         _place.update { emptyList() }
         val sigunguCode = _sigunguCode.value.findSigunguCode(sigunguName)
-        _listOptionState.update {
-            _listOptionState.value.copy(sigunguCode = sigunguCode, page = 0)
-        }
+        _listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
         _isLastPage.value = false
     }
 
     fun onSelectedArrange(arrange: String) {
         _place.update { emptyList() }
-        _listOptionState.update {
-            _listOptionState.value.copy(arrange = arrange, page = 0)
-        }
+        _listOptionState.update { it.copy(arrange = arrange, page = 0) }
         _isLastPage.value = false
     }
 
     fun whenLastPageReached() {
-        val currentOption = listOptionState.value
-        _listOptionState.update {
-            currentOption.copy(page = currentOption.page + 1)
-        }
+        _listOptionState.update { it.copy(page = it.page + 1) }
     }
 
     private suspend fun loadAreaCodes() {
         _areaCode.update { areaCodeRepository.getAllAreaCodes() }
+    }
+
+    fun onChangeMapState(state: SharedOptionState) {
+        _listOptionState.update {
+            if (state.detailFilter.isEmpty()) {
+                it.copy(
+                    disabilityType = TreeSet(),
+                    detailFilter = TreeSet()
+                )
+            } else {
+                it.copy(
+                    disabilityType = state.disabilityType,
+                    detailFilter = state.detailFilter
+                )
+            }
+        }
     }
 
     private fun initListOption(): ListOptionState {

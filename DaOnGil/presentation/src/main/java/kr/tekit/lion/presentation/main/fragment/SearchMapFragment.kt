@@ -30,6 +30,7 @@ import com.naver.maps.map.util.FusedLocationSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchMapBinding
 import kr.tekit.lion.presentation.ext.Permissions.LOCATION_PERMISSION_REQUEST_CODE
@@ -47,8 +48,8 @@ import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.Locate
 import kr.tekit.lion.presentation.main.model.PhysicalDisability
 import kr.tekit.lion.presentation.main.model.VisualImpairment
-import kr.tekit.lion.presentation.main.vm.search.SharedViewModel
 import kr.tekit.lion.presentation.main.vm.search.SearchMapViewModel
+import kr.tekit.lion.presentation.main.vm.search.SharedViewModel
 
 @AndroidEntryPoint
 class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCallback {
@@ -71,11 +72,23 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
         subscribeOptionStates(binding)
 
         repeatOnViewStarted {
-            sharedViewModel.tabState.collect {
-                viewModel.onSelectedTab(it)
-                markers.map { m->  m.map = null }
-                markers.clear()
+            sharedViewModel.sharedOptionState.filter { value ->
+                value.detailFilter.isNotEmpty()
+            }.collect {
+                viewModel.onChangeMapState(it)
             }
+        }
+
+        repeatOnViewStarted {
+            sharedViewModel.tabState.collect {
+                clearMarker()
+                viewModel.onSelectedTab(it)
+            }
+        }
+
+        binding.btnReset.setOnClickListener {
+            sharedViewModel.onClickResetIcon()
+            viewModel.onClickRestButton()
         }
 
         val contracts = ActivityResultContracts.RequestMultiplePermissions()
@@ -145,7 +158,7 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
         disabilityType: DisabilityType
     ) {
         repeatOnViewStarted {
-            optionState.collect{ options ->
+            optionState.collect { options ->
                 chip.setClickEvent(this) {
                     showBottomSheet(options, disabilityType)
                 }
@@ -252,81 +265,81 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
 
     private fun addMaker() {
         repeatOnViewStarted {
-            val places = viewModel.mapSearchResult
-            val options = viewModel.mapOptionState
-            places.combine(options) { result, option ->
-                result.places.map { place ->
-                    val marker = Marker()
-                    with(marker) {
-                        icon = when (option.category) {
-                            Category.PLACE -> {
-                                OverlayImage.fromResource(R.drawable.maker_unselected_tourist_spot_icon)
-                            }
-
-                            Category.RESTAURANT -> {
-                                OverlayImage.fromResource(R.drawable.maker_unselected_restaurant_icon)
-                            }
-
-                            Category.ROOM -> {
-                                OverlayImage.fromResource(R.drawable.maker_unselected_lodging_icon)
-                            }
-                        }
-                        position = LatLng(place.mapY, place.mapX)
-                        map = naverMap
-                        width = 86
-                        height = 90
-
-                        setOnClickListener {
-                            PlaceBottomSheet(place) {
-
-                            }.show(parentFragmentManager, "place_bottom_sheet")
-
-                            selectedMarker?.let { maker ->
-                                maker.icon = when (option.category) {
-                                    Category.PLACE -> {
-                                        OverlayImage.fromResource(R.drawable.maker_unselected_tourist_spot_icon)
-                                    }
-
-                                    Category.RESTAURANT -> {
-                                        OverlayImage.fromResource(R.drawable.maker_unselected_restaurant_icon)
-                                    }
-
-                                    Category.ROOM -> {
-                                        OverlayImage.fromResource(R.drawable.maker_unselected_lodging_icon)
-                                    }
-                                }
-                                maker.isHideCollidedMarkers = true
-                                maker.isForceShowIcon = false
-                                maker.width = 86
-                                maker.height = 90
-                            }
-
+            viewModel.mapSearchResult
+                .combine(viewModel.mapOptionState) { result, option ->
+                    clearMarker()
+                    result.map { place ->
+                        val marker = Marker()
+                        with(marker) {
                             icon = when (option.category) {
                                 Category.PLACE -> {
-                                    OverlayImage.fromResource(R.drawable.maker_selected_tourist_spot_icon)
+                                    OverlayImage.fromResource(R.drawable.maker_unselected_tourist_spot_icon)
                                 }
 
                                 Category.RESTAURANT -> {
-                                    OverlayImage.fromResource(R.drawable.maker_selected_restauraunt_icon)
+                                    OverlayImage.fromResource(R.drawable.maker_unselected_restaurant_icon)
                                 }
 
                                 Category.ROOM -> {
-                                    OverlayImage.fromResource(R.drawable.maker_selected_lodging_icon)
+                                    OverlayImage.fromResource(R.drawable.maker_unselected_lodging_icon)
                                 }
                             }
-                            isHideCollidedMarkers = true
-                            isForceShowIcon = false
-                            width = 100
-                            height = 130
-                            zIndex = 10
+                            position = LatLng(place.latitude, place.longitude)
+                            map = naverMap
+                            width = 86
+                            height = 90
 
-                            selectedMarker = this
-                            true
+                            setOnClickListener {
+                                PlaceBottomSheet(place) {
+
+                                }.show(parentFragmentManager, "place_bottom_sheet")
+
+                                selectedMarker?.let { maker ->
+                                    maker.icon = when (option.category) {
+                                        Category.PLACE -> {
+                                            OverlayImage.fromResource(R.drawable.maker_unselected_tourist_spot_icon)
+                                        }
+
+                                        Category.RESTAURANT -> {
+                                            OverlayImage.fromResource(R.drawable.maker_unselected_restaurant_icon)
+                                        }
+
+                                        Category.ROOM -> {
+                                            OverlayImage.fromResource(R.drawable.maker_unselected_lodging_icon)
+                                        }
+                                    }
+                                    maker.isHideCollidedMarkers = true
+                                    maker.isForceShowIcon = false
+                                    maker.width = 86
+                                    maker.height = 90
+                                }
+
+                                icon = when (option.category) {
+                                    Category.PLACE -> {
+                                        OverlayImage.fromResource(R.drawable.maker_selected_tourist_spot_icon)
+                                    }
+
+                                    Category.RESTAURANT -> {
+                                        OverlayImage.fromResource(R.drawable.maker_selected_restauraunt_icon)
+                                    }
+
+                                    Category.ROOM -> {
+                                        OverlayImage.fromResource(R.drawable.maker_selected_lodging_icon)
+                                    }
+                                }
+                                isHideCollidedMarkers = true
+                                isForceShowIcon = false
+                                width = 100
+                                height = 130
+                                zIndex = 10
+
+                                selectedMarker = this
+                                true
+                            }
                         }
+                        markers.add(marker)
                     }
-                    markers.add(marker)
-                }
-            }.collect {}
+                }.collect { }
         }
     }
 
@@ -387,8 +400,13 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
 
     private fun showBottomSheet(selectedOptions: List<Int>, disabilityType: DisabilityType) {
         CategoryBottomSheet(selectedOptions, disabilityType) { optionIds, optionNames ->
-            sharedViewModel.onSelectOption(optionIds, disabilityType)
+            sharedViewModel.onSelectOption(optionIds, disabilityType, optionNames)
             viewModel.onSelectOption(optionNames, disabilityType)
         }.show(parentFragmentManager, "bottomSheet")
+    }
+
+    private fun clearMarker() {
+        markers.map { m -> m.map = null }
+        markers.clear()
     }
 }

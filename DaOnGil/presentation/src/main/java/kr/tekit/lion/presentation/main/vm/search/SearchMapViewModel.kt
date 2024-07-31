@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.presentation.main.model.Category
@@ -20,10 +21,12 @@ import kr.tekit.lion.presentation.main.model.HearingImpairment
 import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.Locate
 import kr.tekit.lion.presentation.main.model.MapOptionState
+import kr.tekit.lion.presentation.main.model.MapPlaceModel
 import kr.tekit.lion.presentation.main.model.PhysicalDisability
-import kr.tekit.lion.presentation.main.model.PlaceModel
+import kr.tekit.lion.presentation.main.model.SharedOptionState
 import kr.tekit.lion.presentation.main.model.SortByLatest
 import kr.tekit.lion.presentation.main.model.VisualImpairment
+import kr.tekit.lion.presentation.main.model.toUiModel
 import java.util.TreeSet
 import javax.inject.Inject
 
@@ -32,9 +35,6 @@ class SearchMapViewModel  @Inject constructor(
     private val placeRepository: PlaceRepository,
 ) : ViewModel(){
 
-    private val _place = MutableStateFlow<List<PlaceModel>>(emptyList())
-    val place get() = _place.asStateFlow()
-
     private val _mapOptionState = MutableStateFlow(initMapOption())
     val mapOptionState get() = _mapOptionState.asStateFlow()
 
@@ -42,23 +42,42 @@ class SearchMapViewModel  @Inject constructor(
     val mapSearchResult = _mapOptionState
         .debounce(DEBOUNCE_INTERVAL)
         .flatMapLatest { request ->
-            placeRepository.getSearchPlaceResultByMap(request.toDomainModel())
+            val response = placeRepository.getSearchPlaceResultByMap(request.toDomainModel())
+            response.map { it.toUiModel() }
         }.flowOn(Dispatchers.IO)
         .catch { e: Throwable ->
             e.printStackTrace()
         }
 
     fun onSelectedTab(category: Category) {
-        _place.value.toMutableList().clear()
-        _mapOptionState.value = _mapOptionState.value.copy(category = category)
+        if (_mapOptionState.value.category != category) {
+            _mapOptionState.update { it.copy(category = category) }
+        }
     }
 
     fun onCameraPositionChanged(locate: Locate){
-        _mapOptionState.value = _mapOptionState.value.copy(location = locate)
+        if (_mapOptionState.value.location != locate) {
+            _mapOptionState.update { it.copy(location = locate) }
+        }
+    }
+
+    fun onChangeMapState(state: SharedOptionState){
+        _mapOptionState.update {
+            if (state.detailFilter.isEmpty()){
+                it.copy(
+                    disabilityType = TreeSet(),
+                    detailFilter = TreeSet()
+                )
+            }else{
+                it.copy(
+                    disabilityType = state.disabilityType,
+                    detailFilter = state.detailFilter
+                )
+            }
+        }
     }
 
     fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
-        _place.update { emptyList() }
 
         val currentOptionState = _mapOptionState.value
         val mapUpdatedTypes = TreeSet(currentOptionState.disabilityType)
@@ -97,7 +116,6 @@ class SearchMapViewModel  @Inject constructor(
         }
     }
 
-
     private fun initMapOption(): MapOptionState {
         return MapOptionState(
             category = Category.PLACE,
@@ -111,6 +129,13 @@ class SearchMapViewModel  @Inject constructor(
             detailFilter = DisabilityType.createFilterCodes(),
             arrange = SortByLatest.sortCode
         )
+    }
+
+    fun onClickRestButton(){
+        _mapOptionState.update { it.copy(
+            disabilityType = DisabilityType.createDisabilityTypeCodes(),
+            detailFilter = DisabilityType.createFilterCodes(),
+        ) }
     }
 
     companion object{

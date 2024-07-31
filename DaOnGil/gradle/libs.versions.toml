@@ -34,7 +34,7 @@ kotlin-serialization-plugin = "1.9.22"
 navigationSafeArgs = "2.7.7"
 coroutines-core = "1.7.3"
 javaxInject="1"
-playServicesLocation = "18.0.0"
+playServicesLocation = "21.3.0"
 
 [libraries]
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
