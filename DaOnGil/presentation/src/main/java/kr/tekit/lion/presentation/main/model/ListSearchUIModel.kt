@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.main.model
 
 import kr.tekit.lion.domain.model.ListSearchResultList
+import kr.tekit.lion.domain.model.MapSearchResultList
 import kr.tekit.lion.presentation.R
 
 sealed class ListSearchUIModel(val id: Int)

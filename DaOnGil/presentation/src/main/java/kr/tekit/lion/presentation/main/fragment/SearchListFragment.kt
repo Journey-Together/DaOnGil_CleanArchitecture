@@ -9,12 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kr.tekit.lion.domain.model.ConnectError
-import kr.tekit.lion.domain.model.HttpError
-import kr.tekit.lion.domain.model.TimeoutError
-import kr.tekit.lion.domain.model.UnknownHostError
-import kr.tekit.lion.domain.model.onError
-import kr.tekit.lion.domain.model.onSuccess
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchListBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
@@ -26,7 +20,6 @@ import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
 import kr.tekit.lion.presentation.main.model.ListSearchUIModel
 import kr.tekit.lion.presentation.main.model.PlaceModel
-import kr.tekit.lion.presentation.main.model.toUiModel
 import kr.tekit.lion.presentation.main.vm.search.SearchListViewModel
 import kr.tekit.lion.presentation.main.vm.search.SharedViewModel
 
@@ -78,7 +71,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                 viewModel.onSelectedArrange(it)
             })
 
-        val arr = ArrayList<ListSearchUIModel>()
+        val arr = mutableSetOf<ListSearchUIModel>()
         arr.add(CategoryModel)
         arr.add(AreaModel)
 
@@ -101,6 +94,11 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                 if (pageState.not()){
                     viewModel.whenLastPageReached()
                 }
+            }
+        }
+        repeatOnViewStarted {
+            sharedViewModel.sharedOptionState.collect{
+                viewModel.onChangeMapState(it)
             }
         }
 
@@ -132,7 +130,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
         }
 
         repeatOnViewStarted {
-            sharedViewModel.optionState.collect {
+            sharedViewModel.bottomSheetOptionState.collect {
                 mainAdapter.modifyOptionState(it)
             }
         }
@@ -146,9 +144,13 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
 
     private fun showBottomSheet(selectedOptions: List<Int>, disabilityType: DisabilityType) {
         CategoryBottomSheet(selectedOptions, disabilityType) { optionIds, optionNames ->
-            sharedViewModel.onSelectOption(optionIds, disabilityType)
+            sharedViewModel.onSelectOption(optionIds, disabilityType, optionNames)
             viewModel.onSelectOption(optionNames, disabilityType)
         }.show(parentFragmentManager, "bottomSheet")
+    }
+
+    fun updateData(data: Boolean) {
+        if (data) viewModel.onMapChanged(data)
     }
 }
 

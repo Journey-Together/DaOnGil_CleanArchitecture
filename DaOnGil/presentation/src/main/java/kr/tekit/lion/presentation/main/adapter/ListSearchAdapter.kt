@@ -44,7 +44,7 @@ class ListSearchAdapter(
     private val sigunguList: MutableList<String> = mutableListOf()
     private val optionState: MutableMap<DisabilityType, Int> = HashMap()
 
-    fun submitList(newData: List<ListSearchUIModel>) {
+    fun submitList(newData: Set<ListSearchUIModel>) {
         val oldPlaceModels = allDataList.filterIsInstance<PlaceModel>()
         if (oldPlaceModels.isNotEmpty()) {
             allDataList.removeAll(oldPlaceModels)
