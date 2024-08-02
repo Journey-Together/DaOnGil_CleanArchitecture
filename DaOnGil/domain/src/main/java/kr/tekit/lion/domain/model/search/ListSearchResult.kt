@@ -1,4 +1,6 @@
-package kr.tekit.lion.domain.model
+package kr.tekit.lion.domain.model.search
+
+import kr.tekit.lion.domain.model.Place
 
 data class ListSearchResult (
     val place: Place,

@@ -2,7 +2,7 @@ package kr.tekit.lion.data.dto.response.searchplace.list
 
 import com.squareup.moshi.JsonClass
 import kr.tekit.lion.domain.model.Place
-import kr.tekit.lion.domain.model.ListSearchResult
+import kr.tekit.lion.domain.model.search.ListSearchResult
 
 @JsonClass(generateAdapter = true)
 internal data class SearchPlaceResponse(

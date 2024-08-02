@@ -1,6 +1,6 @@
 package kr.tekit.lion.domain.usecase.areacode
 
-import kr.tekit.lion.domain.model.SigunguCode
+import kr.tekit.lion.domain.model.area.SigunguCode
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.KorWithRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository

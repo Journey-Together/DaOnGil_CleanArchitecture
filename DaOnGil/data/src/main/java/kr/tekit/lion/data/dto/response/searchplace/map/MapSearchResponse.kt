@@ -1,8 +1,8 @@
 package kr.tekit.lion.data.dto.response.searchplace.map
 
 import com.squareup.moshi.JsonClass
-import kr.tekit.lion.domain.model.MapSearchResult
-import kr.tekit.lion.domain.model.MapSearchResultList
+import kr.tekit.lion.domain.model.search.MapSearchResult
+import kr.tekit.lion.domain.model.search.MapSearchResultList
 
 @JsonClass(generateAdapter = true)
 internal data class MapSearchResponse(

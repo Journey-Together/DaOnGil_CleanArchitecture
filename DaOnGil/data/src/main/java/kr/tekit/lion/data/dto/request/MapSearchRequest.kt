@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.dto.request
 
-import kr.tekit.lion.domain.model.MapSearchOption
+import kr.tekit.lion.domain.model.search.MapSearchOption
 
 internal data class MapSearchRequest (
     val category: String,

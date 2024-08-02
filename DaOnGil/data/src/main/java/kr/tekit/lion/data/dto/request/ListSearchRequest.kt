@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.dto.request
 
-import kr.tekit.lion.domain.model.ListSearchOption
+import kr.tekit.lion.domain.model.search.ListSearchOption
 
 internal data class ListSearchRequest (
     val category: String,

@@ -2,7 +2,7 @@ package kr.tekit.lion.data.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kr.tekit.lion.domain.model.AreaCode
+import kr.tekit.lion.domain.model.area.AreaCode
 
 @Entity(tableName = "area_code_table")
 internal data class AreaCodeEntity (

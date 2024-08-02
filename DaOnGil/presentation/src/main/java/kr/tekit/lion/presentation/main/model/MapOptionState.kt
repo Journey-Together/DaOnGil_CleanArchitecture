@@ -1,6 +1,6 @@
 package kr.tekit.lion.presentation.main.model
 
-import kr.tekit.lion.domain.model.MapSearchOption
+import kr.tekit.lion.domain.model.search.MapSearchOption
 import java.util.TreeSet
 
 data class MapOptionState (

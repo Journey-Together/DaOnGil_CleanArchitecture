@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kr.tekit.lion.data.datasource.PlaceDataSource
 import kr.tekit.lion.data.dto.request.toRequestModel
-import kr.tekit.lion.domain.model.ListSearchOption
-import kr.tekit.lion.domain.model.ListSearchResultList
-import kr.tekit.lion.domain.model.MapSearchOption
-import kr.tekit.lion.domain.model.MapSearchResultList
+import kr.tekit.lion.domain.model.search.ListSearchOption
+import kr.tekit.lion.domain.model.search.ListSearchResultList
+import kr.tekit.lion.domain.model.search.MapSearchOption
+import kr.tekit.lion.domain.model.search.MapSearchResultList
 import kr.tekit.lion.domain.repository.PlaceRepository
 import javax.inject.Inject
 import kr.tekit.lion.domain.model.Result

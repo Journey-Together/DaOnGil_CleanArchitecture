@@ -1,4 +1,4 @@
-package kr.tekit.lion.domain.model
+package kr.tekit.lion.domain.model.area
 
 data class AreaCode (
     val code: String,

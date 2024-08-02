@@ -1,6 +1,6 @@
 package kr.tekit.lion.presentation.main.model
 
-import kr.tekit.lion.domain.model.MapSearchResultList
+import kr.tekit.lion.domain.model.search.MapSearchResultList
 
 data class MapPlaceModel(
     val placeName: String,

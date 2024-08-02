@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.tekit.lion.domain.model.AreaCodeList
-import kr.tekit.lion.domain.model.SigunguCodeList
+import kr.tekit.lion.domain.model.area.AreaCodeList
+import kr.tekit.lion.domain.model.area.SigunguCodeList
 import kr.tekit.lion.domain.model.onError
 import kr.tekit.lion.domain.model.onSuccess
 import kr.tekit.lion.domain.repository.AreaCodeRepository
@@ -32,8 +32,6 @@ import kr.tekit.lion.presentation.main.model.VisualImpairment
 import kr.tekit.lion.presentation.main.model.toUiModel
 import java.util.TreeSet
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class SearchListViewModel @Inject constructor(
@@ -149,9 +147,7 @@ class SearchListViewModel @Inject constructor(
         _place.update { emptySet() }
         val areaCode = _areaCode.value.findAreaCode(areaName) ?: ""
         _listOptionState.update { _listOptionState.value.copy(areaCode = areaCode) }
-        viewModelScope.launch {
-            _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode)
-        }
+        _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode)
         _isLastPage.value = false
     }
 

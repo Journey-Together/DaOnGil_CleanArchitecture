@@ -4,8 +4,8 @@ import kr.tekit.lion.data.database.entity.toDomainModel
 import kr.tekit.lion.data.database.entity.toEntity
 import kr.tekit.lion.data.datasource.AreaCodeDataSource
 import kr.tekit.lion.data.mapper.toFullAreaName
-import kr.tekit.lion.domain.model.AreaCode
-import kr.tekit.lion.domain.model.AreaCodeList
+import kr.tekit.lion.domain.model.area.AreaCode
+import kr.tekit.lion.domain.model.area.AreaCodeList
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import javax.inject.Inject
 

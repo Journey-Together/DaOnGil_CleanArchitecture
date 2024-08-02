@@ -150,7 +150,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     fun updateData(data: Boolean) {
-        if (data) viewModel.onMapChanged(data)
+        viewModel.onMapChanged(data)
     }
 }
 
