@@ -1,4 +1,4 @@
-package kr.tekit.lion.presentation.main.adapter.multi_viewholder
+package kr.tekit.lion.presentation.main.adapter.viewholder
 
 import android.view.View
 import android.widget.ArrayAdapter
@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemListSearchAreaBinding
 import kr.tekit.lion.presentation.ext.setClickEvent
+import kr.tekit.lion.presentation.main.model.AreaModel
 import kr.tekit.lion.presentation.main.model.SortByLatest
 import kr.tekit.lion.presentation.main.model.SortByLetter
 import kr.tekit.lion.presentation.main.model.SortByPopularity
@@ -62,7 +63,7 @@ class ListSearchAreaViewHolder(
         }
     }
 
-    fun bind(itemCount: Int, areaList: List<String>, sigunguList: List<String>) {
+    fun bind(itemCount: Int, item: AreaModel) {
 
         with(binding) {
             totalCnt.text = itemCount.toString()
@@ -73,14 +74,14 @@ class ListSearchAreaViewHolder(
             val areaAdapter = ArrayAdapter(
                 root.context,
                 android.R.layout.simple_list_item_1,
-                areaList
+                item.areas
             )
             selectedArea.setAdapter(areaAdapter)
 
             val sigunguAdapter = ArrayAdapter(
                 root.context,
                 android.R.layout.simple_list_item_1,
-                sigunguList
+                item.sigungus
             )
             detailSelectedArea.setAdapter(sigunguAdapter)
         }

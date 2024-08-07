@@ -1,4 +1,4 @@
-package kr.tekit.lion.presentation.main.adapter.multi_viewholder
+package kr.tekit.lion.presentation.main.adapter.viewholder
 
 import android.widget.ImageView
 import android.widget.TextView
