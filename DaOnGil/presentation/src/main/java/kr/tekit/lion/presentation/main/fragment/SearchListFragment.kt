@@ -97,47 +97,43 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
             }
         }
         repeatOnViewStarted {
-            sharedViewModel.sharedOptionState.collect{
-                viewModel.onChangeMapState(it)
-            }
-        }
+            supervisorScope {
+                launch {
+                    sharedViewModel.sharedOptionState.collect {
+                        viewModel.onChangeMapState(it)
+                    }
+                }
 
-        repeatOnViewStarted {
-            sharedViewModel.tabState.collect{
-                binding.rvSearchResult.scrollToPosition(0)
-                viewModel.onSelectedTab(it)
-            }
-        }
+                launch {
+                    sharedViewModel.tabState.collect {
+                        binding.rvSearchResult.scrollToPosition(0)
+                        viewModel.onSelectedTab(it)
+                    }
+                }
 
-        repeatOnViewStarted {
-            viewModel.areaCode.collect { area ->
-                mainAdapter.submitAreaList(area.areaList.map { it.name })
-            }
-        }
+                launch {
+                    viewModel.uiState
+                        .filter { uiState ->
+                            uiState.any { it is AreaModel && it.areas.isNotEmpty() }
+                        }.collect {
+                            Log.d("czxcwasa", "fragment $it")
+                            mainAdapter.submitList(it)
+                        }
+                }
 
-        repeatOnViewStarted {
-            viewModel.sigunguCode.collect { result ->
-                mainAdapter.submitSigunguList(result.sigunguList.map {
-                    it.sigunguName
-                })
-            }
-        }
+                launch {
+                    sharedViewModel.bottomSheetOptionState.collect {
+                        viewModel.modifyCategoryModel(it)
+                    }
+                }
 
-        repeatOnViewStarted {
-            viewModel.place.collect {
-                mainAdapter.submitList(it)
-            }
-        }
-
-        repeatOnViewStarted {
-            sharedViewModel.bottomSheetOptionState.collect {
-                mainAdapter.modifyOptionState(it)
-            }
-        }
-
-        repeatOnViewStarted {
-            viewModel.errorMessage.collect { msg ->
-                msg?.let { mainAdapter.submitErrorMessage(it) }
+                launch {
+                    viewModel.errorMessage
+                        .filter { it != null }
+                        .collect { msg ->
+                            //msg?.let { mainAdapter.submitList(it) }
+                        }
+                }
             }
         }
     }
