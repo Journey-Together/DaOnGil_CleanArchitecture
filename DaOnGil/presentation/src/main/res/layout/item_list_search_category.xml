@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_big4"
+    android:layout_marginEnd="@dimen/margin_big4"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_big2"
-        android:layout_marginEnd="@dimen/margin_small1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_big1"
             android:fontFamily="@font/pretendard_medium"
-            android:text="@string/text_search_guide1"/>
+            android:text="@string/text_search_guide1"
+            android:textSize="@dimen/font_big1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,29 +31,31 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_big1"
                 android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/text_category"
                 android:textColor="@color/search_view_main"
-                android:text="@string/text_category"/>
+                android:textSize="@dimen/font_big1" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_big1"
                 android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/text_search_guide2"
                 android:textColor="@color/search_guide_text"
-                android:text="@string/text_search_guide2"/>
+                android:textSize="@dimen/font_big1" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_big3"
-        android:layout_marginStart="@dimen/margin_big4"
-        android:layout_marginEnd="@dimen/margin_big4"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/font_small1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <LinearLayout
             android:id="@+id/container_physical_disability"
@@ -67,9 +75,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
+                android:gravity="center"
                 android:text="@string/text_physical_disability"
                 android:textColor="@color/search_view_category_name"
-                android:gravity="center"
                 android:textSize="@dimen/font_small1" />
         </LinearLayout>
 
@@ -77,9 +85,9 @@
             android:id="@+id/container_hearing_impairment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_hearing_disability"
@@ -91,20 +99,20 @@
                 android:id="@+id/text_hearing_disability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/search_view_category_name"
                 android:fontFamily="@font/pretendard_regular"
-                android:textSize="@dimen/font_small1"
                 android:gravity="center"
-                android:text="@string/text_hearing_impairment"/>
+                android:text="@string/text_hearing_impairment"
+                android:textColor="@color/search_view_category_name"
+                android:textSize="@dimen/font_small1" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/container_visual_impairment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_weight="1">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_visual_disability"
@@ -116,18 +124,19 @@
                 android:id="@+id/text_visual_disability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/search_view_category_name"
                 android:fontFamily="@font/pretendard_regular"
-                android:textSize="@dimen/font_small1"
                 android:gravity="center"
-                android:text="@string/text_visual_impairment"/>
+                android:text="@string/text_visual_impairment"
+                android:textColor="@color/search_view_category_name"
+                android:textSize="@dimen/font_small1" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/container_infant_family"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_infant_family"
@@ -141,19 +150,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/search_view_category_name"
                 android:fontFamily="@font/pretendard_regular"
-                android:textSize="@dimen/font_small1"
                 android:gravity="center"
-                android:text="@string/text_infant_family"/>
+                android:text="@string/text_infant_family"
+                android:textColor="@color/search_view_category_name"
+                android:textSize="@dimen/font_small1" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/container_elderly_person"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_weight="1">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_elderly_person"
@@ -165,10 +175,11 @@
                 android:id="@+id/text_elderly_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/search_view_category_name"
                 android:fontFamily="@font/pretendard_regular"
-                android:textSize="@dimen/font_small1"
-                android:text="@string/text_elderly_person"/>
+                android:gravity="center"
+                android:text="@string/text_elderly_person"
+                android:textColor="@color/search_view_category_name"
+                android:textSize="@dimen/font_small1" />
         </LinearLayout>
-</LinearLayout></LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,18 +48,18 @@
                     android:text="@string/text_physical_disability" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_visual_impairment"
-                    style="@style/map_category_chip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/text_visual_impairment" />
-
-                <com.google.android.material.chip.Chip
                     android:id="@+id/chip_hearing_impairment"
                     style="@style/map_category_chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_hearing_impairment" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_visual_impairment"
+                    style="@style/map_category_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_visual_impairment" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_infant_familly"
