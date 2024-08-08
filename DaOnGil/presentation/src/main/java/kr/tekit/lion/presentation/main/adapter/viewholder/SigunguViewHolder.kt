@@ -19,7 +19,7 @@ class SigunguViewHolder(
 
     fun bind(item: SigunguModel){
         with(binding){
-            detailSelectedArea.setText("시/군/구")
+            detailSelectedArea.setText(item.selectedSigungu)
             val sigunguAdapter = ArrayAdapter(
                 root.context,
                 android.R.layout.simple_list_item_1,
