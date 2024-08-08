@@ -8,7 +8,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchListBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
@@ -16,10 +18,7 @@ import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter
 import kr.tekit.lion.presentation.main.bottomsheet.CategoryBottomSheet
 import kr.tekit.lion.presentation.main.model.AreaModel
-import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
-import kr.tekit.lion.presentation.main.model.ListSearchUIModel
-import kr.tekit.lion.presentation.main.model.PlaceModel
 import kr.tekit.lion.presentation.main.vm.search.SearchListViewModel
 import kr.tekit.lion.presentation.main.vm.search.SharedViewModel
 
@@ -54,33 +53,20 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                 showBottomSheet(options, type)
             },
             onSelectArea = {
-                viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnViewStarted {
                     viewModel.onSelectedArea(it)
                 }
             },
             onSelectSigungu = {
                 viewModel.onSelectedSigungu(it)
-            },
-            onClickSortByLatestBtn = {
-                viewModel.onSelectedArrange(it)
-            },
-            onClickSortByLetterBtn = {
-                viewModel.onSelectedArrange(it)
-            },
-            onClickSortByPopularityBtn = {
-                viewModel.onSelectedArrange(it)
-            })
+            }
+            )
 
-        val arr = mutableSetOf<ListSearchUIModel>()
-        arr.add(CategoryModel)
-        arr.add(AreaModel)
-
-        mainAdapter.submitList(arr)
         val layoutManager = GridLayoutManager(requireContext(), 2)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (mainAdapter.getItemViewType(position)) {
-                    PlaceModel().id -> 1
+                    R.layout.item_place_high -> 1
                     else -> 2
                 }
             }
@@ -91,7 +77,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
             rvSearchResult.layoutManager = layoutManager
             rvSearchResult.addOnScrollEndListener {
                 val pageState = viewModel.isLastPage.value
-                if (pageState.not()){
+                if (pageState.not()) {
                     viewModel.whenLastPageReached()
                 }
             }
@@ -116,7 +102,6 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                         .filter { uiState ->
                             uiState.any { it is AreaModel && it.areas.isNotEmpty() }
                         }.collect {
-                            Log.d("czxcwasa", "fragment $it")
                             mainAdapter.submitList(it)
                         }
                 }
@@ -145,8 +130,8 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
         }.show(parentFragmentManager, "bottomSheet")
     }
 
-    fun updateData(data: Boolean) {
-        viewModel.onMapChanged(data)
+    fun mapChanged(state: Boolean) {
+        viewModel.onMapChanged(state)
     }
 }
 
