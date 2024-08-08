@@ -11,11 +11,11 @@ import kr.tekit.lion.domain.model.UnknownError
 import kr.tekit.lion.domain.model.UnknownHostError
 import javax.inject.Inject
 
-class NetworkErrorDelegateImpl @Inject constructor(): NetworkErrorDelegate {
+class NetworkErrorDelegate @Inject constructor() {
     private val _errorMessage = MutableStateFlow<String?>(null)
-    override val errorMessage: StateFlow<String?> get() = _errorMessage.asStateFlow()
+    val errorMessage: StateFlow<String?> get() = _errorMessage.asStateFlow()
 
-    override fun handleNetworkError(exception: NetworkError) {
+    fun handleNetworkError(exception: NetworkError) {
         val errorState: String = when (exception) {
             is ConnectError -> ConnectError.message
             is TimeoutError -> TimeoutError.message
