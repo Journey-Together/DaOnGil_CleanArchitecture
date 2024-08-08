@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/header_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -18,12 +18,12 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_width="130dp"
+        android:layout_height="140dp"
         android:layout_marginTop="@dimen/font_big1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4">
+        app:layout_constraintTop_toBottomOf="@+id/header_bar">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
@@ -40,15 +40,6 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_place_high_background" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/disability_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|bottom"
-                android:layout_marginStart="@dimen/margin_small2"
-                android:layout_marginBottom="@dimen/margin_small1"
-                android:layout_weight="1" />
 
         </com.google.android.material.card.MaterialCardView>
     </FrameLayout>
@@ -73,16 +64,35 @@
             android:ellipsize="end"
             android:maxLines="1" />
 
-        <TextView
-            android:id="@+id/text_addr"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small1"
-            android:fontFamily="@font/pretendard_regular"
-            android:lines="2"
-            android:textColor="@color/text_quaternary"
-            android:text="경기도 수원시 팔달구 매향동 122-106"
-            android:ellipsize="end"
-            android:maxLines="2" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                android:src="@drawable/ic_small_map"/>
+
+            <TextView
+                android:id="@+id/text_addr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendard_regular"
+                android:lines="2"
+                android:maxLines="2"
+                android:text="경기도 수원시 팔달구 매향동 122-106"
+                android:textColor="@color/text_quaternary" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/disability_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:layout_marginTop="@dimen/margin_small1" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

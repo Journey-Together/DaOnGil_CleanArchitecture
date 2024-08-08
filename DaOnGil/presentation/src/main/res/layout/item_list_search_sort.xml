@@ -12,6 +12,7 @@
         android:background="@color/primary_disabled" />
 
     <LinearLayout
+        android:id="@+id/sort_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -47,60 +48,5 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/sort_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/btn_latest"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_small2"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@string/text_sort_recent"
-                android:textColor="@color/select_area_text"
-                android:textSize="@dimen/font_big3" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="|"
-                android:textColor="@color/select_area_text"
-                android:textSize="@dimen/font_big3" />
-
-            <TextView
-                android:id="@+id/btn_letter"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_small2"
-                android:layout_marginEnd="@dimen/margin_small2"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@string/text_sort_ganada"
-                android:textColor="@color/select_area_text"
-                android:textSize="@dimen/font_big3" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="|"
-                android:textColor="@color/select_area_text"
-                android:textSize="@dimen/font_big3" />
-
-            <TextView
-                android:id="@+id/btn_popularity"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_small2"
-                android:layout_marginEnd="@dimen/margin_big2"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@string/text_sort_popular"
-                android:textColor="@color/select_area_text"
-                android:textSize="@dimen/font_big3" />
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
