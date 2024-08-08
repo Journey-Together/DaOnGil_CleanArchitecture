@@ -4,6 +4,7 @@ import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Tag
 
 internal interface PlaceService {
     @GET("place/search")
@@ -17,6 +18,7 @@ internal interface PlaceService {
         @Query("areacode") areaCode: String?,
         @Query("sigungucode") sigunguCode: String?,
         @Query("arrange") arrange: String?,
+        @Tag authType: AuthType = AuthType.NO_AUTH
     ): SearchPlaceResponse
 
     @GET("place/search/map")
@@ -29,5 +31,6 @@ internal interface PlaceService {
         @Query("disabilityType") disabilityType: List<Long>?,
         @Query("detailFilter") detailFilter: List<Long>?,
         @Query("arrange") arrange: String?,
+        @Tag authType: AuthType = AuthType.NO_AUTH
     ): MapSearchResponse
 }
