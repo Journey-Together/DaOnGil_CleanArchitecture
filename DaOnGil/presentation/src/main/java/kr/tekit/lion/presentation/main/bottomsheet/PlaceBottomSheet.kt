@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.PlaceBottomSheetBinding
-import kr.tekit.lion.presentation.main.adapter.DisabilityRVAdapter
+import kr.tekit.lion.presentation.main.adapter.RedDisabilityRVAdapter
 import kr.tekit.lion.presentation.main.model.MapPlaceModel
 
 class PlaceBottomSheet(
@@ -19,7 +19,7 @@ class PlaceBottomSheet(
         super.onViewCreated(view, savedInstanceState)
         val binding = PlaceBottomSheetBinding.bind(view)
 
-        val adapter = DisabilityRVAdapter(place.disability)
+        val adapter = RedDisabilityRVAdapter(place.disability)
         with(binding){
 
             root.setOnClickListener {

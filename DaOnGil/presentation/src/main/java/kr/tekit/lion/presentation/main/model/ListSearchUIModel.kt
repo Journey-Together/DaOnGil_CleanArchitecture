@@ -1,27 +1,39 @@
 package kr.tekit.lion.presentation.main.model
 
-import kr.tekit.lion.domain.model.ListSearchResultList
-import kr.tekit.lion.domain.model.MapSearchResultList
-import kr.tekit.lion.presentation.R
+import kr.tekit.lion.domain.model.search.ListSearchResultList
+import java.util.UUID
 
-sealed class ListSearchUIModel(val id: Int)
+sealed class ListSearchUIModel(val uuid: UUID = UUID.randomUUID())
 
-data object CategoryModel : ListSearchUIModel(R.layout.item_list_search_category)
+data class CategoryModel(
+    val optionState: MutableMap<DisabilityType, Int>
+) : ListSearchUIModel()
 
-data object AreaModel : ListSearchUIModel(R.layout.item_list_search_area)
+data class AreaModel(
+    val areas: List<String>,
+) : ListSearchUIModel()
+
+data class SigunguModel(
+    val sigungus: List<String>,
+    val selectedSigungu: String
+) : ListSearchUIModel()
+
+data class SortModel(
+    val totalItemCount: Int,
+): ListSearchUIModel()
 
 data class NoPlaceModel(
     val msg: String = "검색 결과가 없어요\n다시 검색 해주세요"
-) : ListSearchUIModel(R.layout.item_no_place)
+) : ListSearchUIModel()
 
 data class PlaceModel(
-    val placeName: String="",
-    val placeAddr: String="",
-    val placeId: String="",
-    val placeImg: String="",
+    val placeName: String = "",
+    val placeAddr: String = "",
+    val placeId: String = "",
+    val placeImg: String = "",
     val disability: List<String> = emptyList(),
     val itemCount: Int = 0
-) : ListSearchUIModel(R.layout.item_place_high)
+) : ListSearchUIModel()
 
 fun ListSearchResultList.toUiModel(): List<PlaceModel> =
     this.places.map {

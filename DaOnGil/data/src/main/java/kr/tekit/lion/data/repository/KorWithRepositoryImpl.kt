@@ -1,7 +1,7 @@
 package kr.tekit.lion.data.repository
 
 import kr.tekit.lion.data.datasource.KorWithDataSource
-import kr.tekit.lion.domain.model.AreaCode
+import kr.tekit.lion.domain.model.area.AreaCode
 import kr.tekit.lion.domain.repository.KorWithRepository
 import javax.inject.Inject
 

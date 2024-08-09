@@ -1,6 +1,6 @@
 package kr.tekit.lion.presentation.main.model
 
-import kr.tekit.lion.domain.model.ListSearchOption
+import kr.tekit.lion.domain.model.search.ListSearchOption
 import java.util.TreeSet
 
 data class ListOptionState(
@@ -12,7 +12,7 @@ data class ListOptionState(
     val sigunguCode: String?,
     val arrange: String
 ){
-    fun toDomainModel(): ListSearchOption{
+    fun toDomainModel(): ListSearchOption {
         return ListSearchOption(
             category = category.name,
             page = page,

@@ -1,4 +1,4 @@
-package kr.tekit.lion.domain.model
+package kr.tekit.lion.domain.model.search
 
 data class MapSearchResult(
     val address: String,

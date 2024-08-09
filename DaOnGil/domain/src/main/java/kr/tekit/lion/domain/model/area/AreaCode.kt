@@ -1,4 +1,4 @@
-package kr.tekit.lion.domain.model
+package kr.tekit.lion.domain.model.area
 
 data class AreaCode (
     val code: String,
@@ -8,6 +8,10 @@ data class AreaCode (
 data class AreaCodeList(
     val areaList: List<AreaCode>
 ){
+    fun getAllAreaName(): List<String>{
+        return areaList.map { it.name }
+    }
+
     fun findAreaCode(areaName: String): String?{
         return areaList.find { it.name == areaName }?.code
     }

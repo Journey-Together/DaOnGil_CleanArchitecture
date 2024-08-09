@@ -1,4 +1,4 @@
-package kr.tekit.lion.presentation.main.adapter.multi_viewholder
+package kr.tekit.lion.presentation.main.adapter.viewholder
 
 import android.widget.ImageView
 import android.widget.TextView
@@ -8,14 +8,14 @@ import kotlinx.coroutines.CoroutineScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemListSearchCategoryBinding
 import kr.tekit.lion.presentation.ext.setClickEvent
-import kr.tekit.lion.presentation.main.model.DisabilityType
+import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.ElderlyPeople
 import kr.tekit.lion.presentation.main.model.HearingImpairment
 import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.PhysicalDisability
 import kr.tekit.lion.presentation.main.model.VisualImpairment
 
-class ListSearchCategoryViewHolder(
+class CategoryViewHolder(
     private val binding: ItemListSearchCategoryBinding,
     private val uiScope: CoroutineScope,
     private val onClickPhysicalDisability: (PhysicalDisability) -> Unit,
@@ -45,71 +45,103 @@ class ListSearchCategoryViewHolder(
         }
     }
 
-    fun bind(optionState: MutableMap<DisabilityType, Int>) {
-        fun modifyDisabilityUI(
-            type: DisabilityType,
-            textView: TextView,
-            imageView: ImageView,
-            unselectedIcon: Int,
-            selectedIcon: Int,
-            textResId: Int
-        ) {
-            val count = optionState[type] ?: 0
-            val context = binding.root.context
-            when (count) {
-                0 -> {
-                    textView.text = context.getString(textResId)
-                    textView.setTextColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.search_view_category_name
-                        )
-                    )
-                    imageView.setImageDrawable(ContextCompat.getDrawable(context, unselectedIcon))
-                }
+    fun bind(item: CategoryModel) {
+        modifyPhysicalDisabilityUI(item)
+        modifyVisualImpairmentUI(item)
+        modifyHearingImpairmentUI(item)
+        modifyInfantFamilyUI(item)
+        modifyElderlyPeopleUI(item)
+    }
 
-                else -> {
-                    textView.text = "${context.getString(textResId)}($count)"
-                    textView.setTextColor(ContextCompat.getColor(context, R.color.search_view_main))
-                    imageView.setImageDrawable(ContextCompat.getDrawable(context, selectedIcon))
-                }
+    private fun modifyDisabilityUI(
+        count: Int,
+        textView: TextView,
+        imageView: ImageView,
+        unselectedIcon: Int,
+        selectedIcon: Int,
+        textResId: Int
+    ) {
+        val context = binding.root.context
+        when (count) {
+            0, -1 -> {
+                textView.text = context.getString(textResId)
+                textView.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.search_view_category_name
+                    )
+                )
+                imageView.setImageDrawable(ContextCompat.getDrawable(context, unselectedIcon))
+            }
+
+            else -> {
+                textView.setTextColor(ContextCompat.getColor(context, R.color.search_view_main))
+                imageView.setImageDrawable(ContextCompat.getDrawable(context, selectedIcon))
             }
         }
+    }
+
+    private fun modifyPhysicalDisabilityUI(item: CategoryModel) {
+        val count = item.optionState[PhysicalDisability] ?: 0
         with(binding) {
             modifyDisabilityUI(
-                PhysicalDisability,
+                count,
                 textPhysicalDisability,
                 imgPhysicalDisability,
                 R.drawable.sv_physical_disability_unselected_icon,
                 R.drawable.sv_physical_disability_selected_icon,
                 R.string.text_physical_disability
             )
+        }
+    }
+
+    private fun modifyVisualImpairmentUI(item: CategoryModel) {
+        val count = item.optionState[VisualImpairment] ?: 0
+        with(binding) {
             modifyDisabilityUI(
-                VisualImpairment,
+                count,
                 textVisualDisability,
                 imgVisualDisability,
                 R.drawable.sv_visual_impairment_unselect_icon,
                 R.drawable.sv_visual_impairment_select_icon,
                 R.string.text_visual_impairment
             )
+        }
+    }
+
+    private fun modifyHearingImpairmentUI(item: CategoryModel) {
+        val count = item.optionState[HearingImpairment] ?: 0
+        with(binding) {
             modifyDisabilityUI(
-                HearingImpairment,
+                count,
                 textHearingDisability,
                 imgHearingDisability,
                 R.drawable.sv_hearing_impaired_unselected_icon,
                 R.drawable.sv_hearing_impaired_selected_icon,
                 R.string.text_hearing_impairment
             )
+        }
+    }
+
+    private fun modifyInfantFamilyUI(item: CategoryModel) {
+        val count = item.optionState[InfantFamily] ?: 0
+        with(binding) {
             modifyDisabilityUI(
-                InfantFamily,
+                count,
                 textInfantFamily,
                 imgInfantFamily,
                 R.drawable.sv_child_unselected_icon,
                 R.drawable.sv_child_selected_icon,
                 R.string.text_infant_family
             )
+        }
+    }
+
+    private fun modifyElderlyPeopleUI(item: CategoryModel) {
+        val count = item.optionState[ElderlyPeople] ?: 0
+        with(binding) {
             modifyDisabilityUI(
-                ElderlyPeople,
+                count,
                 textElderlyPerson,
                 imgElderlyPerson,
                 R.drawable.sv_elderly_unselected_icon,

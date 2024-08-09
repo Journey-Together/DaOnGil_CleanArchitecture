@@ -80,7 +80,7 @@ class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
 
     private fun showFragment(fragment: Fragment) {
         if (fragment is SearchListFragment) {
-            fragment.updateData(true)
+            fragment.mapChanged(true)
         }
         childFragmentManager.beginTransaction().apply {
             show(fragment)

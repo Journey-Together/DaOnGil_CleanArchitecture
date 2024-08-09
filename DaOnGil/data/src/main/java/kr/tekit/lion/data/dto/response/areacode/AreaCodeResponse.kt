@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.dto.response.areacode
 
-import kr.tekit.lion.domain.model.AreaCode
+import kr.tekit.lion.domain.model.area.AreaCode
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

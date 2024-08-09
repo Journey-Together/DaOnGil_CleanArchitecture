@@ -5,7 +5,7 @@ import kr.tekit.lion.data.dto.request.MapSearchRequest
 import kr.tekit.lion.data.dto.response.searchplace.list.toDomainModel
 import kr.tekit.lion.data.service.PlaceService
 import kr.tekit.lion.data.common.execute
-import kr.tekit.lion.domain.model.ListSearchResultList
+import kr.tekit.lion.domain.model.search.ListSearchResultList
 import javax.inject.Inject
 
 internal class PlaceDataSource @Inject constructor(

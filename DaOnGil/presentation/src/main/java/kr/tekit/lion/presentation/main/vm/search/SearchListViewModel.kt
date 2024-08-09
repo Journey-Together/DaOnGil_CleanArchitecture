@@ -10,30 +10,35 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.tekit.lion.domain.model.AreaCodeList
-import kr.tekit.lion.domain.model.SigunguCodeList
+import kr.tekit.lion.domain.model.area.AreaCodeList
+import kr.tekit.lion.domain.model.area.SigunguCodeList
 import kr.tekit.lion.domain.model.onError
 import kr.tekit.lion.domain.model.onSuccess
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
-import kr.tekit.lion.presentation.delegate.ViewModelDelegate
+import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.main.model.AreaModel
+import kr.tekit.lion.presentation.main.model.ArrangeState
 import kr.tekit.lion.presentation.main.model.Category
+import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
 import kr.tekit.lion.presentation.main.model.ElderlyPeople
 import kr.tekit.lion.presentation.main.model.HearingImpairment
 import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.ListOptionState
+import kr.tekit.lion.presentation.main.model.ListSearchUIModel
+import kr.tekit.lion.presentation.main.model.NoPlaceModel
 import kr.tekit.lion.presentation.main.model.PhysicalDisability
 import kr.tekit.lion.presentation.main.model.PlaceModel
 import kr.tekit.lion.presentation.main.model.SharedOptionState
+import kr.tekit.lion.presentation.main.model.SigunguModel
 import kr.tekit.lion.presentation.main.model.SortByLatest
+import kr.tekit.lion.presentation.main.model.SortModel
 import kr.tekit.lion.presentation.main.model.VisualImpairment
 import kr.tekit.lion.presentation.main.model.toUiModel
 import java.util.TreeSet
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class SearchListViewModel @Inject constructor(
@@ -43,12 +48,12 @@ class SearchListViewModel @Inject constructor(
 ) : ViewModel() {
 
     @Inject
-    lateinit var viewModelDelegate: ViewModelDelegate
+    lateinit var networkErrorDelegate: NetworkErrorDelegate
 
     init {
         viewModelScope.launch {
             mapChanged.collect { changed ->
-                if (changed) clearPlace()
+                if (changed) reloadPlace()
             }
         }
 
@@ -58,29 +63,31 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    val errorMessage: StateFlow<String?> get() = viewModelDelegate.errorMessage
+    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
 
-    private val _areaCode = MutableStateFlow(AreaCodeList(emptyList()))
-    val areaCode get() = _areaCode.asStateFlow()
-
-    private val _sigunguCode = MutableStateFlow(SigunguCodeList(emptyList()))
-    val sigunguCode get() = _sigunguCode.asStateFlow()
-
-    private val _listOptionState = MutableStateFlow(initListOption())
-    val listOptionState get() = _listOptionState.asStateFlow()
-
-    private val _place = MutableStateFlow<Set<PlaceModel>>(emptySet())
-    val place get() = _place.asStateFlow()
+    private val _uiState: MutableStateFlow<List<ListSearchUIModel>> = MutableStateFlow(
+        listOf(
+            CategoryModel(mutableMapOf()),
+            AreaModel(emptyList()),
+            SortModel(0)
+        )
+    )
+    val uiState: StateFlow<List<ListSearchUIModel>> = _uiState.asStateFlow()
 
     private val _isLastPage = MutableStateFlow(false)
     val isLastPage get() = _isLastPage.asStateFlow()
 
+    private val listOptionState = MutableStateFlow(initListOption())
+
+    private val areaCode = MutableStateFlow(AreaCodeList(emptyList()))
+
+    private val sigunguCode = MutableStateFlow(SigunguCodeList(emptyList()))
+
     private val mapChanged = MutableSharedFlow<Boolean>()
 
     fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
-        _place.update { emptySet() }
-
-        val currentOptionState = _listOptionState.value
+        clearPlace()
+        val currentOptionState = listOptionState.value
         val updatedDisabilityTypes = TreeSet(currentOptionState.disabilityType)
         val updatedDetailFilters = TreeSet(currentOptionState.detailFilter)
 
@@ -99,85 +106,176 @@ class SearchListViewModel @Inject constructor(
             updatedDisabilityTypes.remove(type.code)
         }
 
-        _listOptionState.update {
+        _uiState.update { uiState ->
+            uiState.map { uiModel ->
+                if (uiModel is CategoryModel) {
+                    val newOptionState = uiModel.optionState.toMutableMap()
+                    newOptionState[type] = optionCodes.size
+                    uiModel.copy(optionState = newOptionState)
+                } else {
+                    uiModel
+                }
+            }
+        }
+
+        listOptionState.update {
             it.copy(
                 disabilityType = updatedDisabilityTypes,
                 detailFilter = updatedDetailFilters,
                 page = 0
             )
         }
-        _isLastPage.value = false
+        _isLastPage.update { false }
     }
 
     fun onSelectedTab(category: Category) {
-        _place.update { emptySet() }
-        _listOptionState.update { it.copy(category = category, page = 0) }
+        clearPlace()
+        listOptionState.update { it.copy(category = category, page = 0) }
+    }
+
+    fun modifyCategoryModel(optionState: Map<DisabilityType, Int>) {
+        _uiState.update {
+            it.map { uiModel ->
+                when(uiModel){
+                    is CategoryModel -> {
+                        if (optionState.isEmpty()) {
+                            uiModel.copy(optionState = mutableMapOf())
+                        } else {
+                            val newOptionState = uiModel.optionState.toMutableMap()
+                            optionState.forEach { (type, count) ->
+                                newOptionState[type] = count
+                            }
+                            uiModel.copy(optionState = newOptionState)
+                        }
+                    }
+                    else -> uiModel
+                }
+            }
+        }
     }
 
     private suspend fun loadPlaces() {
         listOptionState.collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
-                    _place.update { _place.value + result.toUiModel() }
-                    if (result.isLastPage) _isLastPage.value = true
+                    _uiState.update {
+                        val currentUiState = it.toMutableList()
+                        val sortModelIndex = currentUiState.indexOfFirst { it is SortModel }
+                        currentUiState[sortModelIndex] = SortModel(result.itemSize)
+
+                        val noPlaceModelIndex = currentUiState.indexOfFirst { it is NoPlaceModel }
+
+                        if (result.itemSize == 0 && noPlaceModelIndex == -1) {
+                            currentUiState.add(NoPlaceModel())
+                            currentUiState
+                        }else{
+                            if (noPlaceModelIndex != -1) currentUiState.removeAt(noPlaceModelIndex)
+                            val newPlaceModels = result.toUiModel()
+                            currentUiState.addAll(newPlaceModels)
+                            currentUiState
+                        }
+                    }
+                    if (result.isLastPage) _isLastPage.update { true }
                 }
                 .onError { e ->
-                    viewModelDelegate.handleNetworkError(e)
+                    networkErrorDelegate.handleNetworkError(e)
                 }
         }
     }
 
-    private suspend fun clearPlace() = viewModelScope.launch {
-        _place.update { emptySet() }
+    private suspend fun reloadPlace() = viewModelScope.launch {
+        clearPlace()
         listOptionState.take(1).collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
-                    _place.update { _place.value + result.toUiModel() }
+                    _uiState.update { uiState ->
+                        val currentUiState = uiState.toMutableList()
+                        val newPlaceModels = result.toUiModel()
+                        currentUiState.addAll(newPlaceModels)
+                        currentUiState
+                    }
                     if (result.isLastPage) _isLastPage.value = true
                 }
                 .onError { e ->
-                    viewModelDelegate.handleNetworkError(e)
+                    networkErrorDelegate.handleNetworkError(e)
                 }
         }
     }
 
-    fun onMapChanged(state: Boolean) = viewModelScope.launch{
-        mapChanged.emit(state)
+    private fun clearPlace() {
+        _uiState.update { uiState -> uiState.filterNot { it is PlaceModel } }
     }
 
-    suspend fun onSelectedArea(areaName: String) {
-        _place.update { emptySet() }
-        val areaCode = _areaCode.value.findAreaCode(areaName) ?: ""
-        _listOptionState.update { _listOptionState.value.copy(areaCode = areaCode) }
-        viewModelScope.launch {
-            _sigunguCode.value = sigunguCodeRepository.getAllSigunguCode(areaCode)
+    suspend fun onSelectedArea(areaName: String){
+        clearPlace()
+        val areaCode = areaCode.value.findAreaCode(areaName) ?: ""
+        listOptionState.update { it.copy(areaCode = areaCode) }
+
+        val sigunguList = sigunguCodeRepository.getAllSigunguCode(areaCode)
+        sigunguCode.update { sigunguList }
+
+        _uiState.update { uiState ->
+            val hasSigunguModel = uiState.any { it is SigunguModel }
+            if (hasSigunguModel) {
+                uiState.map { uiModel ->
+                    if (uiModel is SigunguModel) {
+                        uiModel.copy(
+                            sigungus = sigunguList.getSigunguName(),
+                            selectedSigungu = "시/군/구"
+                        )
+                    } else {
+                        uiModel
+                    }
+                }
+            } else {
+                val newUiState = uiState.toMutableList()
+                val sortModelIndex = newUiState.indexOfFirst { it is SortModel }
+                val insertIndex = if (sortModelIndex > 0) sortModelIndex else 0
+                newUiState.add(insertIndex, SigunguModel(sigunguList.getSigunguName(),"시/군/구"))
+                newUiState
+            }
         }
-        _isLastPage.value = false
     }
 
     fun onSelectedSigungu(sigunguName: String) {
-        _place.update { emptySet() }
-        val sigunguCode = _sigunguCode.value.findSigunguCode(sigunguName)
-        _listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
-        _isLastPage.value = false
-    }
+        val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
+        listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
 
-    fun onSelectedArrange(arrange: String) {
-        _place.update { emptySet() }
-        _listOptionState.update { it.copy(arrange = arrange, page = 0) }
-        _isLastPage.value = false
+        _uiState.update { uiState ->
+            uiState.map { uiModel ->
+                if (uiModel is SigunguModel) {
+                    uiModel.copy(selectedSigungu = sigunguName)
+                } else {
+                    uiModel
+                }
+            }
+        }
     }
 
     fun whenLastPageReached() {
-        _listOptionState.update { it.copy(page = it.page + 1) }
+        listOptionState.update { it.copy(page = it.page + 1) }
     }
 
     private suspend fun loadAreaCodes() {
-        _areaCode.update { areaCodeRepository.getAllAreaCodes() }
+        val areaInfoList = areaCodeRepository.getAllAreaCodes()
+        areaCode.update { areaInfoList }
+        _uiState.update { uiStateList ->
+            uiStateList.map { uiModel ->
+                if (uiModel is AreaModel) {
+                    uiModel.copy(areaInfoList.getAllAreaName())
+                } else {
+                    uiModel
+                }
+            }
+        }
+    }
+
+    fun onMapChanged(state: Boolean) = viewModelScope.launch {
+        mapChanged.emit(state)
     }
 
     fun onChangeMapState(state: SharedOptionState) {
-        _listOptionState.update {
+        listOptionState.update {
             if (state.detailFilter.isEmpty()) {
                 it.copy(
                     disabilityType = TreeSet(),
