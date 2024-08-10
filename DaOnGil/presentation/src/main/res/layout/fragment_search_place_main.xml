@@ -1,97 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.fragment.SearchPlaceMainFragment">
-    <ImageView
-        android:id="@+id/blurred_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:alpha="0.7"
-        android:background="@android:color/black" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_big3"
+        android:layout_marginTop="@dimen/margin_big3"
+        android:layout_marginEnd="@dimen/margin_big3"
+        android:backgroundTint="@color/search_view_background"
+        android:hint="@string/text_searbar_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/tab_layout_background"
+        android:elevation="5dp"
+        android:layout_marginTop="@dimen/font_small1"
+        android:paddingStart="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:tabGravity="start"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabIndicatorColor="@color/tab_indicator_color"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="scrollable"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabSelectedTextColor="@color/tab_selected_text_color"
+        app:tabTextAppearance="@style/tabLayout_text_appearance">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/search_view_background"
-            android:layout_marginTop="@dimen/margin_big1"
-            android:layout_marginStart="@dimen/margin_big1"
-            android:layout_marginEnd="@dimen/margin_big1"
-            android:hint="@string/text_searbar_hint" />
+            android:text="@string/tourist_spot" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_container"
-            android:layout_width="match_parent"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/tab_layout_background"
-            android:elevation="5dp"
-            android:layout_gravity="start"
-            android:paddingStart="20dp"
-            app:tabGravity="start"
-            app:tabMode="scrollable"
-            app:tabIndicatorAnimationMode="elastic"
-            app:tabIndicatorFullWidth="true"
-            app:tabIndicatorHeight="3dp"
-            app:tabIndicatorColor="@color/tab_indicator_color"
-            app:tabRippleColor="@android:color/transparent"
-            app:tabSelectedTextColor="@color/tab_selected_text_color"
-            app:tabTextAppearance="@style/tabLayout_text_appearance">
+            android:text="@string/restaurant" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tourist_spot" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lodgment" />
+    </com.google.android.material.tabs.TabLayout>
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/restaurant" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lodgment" />
-        </com.google.android.material.tabs.TabLayout>
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView"
-            android:name="kr.tekit.lion.presentation.main.fragment.SearchListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="kr.tekit.lion.presentation.main.fragment.SearchListFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_container" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/mode_switch_btn"
         style="@style/RoundedExtendedFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="15dp"
         android:fontFamily="@font/pretendard_bold"
         android:textColor="@color/floating_action_button_title"
         app:backgroundTint="@color/floating_action_button"
-        app:icon="@drawable/list_icon" />
+        app:icon="@drawable/list_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-<!--    <ProgressBar-->
-<!--        android:id="@+id/progressBar"-->
-<!--        style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:indeterminate="false"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:progressDrawable="@drawable/progress"-->
-<!--        android:background="@drawable/progress_background"-->
-<!--        android:max="500"-->
-<!--        tools:progress="200" />-->
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

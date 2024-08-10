@@ -4,182 +4,167 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/margin_big4"
-    android:layout_marginEnd="@dimen/margin_big4"
-    android:orientation="vertical">
+    android:layout_marginEnd="@dimen/margin_big4">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_search_guide1"
+        android:textSize="@dimen/font_big1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_medium"
-            android:text="@string/text_search_guide1"
-            android:textSize="@dimen/font_big1" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_semibold"
-                android:text="@string/text_category"
-                android:textColor="@color/search_view_main"
-                android:textSize="@dimen/font_big1" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_semibold"
-                android:text="@string/text_search_guide2"
-                android:textColor="@color/search_guide_text"
-                android:textSize="@dimen/font_big1" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/title_category"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="@string/text_category"
+        android:textColor="@color/search_view_main"
+        android:textSize="@dimen/font_big1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title1" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="@string/text_search_guide2"
+        android:textColor="@color/search_guide_text"
+        android:textSize="@dimen/font_big1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/title_category"
+        app:layout_constraintTop_toTopOf="@+id/title_category" />
+
+    <ImageView
+        android:id="@+id/img_hearing_disability"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:layout_marginStart="90dp"
+        android:contentDescription="@string/text_hearing_impairment"
+        android:src="@drawable/sv_hearing_impaired_unselected_icon"
+        app:layout_constraintEnd_toStartOf="@+id/img_physical_disability"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_category" />
+
+    <TextView
+        android:id="@+id/text_hearing_disability"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/font_small1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/text_hearing_impairment"
+        android:textColor="@color/search_view_category_name"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintEnd_toEndOf="@+id/img_hearing_disability"
+        app:layout_constraintStart_toStartOf="@+id/img_hearing_disability"
+        app:layout_constraintTop_toBottomOf="@+id/img_hearing_disability" />
+
+    <ImageView
+        android:id="@+id/img_physical_disability"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/text_physical_disability"
+        android:src="@drawable/sv_physical_disability_unselected_icon"
+        android:layout_marginEnd="90dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_hearing_disability"
+        app:layout_constraintTop_toTopOf="@+id/img_hearing_disability" />
+
+    <TextView
+        android:id="@+id/text_physical_disability"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:gravity="center"
+        android:text="@string/text_physical_disability"
+        android:textColor="@color/search_view_category_name"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintEnd_toEndOf="@+id/img_physical_disability"
+        app:layout_constraintStart_toStartOf="@+id/img_physical_disability"
+        app:layout_constraintTop_toBottomOf="@+id/img_physical_disability" />
+
+    <ImageView
+        android:id="@+id/img_visual_disability"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:layout_marginStart="50dp"
+        android:contentDescription="@string/text_visual_impairment"
+        android:src="@drawable/sv_visual_impairment_unselect_icon"
+        app:layout_constraintEnd_toStartOf="@+id/img_infant_family"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/text_hearing_disability" />
 
-        <LinearLayout
-            android:id="@+id/container_physical_disability"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/text_visual_disability"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:gravity="center"
+        android:text="@string/text_visual_impairment"
+        android:textColor="@color/search_view_category_name"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintEnd_toEndOf="@+id/img_visual_disability"
+        app:layout_constraintStart_toStartOf="@+id/img_visual_disability"
+        app:layout_constraintTop_toBottomOf="@+id/img_visual_disability" />
 
-            <ImageView
-                android:id="@+id/img_physical_disability"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/sv_physical_disability_unselected_icon" />
+    <ImageView
+        android:id="@+id/img_infant_family"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/text_infant_family"
+        android:src="@drawable/sv_child_unselected_icon"
+        app:layout_constraintEnd_toStartOf="@+id/img_elderly_person"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_visual_disability"
+        app:layout_constraintTop_toTopOf="@+id/img_visual_disability" />
 
-            <TextView
-                android:id="@+id/text_physical_disability"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_regular"
-                android:gravity="center"
-                android:text="@string/text_physical_disability"
-                android:textColor="@color/search_view_category_name"
-                android:textSize="@dimen/font_small1" />
-        </LinearLayout>
+    <TextView
+        android:id="@+id/text_infant_family"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:gravity="center"
+        android:text="@string/text_infant_family"
+        android:textColor="@color/search_view_category_name"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintEnd_toEndOf="@+id/img_infant_family"
+        app:layout_constraintStart_toStartOf="@+id/img_infant_family"
+        app:layout_constraintTop_toBottomOf="@+id/img_infant_family" />
 
-        <LinearLayout
-            android:id="@+id/container_hearing_impairment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+    <ImageView
+        android:id="@+id/img_elderly_person"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:contentDescription="@string/text_elderly_person"
+        android:src="@drawable/sv_elderly_unselected_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_infant_family"
+        app:layout_constraintTop_toTopOf="@+id/img_infant_family" />
 
-            <ImageView
-                android:id="@+id/img_hearing_disability"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sv_hearing_impaired_unselected_icon" />
-
-            <TextView
-                android:id="@+id/text_hearing_disability"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_regular"
-                android:gravity="center"
-                android:text="@string/text_hearing_impairment"
-                android:textColor="@color/search_view_category_name"
-                android:textSize="@dimen/font_small1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_visual_impairment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/img_visual_disability"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sv_visual_impairment_unselect_icon" />
-
-            <TextView
-                android:id="@+id/text_visual_disability"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_regular"
-                android:gravity="center"
-                android:text="@string/text_visual_impairment"
-                android:textColor="@color/search_view_category_name"
-                android:textSize="@dimen/font_small1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_infant_family"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/img_infant_family"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/sv_child_unselected_icon" />
-
-            <TextView
-                android:id="@+id/text_infant_family"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/pretendard_regular"
-                android:gravity="center"
-                android:text="@string/text_infant_family"
-                android:textColor="@color/search_view_category_name"
-                android:textSize="@dimen/font_small1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_elderly_person"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/img_elderly_person"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sv_elderly_unselected_icon" />
-
-            <TextView
-                android:id="@+id/text_elderly_person"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_regular"
-                android:gravity="center"
-                android:text="@string/text_elderly_person"
-                android:textColor="@color/search_view_category_name"
-                android:textSize="@dimen/font_small1" />
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/text_elderly_person"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/text_elderly_person"
+        android:fontFamily="@font/pretendard_semibold"
+        android:gravity="center"
+        android:text="@string/text_elderly_person"
+        android:textColor="@color/search_view_category_name"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/img_elderly_person"
+        app:layout_constraintStart_toEndOf="@+id/text_infant_family" />
 </androidx.constraintlayout.widget.ConstraintLayout>
