@@ -17,6 +17,7 @@ import kr.tekit.lion.presentation.databinding.FragmentSearchListBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter
+import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter.Companion.VIEW_TYPE_PLACE
 import kr.tekit.lion.presentation.main.bottomsheet.CategoryBottomSheet
 import kr.tekit.lion.presentation.main.model.AreaModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
@@ -67,7 +68,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
         rvLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (mainAdapter.getItemViewType(position)) {
-                    R.layout.item_place_high -> 1
+                    VIEW_TYPE_PLACE -> 1
                     else -> 2
                 }
             }
