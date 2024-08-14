@@ -183,7 +183,7 @@ class SearchListViewModel @Inject constructor(
         listOptionState.update { it.copy(category = category, page = 0) }
     }
 
-    fun modifyCategoryModel(optionState: Map<DisabilityType, Int>) {
+    fun modifyCategoryModel(optionState: Map<DisabilityType, Int>) = viewModelScope.launch((Dispatchers.IO)) {
         _uiState.update { uiState ->
             updateCategoryModel(uiState, optionState)
         }
@@ -209,7 +209,7 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadPlaces() {
+    private suspend fun loadPlaces() = viewModelScope.launch((Dispatchers.IO)) {
         listOptionState.collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
@@ -238,7 +238,7 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun reloadPlace() = viewModelScope.launch {
+    private suspend fun reloadPlace() = viewModelScope.launch(Dispatchers.IO) {
         clearPlace()
         listOptionState.take(1).collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
@@ -257,18 +257,18 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private fun clearPlace() {
+    private fun clearPlace() = viewModelScope.launch(Dispatchers.IO) {
         _uiState.update { uiState -> uiState.filterNot { it is PlaceModel } }
     }
 
-    fun onSelectedArea(areaName: String){
+    fun onSelectedArea(areaName: String) {
         clearPlace()
         val areaCode = areaCode.value.findAreaCode(areaName) ?: ""
         listOptionState.update { it.copy(areaCode = areaCode) }
         updateSigunguModel(areaCode)
     }
 
-    private fun updateSigunguModel(areaCode: String) = viewModelScope.launch(Dispatchers.IO){
+    private fun updateSigunguModel(areaCode: String) = viewModelScope.launch(Dispatchers.IO) {
         val sigunguList = sigunguCodeRepository.getAllSigunguCode(areaCode)
         sigunguCode.update { sigunguList }
 
@@ -298,13 +298,14 @@ class SearchListViewModel @Inject constructor(
     fun onSelectedSigungu(sigunguName: String) {
         val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
         listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
-
-        _uiState.update { uiState ->
-            uiState.map { uiModel ->
-                if (uiModel is SigunguModel) {
-                    uiModel.copy(selectedSigungu = sigunguName)
-                } else {
-                    uiModel
+        viewModelScope.launch((Dispatchers.IO)) {
+            _uiState.update { uiState ->
+                uiState.map { uiModel ->
+                    if (uiModel is SigunguModel) {
+                        uiModel.copy(selectedSigungu = sigunguName)
+                    } else {
+                        uiModel
+                    }
                 }
             }
         }
@@ -317,12 +318,14 @@ class SearchListViewModel @Inject constructor(
     private suspend fun loadAreaCodes() {
         val areaInfoList = areaCodeRepository.getAllAreaCodes()
         areaCode.update { areaInfoList }
-        _uiState.update { uiStateList ->
-            uiStateList.map { uiModel ->
-                if (uiModel is AreaModel) {
-                    uiModel.copy(areaInfoList.getAllAreaName())
-                } else {
-                    uiModel
+        viewModelScope.launch((Dispatchers.IO)) {
+            _uiState.update { uiStateList ->
+                uiStateList.map { uiModel ->
+                    if (uiModel is AreaModel) {
+                        uiModel.copy(areaInfoList.getAllAreaName())
+                    } else {
+                        uiModel
+                    }
                 }
             }
         }
@@ -332,7 +335,7 @@ class SearchListViewModel @Inject constructor(
         mapChanged.emit(state)
     }
 
-    fun onChangeMapState(state: SharedOptionState) {
+    fun onChangeMapState(state: SharedOptionState) = viewModelScope.launch(Dispatchers.IO) {
         listOptionState.update {
             if (state.detailFilter.isEmpty()) {
                 it.copy(
