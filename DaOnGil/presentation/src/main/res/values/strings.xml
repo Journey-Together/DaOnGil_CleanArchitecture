@@ -19,7 +19,8 @@
     <string name="save">저장하기</string>
     <string name="inform_add_places">여행지를 추가해주세요</string>
 
-
+    <string name="text_area">지역선택</string>
+    <string name="text_sigungu">시군구선택</string>
     <string name="text_parking">주차장</string>
     <string name="text_public_transport">대중교통</string>
     <string name="text_route">접근로</string>
@@ -182,5 +183,4 @@
     <string name="text_sort_ganada">가나다순</string>
     <string name="text_sort_recent">최신순</string>
     <string name="text_sort_popular">인기순</string>
-<string name="hello_blank_fragment">d</string>
 </resources>

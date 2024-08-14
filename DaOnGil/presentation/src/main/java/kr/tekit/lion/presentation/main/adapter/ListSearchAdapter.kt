@@ -45,12 +45,12 @@ class ListSearchAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is CategoryModel -> R.layout.item_list_search_category
-            is PlaceModel -> R.layout.item_place_high
-            is AreaModel -> R.layout.item_list_search_area
-            is SigunguModel -> R.layout.item_list_search_sigungu
-            is SortModel -> R.layout.item_list_search_sort
-            is NoPlaceModel -> R.layout.item_no_place
+            is CategoryModel -> VIEW_TYPE_CATEGORY
+            is PlaceModel -> VIEW_TYPE_PLACE
+            is AreaModel -> VIEW_TYPE_AREA
+            is SigunguModel -> VIEW_TYPE_SIGUNGU
+            is SortModel -> VIEW_TYPE_SORT
+            is NoPlaceModel -> VIEW_TYPE_NO_PLACE
         }
     }
 
@@ -59,7 +59,7 @@ class ListSearchAdapter(
         val v = layoutInflater.inflate(viewType, parent, false)
 
         return when (viewType) {
-            R.layout.item_list_search_category -> CategoryViewHolder(
+            VIEW_TYPE_CATEGORY -> CategoryViewHolder(
                 ItemListSearchCategoryBinding.bind(v),
                 uiScope,
                 onClickPhysicalDisability,
@@ -68,21 +68,21 @@ class ListSearchAdapter(
                 onClickInfantFamily,
                 onClickElderlyPeople
             )
-            R.layout.item_place_high -> PlaceHighViewHolder(
+            VIEW_TYPE_PLACE -> PlaceHighViewHolder(
                 ItemPlaceHighBinding.bind(v)
             )
-            R.layout.item_list_search_area -> AreaViewHolder(
+            VIEW_TYPE_AREA -> AreaViewHolder(
                 ItemListSearchAreaBinding.bind(v),
                 onSelectArea,
             )
-            R.layout.item_list_search_sort -> ItemCountViewHolder(
+            VIEW_TYPE_SORT -> ItemCountViewHolder(
                 ItemListSearchSortBinding.bind(v)
             )
-            R.layout.item_list_search_sigungu -> SigunguViewHolder(
+            VIEW_TYPE_SIGUNGU -> SigunguViewHolder(
                 ItemListSearchSigunguBinding.bind(v),
                 onSelectSigungu
             )
-            R.layout.item_no_place -> NoPlaceViewHolder(ItemNoPlaceBinding.bind(v))
+            VIEW_TYPE_NO_PLACE -> NoPlaceViewHolder(ItemNoPlaceBinding.bind(v))
             else -> throw IllegalArgumentException("Unknown View Type")
         }
     }
@@ -120,5 +120,12 @@ class ListSearchAdapter(
                 return oldItem == newItem
             }
         }
+
+        private val VIEW_TYPE_CATEGORY = R.layout.item_list_search_category
+        private val VIEW_TYPE_AREA = R.layout.item_list_search_area
+        private val VIEW_TYPE_SIGUNGU = R.layout.item_list_search_sigungu
+        private val VIEW_TYPE_SORT = R.layout.item_list_search_sort
+        private val VIEW_TYPE_NO_PLACE = R.layout.item_no_place
+        val VIEW_TYPE_PLACE = R.layout.item_place_high
     }
 }

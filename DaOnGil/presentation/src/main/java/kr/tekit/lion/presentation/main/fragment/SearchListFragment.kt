@@ -7,6 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
@@ -16,6 +17,7 @@ import kr.tekit.lion.presentation.databinding.FragmentSearchListBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter
+import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter.Companion.VIEW_TYPE_PLACE
 import kr.tekit.lion.presentation.main.bottomsheet.CategoryBottomSheet
 import kr.tekit.lion.presentation.main.model.AreaModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
@@ -62,20 +64,44 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
             }
             )
 
-        val layoutManager = GridLayoutManager(requireContext(), 2)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        val rvLayoutManager = GridLayoutManager(requireContext(), 2)
+        rvLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (mainAdapter.getItemViewType(position)) {
-                    R.layout.item_place_high -> 1
+                    VIEW_TYPE_PLACE -> 1
                     else -> 2
                 }
             }
         }
 
-        with(binding) {
-            rvSearchResult.adapter = mainAdapter
-            rvSearchResult.layoutManager = layoutManager
-            rvSearchResult.addOnScrollEndListener {
+        val noPlaceViewPool = RecyclerView.RecycledViewPool().apply {
+            setMaxRecycledViews(R.layout.item_no_place, 1)
+        }
+
+        val areaViewPool = RecyclerView.RecycledViewPool().apply {
+            setMaxRecycledViews(R.layout.item_list_search_area, 1)
+        }
+
+        val sigunguViewPool = RecyclerView.RecycledViewPool().apply {
+            setMaxRecycledViews(R.layout.item_list_search_sigungu, 1)
+        }
+
+        val categoryViewPool = RecyclerView.RecycledViewPool().apply {
+            setMaxRecycledViews(R.layout.item_list_search_category, 1)
+        }
+
+        with(binding.rvSearchResult) {
+            adapter = mainAdapter
+            layoutManager = rvLayoutManager
+
+            setRecycledViewPool(noPlaceViewPool)
+            setRecycledViewPool(areaViewPool)
+            setRecycledViewPool(sigunguViewPool)
+            setRecycledViewPool(categoryViewPool)
+
+            itemAnimator = null
+
+            addOnScrollEndListener {
                 val pageState = viewModel.isLastPage.value
                 if (pageState.not()) {
                     viewModel.whenLastPageReached()

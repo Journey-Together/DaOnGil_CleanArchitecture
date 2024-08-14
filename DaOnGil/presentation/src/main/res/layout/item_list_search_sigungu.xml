@@ -2,34 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_small1"
-    android:orientation="vertical">
+    android:layout_marginTop="@dimen/margin_big4"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/detail_area_select_layout"
+        style="@style/area_auto_complete_text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small2"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+        android:hint="전체"
+        android:textColorHint="@color/select_area_text"
+        android:visibility="visible">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/detail_area_select_layout"
-            style="@style/area_auto_complete_text_input_layout"
+        <AutoCompleteTextView
+            android:id="@+id/detail_selected_area"
+            style="@style/area_auto_complete_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="전체"
-            android:textColorHint="@color/select_area_text"
-            android:visibility="visible">
+            android:inputType="none" />
 
-            <AutoCompleteTextView
-                android:id="@+id/detail_selected_area"
-                style="@style/area_auto_complete_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

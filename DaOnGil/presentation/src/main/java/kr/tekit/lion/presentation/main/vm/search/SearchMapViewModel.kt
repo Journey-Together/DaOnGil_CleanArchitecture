@@ -5,7 +5,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
@@ -21,7 +23,6 @@ import kr.tekit.lion.presentation.main.model.HearingImpairment
 import kr.tekit.lion.presentation.main.model.InfantFamily
 import kr.tekit.lion.presentation.main.model.Locate
 import kr.tekit.lion.presentation.main.model.MapOptionState
-import kr.tekit.lion.presentation.main.model.MapPlaceModel
 import kr.tekit.lion.presentation.main.model.PhysicalDisability
 import kr.tekit.lion.presentation.main.model.SharedOptionState
 import kr.tekit.lion.presentation.main.model.SortByLatest
@@ -38,12 +39,18 @@ class SearchMapViewModel  @Inject constructor(
     private val _mapOptionState = MutableStateFlow(initMapOption())
     val mapOptionState get() = _mapOptionState.asStateFlow()
 
+    private val _searchState = MutableSharedFlow<Boolean>()
+    val searchState get() = _searchState.asSharedFlow()
+
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val mapSearchResult = _mapOptionState
         .debounce(DEBOUNCE_INTERVAL)
         .flatMapLatest { request ->
             val response = placeRepository.getSearchPlaceResultByMap(request.toDomainModel())
-            response.map { it.toUiModel() }
+            response.map {
+                if (it.places.isEmpty()) _searchState.emit(false)
+                it.toUiModel()
+            }
         }.flowOn(Dispatchers.IO)
         .catch { e: Throwable ->
             e.printStackTrace()

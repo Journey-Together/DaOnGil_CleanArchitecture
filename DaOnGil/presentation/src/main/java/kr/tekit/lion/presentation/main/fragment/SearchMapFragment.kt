@@ -17,6 +17,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
@@ -29,6 +30,7 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kr.tekit.lion.presentation.R
@@ -70,6 +72,17 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
 
         initMap()
         subscribeOptionStates(binding)
+
+        repeatOnViewStarted {
+            viewModel.searchState.collect {
+                if (it.not()){
+                    Snackbar.make(
+                        binding.root, "검색결과가 없습니다. 지도의 위치를 변경해보세요",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
 
         repeatOnViewStarted {
             sharedViewModel.sharedOptionState.filter { value ->

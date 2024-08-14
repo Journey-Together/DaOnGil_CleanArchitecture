@@ -2,7 +2,6 @@
     <style name="Base.Theme.DaOnGil" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/text_primary</item>
-
         <item name="android:colorBackground">@color/background_color</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:statusBarColor">@color/background_color</item>
