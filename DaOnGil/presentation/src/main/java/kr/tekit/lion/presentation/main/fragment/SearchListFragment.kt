@@ -62,7 +62,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
             onSelectSigungu = {
                 viewModel.onSelectedSigungu(it)
             }
-            )
+        )
 
         val rvLayoutManager = GridLayoutManager(requireContext(), 2)
         rvLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -74,33 +74,16 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
             }
         }
 
-        val noPlaceViewPool = RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(R.layout.item_no_place, 1)
-        }
-
-        val areaViewPool = RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(R.layout.item_list_search_area, 1)
-        }
-
-        val sigunguViewPool = RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(R.layout.item_list_search_sigungu, 1)
-        }
-
-        val categoryViewPool = RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(R.layout.item_list_search_category, 1)
+        val placeViewPool = RecyclerView.RecycledViewPool().apply {
+            setMaxRecycledViews(VIEW_TYPE_PLACE, 10)
         }
 
         with(binding.rvSearchResult) {
             adapter = mainAdapter
+            itemAnimator = null
             layoutManager = rvLayoutManager
 
-            setRecycledViewPool(noPlaceViewPool)
-            setRecycledViewPool(areaViewPool)
-            setRecycledViewPool(sigunguViewPool)
-            setRecycledViewPool(categoryViewPool)
-
-            itemAnimator = null
-
+            setRecycledViewPool(placeViewPool)
             addOnScrollEndListener {
                 val pageState = viewModel.isLastPage.value
                 if (pageState.not()) {
