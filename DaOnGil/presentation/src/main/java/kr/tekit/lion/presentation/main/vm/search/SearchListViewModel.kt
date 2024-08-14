@@ -3,6 +3,7 @@ package kr.tekit.lion.presentation.main.vm.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +40,7 @@ import kr.tekit.lion.presentation.main.model.VisualImpairment
 import kr.tekit.lion.presentation.main.model.toUiModel
 import java.util.TreeSet
 import javax.inject.Inject
+import kotlin.collections.removeAll
 
 @HiltViewModel
 class SearchListViewModel @Inject constructor(
@@ -86,46 +88,94 @@ class SearchListViewModel @Inject constructor(
     private val mapChanged = MutableSharedFlow<Boolean>()
 
     fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
-        clearPlace()
+        viewModelScope.launch(Dispatchers.IO) {
+            clearPlace()
+            val updatedOptionState = updateListOptionState(optionCodes, type)
+            listOptionState.update { updatedOptionState }
+
+            val updatedUiState = updateUiStateWithOptionCount(optionCodes, type)
+            _uiState.update { updatedUiState }
+        }
+    }
+
+    private fun updateListOptionState(optionCodes: List<Long>, type: DisabilityType): ListOptionState {
         val currentOptionState = listOptionState.value
         val updatedDisabilityTypes = TreeSet(currentOptionState.disabilityType)
         val updatedDetailFilters = TreeSet(currentOptionState.detailFilter)
 
-        when (type) {
-            is PhysicalDisability -> updatedDetailFilters.removeAll(PhysicalDisability.filterCodes)
-            is VisualImpairment -> updatedDetailFilters.removeAll(VisualImpairment.filterCodes)
-            is HearingImpairment -> updatedDetailFilters.removeAll(HearingImpairment.filterCodes)
-            is InfantFamily -> updatedDetailFilters.removeAll(InfantFamily.filterCodes)
-            is ElderlyPeople -> updatedDetailFilters.removeAll(ElderlyPeople.filterCodes)
-        }
+        return when (type) {
+            is PhysicalDisability -> updateOptionState(
+                updatedDisabilityTypes,
+                updatedDetailFilters,
+                optionCodes,
+                PhysicalDisability.filterCodes,
+                type
+            )
 
+            is VisualImpairment -> updateOptionState(
+                updatedDisabilityTypes,
+                updatedDetailFilters,
+                optionCodes,
+                VisualImpairment.filterCodes,
+                type
+            )
+
+            is HearingImpairment -> updateOptionState(
+                updatedDisabilityTypes,
+                updatedDetailFilters,
+                optionCodes,
+                HearingImpairment.filterCodes,
+                type
+            )
+
+            is InfantFamily -> updateOptionState(
+                updatedDisabilityTypes,
+                updatedDetailFilters,
+                optionCodes,
+                InfantFamily.filterCodes,
+                type
+            )
+
+            is ElderlyPeople -> updateOptionState(
+                updatedDisabilityTypes,
+                updatedDetailFilters,
+                optionCodes,
+                ElderlyPeople.filterCodes,
+                type
+            )
+        }.copy(page = 0)
+    }
+
+    private fun updateOptionState(
+        updatedDisabilityTypes: TreeSet<Long>,
+        updatedDetailFilters: TreeSet<Long>,
+        optionCodes: List<Long>,
+        filterCodes: Set<Long>,
+        type: DisabilityType
+    ): ListOptionState {
+        updatedDetailFilters.removeAll(filterCodes)
         if (optionCodes.isNotEmpty()) {
             updatedDisabilityTypes.add(type.code)
             updatedDetailFilters.addAll(optionCodes)
         } else {
             updatedDisabilityTypes.remove(type.code)
         }
+        return listOptionState.value.copy(
+            disabilityType = updatedDisabilityTypes,
+            detailFilter = updatedDetailFilters
+        )
+    }
 
-        _uiState.update { uiState ->
-            uiState.map { uiModel ->
-                if (uiModel is CategoryModel) {
-                    val newOptionState = uiModel.optionState.toMutableMap()
-                    newOptionState[type] = optionCodes.size
-                    uiModel.copy(optionState = newOptionState)
-                } else {
-                    uiModel
-                }
+    private fun updateUiStateWithOptionCount(optionCodes: List<Long>, type: DisabilityType): List<ListSearchUIModel> {
+        return _uiState.value.map { uiModel ->
+            if (uiModel is CategoryModel) {
+                val newOptionState = uiModel.optionState.toMutableMap()
+                newOptionState[type] = optionCodes.size
+                uiModel.copy(optionState = newOptionState)
+            } else {
+                uiModel
             }
         }
-
-        listOptionState.update {
-            it.copy(
-                disabilityType = updatedDisabilityTypes,
-                detailFilter = updatedDetailFilters,
-                page = 0
-            )
-        }
-        _isLastPage.update { false }
     }
 
     fun onSelectedTab(category: Category) {
@@ -134,22 +184,27 @@ class SearchListViewModel @Inject constructor(
     }
 
     fun modifyCategoryModel(optionState: Map<DisabilityType, Int>) {
-        _uiState.update {
-            it.map { uiModel ->
-                when(uiModel){
-                    is CategoryModel -> {
-                        if (optionState.isEmpty()) {
-                            uiModel.copy(optionState = mutableMapOf())
-                        } else {
-                            val newOptionState = uiModel.optionState.toMutableMap()
-                            optionState.forEach { (type, count) ->
-                                newOptionState[type] = count
-                            }
-                            uiModel.copy(optionState = newOptionState)
+        _uiState.update { uiState ->
+            updateCategoryModel(uiState, optionState)
+        }
+    }
+
+    private fun updateCategoryModel(uiState: List<ListSearchUIModel>, optionState: Map<DisabilityType, Int>)
+    : List<ListSearchUIModel> {
+        return uiState.map { uiModel ->
+            when (uiModel) {
+                is CategoryModel -> {
+                    if (optionState.isEmpty()) {
+                        uiModel.copy(optionState = mutableMapOf())
+                    } else {
+                        val newOptionState = uiModel.optionState.toMutableMap()
+                        optionState.forEach { (type, count) ->
+                            newOptionState[type] = count
                         }
+                        uiModel.copy(optionState = newOptionState)
                     }
-                    else -> uiModel
                 }
+                else -> uiModel
             }
         }
     }
@@ -168,7 +223,7 @@ class SearchListViewModel @Inject constructor(
                         if (result.itemSize == 0 && noPlaceModelIndex == -1) {
                             currentUiState.add(NoPlaceModel())
                             currentUiState
-                        }else{
+                        } else {
                             if (noPlaceModelIndex != -1) currentUiState.removeAt(noPlaceModelIndex)
                             val newPlaceModels = result.toUiModel()
                             currentUiState.addAll(newPlaceModels)
@@ -206,11 +261,14 @@ class SearchListViewModel @Inject constructor(
         _uiState.update { uiState -> uiState.filterNot { it is PlaceModel } }
     }
 
-    suspend fun onSelectedArea(areaName: String){
+    fun onSelectedArea(areaName: String){
         clearPlace()
         val areaCode = areaCode.value.findAreaCode(areaName) ?: ""
         listOptionState.update { it.copy(areaCode = areaCode) }
+        updateSigunguModel(areaCode)
+    }
 
+    private fun updateSigunguModel(areaCode: String) = viewModelScope.launch(Dispatchers.IO){
         val sigunguList = sigunguCodeRepository.getAllSigunguCode(areaCode)
         sigunguCode.update { sigunguList }
 
@@ -231,7 +289,7 @@ class SearchListViewModel @Inject constructor(
                 val newUiState = uiState.toMutableList()
                 val sortModelIndex = newUiState.indexOfFirst { it is SortModel }
                 val insertIndex = if (sortModelIndex > 0) sortModelIndex else 0
-                newUiState.add(insertIndex, SigunguModel(sigunguList.getSigunguName(),"시/군/구"))
+                newUiState.add(insertIndex, SigunguModel(sigunguList.getSigunguName(), "시/군/구"))
                 newUiState
             }
         }
