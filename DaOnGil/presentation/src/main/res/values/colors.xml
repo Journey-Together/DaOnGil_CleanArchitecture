@@ -31,7 +31,7 @@
     <color name="floating_action_button_title">#E9E9EA</color>
 
     <color name="search_view_main">#FF4949</color>
-    <color name="search_view_category_name">#A5A7AA</color>
+    <color name="search_view_category_name">#585A5B</color>
     <color name="tab_selected_text_color">#FF4949</color>
     <color name="tab_unselected_text_color">#999999</color>
     <color name="tab_indicator_color">#FF4949</color>

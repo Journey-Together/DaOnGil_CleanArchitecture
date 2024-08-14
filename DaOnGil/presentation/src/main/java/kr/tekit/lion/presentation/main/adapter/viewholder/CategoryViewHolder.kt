@@ -27,19 +27,19 @@ class CategoryViewHolder(
 
     init {
         with(binding) {
-            containerPhysicalDisability.setClickEvent(uiScope) {
+            imgPhysicalDisability.setClickEvent(uiScope) {
                 onClickPhysicalDisability(PhysicalDisability)
             }
-            containerVisualImpairment.setClickEvent(uiScope) {
+            imgVisualDisability.setClickEvent(uiScope) {
                 onClickVisualImpairment(VisualImpairment)
             }
-            containerHearingImpairment.setClickEvent(uiScope) {
+            imgHearingDisability.setClickEvent(uiScope) {
                 onClickHearingDisability(HearingImpairment)
             }
-            containerInfantFamily.setClickEvent(uiScope) {
+            imgInfantFamily.setClickEvent(uiScope) {
                 onClickInfantFamily(InfantFamily)
             }
-            containerElderlyPerson.setClickEvent(uiScope) {
+            imgElderlyPerson.setClickEvent(uiScope) {
                 onClickElderlyPeople(ElderlyPeople)
             }
         }
