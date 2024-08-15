@@ -6,9 +6,12 @@ import kr.tekit.lion.domain.model.search.ListSearchResultList
 import kr.tekit.lion.domain.model.search.MapSearchOption
 import kr.tekit.lion.domain.model.search.MapSearchResultList
 import kr.tekit.lion.domain.model.Result
+import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
 interface PlaceRepository {
     suspend fun getSearchPlaceResultByList(request: ListSearchOption): Result<ListSearchResultList>
 
     fun getSearchPlaceResultByMap(request: MapSearchOption): Flow<MapSearchResultList>
+
+    suspend fun getAutoCompleteKeyword(keyword: String): Flow<AutoCompleteKeyword>
 }

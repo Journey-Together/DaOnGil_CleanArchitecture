@@ -1,5 +1,6 @@
 package kr.tekit.lion.data.service
 
+import kr.tekit.lion.data.dto.response.searchplace.AutoCompleteKeywordResponse
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
 import retrofit2.http.GET
@@ -33,4 +34,10 @@ internal interface PlaceService {
         @Query("arrange") arrange: String?,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): MapSearchResponse
+
+    @GET("place/search/autocomplete")
+    suspend fun getAutoCompleteKeyword(
+        @Query("query") keyword: String,
+        @Tag authType: AuthType = AuthType.NO_AUTH
+    ): AutoCompleteKeywordResponse
 }
