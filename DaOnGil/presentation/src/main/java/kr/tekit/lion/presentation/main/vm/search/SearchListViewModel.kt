@@ -178,7 +178,7 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    fun onSelectedTab(category: Category) {
+    fun onSelectedTab(category: Category) = viewModelScope.launch(Dispatchers.IO) {
         clearPlace()
         listOptionState.update { it.copy(category = category, page = 0) }
     }
@@ -257,11 +257,11 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private fun clearPlace() = viewModelScope.launch(Dispatchers.IO) {
+    private suspend fun clearPlace(){
         _uiState.update { uiState -> uiState.filterNot { it is PlaceModel } }
     }
 
-    fun onSelectedArea(areaName: String) {
+    fun onSelectedArea(areaName: String) = viewModelScope.launch(Dispatchers.IO) {
         clearPlace()
         val areaCode = areaCode.value.findAreaCode(areaName) ?: ""
         listOptionState.update { it.copy(areaCode = areaCode) }
@@ -295,7 +295,8 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    fun onSelectedSigungu(sigunguName: String) {
+    fun onSelectedSigungu(sigunguName: String) = viewModelScope.launch(Dispatchers.IO) {
+        clearPlace()
         val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
         listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
         viewModelScope.launch((Dispatchers.IO)) {
