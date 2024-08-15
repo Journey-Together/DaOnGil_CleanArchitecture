@@ -183,4 +183,7 @@
     <string name="text_sort_ganada">가나다순</string>
     <string name="text_sort_recent">최신순</string>
     <string name="text_sort_popular">인기순</string>
+    <string name="text_recently_search_keyword">최근 검색어</string>
+    <string name="text_delete_all">전체 삭제</string>
+    <string name="text_no_recently_search_keyword">최근 검색어가 없습니다.</string>
 </resources>
