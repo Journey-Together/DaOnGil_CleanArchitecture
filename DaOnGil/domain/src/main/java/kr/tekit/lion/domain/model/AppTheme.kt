@@ -1,5 +1,5 @@
 package kr.tekit.lion.domain.model
 
 enum class AppTheme {
-    LIGHT, DARK, SYSTEM
+    LIGHT, HIGH_CONTRAST, SYSTEM
 }

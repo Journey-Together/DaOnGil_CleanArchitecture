@@ -34,12 +34,12 @@ class HomeViewModel @Inject constructor(
 
     // 상단 테마 토글 버튼 클릭시
     fun onClickThemeToggleButton() {
-        val newAppTheme = if (_appTheme.value == AppTheme.LIGHT) AppTheme.DARK else AppTheme.LIGHT
+        val newAppTheme = if (_appTheme.value == AppTheme.LIGHT) AppTheme.HIGH_CONTRAST else AppTheme.LIGHT
         setAppTheme(newAppTheme)
     }
 
     // 테마 설정 다이얼로그 클릭시
     fun onClickThemeChangeButton() {
-        setAppTheme(AppTheme.DARK)
+        setAppTheme(AppTheme.HIGH_CONTRAST)
     }
 }

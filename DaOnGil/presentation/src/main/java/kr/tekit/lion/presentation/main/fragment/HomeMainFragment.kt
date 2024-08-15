@@ -25,7 +25,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 when(it){
                     AppTheme.LIGHT ->
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    AppTheme.DARK ->
+                    AppTheme.HIGH_CONTRAST ->
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     AppTheme.SYSTEM ->
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
