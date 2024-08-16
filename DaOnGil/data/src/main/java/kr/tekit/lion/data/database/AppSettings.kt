@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kr.tekit.lion.domain.model.AppTheme
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -13,6 +14,7 @@ import java.io.OutputStream
 internal data class AppSettings(
     val accessToken: String = "",
     val refreshToken: String = "",
+    val appTheme: AppTheme = AppTheme.LIGHT
 )
 
 internal object AppSettingsSerializer: Serializer<AppSettings> {

@@ -4,12 +4,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.tekit.lion.data.repository.AppThemeRepositoryImpl
 import kr.tekit.lion.data.repository.AreaCodeRepositoryImpl
 import kr.tekit.lion.data.repository.AuthRepositoryImpl
 import kr.tekit.lion.data.repository.KorWithRepositoryImpl
 import kr.tekit.lion.data.repository.MemberRepositoryImpl
 import kr.tekit.lion.data.repository.PlaceRepositoryImpl
 import kr.tekit.lion.data.repository.SigunguCodeRepositoryImpl
+import kr.tekit.lion.domain.repository.AppThemeRepository
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.KorWithRepository
@@ -38,4 +40,7 @@ internal interface RepositoryModule {
 
     @Binds
     fun bindPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
+
+    @Binds
+    fun bindAppThemeRepository(appThemeRepositoryImpl: AppThemeRepositoryImpl): AppThemeRepository
 }
