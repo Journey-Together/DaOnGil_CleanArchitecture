@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import kr.tekit.lion.domain.model.search.RecentlySearchKeyword
 
 @Entity(tableName = "recent_search_keyword_table")
-data class RecentlySearchKeywordEntity (
+internal data class RecentlySearchKeywordEntity (
     val keyword: String
 ) {
     @PrimaryKey(autoGenerate = true)

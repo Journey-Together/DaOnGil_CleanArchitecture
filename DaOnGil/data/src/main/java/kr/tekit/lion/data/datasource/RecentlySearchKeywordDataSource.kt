@@ -4,7 +4,7 @@ import kr.tekit.lion.data.database.dao.RecentlySearchKeywordDAO
 import kr.tekit.lion.data.database.entity.RecentlySearchKeywordEntity
 import javax.inject.Inject
 
-class RecentlySearchKeywordDataSource @Inject constructor(
+internal class RecentlySearchKeywordDataSource @Inject constructor(
     private val recentlySearchKeywordDao: RecentlySearchKeywordDAO
 ) {
     fun readAllKeyword() = recentlySearchKeywordDao.readAllKeyword()

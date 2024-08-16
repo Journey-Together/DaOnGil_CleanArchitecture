@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kr.tekit.lion.data.database.entity.RecentlySearchKeywordEntity
 
 @Dao
-interface RecentlySearchKeywordDAO {
+internal interface RecentlySearchKeywordDAO {
     @Query("SELECT * FROM recent_search_keyword_table")
     fun readAllKeyword(): Flow<List<RecentlySearchKeywordEntity>>
 
