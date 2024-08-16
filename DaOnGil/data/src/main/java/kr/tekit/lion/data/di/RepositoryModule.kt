@@ -9,12 +9,14 @@ import kr.tekit.lion.data.repository.AuthRepositoryImpl
 import kr.tekit.lion.data.repository.KorWithRepositoryImpl
 import kr.tekit.lion.data.repository.MemberRepositoryImpl
 import kr.tekit.lion.data.repository.PlaceRepositoryImpl
+import kr.tekit.lion.data.repository.RecentlySearchKeywordRepositoryImpl
 import kr.tekit.lion.data.repository.SigunguCodeRepositoryImpl
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.KorWithRepository
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
+import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 
 @Module
@@ -38,4 +40,8 @@ internal interface RepositoryModule {
 
     @Binds
     fun bindPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
+
+    @Binds
+    fun bindRecentlySearchKeywordRepository(recentlySearchKeywordRepositoryImpl: RecentlySearchKeywordRepositoryImpl)
+    : RecentlySearchKeywordRepository
 }

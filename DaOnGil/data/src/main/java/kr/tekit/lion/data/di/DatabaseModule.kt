@@ -10,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.database.MainDatabase
 import kr.tekit.lion.data.database.dao.AreaCodeDao
+import kr.tekit.lion.data.database.dao.RecentlySearchKeywordDAO
 import kr.tekit.lion.data.database.dao.SigunguCodeDao
 import javax.inject.Singleton
 
@@ -19,11 +20,9 @@ internal object DatabaseModule {
     @Provides
     @Singleton
     fun provideMainDatabase(@ApplicationContext appContext: Context): MainDatabase =
-        Room.databaseBuilder(
-            appContext,
-            MainDatabase::class.java,
-            "main_database"
-        ).build()
+        Room.databaseBuilder(appContext, MainDatabase::class.java, "main_database")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     @Singleton
@@ -33,4 +32,7 @@ internal object DatabaseModule {
     @Singleton
     fun provideSigunguCodeDao(db: MainDatabase): SigunguCodeDao = db.sigunguCodeDao()
 
+    @Provides
+    @Singleton
+    fun provideRecentlySearchKeywordDao(db: MainDatabase): RecentlySearchKeywordDAO = db.recentlySearchKeywordDao()
 }
