@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.main.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchPlaceMainBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.main.KeywordSearchActivity
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.ScreenState
 import kr.tekit.lion.presentation.main.vm.search.SearchViewModel
@@ -33,6 +35,9 @@ class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
         }
 
         with(binding) {
+            searchBar.setOnClickListener {
+                startActivity(Intent(requireContext(), KeywordSearchActivity::class.java))
+            }
 
             tabContainer.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
