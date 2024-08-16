@@ -10,7 +10,7 @@ import kr.tekit.lion.domain.model.search.RecentlySearchKeyword
 import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
 import javax.inject.Inject
 
-class RecentlySearchKeywordRepositoryImpl @Inject constructor(
+internal class RecentlySearchKeywordRepositoryImpl @Inject constructor(
     private val recentlySearchKeywordDataSource: RecentlySearchKeywordDataSource
 ): RecentlySearchKeywordRepository {
 
