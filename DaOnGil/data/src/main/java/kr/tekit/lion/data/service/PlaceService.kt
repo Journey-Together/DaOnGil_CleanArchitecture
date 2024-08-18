@@ -10,7 +10,7 @@ import retrofit2.http.Tag
 internal interface PlaceService {
     @GET("place/search")
     suspend fun searchByList(
-        @Query("category") category: String,
+        @Query("category") category: String?,
         @Query("size") size: Int,
         @Query("page") page: Int,
         @Query("query") query: String?,

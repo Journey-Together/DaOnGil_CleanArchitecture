@@ -3,7 +3,7 @@ package kr.tekit.lion.data.dto.request
 import kr.tekit.lion.domain.model.search.ListSearchOption
 
 internal data class ListSearchRequest (
-    val category: String,
+    val category: String?,
     val size: Int,
     val page: Int,
     val query: String?,
