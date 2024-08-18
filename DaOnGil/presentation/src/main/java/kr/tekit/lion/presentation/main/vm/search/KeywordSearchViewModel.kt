@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.main.vm.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,9 +55,8 @@ class KeywordSearchViewModel @Inject constructor(
     fun onClickSearchButton(keyword: String){
     }
 
-    fun loadSavedKeyword() = viewModelScope.launch(Dispatchers.IO){
+    private fun loadSavedKeyword() = viewModelScope.launch(Dispatchers.IO){
         recentlySearchKeywordRepository.readAllKeyword().collect{
-            Log.d("czxcascasc", it.toString())
             _recentlySearchKeyword.value =  it
         }
     }

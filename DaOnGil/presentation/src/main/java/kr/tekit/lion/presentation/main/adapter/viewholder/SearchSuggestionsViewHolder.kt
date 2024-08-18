@@ -10,7 +10,7 @@ class SearchSuggestionsViewHolder(
 
     fun bind(item: String){
         binding.root.setOnClickListener {
-
+            onClick(item)
         }
 
         binding.tvKeyword.text = item
