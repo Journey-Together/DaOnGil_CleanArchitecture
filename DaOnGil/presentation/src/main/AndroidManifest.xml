@@ -6,6 +6,15 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".main.KeywordSearchActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
@@ -14,11 +23,6 @@
         <activity
             android:name=".splash.SplashActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".main.MainActivity"
