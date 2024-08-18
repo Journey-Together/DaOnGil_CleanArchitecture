@@ -70,7 +70,9 @@ class KeywordSearchActivity : AppCompatActivity() {
             searchSuggestions.adapter = searchAdapter
             searchSuggestions.layoutManager = layoutManager
             searchView.editText.doAfterTextChanged {
-                viewModel.updateKeyword(it.toString())
+                if (it != null) {
+                    viewModel.updateKeyword(it.toString())
+                }
             }
 
             rvRecentSearches.adapter = recentlyKeywordAdapter

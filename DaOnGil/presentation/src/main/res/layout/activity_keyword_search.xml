@@ -9,24 +9,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_color"
-        android:layout_marginTop="@dimen/margin_big3">
+        android:layout_marginTop="@dimen/margin_small1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/back_icon">
-        </androidx.appcompat.widget.Toolbar>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/margin_big4"
+                app:navigationIcon="@drawable/back_icon">
+            </androidx.appcompat.widget.Toolbar>
 
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="top"
+                android:hint="관광지를 검색 해보세요"/>
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -70,7 +73,7 @@
                 android:paddingTop="16dp"
                 android:paddingBottom="8dp"
                 android:text="@string/text_recently_search_keyword"
-                android:textSize="@dimen/font_big3"
+                android:textSize="@dimen/font_big2"
                 android:textStyle="bold" />
 
             <TextView
@@ -82,8 +85,9 @@
                 android:gravity="end"
                 android:paddingTop="16dp"
                 android:paddingBottom="8dp"
+                android:layout_marginEnd="@dimen/margin_small1"
                 android:text="@string/text_delete_all"
-                android:textSize="@dimen/font_big3"
+                android:textSize="@dimen/font_big2"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -103,6 +107,7 @@
             android:id="@+id/rv_recent_searches"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big4"
             android:orientation="horizontal" />
     </LinearLayout>
 

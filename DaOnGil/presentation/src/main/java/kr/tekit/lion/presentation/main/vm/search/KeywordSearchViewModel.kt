@@ -53,6 +53,7 @@ class KeywordSearchViewModel @Inject constructor(
     }
 
     fun onClickSearchButton(keyword: String){
+
     }
 
     private fun loadSavedKeyword() = viewModelScope.launch(Dispatchers.IO){
@@ -78,6 +79,6 @@ class KeywordSearchViewModel @Inject constructor(
     }
 
     companion object {
-        private const val DEBOUNCE_INTERVAL = 800L
+        private const val DEBOUNCE_INTERVAL = 500L
     }
 }
