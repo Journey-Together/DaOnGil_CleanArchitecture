@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:hintTextColor="@color/text_tertiary"
+            android:textCursorDrawable="@color/black"
             android:background="@drawable/search_bar_background"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,12 +42,13 @@
         android:id="@+id/no_search_result_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="@dimen/margin_big1"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_bar">
 
         <TextView
@@ -83,7 +85,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_bar" />
-
 
     <LinearLayout
         android:id="@+id/search_recent_searches_container"
