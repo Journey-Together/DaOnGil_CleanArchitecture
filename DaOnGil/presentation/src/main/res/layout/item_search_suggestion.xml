@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fontFamily="@font/pretendard_medium"
-        android:layout_marginStart="@dimen/font_small1"
+        android:layout_marginStart="@dimen/font_small3"
         android:textSize="@dimen/font_big1"
         android:text="TextView" />
 </LinearLayout>
