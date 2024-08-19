@@ -20,7 +20,6 @@ import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.main.model.AreaModel
-import kr.tekit.lion.presentation.main.model.ArrangeState
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.DisabilityType
@@ -40,7 +39,6 @@ import kr.tekit.lion.presentation.main.model.VisualImpairment
 import kr.tekit.lion.presentation.main.model.toUiModel
 import java.util.TreeSet
 import javax.inject.Inject
-import kotlin.collections.removeAll
 
 @HiltViewModel
 class SearchListViewModel @Inject constructor(
@@ -87,15 +85,13 @@ class SearchListViewModel @Inject constructor(
 
     private val mapChanged = MutableSharedFlow<Boolean>()
 
-    fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
-        viewModelScope.launch(Dispatchers.IO) {
-            clearPlace()
-            val updatedOptionState = updateListOptionState(optionCodes, type)
-            listOptionState.update { updatedOptionState }
+    fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) = viewModelScope.launch(Dispatchers.IO) {
+        clearPlace()
+        val updatedOptionState = updateListOptionState(optionCodes, type)
+        listOptionState.update { updatedOptionState }
 
-            val updatedUiState = updateUiStateWithOptionCount(optionCodes, type)
-            _uiState.update { updatedUiState }
-        }
+        val updatedUiState = updateUiStateWithOptionCount(optionCodes, type)
+        _uiState.update { updatedUiState }
     }
 
     private fun updateListOptionState(optionCodes: List<Long>, type: DisabilityType): ListOptionState {
@@ -178,7 +174,7 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    fun onSelectedTab(category: Category) {
+    fun onSelectedTab(category: Category) = viewModelScope.launch(Dispatchers.IO) {
         clearPlace()
         listOptionState.update { it.copy(category = category, page = 0) }
     }
@@ -209,7 +205,7 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadPlaces() = viewModelScope.launch((Dispatchers.IO)) {
+    private fun loadPlaces() = viewModelScope.launch((Dispatchers.IO)) {
         listOptionState.collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
@@ -238,7 +234,7 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun reloadPlace() = viewModelScope.launch(Dispatchers.IO) {
+    private fun reloadPlace() = viewModelScope.launch(Dispatchers.IO) {
         clearPlace()
         listOptionState.take(1).collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
@@ -257,11 +253,11 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private fun clearPlace() = viewModelScope.launch(Dispatchers.IO) {
+    private fun clearPlace(){
         _uiState.update { uiState -> uiState.filterNot { it is PlaceModel } }
     }
 
-    fun onSelectedArea(areaName: String) {
+    fun onSelectedArea(areaName: String) = viewModelScope.launch(Dispatchers.IO) {
         clearPlace()
         val areaCode = areaCode.value.findAreaCode(areaName) ?: ""
         listOptionState.update { it.copy(areaCode = areaCode) }
@@ -295,7 +291,8 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    fun onSelectedSigungu(sigunguName: String) {
+    fun onSelectedSigungu(sigunguName: String) = viewModelScope.launch(Dispatchers.IO) {
+        clearPlace()
         val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
         listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
         viewModelScope.launch((Dispatchers.IO)) {

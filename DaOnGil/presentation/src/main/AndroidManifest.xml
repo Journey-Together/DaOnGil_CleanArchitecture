@@ -6,6 +6,9 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".keyword.KeywordSearchActivity"
+            android:exported="false"/>
+        <activity
             android:name=".login.LoginActivity"
             android:exported="false" />
         <activity

@@ -42,4 +42,6 @@ internal class PlaceDataSource @Inject constructor(
         detailFilter = request.detailFilter,
         arrange = request.arrange
     )
+
+    suspend fun getAutoCompleteKeyword(keyword: String) = placeService.getAutoCompleteKeyword(keyword)
 }

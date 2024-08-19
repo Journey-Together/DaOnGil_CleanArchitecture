@@ -4,7 +4,7 @@ import kr.tekit.lion.domain.model.search.ListSearchOption
 import java.util.TreeSet
 
 data class ListOptionState(
-    val category: Category,
+    val category: Category?,
     val page: Int,
     val disabilityType: TreeSet<Long>?,
     val detailFilter: TreeSet<Long>?,
@@ -14,7 +14,7 @@ data class ListOptionState(
 ){
     fun toDomainModel(): ListSearchOption {
         return ListSearchOption(
-            category = category.name,
+            category = category?.name,
             page = page,
             size = 0,
             disabilityType = disabilityType?.toList() ?: emptyList(),

@@ -95,14 +95,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_big4"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="40dp"
         android:contentDescription="@string/text_visual_impairment"
         android:src="@drawable/sv_visual_impairment_unselect_icon"
         app:layout_constraintEnd_toStartOf="@+id/img_infant_family"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_hearing_disability" />
+        app:layout_constraintTop_toBottomOf="@+id/text_hearing_disability"
+        app:layout_constraintHorizontal_weight="2" />
 
     <TextView
         android:id="@+id/text_visual_disability"
@@ -124,9 +123,9 @@
         android:contentDescription="@string/text_infant_family"
         android:src="@drawable/sv_child_unselected_icon"
         app:layout_constraintEnd_toStartOf="@+id/img_elderly_person"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/img_visual_disability"
-        app:layout_constraintTop_toTopOf="@+id/img_visual_disability" />
+        app:layout_constraintTop_toTopOf="@+id/img_visual_disability"
+        app:layout_constraintHorizontal_weight="3" />
 
     <TextView
         android:id="@+id/text_infant_family"
@@ -145,19 +144,18 @@
         android:id="@+id/img_elderly_person"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="40dp"
         android:contentDescription="@string/text_elderly_person"
         android:src="@drawable/sv_elderly_unselected_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/img_infant_family"
-        app:layout_constraintTop_toTopOf="@+id/img_infant_family" />
+        app:layout_constraintTop_toTopOf="@+id/img_infant_family"
+        app:layout_constraintHorizontal_weight="2" />
 
     <TextView
         android:id="@+id/text_elderly_person"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/text_elderly_person"
         android:fontFamily="@font/pretendard_semibold"
         android:gravity="center"
         android:text="@string/text_elderly_person"
@@ -165,5 +163,7 @@
         android:textSize="@dimen/font_big3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/img_elderly_person"
-        app:layout_constraintStart_toEndOf="@+id/text_infant_family" />
+        app:layout_constraintStart_toStartOf="@+id/img_elderly_person"
+        app:layout_constraintTop_toBottomOf="@+id/img_elderly_person" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

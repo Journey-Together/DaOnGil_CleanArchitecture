@@ -1,7 +1,7 @@
 package kr.tekit.lion.domain.model.search
 
 data class ListSearchOption (
-    val category: String,
+    val category: String?,
     val size: Int,
     val page: Int,
     val query: String?,
