@@ -183,4 +183,11 @@
     <string name="text_sort_ganada">가나다순</string>
     <string name="text_sort_recent">최신순</string>
     <string name="text_sort_popular">인기순</string>
+    <string name="text_sign_out">회원탈퇴</string>
+    <string name="text_logout">로그아웃</string>
+    <string name="text_place_review">나의 여행지 후기</string>
+    <string name="text_bookmark">북마크</string>
+    <string name="text_interest_type">관심 유형</string>
+    <string name="text_review">리뷰</string>
+    <string name="text_sir">님</string>
 </resources>
