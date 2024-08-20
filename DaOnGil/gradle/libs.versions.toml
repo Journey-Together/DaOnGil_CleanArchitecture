@@ -35,6 +35,9 @@ navigationSafeArgs = "2.7.7"
 coroutines-core = "1.7.3"
 javaxInject="1"
 playServicesLocation = "21.3.0"
+googleServices = "4.4.2"
+firebaseBom = "33.1.2"
+firebaseCrashlytics = "2.9.9"
 shimmer="0.5.0"
 
 [libraries]
@@ -80,6 +83,9 @@ gson = { group="com.google.code.gson", name="gson", version.ref="gson" }
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref="coroutines-core"}
 coroutines-core-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core-jvm", version.ref="coroutines-core"}
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref="javaxInject" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref="firebaseBom" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref="shimmer" }
 
 [plugins]
@@ -92,3 +98,5 @@ kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "org-jetbrains-kotlin-a
 navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref="navigationSafeArgs" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "org-jetbrains-kotlin-android"  }
 room = { id = "androidx.room", version.ref="room" }
+google-services = { id = "com.google.gms.google-services", version.ref="googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref="firebaseCrashlytics" }
