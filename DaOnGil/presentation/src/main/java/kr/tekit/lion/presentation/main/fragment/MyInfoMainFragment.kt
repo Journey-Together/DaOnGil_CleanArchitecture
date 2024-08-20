@@ -13,6 +13,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.ConcernTypeActivity
 import kr.tekit.lion.presentation.DeleteUserActivity
 import kr.tekit.lion.presentation.R
@@ -42,19 +44,31 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main){
         val binding = FragmentMyInfoMainBinding.bind(view)
 
         repeatOnViewStarted {
-            viewModel.loginState.collect { uiState ->
-                when (uiState) {
-                    is LogInState.Checking -> {
-                        startShimmer(binding)
+            supervisorScope {
+                launch {
+                    viewModel.loginState.collect { uiState ->
+                        when (uiState) {
+                            is LogInState.Checking -> {
+                                startShimmer(binding)
+                            }
+
+                            is LogInState.LoggedIn -> {
+                                viewModel.onStateLoggedIn()
+                                stopShimmer(binding)
+                                setUiLoggedInState(binding)
+                            }
+
+                            is LogInState.LoginRequired -> {
+                                stopShimmer(binding)
+                                setUiLoginRequiredState(binding)
+                            }
+                        }
                     }
-                    is LogInState.LoggedIn -> {
-                        stopShimmer(binding)
-                        setUiLoggedInState(binding)
-                        viewModel.onStateLoggedIn()
-                    }
-                    is LogInState.LoginRequired -> {
-                        stopShimmer(binding)
-                        setUiLoginRequiredState(binding)
+                }
+
+                launch {
+                    viewModel.errorMessage.collect {
+                        Snackbar.make(requireView(), it.toString(), Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }

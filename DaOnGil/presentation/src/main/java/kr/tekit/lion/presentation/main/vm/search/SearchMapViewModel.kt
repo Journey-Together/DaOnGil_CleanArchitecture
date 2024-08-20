@@ -32,7 +32,7 @@ import java.util.TreeSet
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchMapViewModel  @Inject constructor(
+class SearchMapViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
 ) : ViewModel(){
 

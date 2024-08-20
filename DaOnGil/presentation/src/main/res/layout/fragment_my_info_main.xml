@@ -10,7 +10,8 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -549,5 +550,28 @@
                     app:tint="@color/text_tertiary" />
             </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_big1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/text_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:textSize="@dimen/font_big1" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/img_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_basic"
+            android:src="@drawable/img_no_search_result"/>
     </LinearLayout>
 </LinearLayout>

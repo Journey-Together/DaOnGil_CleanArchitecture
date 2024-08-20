@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarConcernType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/back_icon"
+        android:minHeight="?attr/actionBarSize" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="관심 유형"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big2" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_basic"
+            android:layout_marginBottom="@dimen/margin_basic">
+
+            <TextView
+                android:id="@+id/textViewConcernTypeUseNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="다온길" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="님의 관심 유형"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewConcernTypeUseNickname"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_basic"
+            android:layout_marginRight="@dimen/margin_basic"
+            android:layout_marginBottom="@dimen/margin_basic"
+            android:backgroundTint="@color/search_view_background"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="8dp"
+            app:strokeColor="#a3a3a4"
+            app:strokeWidth="0.5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/margin_basic"
+                android:paddingBottom="@dimen/margin_basic">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/margin_big2">
+
+                    <ImageView
+                        android:id="@+id/imageViewConcernTypePhysical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_basic"
+                        android:src="@drawable/cc_unselected_physical_disability_icon" />
+
+                    <ImageView
+                        android:id="@+id/imageViewConcernTypeVisual"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_basic"
+                        android:src="@drawable/cc_unselected_visual_impairment_icon" />
+
+                    <ImageView
+                        android:id="@+id/imageViewConcernTypeHearing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/cc_unselected_hearing_impairment_icon" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageViewConcernTypeInfant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_basic"
+                        android:src="@drawable/cc_unselected_infant_family_icon" />
+
+                    <ImageView
+                        android:id="@+id/imageViewConcernTypeElderly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/cc_unselected_elderly_people_icon" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big2"
+        android:layout_marginBottom="@dimen/margin_big2"
+        app:dividerColor="@color/text_tertiary"
+        app:dividerThickness="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_basic">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_basic"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="관심 유형을 변경하고 싶으신가요?"
+            android:textSize="@dimen/font_big2" />
+
+        <Button
+            android:id="@+id/buttonConcernType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_radius_10"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="관심 유형 수정하기"
+            android:textSize="@dimen/font_big2" />
+    </LinearLayout>
+
+
+</LinearLayout>
