@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -143,4 +144,3 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
         viewModel.onMapChanged(state)
     }
 }
-

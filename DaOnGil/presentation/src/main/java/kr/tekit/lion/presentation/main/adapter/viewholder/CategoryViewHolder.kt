@@ -75,6 +75,7 @@ class CategoryViewHolder(
             }
 
             else -> {
+                textView.text = "${context.getString(textResId)} $count"
                 textView.setTextColor(ContextCompat.getColor(context, R.color.search_view_main))
                 imageView.setImageDrawable(ContextCompat.getDrawable(context, selectedIcon))
             }
