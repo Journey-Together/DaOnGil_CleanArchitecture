@@ -13,8 +13,6 @@ class ConfirmDialog(
     private val title: String,
     private val subtitle: String,
     private val posBtnTitle: String,
-    private val posBtnColorResId: Int,
-    private val posBtnTextColorResId: Int,
     private val onClickPositive: () -> Unit,
 ) : DialogFragment(R.layout.dialog_confirm) {
 
@@ -23,12 +21,11 @@ class ConfirmDialog(
         val binding = DialogConfirmBinding.bind(view)
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         binding.textViewDialogTitle.text = title
         binding.textViewDialogSubtitle.text = subtitle
         binding.buttonPositive.text = posBtnTitle
-        binding.buttonPositive.backgroundTintList = ContextCompat.getColorStateList(requireContext(), posBtnColorResId)
-        binding.buttonPositive.setTextColor(ContextCompat.getColor(requireContext(), posBtnTextColorResId))
+        binding.buttonPositive.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.button_tertiary)
+        binding.buttonPositive.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
 
         binding.buttonNegative.setOnClickListener {
             dismiss()

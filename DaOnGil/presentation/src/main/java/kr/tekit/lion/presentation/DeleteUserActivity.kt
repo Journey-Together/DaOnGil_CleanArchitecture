@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.kakao.sdk.user.UserApiClient
 import kr.tekit.lion.presentation.databinding.ActivityDeleteUserBinding
 import kr.tekit.lion.presentation.login.LoginActivity
-import kr.tekit.lion.presentation.myinfo.ConfirmDialog
+import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 
 class DeleteUserActivity : AppCompatActivity() {
     private val binding: ActivityDeleteUserBinding by lazy {

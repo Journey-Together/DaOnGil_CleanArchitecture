@@ -117,8 +117,6 @@ class KeywordSearchActivity : AppCompatActivity() {
             "검색어 전체 삭제",
             "최근 검색어를 모두\n삭제하시겠습니까?",
             "삭제하기",
-            R.color.button_tertiary,
-            R.color.white
         ){
             viewModel.deleteAllKeyword()
         }
