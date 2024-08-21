@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kr.tekit.lion.domain.model.IceInfo
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentIceModifyBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
@@ -37,19 +38,19 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
             buttonIceSubmit.setOnClickListener {
                 if (isFormValid(binding)) {
                     showSnackbar(binding, "나의 응급 정보가 수정 되었습니다.")
-//                    viewModel.onCompleteModifyIce(
-//                        IceInfo(
-//                            bloodType = tvBloodType.text.toString(),
-//                            birth = tvBirthday.text.toString(),
-//                            disease = tvDisease.text.toString(),
-//                            allergy = tvAllergy.text.toString(),
-//                            medication = tvMedicine.text.toString(),
-//                            part1Rel = tvRelation1.text.toString(),
-//                            part1Phone = tvContact1.text.toString(),
-//                            part2Rel = tvRelation2.text.toString(),
-//                            part2Phone = tvContact2.text.toString()
-//                        )
-//                    )
+                    viewModel.onCompleteModifyIce(
+                        IceInfo(
+                            bloodType = tvBloodType.text.toString(),
+                            birth = tvBirthday.text.toString(),
+                            disease = tvDisease.text.toString(),
+                            allergy = tvAllergy.text.toString(),
+                            medication = tvMedicine.text.toString(),
+                            part1Rel = tvRelation1.text.toString(),
+                            part1Phone = tvContact1.text.toString(),
+                            part2Rel = tvRelation2.text.toString(),
+                            part2Phone = tvContact2.text.toString()
+                        )
+                    )
                     findNavController().popBackStack()
                 }
             }
@@ -75,19 +76,19 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
         }
 
         repeatOnViewStarted {
-//            with(binding) {
-//                viewModel.myIceInfo.collect {
-//                    tvBirthday.setText(it.birth)
-//                    tvBloodType.setText(it.bloodType)
-//                    tvDisease.setText(it.disease)
-//                    tvAllergy.setText(it.allergy)
-//                    tvMedicine.setText(it.medication)
-//                    tvRelation1.setText(it.part1Rel)
-//                    tvContact1.setText(it.part1Phone)
-//                    tvRelation2.setText(it.part2Rel)
-//                    tvContact2.setText(it.part2Phone)
-//                }
-//            }
+            with(binding) {
+                viewModel.myIceInfo.collect {
+                    tvBirthday.setText(it.birth)
+                    tvBloodType.setText(it.bloodType)
+                    tvDisease.setText(it.disease)
+                    tvAllergy.setText(it.allergy)
+                    tvMedicine.setText(it.medication)
+                    tvRelation1.setText(it.part1Rel)
+                    tvContact1.setText(it.part1Phone)
+                    tvRelation2.setText(it.part2Rel)
+                    tvContact2.setText(it.part2Phone)
+                }
+            }
         }
     }
 

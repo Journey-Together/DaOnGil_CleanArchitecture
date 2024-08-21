@@ -1,4 +1,4 @@
-package kr.tekit.lion.daongil.domain.model
+package kr.tekit.lion.domain.model
 
 data class IceInfo(
     val bloodType: String = "",

@@ -18,13 +18,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
-import kr.tekit.lion.presentation.myinfo.ConfirmDialog
+import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.myinfo.model.ModifyState
 import kr.tekit.lion.presentation.myinfo.vm.MyInfoViewModel
 
 @AndroidEntryPoint
@@ -45,7 +47,6 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         albumLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            // 사진 선택을 완료한 후 돌아왔다면
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data
                 uri?.let { drawImage(binding.imgProfile, uri) }
@@ -60,7 +61,7 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                     val permissionDialog = ConfirmDialog(
                         "권한 설정",
                         "갤러리 이용을 위해 권한 설정이 필요합니다",
-                        "권한 설정"
+                        "권한 설정하기"
                     ) {
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         val packageName = requireContext().packageName
@@ -75,17 +76,17 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             }
 
 
-        //val myInfo = viewModel.myPersonalInfo.value
+        val myInfo = viewModel.myPersonalInfo.value
         with(binding) {
-//            tvNickname.setText(myInfo.nickname)
-//            tvPhone.setText(myInfo.phone)
+            tvNickname.setText(myInfo.nickname)
+            tvPhone.setText(myInfo.phone)
 
-//            Glide.with(requireContext())
-//                .load(viewModel.profileImg.value)
-//                .fallback(R.drawable.default_profile)
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                .skipMemoryCache(true)
-//                .into(imgProfile)
+            Glide.with(requireContext())
+                .load(viewModel.profileImg.value.imagePath)
+                .fallback(R.drawable.default_profile)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imgProfile)
 
             btnModify.setOnClickListener {
                 if (isPhotoPickerAvailable()) {
@@ -103,19 +104,19 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
 
             btnSubmit.setOnClickListener {
                 if (isFormValid(binding)) {
-                    //val state = viewModel.modifyState.value
+                    val state = viewModel.modifyState.value
                     val nickname = tvNickname.text.toString()
                     val phone = tvPhone.text.toString()
 
-//                    when (state) {
-//                        ModifyState.ImgSelected -> {
-//                            viewModel.onCompleteModifyPersonalWithImg(nickname, phone)
-//                        }
-//
-//                        ModifyState.ImgUnSelected -> {
-//                            viewModel.onCompleteModifyPersonal(nickname, phone)
-//                        }
-//                    }
+                    when (state) {
+                        ModifyState.ImgSelected -> {
+                            viewModel.onCompleteModifyPersonalWithImg(nickname, phone)
+                        }
+
+                        ModifyState.ImgUnSelected -> {
+                            viewModel.onCompleteModifyPersonal(nickname, phone)
+                        }
+                    }
 
                     Snackbar.make(binding.root, "개인 정보가 수정 되었습니다.", Snackbar.LENGTH_LONG)
                         .setBackgroundTint(
@@ -163,15 +164,14 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         }
     }
 
-
     private fun drawImage(view: ImageView, imgUrl: Uri) {
         Glide.with(requireContext())
             .load(imgUrl)
             .fallback(R.drawable.default_profile)
             .into(view)
         val path = requireContext().toAbsolutePath(imgUrl)
-//        viewModel.onSelectProfileImage(path)
-//        viewModel.modifyStateChange()
+        viewModel.onSelectProfileImage(path)
+        viewModel.modifyStateChange()
     }
 
 
