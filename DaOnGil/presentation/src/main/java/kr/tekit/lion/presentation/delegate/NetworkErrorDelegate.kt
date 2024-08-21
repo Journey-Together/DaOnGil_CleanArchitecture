@@ -15,8 +15,11 @@ class NetworkErrorDelegate @Inject constructor() {
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> get() = _errorMessage.asStateFlow()
 
+    private val _networkState = MutableStateFlow<NetworkState>(NetworkState.Loading)
+    val networkState: StateFlow<NetworkState> get() = _networkState.asStateFlow()
+
     fun handleNetworkError(exception: NetworkError) {
-        val errorState: String = when (exception) {
+        val errorState = when (exception) {
             is ConnectError -> ConnectError.message
             is TimeoutError -> TimeoutError.message
             is UnknownHostError -> UnknownHostError.message
@@ -25,4 +28,13 @@ class NetworkErrorDelegate @Inject constructor() {
         }
         _errorMessage.value = errorState
     }
+
+    fun handleNetworkSuccess(){
+        _networkState.value = NetworkState.Success
+    }
+}
+
+sealed class NetworkState(){
+    data object Loading: NetworkState()
+    data object Success: NetworkState()
 }
