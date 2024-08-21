@@ -10,8 +10,7 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -370,8 +369,6 @@
                     app:layout_constraintStart_toEndOf="@+id/textViewMyInfoMainRegister"
                     app:layout_constraintTop_toTopOf="@+id/textViewMyInfoMainRegister" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.divider.MaterialDivider
@@ -553,10 +550,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/error_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/margin_big1"
+        android:visibility="gone"
         android:gravity="center">
 
         <TextView

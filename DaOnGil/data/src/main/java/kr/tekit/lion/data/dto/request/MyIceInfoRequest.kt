@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.dto.request
 
-import kr.tekit.lion.daongil.domain.model.IceInfo
+import kr.tekit.lion.domain.model.IceInfo
 import kr.tekit.lion.data.dto.remote.request.util.AdapterProvider.Companion.JsonAdapter
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody

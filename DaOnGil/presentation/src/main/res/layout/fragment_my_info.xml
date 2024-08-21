@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".presentation.myinfo.fragment.MyInfoFragment">
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarMyInfo"
@@ -25,9 +24,195 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <ScrollView
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/tv_personal_info"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:background="@drawable/shimmer_placeholder_rect"
+                android:fontFamily="@font/pretendard_semibold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_big2"
+                android:layout_marginEnd="@dimen/margin_basic"
+                android:background="@drawable/shimmer_placeholder_round_rect"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/top_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_big2"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:layout_marginEnd="@dimen/margin_big2"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_personal_info">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="70dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="200dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="180dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@drawable/shimmer_placeholder_rect"
+                app:layout_constraintTop_toBottomOf="@+id/top_info_container" />
+
+            <LinearLayout
+                android:id="@+id/bottom_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_basic"
+                android:paddingTop="@dimen/margin_big2"
+                android:paddingRight="@dimen/margin_small1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider">
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_round_rect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/bottom_info_container">
+
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="160dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="160dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="160dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <ScrollView
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +247,7 @@
                     <Button
                         android:id="@+id/btn_personal_info_modify"
                         android:layout_width="wrap_content"
-                        android:layout_height="45dp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/background_radius_50"
                         android:fontFamily="@font/pretendard_semibold"
                         android:text="수정하기"
