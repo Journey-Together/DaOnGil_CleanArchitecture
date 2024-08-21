@@ -1,14 +1,15 @@
 package kr.tekit.lion.data.repository
 
-import kr.tekit.lion.daongil.domain.model.IceInfo
+import kr.tekit.lion.domain.model.IceInfo
 import kr.tekit.lion.domain.model.MyInfo
 import kr.tekit.lion.data.datasource.MemberDataSource
 import kr.tekit.lion.data.dto.remote.request.toRequestBody
+import kr.tekit.lion.data.dto.request.toMultipartBody
 import kr.tekit.lion.data.dto.request.toRequestBody
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.model.MyDefaultInfo
 import kr.tekit.lion.domain.model.PersonalInfo
-import kr.tekit.lion.domain.model.ProfileImg
+import kr.tekit.lion.domain.model.ProfileImage
 import kr.tekit.lion.domain.model.Result
 import kr.tekit.lion.domain.repository.MemberRepository
 import javax.inject.Inject
@@ -29,9 +30,8 @@ internal class MemberRepositoryImpl @Inject constructor(
         return memberDataSource.modifyMyPersonalInfo(request.toRequestBody())
     }
 
-    override suspend fun modifyMyProfileImg(request: ProfileImg): Result<Unit> {
-        //return memberDataSource.modifyMyProfileImage(request.toMultiPartBody())
-        TODO()
+    override suspend fun modifyMyProfileImg(request: ProfileImage): Result<Unit> {
+        return memberDataSource.modifyMyProfileImage(request.toMultipartBody())
     }
 
     override suspend fun modifyMyIceInfo(request: IceInfo): Result<Unit> {
