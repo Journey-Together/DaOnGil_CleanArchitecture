@@ -70,6 +70,16 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                             }
                         }
                     }
+                    launch {
+                        viewModel.errorMessage.collect{
+                            if (it != null) {
+                                mainContainer.visibility = View.GONE
+                                errorContainer.visibility = View.VISIBLE
+                                textMsg.text = it
+                                stopShimmer(binding)
+                            }
+                        }
+                    }
                 }
             }
 
