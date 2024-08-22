@@ -186,4 +186,12 @@
     <string name="text_recently_search_keyword">최근 검색어</string>
     <string name="text_delete_all">전체 삭제</string>
     <string name="text_no_recently_search_keyword">최근 검색어 내역이 없습니다.</string>
+
+    <string name="text_sign_out">회원탈퇴</string>
+    <string name="text_logout">로그아웃</string>
+    <string name="text_place_review">나의 여행지 후기</string>
+    <string name="text_bookmark">북마크</string>
+    <string name="text_interest_type">관심 유형</string>
+    <string name="text_review">리뷰</string>
+    <string name="text_sir">님</string>
 </resources>

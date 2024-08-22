@@ -3,11 +3,25 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
-            android:name=".keyword.KeywordSearchActivity"
-            android:exported="false"/>
+            android:name=".ConcernTypeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bookmark.BookmarkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".myreview.MyReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DeleteUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".myinfo.MyInfoActivity"
+            android:exported="false" />
         <activity
             android:name=".login.LoginActivity"
             android:exported="false" />

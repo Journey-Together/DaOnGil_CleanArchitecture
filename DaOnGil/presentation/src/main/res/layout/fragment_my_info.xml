@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarMyInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/back_icon"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="나의 정보"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big2" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/tv_personal_info"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:background="@drawable/shimmer_placeholder_rect"
+                android:fontFamily="@font/pretendard_semibold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_big2"
+                android:layout_marginEnd="@dimen/margin_basic"
+                android:background="@drawable/shimmer_placeholder_round_rect"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/top_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_big2"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:layout_marginEnd="@dimen/margin_big2"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_personal_info">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="70dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="200dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="180dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@drawable/shimmer_placeholder_rect"
+                app:layout_constraintTop_toBottomOf="@+id/top_info_container" />
+
+            <LinearLayout
+                android:id="@+id/bottom_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_basic"
+                android:paddingTop="@dimen/margin_big2"
+                android:paddingRight="@dimen/margin_small1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider">
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_round_rect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/bottom_info_container">
+
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="160dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="160dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+
+                <View
+                    android:layout_width="160dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:background="@drawable/shimmer_placeholder_rect" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <ScrollView
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/margin_basic"
+                android:paddingTop="@dimen/margin_big2"
+                android:paddingRight="@dimen/margin_basic"
+                android:paddingBottom="@dimen/margin_big1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:text="개인 정보"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/btn_personal_info_modify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_radius_50"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:text="수정하기"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_big4"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:text="이름"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_big3" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_big4"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:text="전화번호"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_big3" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_big4"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:text="닉네임"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_big3" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_big4"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:text="이름"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_big3" />
+
+                        <TextView
+                            android:id="@+id/tv_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_big4"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:hint="@string/text_plz_enter_phone"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_big3" />
+
+                        <TextView
+                            android:id="@+id/tv_nickname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:hint="@string/text_plz_enter_nickname"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_big3" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="@color/text_tertiary"
+                app:dividerThickness="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/margin_basic"
+                android:paddingTop="@dimen/margin_big1"
+                android:paddingRight="@dimen/margin_basic"
+                android:paddingBottom="@dimen/margin_big1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/margin_big2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:text="나의 응급 정보"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/bnt_ice_modify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_radius_50"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:text="수정하기"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_birth"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_big2" />
+
+                <TextView
+                    android:id="@+id/tv_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="@color/text_secondary"
+                    android:hint="@string/text_plz_enter_birth"
+                    android:textSize="@dimen/font_big3" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_blood_type"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_big2" />
+
+                <TextView
+                    android:id="@+id/tv_blood_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="@color/text_secondary"
+                    android:hint="@string/text_plz_enter_blood_type"
+                    android:textSize="@dimen/font_big3" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_disease"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_big2" />
+
+                <TextView
+                    android:id="@+id/tv_disease"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="@color/text_secondary"
+                    android:hint="@string/text_plz_enter_disease"
+                    android:textSize="@dimen/font_big3" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_allergy"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_big2" />
+
+                <TextView
+                    android:id="@+id/tv_allergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="@color/text_secondary"
+                    android:hint="@string/text_plz_enter_allergy"
+                    android:textSize="@dimen/font_big3" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_medicine"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_big2" />
+
+                <TextView
+                    android:id="@+id/tv_medicine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="@color/text_secondary"
+                    android:hint="@string/text_plz_enter_medicine"
+                    android:textSize="@dimen/font_big3" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_emergency_contact"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_big2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_relation1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_relation"
+                        android:hint="@string/text_relation"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/font_big3" />
+
+                    <TextView
+                        android:id="@+id/tv_contact1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textColor="@color/text_secondary"
+                        android:hint="@string/text_plz_enter_emergency_contact"
+                        android:textSize="@dimen/font_small1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutMyInfoRelation2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_relation2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_relation"
+                        android:hint="@string/text_relation"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/font_big3" />
+
+                    <TextView
+                        android:id="@+id/tv_contact2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textColor="@color/text_secondary"
+                        android:hint="@string/text_plz_enter_emergency_contact"
+                        android:textSize="@dimen/font_small1" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/error_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:textSize="@dimen/font_big1"
+            app:layout_constraintBottom_toTopOf="@+id/img_no_result"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/img_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_basic"
+            android:src="@drawable/img_no_search_result"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_msg" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -85,4 +85,8 @@
     <color name="pharmcy_color">#F8B60B</color>
 
     <color name="transparent">#00000000</color>
+
+    <color name="shimmer_start_color">#DDDDDD</color>
+    <color name="shimmer_end_color">#AAAAAA</color>
+
 </resources>

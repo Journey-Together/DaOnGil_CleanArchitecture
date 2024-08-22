@@ -44,10 +44,10 @@ internal interface RepositoryModule {
     fun bindPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
 
     @Binds
-
     fun bindRecentlySearchKeywordRepository(recentlySearchKeywordRepositoryImpl: RecentlySearchKeywordRepositoryImpl)
     : RecentlySearchKeywordRepository
 
+    @Binds
     fun bindAppThemeRepository(appThemeRepositoryImpl: AppThemeRepositoryImpl): AppThemeRepository
 
 }

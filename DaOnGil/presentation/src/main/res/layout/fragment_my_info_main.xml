@@ -3,143 +3,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/background_color"
-    android:orientation="vertical"
-    android:transitionGroup="true">
+    android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="wrap_content"
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerFrameLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/background_color"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="270dp"
                 android:background="@drawable/mypage_profile_background">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <View
+                    android:id="@+id/shimmer_materialCardView"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="@dimen/margin_basic"
                     android:layout_marginBottom="@dimen/margin_basic"
+                    android:background="@drawable/shimmer_placeholder_circle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_tvNameOrLogin"
+                    android:layout_width="100dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="@dimen/margin_big3"
+                    android:layout_marginBottom="32dp"
+                    android:background="@drawable/shimmer_placeholder_rect"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_materialCardView"
+                    app:layout_constraintTop_toTopOf="@+id/shimmer_materialCardView" />
+
+                <View
+                    android:id="@+id/shimmer_tvUserNameTitle"
+                    android:layout_width="30dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    app:layout_constraintBottom_toBottomOf="@+id/shimmer_tvNameOrLogin"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_tvNameOrLogin" />
+
+                <View
+                    android:id="@+id/shimmer_tvReview"
+                    android:layout_width="50dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="@dimen/margin_big3"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shimmer_placeholder_rect"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_materialCardView"
+                    app:layout_constraintTop_toBottomOf="@+id/shimmer_tvNameOrLogin" />
+
+                <View
+                    android:id="@+id/shimmer_tvReviewCnt"
+                    android:layout_width="10dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_tvReview"
+                    app:layout_constraintTop_toTopOf="@+id/shimmer_tvReview" />
+
+                <View
+                    android:id="@+id/shimmer_textViewMyInfoMainRegister"
+                    android:layout_width="50dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="@dimen/margin_big4"
+                    android:background="@drawable/shimmer_placeholder_rect"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_tvReviewCnt"
+                    app:layout_constraintTop_toTopOf="@+id/shimmer_tvReviewCnt" />
+
+                <View
+                    android:id="@+id/shimmer_tv_registered_data"
+                    android:layout_width="60dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_textViewMyInfoMainRegister"
+                    app:layout_constraintTop_toTopOf="@+id/shimmer_textViewMyInfoMainRegister" />
+
+                <View
+                    android:id="@+id/shimmer_btnLoginOrUpdate"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="@dimen/margin_big4"
+                    android:background="@drawable/shimmer_placeholder_rect"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <ImageView
-                        android:id="@+id/btnLoginOrUpdate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:layout_marginBottom="@dimen/margin_big4"
-                        android:src="@drawable/ic_chevron_right_24px"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:tint="@color/text_primary" />
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/materialCardView"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginLeft="@dimen/margin_basic"
-                        app:cardCornerRadius="50dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:strokeWidth="0dp"
-                        tools:ignore="MissingConstraints">
-
-                        <ImageView
-                            android:id="@+id/imgProfile"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_profile" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <TextView
-                        android:id="@+id/tvNameOrLogin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_big3"
-                        android:layout_marginBottom="32dp"
-                        android:fontFamily="@font/pretendard_bold"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_big2"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/materialCardView"
-                        tools:text="다온길" />
-
-                    <TextView
-                        android:id="@+id/tvUserNameTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_small2"
-                        android:layout_marginBottom="32dp"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:text="님"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_big2"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/tvNameOrLogin" />
-
-                    <TextView
-                        android:id="@+id/tvReview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_big3"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="14dp"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:text="리뷰"
-                        android:textColor="@color/text_primary"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/materialCardView"
-                        app:layout_constraintTop_toBottomOf="@+id/tvNameOrLogin" />
-
-                    <TextView
-                        android:id="@+id/tvReviewCnt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_small2"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="@font/pretendard_semibold"
-                        android:textColor="@color/text_primary"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/tvReview"
-                        app:layout_constraintTop_toBottomOf="@+id/tvNameOrLogin"
-                        tools:text="2" />
-
-                    <TextView
-                        android:id="@+id/textViewMyInfoMainRegister"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_big4"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:text="가입"
-                        app:layout_constraintBottom_toBottomOf="@+id/tvReviewCnt"
-                        app:layout_constraintStart_toEndOf="@+id/tvReviewCnt"
-                        app:layout_constraintTop_toTopOf="@+id/tvReviewCnt" />
-
-                    <TextView
-                        android:id="@+id/tv_registered_data"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_small2"
-                        android:fontFamily="@font/pretendard_semibold"
-                        app:layout_constraintBottom_toBottomOf="@+id/textViewMyInfoMainRegister"
-                        app:layout_constraintStart_toEndOf="@+id/textViewMyInfoMainRegister"
-                        app:layout_constraintTop_toTopOf="@+id/textViewMyInfoMainRegister"
-                        tools:text="5일째" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_tv_registered_data"
+                    app:layout_constraintTop_toTopOf="@+id/shimmer_tvUserNameTitle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.divider.MaterialDivider
@@ -149,131 +106,85 @@
                 app:dividerThickness="@dimen/margin_small1" />
 
             <LinearLayout
-                android:id="@+id/userContainer"
+                android:id="@+id/shimmer_userContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutConcernType"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center_vertical"
-                        android:text="관심 유형"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_big3"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/ic_chevron_right_24px"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/text_tertiary" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutBookmark"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center_vertical"
-                        android:text="북마크"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_big3"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/ic_chevron_right_24px"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/text_tertiary" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutMyReview"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center_vertical"
-                        android:text="나의 여행지 후기"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_big3"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/ic_chevron_right_24px"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/text_tertiary" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutSetting"
+                <LinearLayout
+                    android:id="@+id/shimmer_layoutConcernType"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@color/navi_background"
-                    android:visibility="gone">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_basic">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center_vertical"
-                        android:text="설정"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_big3"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <View
+                        android:layout_width="100dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/ic_chevron_right_24px"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/text_tertiary" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/shimmer_layoutBookmark"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/navi_background"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_basic">
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/shimmer_layoutMyReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/navi_background"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_basic">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+                </LinearLayout>
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -281,72 +192,385 @@
                     app:dividerColor="@color/background_color"
                     app:dividerThickness="@dimen/margin_small1" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutLogout"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:background="@color/navi_background">
+                    android:background="@color/navi_background"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_basic">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center_vertical"
-                        android:text="로그아웃"
-                        android:textColor="@color/text_tertiary"
-                        android:textSize="@dimen/font_big3"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/ic_chevron_right_24px"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/text_tertiary" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutDelete"
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:background="@color/navi_background">
+                    android:background="@color/navi_background"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_basic">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center_vertical"
-                        android:text="회원탈퇴"
-                        android:textColor="@color/text_tertiary"
-                        android:textSize="@dimen/font_big3"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/ic_chevron_right_24px"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/text_tertiary" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    app:dividerColor="@color/background_color"
-                    app:dividerThickness="@dimen/margin_small1" />
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/shimmer_placeholder_rect" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <LinearLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:background="@drawable/mypage_profile_background">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_basic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/btnLoginOrUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:layout_marginBottom="@dimen/margin_big4"
+                    android:src="@drawable/ic_chevron_right_24px"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@color/text_primary" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/materialCardView"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    app:cardCornerRadius="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:strokeWidth="0dp"
+                    tools:ignore="MissingConstraints">
+
+                    <ImageView
+                        android:id="@+id/imgProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_profile" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/tvNameOrLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_big3"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                    tools:text="다온길" />
+
+                <TextView
+                    android:id="@+id/tvUserNameTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/text_sir"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvNameOrLogin" />
+
+                <TextView
+                    android:id="@+id/tvReview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_big3"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="14dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/text_review"
+                    android:textColor="@color/text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameOrLogin" />
+
+                <TextView
+                    android:id="@+id/tvReviewCnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textColor="@color/text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvReview"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameOrLogin" />
+
+                <TextView
+                    android:id="@+id/textViewMyInfoMainRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_big4"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="가입"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvReviewCnt"
+                    app:layout_constraintStart_toEndOf="@+id/tvReviewCnt"
+                    app:layout_constraintTop_toTopOf="@+id/tvReviewCnt" />
+
+                <TextView
+                    android:id="@+id/tv_registered_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_semibold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewMyInfoMainRegister"
+                    app:layout_constraintStart_toEndOf="@+id/textViewMyInfoMainRegister"
+                    app:layout_constraintTop_toTopOf="@+id/textViewMyInfoMainRegister" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/background_color"
+            app:dividerThickness="@dimen/margin_small1" />
+
+        <LinearLayout
+            android:id="@+id/userContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layoutConcernType"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/navi_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_interest_type"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:src="@drawable/ic_chevron_right_24px"
+                    app:tint="@color/text_tertiary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutBookmark"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/navi_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_bookmark"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/margin_basic"
+                    android:src="@drawable/ic_chevron_right_24px"
+                    app:tint="@color/text_tertiary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutMyReview"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/navi_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_place_review"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:src="@drawable/ic_chevron_right_24px"
+                    app:tint="@color/text_tertiary" />
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="@color/background_color"
+                app:dividerThickness="@dimen/margin_small1" />
+
+            <LinearLayout
+                android:id="@+id/layoutLogout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/navi_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_logout"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="@dimen/font_big3" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:src="@drawable/ic_chevron_right_24px"
+                    app:tint="@color/text_tertiary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDelete"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/navi_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_sign_out"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="@dimen/font_big3" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:src="@drawable/ic_chevron_right_24px"
+                    app:tint="@color/text_tertiary" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/error_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_big1"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/text_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:textSize="@dimen/font_big1" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/img_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_basic"
+            android:src="@drawable/img_no_search_result"/>
+    </LinearLayout>
 </LinearLayout>

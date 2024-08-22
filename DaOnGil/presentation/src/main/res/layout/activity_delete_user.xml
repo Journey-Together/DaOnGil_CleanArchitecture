@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/back_icon">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="회원 탈퇴"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big1" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/onboarding_clover" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="회원 탈퇴 후에는\n계정과 관련된 모든 정보가 삭제되며\n이를 복구 할 수 없습니다."
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big2" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_delete"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="@dimen/margin_big2"
+        android:layout_marginEnd="@dimen/margin_big2"
+        android:layout_marginBottom="@dimen/margin_basic"
+        android:background="@drawable/background_radius_10"
+        android:backgroundTint="@color/primary"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="회원 탈퇴하기"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big2" />
+
+</LinearLayout>
