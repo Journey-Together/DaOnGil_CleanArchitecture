@@ -97,4 +97,7 @@ fun Context.getDataColumn(uri: Uri?, selection: String?, selectionArgs: Array<St
         cursor?.close()
     }
     return null
+fun Context.isScreenReaderEnabled(): Boolean {
+    val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+    return accessibilityManager.isEnabled
 }
