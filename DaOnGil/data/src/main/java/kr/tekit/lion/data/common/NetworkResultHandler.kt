@@ -1,12 +1,16 @@
 package kr.tekit.lion.data.common
 
-import kr.tekit.lion.domain.model.ConnectError
-import kr.tekit.lion.domain.model.HttpError
-import kr.tekit.lion.domain.model.NetworkError
-import kr.tekit.lion.domain.model.Result
-import kr.tekit.lion.domain.model.TimeoutError
-import kr.tekit.lion.domain.model.UnknownError
-import kr.tekit.lion.domain.model.UnknownHostError
+import kr.tekit.lion.domain.exception.AuthenticationError
+import kr.tekit.lion.domain.exception.AuthorizationError
+import kr.tekit.lion.domain.exception.BadRequestError
+import kr.tekit.lion.domain.exception.ConnectError
+import kr.tekit.lion.domain.exception.NetworkError
+import kr.tekit.lion.domain.exception.NotFoundError
+import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.exception.ServerError
+import kr.tekit.lion.domain.exception.TimeoutError
+import kr.tekit.lion.domain.exception.UnknownError
+import kr.tekit.lion.domain.exception.UnknownHostError
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -35,7 +39,15 @@ fun handleNetworkError(e: Throwable): NetworkError {
         is ConnectException -> ConnectError
         is SocketTimeoutException -> TimeoutError
         is UnknownHostException -> UnknownHostError
-        is HttpException -> HttpError(e.code())
+        is HttpException -> { // HttpException으로 변경
+            when (e.code()) {
+                400 -> BadRequestError
+                401 -> AuthenticationError
+                403 -> AuthorizationError
+                404 -> NotFoundError
+                else -> ServerError
+            }
+        }
         else -> UnknownError
     }
 }

@@ -10,7 +10,7 @@ import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.model.MyDefaultInfo
 import kr.tekit.lion.domain.model.PersonalInfo
 import kr.tekit.lion.domain.model.ProfileImage
-import kr.tekit.lion.domain.model.Result
+import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.repository.MemberRepository
 import javax.inject.Inject
 
