@@ -10,15 +10,24 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back_icon"
+        app:menu="@menu/menu_read_script"
         android:minHeight="?attr/actionBarSize" >
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/text_back_button"
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/pretendard_medium"
-            android:text="개인 정보"
+            android:text="@string/text_personal_info"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/font_big2" />
 
@@ -51,6 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
+                    android:contentDescription="@string/text_profile_image"
                     android:src="@drawable/default_profile" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -65,6 +75,7 @@
                 android:backgroundTint="@color/primary"
                 app:icon="@drawable/camera_icon"
                 app:iconSize="24dp"
+                android:contentDescription="@string/text_guide_gallery_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,17 +92,18 @@
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-
             <TextView
+                android:id="@+id/title_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="닉네임"
+                android:text="@string/text_nickname"
                 android:textSize="@dimen/font_big2" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutUserNickname"
+                style="?attr/materialAlertDialogBodyTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small1"
@@ -107,17 +119,19 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_plz_enter_nickname"
+                    android:labelFor="@id/title_nickname"
                     android:inputType="text"
                     android:paddingStart="@dimen/margin_small2"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/title_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="전화번호"
+                android:text="@string/text_phone"
                 android:textSize="@dimen/font_big2" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -136,8 +150,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
-                    android:hint="예) 010-1234-5678"
+                    android:hint="@string/text_contact_ex"
                     android:inputType="phone"
+                    android:labelFor="@id/title_phone"
                     android:paddingStart="@dimen/margin_small2"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -158,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_radius_10"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="수정하기"
+                android:text="@string/text_modify"
                 android:textSize="@dimen/font_big2" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
