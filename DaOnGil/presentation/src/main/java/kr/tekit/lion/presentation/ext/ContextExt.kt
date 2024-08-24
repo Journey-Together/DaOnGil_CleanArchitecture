@@ -97,6 +97,20 @@ fun Context.getDataColumn(uri: Uri?, selection: String?, selectionArgs: Array<St
         cursor?.close()
     }
     return null
+}
+
+fun Context.announceForAccessibility(text: String) {
+    val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+    if (isScreenReaderEnabled()) {
+        val event = AccessibilityEvent.obtain()
+        event.eventType = AccessibilityEvent.TYPE_ANNOUNCEMENT
+        event.className = TextView::class.java.name
+        event.packageName = packageName
+        event.text.add(text)
+        accessibilityManager.sendAccessibilityEvent(event)
+    }
+}
+
 fun Context.isScreenReaderEnabled(): Boolean {
     val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
     return accessibilityManager.isEnabled
