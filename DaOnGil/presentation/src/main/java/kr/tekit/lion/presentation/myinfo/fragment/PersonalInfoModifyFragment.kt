@@ -14,15 +14,24 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
+import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.formatBirthday
+import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
@@ -35,10 +44,27 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var albumLauncher: ActivityResultLauncher<Intent>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
+    private val myInfoAnnounce = StringBuilder()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentPersonalInfoModifyBinding.bind(view)
+
+        repeatOnViewStarted {
+            viewModel.errorMessage.collect{
+                if (it != null){
+                    if (requireContext().isScreenReaderEnabled()){
+                        requireActivity().announceForAccessibility(it)
+                    }
+                }
+            }
+        }
+
+        if (requireContext().isScreenReaderEnabled()) {
+            setupAccessibility(binding)
+        } else {
+            binding.toolbar.menu.clear()
+        }
 
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             uri?.let { drawImage(binding.imgProfile, it) }
@@ -49,7 +75,15 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data
-                uri?.let { drawImage(binding.imgProfile, uri) }
+                if (uri == null && requireContext().isScreenReaderEnabled()){
+                    requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
+                }
+                uri?.let {
+                    drawImage(binding.imgProfile, uri)
+                    if (requireContext().isScreenReaderEnabled()){
+                        requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
+                    }
+                }
             }
         }
 
@@ -78,8 +112,31 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
 
         val myInfo = viewModel.myPersonalInfo.value
         with(binding) {
+            backButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             tvNickname.setText(myInfo.nickname)
             tvPhone.setText(myInfo.phone)
+
+            myInfoAnnounce.append(getString(R.string.text_nickname))
+            myInfoAnnounce.append(myInfo.nickname)
+            myInfoAnnounce.append(getString(R.string.text_phone))
+            myInfoAnnounce.append(myInfo.phone)
+
+            tvNickname.setAccessibilityText(
+                if (myInfo.nickname.isEmpty()) getString(R.string.text_plz_enter_nickname)
+                else myInfo.nickname
+            )
+            tvPhone.setAccessibilityText(
+                if (myInfo.phone.isEmpty()) getString(R.string.text_plz_enter_phone)
+                else myInfo.phone
+            )
+
+            tvNickname.doAfterTextChanged {
+                if (it != null) tvNickname.setAccessibilityText(it)
+                else tvNickname.setAccessibilityText(getString(R.string.text_plz_enter_nickname))
+            }
 
             Glide.with(requireContext())
                 .load(viewModel.profileImg.value.imagePath)
@@ -96,10 +153,6 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                 } else {
                     checkPermission()
                 }
-            }
-
-            toolbar.setNavigationOnClickListener {
-                findNavController().popBackStack()
             }
 
             btnSubmit.setOnClickListener {
@@ -128,6 +181,28 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                         .show()
                     findNavController().popBackStack()
                 }
+            }
+        }
+    }
+
+    private fun setupAccessibility(binding: FragmentPersonalInfoModifyBinding) {
+        requireActivity().announceForAccessibility(
+            getString(R.string.text_script_this_is_my_info_modify_page) +
+            getString(R.string.text_script_read_all_text)
+        )
+        myInfoAnnounce.append(getString(R.string.text_personal_info))
+
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.read_script -> {
+                    requireActivity().announceForAccessibility(getString(R.string.text_script_my_info_modify))
+                    true
+                }
+                R.id.read_info -> {
+                    requireActivity().announceForAccessibility(myInfoAnnounce.toString())
+                    true
+                }
+                else -> false
             }
         }
     }
@@ -180,21 +255,48 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         val phonePattern = "^010\\d{4}\\d{4}$"
 
         return if (binding.tvNickname.text.isNullOrBlank()) {
+            val errorMessage = getString(R.string.text_plz_enter_nickname)
+
+            binding.textInputLayoutUserNickname.error = errorMessage
             binding.tvNickname.requestFocus()
             context?.showSoftInput(binding.tvNickname)
-            binding.textInputLayoutUserNickname.error = "닉네임을 입력해주세요."
+            if (requireContext().isScreenReaderEnabled()) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    delay(2500)
+                    requireActivity().announceForAccessibility(errorMessage)
+                }
+            }
             false
         } else if (phoneNumber.isNotBlank() and !phoneNumber.matches(phonePattern.toRegex())) {
+            val errorMessage = getString(R.string.text_plz_enter_collect_phone_type) + "\n" +
+                    getString(R.string.text_contact_ex)
+
+            binding.textInputLayoutUserPhoneNumber.error = errorMessage
+
             binding.tvPhone.requestFocus()
             context?.showSoftInput(binding.tvPhone)
-            binding.textInputLayoutUserPhoneNumber.error =
-                "올바른 전화번호 형식을 입력해주세요.\n예: 01012345678"
+            if (requireContext().isScreenReaderEnabled()) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    delay(2500)
+                    requireActivity().announceForAccessibility(errorMessage)
+                }
+            }
+
+
             false
         } else if (phoneNumber.isEmpty()) {
+            val errorMessage = getString(R.string.text_plz_enter_phone)
+            binding.textInputLayoutUserPhoneNumber.error = errorMessage
+
             binding.tvPhone.requestFocus()
             context?.showSoftInput(binding.tvPhone)
-            binding.textInputLayoutUserPhoneNumber.error =
-                "전화번호를 입력해주세요."
+
+            if (requireContext().isScreenReaderEnabled()) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    delay(2500)
+                    requireActivity().announceForAccessibility(errorMessage)
+                }
+            }
             false
         } else {
             true

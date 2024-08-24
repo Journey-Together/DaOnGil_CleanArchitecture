@@ -1,7 +1,5 @@
 package kr.tekit.lion.presentation.main.fragment
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -12,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.ConcernTypeActivity
@@ -20,6 +19,8 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.bookmark.BookmarkActivity
 import kr.tekit.lion.presentation.databinding.FragmentMyInfoMainBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
@@ -35,7 +36,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == MODIFY_RESULT_CODE) {
             viewModel.onStateLoggedIn()
         }
     }
@@ -44,6 +45,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentMyInfoMainBinding.bind(view)
         startShimmer(binding)
+        val textToAnnounce = StringBuilder()
 
         repeatOnViewStarted {
             supervisorScope {
@@ -56,7 +58,9 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                             is LogInState.LoggedIn -> {
                                 setUiLoggedInState(binding)
 
-                                viewModel.myInfo.collect { myInfo ->
+                                viewModel.myInfo
+                                    .filter { it.name.isNotEmpty() }
+                                    .collect { myInfo ->
                                     binding.tvNameOrLogin.text = myInfo.name
                                     binding.tvReviewCnt.text = myInfo.reviewNum.toString()
                                     binding.tvRegisteredData.visibility = View.VISIBLE
@@ -68,10 +72,42 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                                         .skipMemoryCache(true)
                                         .into(binding.imgProfile)
+
+                                    if (requireContext().isScreenReaderEnabled()){
+
+                                        binding.readScriptBtn.visibility = View.VISIBLE
+
+                                        binding.readScriptBtn.setOnClickListener {
+                                            requireContext().announceForAccessibility(
+                                                resources.getString(
+                                                    R.string.text_script_for_my_info_main
+                                                )
+                                            )
+                                        }
+
+                                        textToAnnounce
+                                            .append(myInfo.name)
+                                            .append("님")
+                                            .append(binding.tvReview.text)
+                                            .append(myInfo.reviewNum.toString())
+                                            .append("개 ")
+                                            .append(binding.textViewMyInfoMainRegister.text)
+                                            .append("${myInfo.date + 1}일째")
+                                            .append(getString(R.string.text_script_read_all_text))
+
+                                        requireContext().announceForAccessibility(
+                                            textToAnnounce.toString()
+                                        )
+                                    }
                                 }
                             }
                             is LogInState.LoginRequired -> {
                                 setUiLoginRequiredState(binding)
+                                textToAnnounce.append(getString(R.string.text_script_for_no_login_user))
+
+                                requireContext().announceForAccessibility(
+                                    textToAnnounce.toString()
+                                )
                             }
                         }
                     }
@@ -79,7 +115,9 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
 
                 launch {
                     viewModel.networkState.collect {
-                        if (it == NetworkState.Success) stopShimmer(binding)
+                        if (it == NetworkState.Success){
+                            stopShimmer(binding)
+                        }
                     }
                 }
 
@@ -116,6 +154,10 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             shimmerFrameLayout.visibility = View.GONE
             shimmerFrameLayout.stopShimmer()
             textMsg.text = msg
+
+            if (requireContext().isScreenReaderEnabled()){
+                requireActivity().announceForAccessibility(msg)
+            }
         }
     }
 
@@ -127,7 +169,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         moveBookmark(binding)
         moveMyReview(binding)
         moveDeleteUser(binding)
-      }
+    }
 
     private fun setUiLoginRequiredState(binding: FragmentMyInfoMainBinding) {
         binding.mainContainer.visibility = View.VISIBLE
@@ -138,6 +180,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             tvUserNameTitle.visibility = View.GONE
             textViewMyInfoMainRegister.visibility = View.GONE
             tvNameOrLogin.text = getString(R.string.text_myInfo_Review)
+            tvNameOrLogin.contentDescription = "로그인 버튼"
             tvRegisteredData.visibility = View.GONE
             layoutProfile.setOnClickListener {
                 val intent = Intent(requireActivity(), LoginActivity::class.java)
@@ -195,5 +238,9 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
 
     private fun logout() {
         Snackbar.make(requireView(), "로그아웃", Snackbar.LENGTH_SHORT).show()
+    }
+
+    companion object{
+        val MODIFY_RESULT_CODE = 10001
     }
 }
