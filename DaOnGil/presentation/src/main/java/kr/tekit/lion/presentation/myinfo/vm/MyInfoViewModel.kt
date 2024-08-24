@@ -10,14 +10,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.IceInfo
 import kr.tekit.lion.domain.model.PersonalInfo
-import kr.tekit.lion.domain.model.onError
-import kr.tekit.lion.domain.model.onSuccess
+import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.myinfo.model.ModifyState
 import kr.tekit.lion.presentation.myinfo.model.UserProfileImg
-import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel

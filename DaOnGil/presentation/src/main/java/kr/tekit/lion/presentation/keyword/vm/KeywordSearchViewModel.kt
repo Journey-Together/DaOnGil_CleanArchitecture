@@ -16,10 +16,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.tekit.lion.domain.model.ConnectError
-import kr.tekit.lion.domain.model.NetworkError
-import kr.tekit.lion.domain.model.onError
-import kr.tekit.lion.domain.model.onSuccess
+import kr.tekit.lion.domain.exception.NetworkError
+import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.search.RecentlySearchKeyword
 import kr.tekit.lion.domain.model.search.toRecentlySearchKeyword
 import kr.tekit.lion.domain.repository.PlaceRepository

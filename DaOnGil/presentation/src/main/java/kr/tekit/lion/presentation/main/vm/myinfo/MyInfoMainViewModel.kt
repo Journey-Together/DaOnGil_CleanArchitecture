@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kr.tekit.lion.domain.model.MyDefaultInfo
-import kr.tekit.lion.domain.model.onError
-import kr.tekit.lion.domain.model.onSuccess
+import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
@@ -61,7 +61,7 @@ class MyInfoMainViewModel @Inject constructor(
 
     fun onStateLoggedIn() = viewModelScope.launch{
         memberRepository.getMyDefaultInfo().onSuccess { myInfo ->
-            _myInfo.update { myInfo }
+            _myInfo.value = myInfo
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
