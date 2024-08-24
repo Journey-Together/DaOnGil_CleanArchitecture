@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,8 +9,17 @@
         android:id="@+id/toolbarIceModify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back_icon"
-        android:minHeight="?attr/actionBarSize"  >
+        app:menu="@menu/menu_read_script"
+        android:minHeight="?attr/actionBarSize">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/text_back_button"
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/margin_basic">
+            android:padding="@dimen/margin_big2">
 
             <TextView
                 android:layout_width="match_parent"
@@ -209,7 +217,6 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:hint="@string/text_relation"
                         android:inputType="text"
-                        android:paddingStart="@dimen/margin_small2"
                         android:textSize="@dimen/font_big3" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -217,7 +224,7 @@
                     android:id="@+id/tv_contact1_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     app:boxBackgroundColor="@color/background_color"
                     app:boxBackgroundMode="filled"
                     app:hintEnabled="false">
@@ -238,6 +245,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_small1"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -265,7 +273,7 @@
                     android:id="@+id/textInputLayoutContact2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     app:boxBackgroundColor="@color/background_color"
                     app:boxBackgroundMode="filled"
                     app:endIconMode="clear_text"
@@ -290,7 +298,8 @@
                 android:layout_marginTop="36dp"
                 android:background="@drawable/background_radius_10"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="수정하기"
+                android:contentDescription="@string/text_modify"
+                android:text="@string/text_modify"
                 android:textSize="@dimen/font_big2" />
 
         </LinearLayout>

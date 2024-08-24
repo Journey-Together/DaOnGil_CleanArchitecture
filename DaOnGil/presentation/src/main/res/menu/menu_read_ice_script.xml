@@ -5,7 +5,7 @@
         android:id="@+id/read_info"
         android:icon="@drawable/ic_read_info"
         app:showAsAction="always"
-        android:title="@string/text_read_my_ice_info_script" />
+        android:title="@string/text_read_my_profile" />
     <item
         android:id="@+id/read_script"
         android:icon="@drawable/ic_read_script"

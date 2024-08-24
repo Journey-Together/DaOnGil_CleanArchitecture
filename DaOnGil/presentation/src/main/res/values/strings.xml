@@ -136,9 +136,9 @@
     <string name="text_plz_enter_phone">전화번호를 입력해주세요</string>
     <string name="text_plz_enter_collect_phone_for_announce">전화번호는 숫자만입력해주세요.</string>
     <string name="text_plz_enter_collect_phone_type">올바른 전화번호 형식을 입력해주세요.</string>
+    <string name="text_plz_enter_collect_birth_type">올바른 생년월일 형식을 입력해주세요.</string>
     <string name="text_birth_ex">예) 19700101</string>
     <string name="text_contact_ex">예) 01012345678</string>
-
 
     <string name="text_write_schedule_review">여행 후기 남기기</string>
     <string name="text_schedule_review_photo">여행 사진</string>
@@ -250,6 +250,15 @@
         로그아웃영역 하단에 회원탈퇴영역이 있습니다.
         회원탈퇴버튼을 클릭하면 회원탈퇴화면으로 이동해드릴게요.
     </string>
+    <string name="text_script_for_modify_my_info_main">
+        나의 응급정보 화면은 생년월일, 혈액형, 의학적질화느 일레르기및부작용, 투여약, 긴급연락처를 수정할수있어요.
+        긴급연락처는 두개까지입력할수 있습니다.
+        최하단에 수정완료버튼이 있습니다.
+        수정완료버튼을 클릭하면 수정이완료됩니다.
+        저장된 내응급정보를 들으시려면 나의응급정보읽기버튼을 클릭해주세요.
+        나의응급정보읽기버튼은 화면최상단오른쪽 모든내용읽기버튼 왼쪽에있습니다.
+    </string>
+
     <string name="text_logout_guide">
 
     </string>
@@ -282,6 +291,7 @@
     <string name="text_modify">수정하기</string>
     <string name="text_profile_image">프로필 이미지</string>
     <string name="text_guide_gallery_button">갤러리 열기</string>
+    <string name="text_read_my_ice_info_script">나의응급정보읽기</string>
     <string name="text_modify_profile_img_unselected">변경할프로필 사진이 선택되지 않았습니다.</string>
     <string name="text_modify_profile_img_selected">변경할프로필 사진이 선택 되었습니다.</string>
 </resources>
