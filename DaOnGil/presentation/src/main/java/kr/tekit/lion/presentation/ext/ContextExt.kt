@@ -115,5 +115,5 @@ fun Context.announceForAccessibility(text: String) {
 
 fun Context.isScreenReaderEnabled(): Boolean {
     val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
-    return accessibilityManager.isEnabled
+    return accessibilityManager.isTouchExplorationEnabled
 }
