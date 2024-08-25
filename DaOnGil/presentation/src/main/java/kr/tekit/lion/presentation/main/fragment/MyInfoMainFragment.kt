@@ -6,10 +6,12 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -52,10 +54,13 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
 
         if (isTalkbackEnabled) {
             binding.readScriptBtn.visibility = View.VISIBLE
-            binding.readScriptBtn.setOnClickListener {
-                requireContext().announceForAccessibility(
-                    resources.getString(R.string.text_script_for_my_info_main)
-                )
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(2500)
+                binding.readScriptBtn.setOnClickListener {
+                    requireContext().announceForAccessibility(
+                        resources.getString(R.string.text_script_for_my_info_main)
+                    )
+                }
             }
         }else{
             binding.readScriptBtn.visibility = View.GONE
@@ -115,8 +120,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                     Glide.with(imgProfile.context)
                         .load(myInfo.profileImg)
                         .fallback(R.drawable.default_profile)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .into(imgProfile)
 
 
