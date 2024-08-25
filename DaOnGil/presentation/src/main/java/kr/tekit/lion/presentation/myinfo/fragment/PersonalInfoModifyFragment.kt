@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
 import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.formatPhoneNumber
 import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
@@ -66,30 +67,45 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
     private fun initUi(binding: FragmentPersonalInfoModifyBinding){
         val myInfo = viewModel.myPersonalInfo.value
         with(binding) {
+            val nickname = myInfo.nickname
+            val phone = myInfo.phone
+
             backButton.setOnClickListener {
                 findNavController().popBackStack()
             }
 
-            tvNickname.setText(myInfo.nickname)
+            tvNickname.setText(nickname)
             tvPhone.setText(myInfo.phone)
 
-            myInfoAnnounce.append(getString(R.string.text_nickname))
-            myInfoAnnounce.append(myInfo.nickname)
-            myInfoAnnounce.append(getString(R.string.text_phone))
-            myInfoAnnounce.append(myInfo.phone)
+            if (requireContext().isScreenReaderEnabled()) {
 
-            tvNickname.setAccessibilityText(
-                if (myInfo.nickname.isEmpty()) getString(R.string.text_plz_enter_nickname)
-                else myInfo.nickname
-            )
-            tvPhone.setAccessibilityText(
-                if (myInfo.phone.isEmpty()) getString(R.string.text_plz_enter_phone)
-                else myInfo.phone
-            )
+                myInfoAnnounce.append(getString(R.string.text_nickname))
+                myInfoAnnounce.append(nickname)
+                myInfoAnnounce.append(getString(R.string.text_phone))
+                myInfoAnnounce.append(phone)
 
-            tvNickname.doAfterTextChanged {
-                if (it != null) tvNickname.setAccessibilityText(it)
-                else tvNickname.setAccessibilityText(getString(R.string.text_plz_enter_nickname))
+                tvPhoneTitle.setAccessibilityText(
+                    if (phone.isEmpty()) "${tvPhoneTitle.text} ${getString(R.string.text_plz_enter_phone)}"
+                    else "${tvPhoneTitle.text} ${phone.formatPhoneNumber()}"
+                )
+                tvNicknameTitle.setAccessibilityText(
+                    if (nickname.isEmpty()) "${tvNicknameTitle.text} ${getString(R.string.text_plz_enter_nickname)}"
+                    else "${tvNicknameTitle.text} $nickname"
+                )
+
+                tvNickname.setAccessibilityText(
+                    if (nickname.isEmpty()) getString(R.string.text_plz_enter_nickname)
+                    else nickname
+                )
+                tvPhone.setAccessibilityText(
+                    if (myInfo.phone.isEmpty()) getString(R.string.text_plz_enter_phone)
+                    else myInfo.phone
+                )
+
+                tvNickname.doAfterTextChanged {
+                    if (it != null) tvNickname.setAccessibilityText(it)
+                    else tvNickname.setAccessibilityText(getString(R.string.text_plz_enter_nickname))
+                }
             }
 
             Glide.with(requireContext())
@@ -112,16 +128,16 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             btnSubmit.setOnClickListener {
                 if (isFormValid(binding)) {
                     val state = viewModel.modifyState.value
-                    val nickname = tvNickname.text.toString()
-                    val phone = tvPhone.text.toString()
+                    val currentNickname = tvNickname.text.toString()
+                    val currentPhone = tvPhone.text.toString()
 
                     when (state) {
                         ModifyState.ImgSelected -> {
-                            viewModel.onCompleteModifyPersonalWithImg(nickname, phone)
+                            viewModel.onCompleteModifyPersonalWithImg(currentNickname, currentPhone)
                         }
 
                         ModifyState.ImgUnSelected -> {
-                            viewModel.onCompleteModifyPersonal(nickname, phone)
+                            viewModel.onCompleteModifyPersonal(currentNickname, currentPhone)
                         }
                     }
 
@@ -193,10 +209,13 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
     }
 
     private fun setupAccessibility(binding: FragmentPersonalInfoModifyBinding) {
-        requireActivity().announceForAccessibility(
-            getString(R.string.text_script_this_is_my_info_modify_page) +
-            getString(R.string.text_script_read_all_text)
-        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(3000)
+            requireActivity().announceForAccessibility(
+                getString(R.string.text_script_this_is_my_info_modify_page) +
+                        getString(R.string.text_script_read_all_text)
+            )
+        }
         myInfoAnnounce.append(getString(R.string.text_personal_info))
 
         binding.toolbar.setOnMenuItemClickListener {

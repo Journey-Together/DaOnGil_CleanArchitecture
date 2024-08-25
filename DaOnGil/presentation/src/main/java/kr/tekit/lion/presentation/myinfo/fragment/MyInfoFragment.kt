@@ -2,11 +2,13 @@ package kr.tekit.lion.presentation.myinfo.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
@@ -35,8 +37,12 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
 
         if (requireContext().isScreenReaderEnabled()) {
             setupAccessibility(binding)
+
         } else {
             binding.toolbarMyInfo.menu.clear()
+            binding.backButton.performAccessibilityAction(
+                AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS, null
+            )
         }
 
         binding.backButton.setOnClickListener { handleBackPress() }
@@ -64,7 +70,10 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
     }
 
     private fun setupAccessibility(binding: FragmentMyInfoBinding) {
-        requireActivity().announceForAccessibility(getString(R.string.text_script_guide_for_my_info))
+        requireActivity().announceForAccessibility(
+            getString(R.string.text_script_guide_for_my_info) +
+                getString(R.string.text_script_read_all_text)
+        )
         myInfoAnnounce.append(getString(R.string.text_personal_info))
 
         binding.toolbarMyInfo.setOnMenuItemClickListener {
@@ -83,8 +92,11 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
     }
 
     private suspend fun collectName(binding: FragmentMyInfoBinding) {
-        viewModel.name.collect {
+        viewModel.name.filter { it.isNotEmpty() }.collect {
             binding.tvName.text = it
+            if (requireContext().isScreenReaderEnabled()){
+                binding.tvNameTitle.setAccessibilityText("${ binding.tvNameTitle.text } $it")
+            }
         }
     }
 
@@ -94,19 +106,29 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 tvNickname.text = it.nickname
                 tvPhone.text = it.phone
 
-                tvPhone.setAccessibilityText(
-                    if (it.phone.isEmpty()) getString(R.string.text_plz_enter_phone)
-                    else it.phone.formatPhoneNumber()
-                )
-                tvNickname.setAccessibilityText(
-                    if (it.nickname.isEmpty()) getString(R.string.text_plz_enter_nickname)
-                    else it.nickname
-                )
+                if (requireContext().isScreenReaderEnabled()){
+                    tvPhone.setAccessibilityText(
+                        if (it.nickname.isEmpty()) getString(R.string.text_plz_enter_phone)
+                        else it.phone
+                    )
+                    tvNickname.setAccessibilityText(
+                        if (it.nickname.isEmpty()) getString(R.string.text_plz_enter_nickname)
+                        else it.nickname
+                    )
+
+                    tvPhoneTitle.setAccessibilityText(
+                        if (it.phone.isEmpty()) "${tvPhoneTitle.text} ${getString(R.string.text_plz_enter_phone)}"
+                        else "${tvPhoneTitle.text} ${it.phone.formatPhoneNumber()}"
+                    )
+                    tvNicknameTitle.setAccessibilityText(
+                        if (it.nickname.isEmpty()) "${tvNicknameTitle.text} ${getString(R.string.text_plz_enter_nickname)}"
+                        else "${tvNicknameTitle.text} ${it.nickname}"
+                    )
+                }
             }
         }
     }
 
-    // 응급 정보 수집 및 UI 업데이트
     private suspend fun collectIceInfo(binding: FragmentMyInfoBinding) {
         viewModel.myIceInfo.collect {
             with(binding) {
@@ -120,42 +142,64 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 tvRelation2.text = it.part2Rel
                 tvContact2.text = it.part2Phone
 
-                tvBirth.setAccessibilityText(
-                    if (it.birth.isEmpty()) getString(R.string.text_plz_enter_birth)
-                    else it.birth.formatBirthday()
-                )
-                tvBloodType.setAccessibilityText(
-                    if (it.bloodType.isEmpty()) getString(R.string.text_plz_enter_blood_type)
-                    else it.bloodType
-                )
-                tvDisease.setAccessibilityText(
-                    if (it.disease.isEmpty()) getString(R.string.text_plz_enter_disease)
-                    else it.disease
-                )
-                tvAllergy.setAccessibilityText(
-                    if (it.allergy.isEmpty()) getString(R.string.text_plz_enter_allergy)
-                    else it.allergy
-                )
-                tvMedicine.setAccessibilityText(
-                    if (it.medication.isEmpty()) getString(R.string.text_plz_enter_medicine)
-                    else it.medication
-                )
-                tvRelation1.setAccessibilityText(
-                    if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
-                    else it.part1Rel
-                )
-                tvContact1.setAccessibilityText(
-                    if (it.part1Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
-                    else it.part1Phone.formatPhoneNumber()
-                )
-                tvRelation2.setAccessibilityText(
-                    if (it.part2Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
-                    else it.part2Rel
-                )
-                tvContact2.setAccessibilityText(
-                    if (it.part2Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
-                    else it.part2Phone.formatPhoneNumber()
-                )
+                if (requireContext().isScreenReaderEnabled()) {
+                    tvBirthTitle.setAccessibilityText(
+                        if (it.birth.isEmpty()) "${tvBirthTitle.text} ${getString(R.string.text_plz_enter_birth)}"
+                        else "${tvBirthTitle.text} ${it.birth.formatBirthday()}"
+                    )
+                    tvBirth.setAccessibilityText(
+                        if (it.birth.isEmpty()) getString(R.string.text_plz_enter_birth)
+                        else it.birth.formatBirthday()
+                    )
+                    tvBloodTypeTitle.setAccessibilityText(
+                        if (it.bloodType.isEmpty()) "${tvBloodTypeTitle.text} ${getString(R.string.text_plz_enter_blood_type)}"
+                        else "${tvBloodTypeTitle.text} ${it.birth}"
+                    )
+                    tvBloodType.setAccessibilityText(
+                        if (it.bloodType.isEmpty()) getString(R.string.text_plz_enter_blood_type)
+                        else it.bloodType
+                    )
+                    tvDiseaseTitle.setAccessibilityText(
+                        if (it.disease.isEmpty()) "${tvDiseaseTitle.text} ${getString(R.string.text_plz_enter_disease)}"
+                        else "${tvDiseaseTitle.text} ${it.disease}}"
+                    )
+                    tvDisease.setAccessibilityText(
+                        if (it.disease.isEmpty()) getString(R.string.text_plz_enter_disease)
+                        else it.disease
+                    )
+                    tvAllergyTitle.setAccessibilityText(
+                        if (it.allergy.isEmpty()) "${tvAllergyTitle.text} ${getString(R.string.text_plz_enter_allergy)}"
+                        else "${tvAllergyTitle.text} ${it.allergy}"
+                    )
+                    tvAllergy.setAccessibilityText(
+                        if (it.allergy.isEmpty()) getString(R.string.text_plz_enter_allergy)
+                        else it.allergy
+                    )
+                    tvMedicineTitle.setAccessibilityText(
+                        if (it.medication.isEmpty()) "${tvMedicineTitle.text} ${getString(R.string.text_plz_enter_medicine)}"
+                        else "${tvMedicineTitle.text} ${it.medication}"
+                    )
+                    tvMedicine.setAccessibilityText(
+                        if (it.medication.isEmpty()) getString(R.string.text_plz_enter_medicine)
+                        else it.medication
+                    )
+                    tvRelation1.setAccessibilityText(
+                        if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part1Rel} ${it.part1Phone.formatPhoneNumber()}"
+                    )
+                    tvContact1.setAccessibilityText(
+                        if (it.part1Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
+                        else it.part1Phone.formatPhoneNumber()
+                    )
+                    tvRelation2.setAccessibilityText(
+                        if (it.part2Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part2Rel} ${it.part2Phone.formatPhoneNumber()}"
+                    )
+                    tvContact2.setAccessibilityText(
+                        if (it.part2Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
+                        else it.part2Phone.formatPhoneNumber()
+                    )
+                }
             }
         }
     }
