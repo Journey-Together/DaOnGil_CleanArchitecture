@@ -25,3 +25,7 @@ fun String.isPhoneNumberValid(): Boolean {
     val phonePattern = "^010\\d{4}\\d{4}$"
     return this.matches(phonePattern.toRegex())
 }
+
+fun String. pronounceEachCharacter(): String {
+    return this.replace("", " ").trim()
+}
