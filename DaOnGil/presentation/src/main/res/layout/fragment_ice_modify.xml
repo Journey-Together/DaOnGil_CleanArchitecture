@@ -9,7 +9,8 @@
         android:id="@+id/toolbarIceModify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/menu_read_script"
+        app:menu="@menu/menu_read_ice_script"
+        android:importantForAccessibility="yes"
         android:minHeight="?attr/actionBarSize">
 
         <ImageButton
@@ -43,6 +44,7 @@
             android:padding="@dimen/margin_big2">
 
             <TextView
+                android:id="@+id/tv_birth_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -61,7 +63,7 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv_birthday"
+                    android:id="@+id/tv_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
@@ -73,6 +75,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_blood_type_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -96,6 +99,7 @@
 
 
             <TextView
+                android:id="@+id/tv_disease_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -124,6 +128,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_allergy_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -152,6 +157,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_medicine_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -180,6 +186,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_emergency_contact_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"

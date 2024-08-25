@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background_color"
@@ -22,6 +21,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
+                android:contentDescription="빈 영역입니다."
                 android:background="@drawable/mypage_profile_background">
 
                 <View
@@ -259,8 +259,6 @@
                 android:id="@+id/read_script_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="25dp"
                 android:backgroundTint="@color/floating_action_button"
                 android:text="@string/text_read_screen_info"
                 android:visibility="gone"
@@ -295,16 +293,17 @@
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     android:layout_marginStart="@dimen/margin_basic"
+                    android:contentDescription="@string/text_profile_image"
                     app:cardCornerRadius="50dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:strokeWidth="0dp"
-                    tools:ignore="MissingConstraints">
+                    app:strokeWidth="0dp">
 
                     <ImageView
                         android:id="@+id/imgProfile"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:contentDescription="@string/text_profile_image"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_profile" />
 
@@ -321,19 +320,6 @@
                     android:textSize="@dimen/font_big2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/materialCardView" />
-
-                <TextView
-                    android:id="@+id/tvUserNameTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_small2"
-                    android:layout_marginBottom="32dp"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:text="@string/text_sir"
-                    android:textColor="@color/text_primary"
-                    android:textSize="@dimen/font_big2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvNameOrLogin" />
 
                 <TextView
                     android:id="@+id/tvReview"

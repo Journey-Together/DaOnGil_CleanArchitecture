@@ -9,7 +9,7 @@
         android:id="@+id/toolbarMyInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/menu_read_script"
+        app:menu="@menu/menu_read_my_info_script"
         android:minHeight="?attr/actionBarSize">
 
         <ImageButton
@@ -36,6 +36,7 @@
         android:id="@+id/shimmerFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -219,8 +220,7 @@
     <ScrollView
         android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -327,8 +327,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/margin_big4"
                             android:fontFamily="@font/pretendard_medium"
-                            android:text="이름"
-                            android:labelFor="@id/tv_name_title"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/font_big3" />
 
@@ -339,7 +337,6 @@
                             android:layout_marginBottom="@dimen/margin_big4"
                             android:fontFamily="@font/pretendard_medium"
                             android:hint="@string/text_plz_enter_phone"
-                            android:labelFor="@id/tv_phone_title"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/font_big3" />
 
@@ -349,7 +346,6 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/pretendard_medium"
                             android:hint="@string/text_plz_enter_nickname"
-                            android:labelFor="@id/tv_nickname_title"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/font_big3" />
                     </LinearLayout>
@@ -419,7 +415,6 @@
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
                     android:textColor="@color/text_secondary"
-                    android:labelFor="@id/tv_birth_title"
                     android:hint="@string/text_plz_enter_birth"
                     android:textSize="@dimen/font_big3" />
 
@@ -440,7 +435,6 @@
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
                     android:textColor="@color/text_secondary"
-                    android:labelFor="@id/tv_blood_type_title"
                     android:hint="@string/text_plz_enter_blood_type"
                     android:textSize="@dimen/font_big3" />
 
@@ -461,7 +455,6 @@
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
                     android:textColor="@color/text_secondary"
-                    android:labelFor="@id/tv_disease_title"
                     android:hint="@string/text_plz_enter_disease"
                     android:textSize="@dimen/font_big3" />
 
@@ -482,7 +475,6 @@
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
                     android:textColor="@color/text_secondary"
-                    android:labelFor="@id/tv_allergy_title"
                     android:hint="@string/text_plz_enter_allergy"
                     android:textSize="@dimen/font_big3" />
 
@@ -503,7 +495,6 @@
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
                     android:textColor="@color/text_secondary"
-                    android:labelFor="@id/tv_medicine_title"
                     android:hint="@string/text_plz_enter_medicine"
                     android:textSize="@dimen/font_big3" />
 
@@ -521,7 +512,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8dp"
-                    android:labelFor="@id/tv_relation_title"
                     android:orientation="horizontal">
 
                     <TextView
@@ -541,7 +531,6 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/pretendard_medium"
                         android:textColor="@color/text_secondary"
-                        android:labelFor="@id/tv_relation1"
                         android:hint="@string/text_plz_enter_emergency_contact"
                         android:textSize="@dimen/font_small1" />
 
@@ -551,7 +540,6 @@
                     android:id="@+id/layoutMyInfoRelation2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:labelFor="@id/tv_relation_title"
                     android:orientation="horizontal">
 
                     <TextView
@@ -571,7 +559,6 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/pretendard_medium"
                         android:textColor="@color/text_secondary"
-                        android:labelFor="@id/tv_relation2"
                         android:hint="@string/text_plz_enter_emergency_contact"
                         android:textSize="@dimen/font_small1" />
                 </LinearLayout>

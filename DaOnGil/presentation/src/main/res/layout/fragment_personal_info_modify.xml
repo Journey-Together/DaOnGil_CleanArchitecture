@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:importantForAccessibility="no"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/menu_read_script"
+        app:menu="@menu/menu_read_my_info_script"
         android:minHeight="?attr/actionBarSize" >
 
         <ImageButton
@@ -70,8 +71,8 @@
                 style="?attr/materialIconButtonFilledTonalStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="55dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginLeft="47dp"
+                android:layout_marginTop="47dp"
                 android:backgroundTint="@color/primary"
                 app:icon="@drawable/camera_icon"
                 app:iconSize="24dp"
@@ -93,7 +94,7 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <TextView
-                android:id="@+id/title_nickname"
+                android:id="@+id/tv_nickname_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -119,14 +120,13 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_plz_enter_nickname"
-                    android:labelFor="@id/title_nickname"
                     android:inputType="text"
                     android:paddingStart="@dimen/margin_small2"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/title_phone"
+                android:id="@+id/tv_phone_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -152,13 +152,10 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_contact_ex"
                     android:inputType="phone"
-                    android:labelFor="@id/title_phone"
                     android:paddingStart="@dimen/margin_small2"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"

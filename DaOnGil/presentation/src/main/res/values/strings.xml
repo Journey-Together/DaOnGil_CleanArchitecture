@@ -55,14 +55,14 @@
     <string name="text_elderly_person">고령자</string>
 
     <string-array name="blood_type">
-        <item>A형 Rh+</item>
-        <item>A형 Rh-</item>
-        <item>B형 Rh+</item>
-        <item>B형 Rh-</item>
-        <item>O형 Rh+</item>
-        <item>O형 Rh-</item>
-        <item>AB형 Rh+</item>
-        <item>AB형 Rh-</item>
+        <item>A형Rh+</item>
+        <item>A형Rh-</item>
+        <item>B형Rh+</item>
+        <item>B형Rh-</item>
+        <item>O형Rh+</item>
+        <item>O형Rh-</item>
+        <item>AB형Rh+</item>
+        <item>AB형Rh-</item>
     </string-array>
 
     <string name="text_emergency_main">내 주변 응급 지원 찾기</string>
@@ -213,7 +213,7 @@
         화면중간에 나의응급정보영역이 있으며 오른쪽에 나의응급정보수정 버튼이있습니다.
         나의응급정보수정버튼을 클릭하면 나의응급정보수정화면으로 이동해드릴게요.
         현재저장된 개인정보를 읽어드리길원하시면 나의정보읽기버튼을 클릭해주세요.
-        나의정보읽기버튼은 화면최상단오른쪽 모든내용읽기버튼 왼쪽에있습니다.
+        나의정보읽기버튼은 화면최상단오른쪽 화면정보읽기버튼 왼쪽에있습니다.
     </string>
     <string name="text_script_my_info_modify">
         이 화면에선 프로필사진과 닉네임 전화번호를 수정할수있어요.
@@ -256,7 +256,7 @@
         최하단에 수정완료버튼이 있습니다.
         수정완료버튼을 클릭하면 수정이완료됩니다.
         저장된 내응급정보를 들으시려면 나의응급정보읽기버튼을 클릭해주세요.
-        나의응급정보읽기버튼은 화면최상단오른쪽 모든내용읽기버튼 왼쪽에있습니다.
+        나의응급정보읽기버튼은 화면최상단오른쪽 화면정보읽기버튼 왼쪽에있습니다.
     </string>
 
     <string name="text_logout_guide">
@@ -278,7 +278,7 @@
         나의정보화면입니다.
     </string>
     <string name="text_read_all">모든 내용 읽기</string>
-    <string name="text_read_screen_info">화면 정보 읽기</string>
+    <string name="text_read_screen_info">화면정보읽기</string>
     <string name="text_read_my_profile">나의 정보 읽기</string>
     <string name="text_back_button">뒤로 가기</string>
     <string name="text_script_move_to_profile_modify_page">개인정보수정</string>
