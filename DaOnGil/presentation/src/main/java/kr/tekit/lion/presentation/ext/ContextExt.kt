@@ -9,7 +9,10 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.Settings
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -87,8 +90,7 @@ fun Context.getDataColumn(uri: Uri?, selection: String?, selectionArgs: Array<St
     val projection = arrayOf(column)
 
     try {
-        cursor =
-            uri?.let { this.contentResolver.query(it, projection, selection, selectionArgs, null) }
+        cursor = uri?.let { this.contentResolver.query(it, projection, selection, selectionArgs, null) }
         if (cursor != null && cursor.moveToFirst()) {
             val index = cursor.getColumnIndexOrThrow(column)
             return cursor.getString(index)
