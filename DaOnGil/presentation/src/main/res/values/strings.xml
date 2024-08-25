@@ -280,7 +280,7 @@
     <string name="text_read_all">모든 내용 읽기</string>
     <string name="text_read_screen_info">화면 정보 읽기</string>
     <string name="text_read_my_profile">나의 정보 읽기</string>
-    <string name="text_back_button">뒤로 가기 버튼</string>
+    <string name="text_back_button">뒤로 가기</string>
     <string name="text_script_move_to_profile_modify_page">개인정보수정</string>
     <string name="text_script_move_to_ice_modify_page">나의응급정보수정</string>
     <string name="text_personal_info">개인 정보</string>
