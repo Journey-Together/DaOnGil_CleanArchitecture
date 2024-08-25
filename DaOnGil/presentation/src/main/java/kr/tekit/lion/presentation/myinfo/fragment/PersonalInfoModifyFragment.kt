@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
 import kr.tekit.lion.presentation.ext.announceForAccessibility
-import kr.tekit.lion.presentation.ext.formatBirthday
 import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
@@ -50,14 +49,11 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentPersonalInfoModifyBinding.bind(view)
 
+        initLauncher(binding)
+        initUi(binding)
+
         repeatOnViewStarted {
-            viewModel.errorMessage.collect{
-                if (it != null){
-                    if (requireContext().isScreenReaderEnabled()){
-                        requireActivity().announceForAccessibility(it)
-                    }
-                }
-            }
+            collectErrorMessage(binding)
         }
 
         if (requireContext().isScreenReaderEnabled()) {
@@ -65,59 +61,9 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         } else {
             binding.toolbar.menu.clear()
         }
+    }
 
-        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri == null && requireContext().isScreenReaderEnabled()){
-                requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
-            }
-            uri?.let {
-                drawImage(binding.imgProfile, it)
-                if (requireContext().isScreenReaderEnabled()){
-                    requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
-                }
-            }
-        }
-
-        albumLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val uri = result.data?.data
-                if (uri == null && requireContext().isScreenReaderEnabled()){
-                    requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
-                }
-                uri?.let {
-                    drawImage(binding.imgProfile, uri)
-                    if (requireContext().isScreenReaderEnabled()){
-                        requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
-                    }
-                }
-            }
-        }
-
-        permissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) {
-                    startAlbumLauncher()
-                } else {
-                    val permissionDialog = ConfirmDialog(
-                        "권한 설정",
-                        "갤러리 이용을 위해 권한 설정이 필요합니다",
-                        "권한 설정하기"
-                    ) {
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val packageName = requireContext().packageName
-                        val uri = Uri.fromParts("package", packageName, null)
-                        intent.data = uri
-
-                        startActivity(intent)
-                    }
-                    permissionDialog.isCancelable = false
-                    permissionDialog.show(childFragmentManager, "PermissionDialog")
-                }
-            }
-
-
+    private fun initUi(binding: FragmentPersonalInfoModifyBinding){
         val myInfo = viewModel.myPersonalInfo.value
         with(binding) {
             backButton.setOnClickListener {
@@ -191,6 +137,59 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                 }
             }
         }
+    }
+
+    private fun initLauncher(binding: FragmentPersonalInfoModifyBinding){
+        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri == null && requireContext().isScreenReaderEnabled()){
+                requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
+            }
+            uri?.let {
+                drawImage(binding.imgProfile, it)
+                if (requireContext().isScreenReaderEnabled()){
+                    requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
+                }
+            }
+        }
+
+        albumLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val uri = result.data?.data
+                if (uri == null && requireContext().isScreenReaderEnabled()){
+                    requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
+                }
+                uri?.let {
+                    drawImage(binding.imgProfile, uri)
+                    if (requireContext().isScreenReaderEnabled()){
+                        requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
+                    }
+                }
+            }
+        }
+
+        permissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    startAlbumLauncher()
+                } else {
+                    val permissionDialog = ConfirmDialog(
+                        "권한 설정",
+                        "갤러리 이용을 위해 권한 설정이 필요합니다",
+                        "권한 설정하기"
+                    ) {
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        val packageName = requireContext().packageName
+                        val uri = Uri.fromParts("package", packageName, null)
+                        intent.data = uri
+
+                        startActivity(intent)
+                    }
+                    permissionDialog.isCancelable = false
+                    permissionDialog.show(childFragmentManager, "PermissionDialog")
+                }
+            }
     }
 
     private fun setupAccessibility(binding: FragmentPersonalInfoModifyBinding) {
@@ -308,6 +307,16 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             false
         } else {
             true
+        }
+    }
+
+    private suspend fun collectErrorMessage(binding: FragmentPersonalInfoModifyBinding) {
+        viewModel.errorMessage.collect {
+            if (it != null) {
+                if (requireContext().isScreenReaderEnabled()) {
+                    requireActivity().announceForAccessibility(it)
+                }
+            }
         }
     }
 }
