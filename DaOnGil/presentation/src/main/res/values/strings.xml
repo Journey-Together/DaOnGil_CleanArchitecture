@@ -201,8 +201,8 @@
     <string name="text_modify_interest_type">관심유형 변경하기</string>
     <string name="text_modify_bookmark">북마크 목록 보기</string>
     <string name="text_modify_place_review">나의 여행지 후기 보기</string>
-    <string name="text_logout_button">로그아웃 하기 버튼</string>
-    <string name="text_modify_sign_out">회원 탈퇴 버튼</string>
+    <string name="text_logout_button">로그아웃 하기</string>
+    <string name="text_modify_sign_out">회원 탈퇴</string>
     <string name="text_script_read_all_text">
         화면에 대한 설명을 듣고 싶으시다면 화면 최상단 오른쪽에 위치한 화면정보읽기버튼을 눌러주세요
     </string>
