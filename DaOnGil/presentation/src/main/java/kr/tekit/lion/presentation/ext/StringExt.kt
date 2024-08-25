@@ -15,3 +15,13 @@ fun String.formatBirthday(): String {
     }
     return this
 }
+
+fun String.isBirthdayValid(): Boolean {
+    val birthdayPattern = "^\\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$"
+    return this.matches(birthdayPattern.toRegex())
+}
+
+fun String.isPhoneNumberValid(): Boolean {
+    val phonePattern = "^010\\d{4}\\d{4}$"
+    return this.matches(phonePattern.toRegex())
+}
