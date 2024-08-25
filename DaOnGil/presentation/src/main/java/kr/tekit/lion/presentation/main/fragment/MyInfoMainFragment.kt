@@ -22,6 +22,7 @@ import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.myinfo.MyInfoMainViewModel
@@ -102,10 +103,14 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             .filter { it.name.isNotEmpty() }
             .collect { myInfo ->
                 with(binding) {
-                    tvNameOrLogin.text = myInfo.name
+                    val name = "${myInfo.name}님"
+                    val review = "${tvReview.text} ${myInfo.reviewNum}개"
+                    val registeredData = "${myInfo.date + 1}일째"
+
+                    tvNameOrLogin.text = name
                     tvReviewCnt.text = myInfo.reviewNum.toString()
                     tvRegisteredData.visibility = View.VISIBLE
-                    tvRegisteredData.text = "${myInfo.date + 1}일째"
+                    tvRegisteredData.text = registeredData
 
                     Glide.with(imgProfile.context)
                         .load(myInfo.profileImg)
@@ -113,16 +118,23 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(imgProfile)
-                }
 
-                if (isTalkbackEnabled) {
-                    talkbackText
-                        .append("${myInfo.name}님 ")
-                        .append("${binding.tvReview.text} ${myInfo.reviewNum}개 ")
-                        .append("${binding.textViewMyInfoMainRegister.text} ${myInfo.date + 1}일째 ")
-                        .append(getString(R.string.text_script_read_all_text))
 
-                    requireContext().announceForAccessibility(talkbackText.toString())
+                    if (isTalkbackEnabled) {
+                        talkbackText
+                            .append(name)
+                            .append(review)
+                            .append("${textViewMyInfoMainRegister.text} $registeredData")
+                            .append(getString(R.string.text_script_read_all_text))
+
+                        requireContext().announceForAccessibility(talkbackText.toString())
+
+                        tvNameOrLogin.setAccessibilityText(name)
+                        tvReview.setAccessibilityText(review)
+                        textViewMyInfoMainRegister.setAccessibilityText(
+                            "${textViewMyInfoMainRegister.text} $registeredData"
+                        )
+                    }
                 }
             }
     }
@@ -188,7 +200,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             userContainer.visibility = View.GONE
             tvReview.text = getString(R.string.text_NameOrLogin)
             tvReviewCnt.visibility = View.GONE
-            tvUserNameTitle.visibility = View.GONE
             textViewMyInfoMainRegister.visibility = View.GONE
             tvNameOrLogin.text = getString(R.string.text_myInfo_Review)
             tvNameOrLogin.contentDescription = "로그인 버튼"
