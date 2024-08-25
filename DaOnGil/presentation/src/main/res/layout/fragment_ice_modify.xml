@@ -80,28 +80,20 @@
                 android:text="혈액형"
                 android:textSize="@dimen/font_big2" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutBloodType"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            <Spinner
+                android:id="@+id/tvBloodType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                style="@style/Widget.AppCompat.Spinner"
                 android:layout_marginBottom="@dimen/margin_basic"
-                app:boxBackgroundColor="@color/background_color"
-                app:hintEnabled="false">
+                android:dropDownWidth="match_parent"
+                android:dropDownVerticalOffset="35dp"
+                android:labelFor="@string/text_blood_type"
+                android:popupBackground="#D5DBE6"
+                android:importantForAccessibility="no"
+                android:spinnerMode="dialog"/>
 
-                <AutoCompleteTextView
-                    android:id="@+id/tv_bloodType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:hint="@string/text_plz_enter_blood_type"
-                    android:inputType="none"
-                    android:paddingStart="@dimen/margin_small2"
-                    android:paddingTop="@dimen/margin_big3"
-                    android:paddingBottom="@dimen/margin_big2"
-                    android:textSize="@dimen/font_big3"
-                    app:simpleItems="@array/blood_type" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="match_parent"
