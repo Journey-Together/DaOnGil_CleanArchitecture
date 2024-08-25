@@ -67,7 +67,15 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         }
 
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uri?.let { drawImage(binding.imgProfile, it) }
+            if (uri == null && requireContext().isScreenReaderEnabled()){
+                requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
+            }
+            uri?.let {
+                drawImage(binding.imgProfile, it)
+                if (requireContext().isScreenReaderEnabled()){
+                    requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
+                }
+            }
         }
 
         albumLauncher = registerForActivityResult(
