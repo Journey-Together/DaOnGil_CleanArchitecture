@@ -28,7 +28,7 @@ import kr.tekit.lion.presentation.ext.formatBirthday
 import kr.tekit.lion.presentation.ext.formatPhoneNumber
 import kr.tekit.lion.presentation.ext.isBirthdayValid
 import kr.tekit.lion.presentation.ext.isPhoneNumberValid
-import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.pronounceEachCharacter
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
@@ -45,7 +45,7 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentIceModifyBinding.bind(view)
 
-        if (requireContext().isScreenReaderEnabled()) setupAccessibility(binding)
+        if (requireContext().isTallBackEnabled()) setupAccessibility(binding)
         else binding.toolbarIceModify.menu.clear()
 
         with(binding) {
@@ -110,7 +110,7 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                     tvRelation2.setText(it.part2Rel)
                     tvContact2.setText(it.part2Phone)
 
-                    if (requireContext().isScreenReaderEnabled()) {
+                    if (requireContext().isTallBackEnabled()) {
 
                         tvBirth.doAfterTextChanged {
                             if (it.isNullOrBlank()) tvBirth.setAccessibilityText(getString(R.string.text_plz_enter_birth))
@@ -422,7 +422,7 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
     }
 
     private fun announceError(errorMessage: String) {
-        if (requireContext().isScreenReaderEnabled()) {
+        if (requireContext().isTallBackEnabled()) {
             viewLifecycleOwner.lifecycleScope.launch {
                 delay(2500)
                 requireActivity().announceForAccessibility(errorMessage)

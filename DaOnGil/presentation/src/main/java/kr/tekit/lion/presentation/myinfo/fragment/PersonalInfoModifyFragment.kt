@@ -10,6 +10,7 @@ import android.os.ext.SdkExtensions
 import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,7 +31,8 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.formatPhoneNumber
-import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
+import kr.tekit.lion.presentation.ext.isPhoneNumberValid
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSoftInput
@@ -57,7 +60,7 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             collectErrorMessage(binding)
         }
 
-        if (requireContext().isScreenReaderEnabled()) {
+        if (requireContext().isTallBackEnabled()) {
             setupAccessibility(binding)
         } else {
             binding.toolbar.menu.clear()
@@ -77,7 +80,7 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             tvNickname.setText(nickname)
             tvPhone.setText(myInfo.phone)
 
-            if (requireContext().isScreenReaderEnabled()) {
+            if (requireContext().isTallBackEnabled()) {
 
                 myInfoAnnounce.append(getString(R.string.text_nickname))
                 myInfoAnnounce.append(nickname)
@@ -157,12 +160,12 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
 
     private fun initLauncher(binding: FragmentPersonalInfoModifyBinding){
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri == null && requireContext().isScreenReaderEnabled()){
+            if (uri == null && requireContext().isTallBackEnabled()){
                 requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
             }
             uri?.let {
                 drawImage(binding.imgProfile, it)
-                if (requireContext().isScreenReaderEnabled()){
+                if (requireContext().isTallBackEnabled()){
                     requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
                 }
             }
@@ -173,12 +176,12 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data
-                if (uri == null && requireContext().isScreenReaderEnabled()){
+                if (uri == null && requireContext().isTallBackEnabled()){
                     requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
                 }
                 uri?.let {
                     drawImage(binding.imgProfile, uri)
-                    if (requireContext().isScreenReaderEnabled()){
+                    if (requireContext().isTallBackEnabled()){
                         requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
                     }
                 }
@@ -275,64 +278,45 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         viewModel.modifyStateChange()
     }
 
-
     private fun isFormValid(binding: FragmentPersonalInfoModifyBinding): Boolean {
-        val phoneNumber = binding.tvPhone.text.toString()
-        val phonePattern = "^010\\d{4}\\d{4}$"
-
-        return if (binding.tvNickname.text.isNullOrBlank()) {
-            val errorMessage = getString(R.string.text_plz_enter_nickname)
-
-            binding.textInputLayoutUserNickname.error = errorMessage
-            binding.tvNickname.requestFocus()
-            context?.showSoftInput(binding.tvNickname)
-            if (requireContext().isScreenReaderEnabled()) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(2500)
-                    requireActivity().announceForAccessibility(errorMessage)
-                }
-            }
-            false
-        } else if (phoneNumber.isNotBlank() and !phoneNumber.matches(phonePattern.toRegex())) {
-            val errorMessage = getString(R.string.text_plz_enter_collect_phone_type) + "\n" +
-                    getString(R.string.text_contact_ex)
-
-            binding.textInputLayoutUserPhoneNumber.error = errorMessage
-
-            binding.tvPhone.requestFocus()
-            context?.showSoftInput(binding.tvPhone)
-            if (requireContext().isScreenReaderEnabled()) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(2500)
-                    requireActivity().announceForAccessibility(errorMessage)
-                }
+        with(binding) {
+            if (tvNickname.text.isNullOrBlank()) {
+                showErrorAndAnnounce(textInputLayoutUserNickname, tvNickname, getString(R.string.text_plz_enter_nickname))
+                return false
             }
 
-
-            false
-        } else if (phoneNumber.isEmpty()) {
-            val errorMessage = getString(R.string.text_plz_enter_phone)
-            binding.textInputLayoutUserPhoneNumber.error = errorMessage
-
-            binding.tvPhone.requestFocus()
-            context?.showSoftInput(binding.tvPhone)
-
-            if (requireContext().isScreenReaderEnabled()) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(2500)
-                    requireActivity().announceForAccessibility(errorMessage)
-                }
+            val phoneNumber = tvPhone.text.toString()
+            if (phoneNumber.isNotBlank() && !phoneNumber.isPhoneNumberValid()) {
+                val errorMessage = getString(R.string.text_plz_enter_collect_phone_type) + "\n" + getString(R.string.text_contact_ex)
+                showErrorAndAnnounce(textInputLayoutUserPhoneNumber, tvPhone, errorMessage)
+                return false
             }
-            false
-        } else {
-            true
+
+            if (phoneNumber.isEmpty()) {
+                showErrorAndAnnounce(textInputLayoutUserPhoneNumber, tvPhone, getString(R.string.text_plz_enter_phone))
+                return false
+            }
+
+            return true
+        }
+    }
+
+    private fun showErrorAndAnnounce(textInputLayout: TextInputLayout, textView: TextView, errorMessage: String) {
+        textInputLayout.error = errorMessage
+        textView.requestFocus()
+        context?.showSoftInput(textView)
+        if (requireContext().isTallBackEnabled()) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(2500)
+                requireActivity().announceForAccessibility(errorMessage)
+            }
         }
     }
 
     private suspend fun collectErrorMessage(binding: FragmentPersonalInfoModifyBinding) {
         viewModel.errorMessage.collect {
             if (it != null) {
-                if (requireContext().isScreenReaderEnabled()) {
+                if (requireContext().isTallBackEnabled()) {
                     requireActivity().announceForAccessibility(it)
                 }
             }

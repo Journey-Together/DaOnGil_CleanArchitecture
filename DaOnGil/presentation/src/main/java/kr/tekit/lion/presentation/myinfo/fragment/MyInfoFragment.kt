@@ -17,7 +17,7 @@ import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.formatBirthday
 import kr.tekit.lion.presentation.ext.formatPhoneNumber
-import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.main.fragment.MyInfoMainFragment.Companion.MODIFY_RESULT_CODE
@@ -35,7 +35,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
 
         startShimmer(binding)
 
-        if (requireContext().isScreenReaderEnabled()) {
+        if (requireContext().isTallBackEnabled()) {
             setupAccessibility(binding)
 
         } else {
@@ -94,7 +94,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
     private suspend fun collectName(binding: FragmentMyInfoBinding) {
         viewModel.name.filter { it.isNotEmpty() }.collect {
             binding.tvName.text = it
-            if (requireContext().isScreenReaderEnabled()){
+            if (requireContext().isTallBackEnabled()){
                 binding.tvNameTitle.setAccessibilityText("${ binding.tvNameTitle.text } $it")
             }
         }
@@ -106,7 +106,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 tvNickname.text = it.nickname
                 tvPhone.text = it.phone
 
-                if (requireContext().isScreenReaderEnabled()){
+                if (requireContext().isTallBackEnabled()){
                     tvPhone.setAccessibilityText(
                         if (it.nickname.isEmpty()) getString(R.string.text_plz_enter_phone)
                         else it.phone
@@ -142,7 +142,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 tvRelation2.text = it.part2Rel
                 tvContact2.text = it.part2Phone
 
-                if (requireContext().isScreenReaderEnabled()) {
+                if (requireContext().isTallBackEnabled()) {
                     tvBirthTitle.setAccessibilityText(
                         if (it.birth.isEmpty()) "${tvBirthTitle.text} ${getString(R.string.text_plz_enter_birth)}"
                         else "${tvBirthTitle.text} ${it.birth.formatBirthday()}"
@@ -208,7 +208,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
         viewModel.networkState.collect {
             if (it == NetworkState.Success) {
                 stopShimmer(binding)
-                if (requireContext().isScreenReaderEnabled()) {
+                if (requireContext().isTallBackEnabled()) {
                     buildAccessibilityAnnouncement(binding)
                 }
             }
@@ -224,7 +224,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                     textMsg.text = it
                 }
                 stopShimmer(binding)
-                if (requireContext().isScreenReaderEnabled()) {
+                if (requireContext().isTallBackEnabled()) {
                     requireActivity().announceForAccessibility(it)
                 }
             }

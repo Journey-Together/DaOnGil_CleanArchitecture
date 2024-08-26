@@ -22,7 +22,7 @@ import kr.tekit.lion.presentation.bookmark.BookmarkActivity
 import kr.tekit.lion.presentation.databinding.FragmentMyInfoMainBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.announceForAccessibility
-import kr.tekit.lion.presentation.ext.isScreenReaderEnabled
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.login.LoginActivity
@@ -49,7 +49,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         val binding = FragmentMyInfoMainBinding.bind(view)
         startShimmer(binding)
 
-        val isTalkbackEnabled = requireContext().isScreenReaderEnabled()
+        val isTalkbackEnabled = requireContext().isTallBackEnabled()
         val textToAnnounce = StringBuilder()
 
         if (isTalkbackEnabled) {
