@@ -5,7 +5,7 @@ import kr.tekit.lion.domain.model.search.ListSearchOption
 import kr.tekit.lion.domain.model.search.ListSearchResultList
 import kr.tekit.lion.domain.model.search.MapSearchOption
 import kr.tekit.lion.domain.model.search.MapSearchResultList
-import kr.tekit.lion.domain.model.Result
+import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
 interface PlaceRepository {

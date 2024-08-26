@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.area.AreaCodeList
 import kr.tekit.lion.domain.model.area.SigunguCodeList
-import kr.tekit.lion.domain.model.onError
-import kr.tekit.lion.domain.model.onSuccess
+import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,8 +9,18 @@
         android:id="@+id/toolbarIceModify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back_icon"
-        android:minHeight="?attr/actionBarSize"  >
+        app:menu="@menu/menu_read_ice_script"
+        android:importantForAccessibility="yes"
+        android:minHeight="?attr/actionBarSize">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/text_back_button"
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,9 +41,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/margin_basic">
+            android:padding="@dimen/margin_big2">
 
             <TextView
+                android:id="@+id/tv_birth_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -53,7 +63,7 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv_birthday"
+                    android:id="@+id/tv_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
@@ -65,6 +75,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_blood_type_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -72,30 +83,23 @@
                 android:text="혈액형"
                 android:textSize="@dimen/font_big2" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutBloodType"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            <Spinner
+                android:id="@+id/tvBloodType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                style="@style/Widget.AppCompat.Spinner"
                 android:layout_marginBottom="@dimen/margin_basic"
-                app:boxBackgroundColor="@color/background_color"
-                app:hintEnabled="false">
+                android:dropDownWidth="match_parent"
+                android:dropDownVerticalOffset="35dp"
+                android:labelFor="@string/text_blood_type"
+                android:popupBackground="#D5DBE6"
+                android:importantForAccessibility="no"
+                android:spinnerMode="dialog"/>
 
-                <AutoCompleteTextView
-                    android:id="@+id/tv_bloodType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:hint="@string/text_plz_enter_blood_type"
-                    android:inputType="none"
-                    android:paddingStart="@dimen/margin_small2"
-                    android:paddingTop="@dimen/margin_big3"
-                    android:paddingBottom="@dimen/margin_big2"
-                    android:textSize="@dimen/font_big3"
-                    app:simpleItems="@array/blood_type" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_disease_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -124,6 +128,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_allergy_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -152,6 +157,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_medicine_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -180,6 +186,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_emergency_contact_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
@@ -209,7 +216,6 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:hint="@string/text_relation"
                         android:inputType="text"
-                        android:paddingStart="@dimen/margin_small2"
                         android:textSize="@dimen/font_big3" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -217,7 +223,7 @@
                     android:id="@+id/tv_contact1_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     app:boxBackgroundColor="@color/background_color"
                     app:boxBackgroundMode="filled"
                     app:hintEnabled="false">
@@ -238,6 +244,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_small1"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -265,7 +272,7 @@
                     android:id="@+id/textInputLayoutContact2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     app:boxBackgroundColor="@color/background_color"
                     app:boxBackgroundMode="filled"
                     app:endIconMode="clear_text"
@@ -290,7 +297,8 @@
                 android:layout_marginTop="36dp"
                 android:background="@drawable/background_radius_10"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="수정하기"
+                android:contentDescription="@string/text_modify"
+                android:text="@string/text_modify"
                 android:textSize="@dimen/font_big2" />
 
         </LinearLayout>

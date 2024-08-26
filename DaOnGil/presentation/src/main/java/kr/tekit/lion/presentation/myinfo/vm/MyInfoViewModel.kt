@@ -10,14 +10,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.IceInfo
 import kr.tekit.lion.domain.model.PersonalInfo
-import kr.tekit.lion.domain.model.onError
-import kr.tekit.lion.domain.model.onSuccess
+import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.myinfo.model.ModifyState
 import kr.tekit.lion.presentation.myinfo.model.UserProfileImg
-import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
@@ -105,13 +104,28 @@ class MyInfoViewModel @Inject constructor(
         }
     }
 
-    fun onCompleteModifyIce(iceInfo: IceInfo) {
-        _iceInfo.update { iceInfo }
+    fun onCompleteModifyIce(newIceInfo: IceInfo) {
+        _iceInfo.update {
+            it.copy(
+                birth = newIceInfo.birth,
+                disease = newIceInfo.disease,
+                allergy = newIceInfo.allergy,
+                medication = newIceInfo.medication,
+                part1Rel = newIceInfo.part1Rel,
+                part1Phone = newIceInfo.part1Phone,
+                part2Rel = newIceInfo.part2Rel,
+                part2Phone = newIceInfo.part2Phone
+            )
+        }
         viewModelScope.launch {
-            memberRepository.modifyMyIceInfo(iceInfo).onError {
+            memberRepository.modifyMyIceInfo(myIceInfo.value).onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
         }
+    }
+
+    fun onSelectBloodType(bloodType: String) {
+        _iceInfo.update { it.copy(bloodType = bloodType) }
     }
 
     fun onSelectProfileImage(imgUrl: String?) {

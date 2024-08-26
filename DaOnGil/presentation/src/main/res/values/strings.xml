@@ -55,14 +55,14 @@
     <string name="text_elderly_person">고령자</string>
 
     <string-array name="blood_type">
-        <item>A형 Rh+</item>
-        <item>A형 Rh-</item>
-        <item>B형 Rh+</item>
-        <item>B형 Rh-</item>
-        <item>O형 Rh+</item>
-        <item>O형 Rh-</item>
-        <item>AB형 Rh+</item>
-        <item>AB형 Rh-</item>
+        <item>A형Rh+</item>
+        <item>A형Rh-</item>
+        <item>B형Rh+</item>
+        <item>B형Rh-</item>
+        <item>O형Rh+</item>
+        <item>O형Rh-</item>
+        <item>AB형Rh+</item>
+        <item>AB형Rh-</item>
     </string-array>
 
     <string name="text_emergency_main">내 주변 응급 지원 찾기</string>
@@ -131,11 +131,14 @@
     <string name="text_medicine">투여약</string>
     <string name="text_plz_enter_medicine">투여중인 약을 입력해주세요</string>
     <string name="text_emergency_contact">긴급 연락처</string>
+    <string name="text_plz_enter_relation">상대방과의 관계를 입력해주세요</string>
     <string name="text_plz_enter_emergency_contact">비상 연락처를 입력해주세요</string>
     <string name="text_plz_enter_phone">전화번호를 입력해주세요</string>
+    <string name="text_plz_enter_collect_phone_for_announce">전화번호는 숫자만입력해주세요.</string>
+    <string name="text_plz_enter_collect_phone_type">올바른 전화번호 형식을 입력해주세요.</string>
+    <string name="text_plz_enter_collect_birth_type">올바른 생년월일 형식을 입력해주세요.</string>
     <string name="text_birth_ex">예) 19700101</string>
     <string name="text_contact_ex">예) 01012345678</string>
-
 
     <string name="text_write_schedule_review">여행 후기 남기기</string>
     <string name="text_schedule_review_photo">여행 사진</string>
@@ -194,4 +197,101 @@
     <string name="text_interest_type">관심 유형</string>
     <string name="text_review">리뷰</string>
     <string name="text_sir">님</string>
+    <string name="text_modify_my_profile">내 정보 수정하기</string>
+    <string name="text_modify_interest_type">관심유형 변경하기</string>
+    <string name="text_modify_bookmark">북마크 목록 보기</string>
+    <string name="text_modify_place_review">나의 여행지 후기 보기</string>
+    <string name="text_logout_button">로그아웃 하기</string>
+    <string name="text_modify_sign_out">회원 탈퇴</string>
+    <string name="text_script_read_all_text">
+        화면에 대한 설명을 듣고 싶으시다면 화면 최상단 오른쪽에 위치한 화면정보읽기버튼을 눌러주세요
+    </string>
+    <string name="text_script_my_info">
+        화면 상단에 개인정보영역이 있습니다.
+        모든내용읽기버튼 아래에 개인정보수정버튼이 있습니다.
+        개인정보수정버튼을 클릭하면 개인정보수정화면으로 이동해드릴게요.
+        화면중간에 나의응급정보영역이 있으며 오른쪽에 나의응급정보수정 버튼이있습니다.
+        나의응급정보수정버튼을 클릭하면 나의응급정보수정화면으로 이동해드릴게요.
+        현재저장된 개인정보를 읽어드리길원하시면 나의정보읽기버튼을 클릭해주세요.
+        나의정보읽기버튼은 화면최상단오른쪽 화면정보읽기버튼 왼쪽에있습니다.
+    </string>
+    <string name="text_script_my_info_modify">
+        이 화면에선 프로필사진과 닉네임 전화번호를 수정할수있어요.
+        화면상단에 프로필사진영역이 있습니다.
+        프로필사진영역오른쪽 끝 하단에 프로필수정버튼이 있습니다.
+        프로필수정버튼을 클릭하면 프로필수정화면으로 이동해드릴게요.
+        하단에 닉네임입력 영역이 있습니다.
+        닉네임입력영역 하단에 전화번호수정역역이 있습니다.
+        전화번호는 숫자만입력해주세요.
+        최하단에 수정완료버튼이 있습니다.
+        수정완료버튼을 클릭하면 수정이완료됩니다.
+    </string>
+    <string name="text_script_for_my_info_main">
+        마이페이지 화면입니다.
+        모든 버튼은 화면오른쪽에 위치해 있습니다.
+        화면최상단기준 아래로 30% 지점에 프로필 영역이 있습니다.
+        왼쪽에는 프로필 이미지가 있고, 오른쪽에는 이름과 가입 정보가 표시됩니다.
+
+        프로필영역오른쪽 끝에 프로필수정버튼이 있습니다.
+        프로필수정버튼을 클릭하면 프로필수정화면으로 이동해드릴게요.
+
+        프로필영역하단에 관심유형영역이 있습니다.
+        관심유형변경버튼을 클릭하면 관심유형변경화면으로 이동해드릴게요.
+
+        관심유형영역하단에 북마크목록보기영역이 있습니다.
+        북마크목록보기버튼을 클릭하면 북마크목록보기화면으로 이동해드릴게요.
+
+        북마크목록보기영역 하단에 나의여행지후기영역이 있습니다.
+        나의여행지후기영역 버튼을 클릭하면 나의여행지후기목록화면으로 이동해드릴게요.
+
+        나의여행지후기영역 하단에 로그아웃영역이 있습니다.
+        로그아웃버튼을 클릭하면 로그아웃을 위한 창을 띄워드릴게요.
+
+        로그아웃영역 하단에 회원탈퇴영역이 있습니다.
+        회원탈퇴버튼을 클릭하면 회원탈퇴화면으로 이동해드릴게요.
+    </string>
+    <string name="text_script_for_modify_my_info_main">
+        나의 응급정보 화면은 생년월일, 혈액형, 의학적질화느 일레르기및부작용, 투여약, 긴급연락처를 수정할수있어요.
+        긴급연락처는 두개까지입력할수 있습니다.
+        최하단에 수정완료버튼이 있습니다.
+        수정완료버튼을 클릭하면 수정이완료됩니다.
+        저장된 내응급정보를 들으시려면 나의응급정보읽기버튼을 클릭해주세요.
+        나의응급정보읽기버튼은 화면최상단오른쪽 화면정보읽기버튼 왼쪽에있습니다.
+    </string>
+
+    <string name="text_logout_guide">
+
+    </string>
+    <string name="text_script_for_no_login_user">
+        마이페이지 화면입니다.
+        로그인한 사용자분들께서만 이용 가능합니다.
+        화면최상단기준 아래로 30% 지점 맨 오른쪽에 위치한 로그인버튼을눌러
+        로그인을 진행해주세요
+    </string>
+    <string name="text_script_this_is_my_info_modify_page">
+        개인정보수정화면입니다.
+    </string>
+    <string name="text_script_this_is_ice_modify_my_ice_info_page">
+        나의응급정보수정화면입니다.
+    </string>
+    <string name="text_script_guide_for_my_info">
+        나의정보화면입니다.
+    </string>
+    <string name="text_read_all">모든 내용 읽기</string>
+    <string name="text_read_screen_info">화면정보읽기</string>
+    <string name="text_read_my_profile">나의 정보 읽기</string>
+    <string name="text_back_button">뒤로 가기</string>
+    <string name="text_script_move_to_profile_modify_page">개인정보수정</string>
+    <string name="text_script_move_to_ice_modify_page">나의응급정보수정</string>
+    <string name="text_personal_info">개인 정보</string>
+    <string name="text_name">이름</string>
+    <string name="text_phone">전화번호</string>
+    <string name="text_nickname">닉네임</string>
+    <string name="text_my_ice_info">나의 응급 정보</string>
+    <string name="text_modify">수정하기</string>
+    <string name="text_profile_image">프로필 이미지</string>
+    <string name="text_guide_gallery_button">갤러리 열기</string>
+    <string name="text_read_my_ice_info_script">나의응급정보읽기</string>
+    <string name="text_modify_profile_img_unselected">변경할프로필 사진이 선택되지 않았습니다.</string>
+    <string name="text_modify_profile_img_selected">변경할프로필 사진이 선택 되었습니다.</string>
 </resources>

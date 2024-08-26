@@ -3,12 +3,17 @@ package kr.tekit.lion.presentation.delegate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kr.tekit.lion.domain.model.ConnectError
-import kr.tekit.lion.domain.model.HttpError
-import kr.tekit.lion.domain.model.NetworkError
-import kr.tekit.lion.domain.model.TimeoutError
-import kr.tekit.lion.domain.model.UnknownError
-import kr.tekit.lion.domain.model.UnknownHostError
+import kr.tekit.lion.domain.exception.AuthenticationError
+import kr.tekit.lion.domain.exception.AuthorizationError
+import kr.tekit.lion.domain.exception.BadRequestError
+import kr.tekit.lion.domain.exception.ConnectError
+import kr.tekit.lion.domain.exception.HttpException
+import kr.tekit.lion.domain.exception.NetworkError
+import kr.tekit.lion.domain.exception.NotFoundError
+import kr.tekit.lion.domain.exception.ServerError
+import kr.tekit.lion.domain.exception.TimeoutError
+import kr.tekit.lion.domain.exception.UnknownError
+import kr.tekit.lion.domain.exception.UnknownHostError
 import javax.inject.Inject
 
 class NetworkErrorDelegate @Inject constructor() {
@@ -23,7 +28,13 @@ class NetworkErrorDelegate @Inject constructor() {
             is ConnectError -> ConnectError.message
             is TimeoutError -> TimeoutError.message
             is UnknownHostError -> UnknownHostError.message
-            is HttpError -> HttpError(exception.code).message
+            is HttpException -> when (exception) {
+                is BadRequestError -> BadRequestError.message
+                is AuthenticationError -> AuthenticationError.message
+                is AuthorizationError -> AuthorizationError.message
+                is NotFoundError -> NotFoundError.message
+                is ServerError -> ServerError.message
+            }
             is UnknownError -> UnknownError.message
         }
         _errorMessage.value = errorState
