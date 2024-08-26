@@ -9,7 +9,6 @@ fun TextView.setAccessibilityText(newText: CharSequence) {
         override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
             super.onInitializeAccessibilityNodeInfo(host, info)
             if (host is TextView) {
-                info.hintText = null
                 info.text = newText
             }
         }
