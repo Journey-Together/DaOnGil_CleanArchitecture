@@ -101,17 +101,39 @@ fun Context.getDataColumn(uri: Uri?, selection: String?, selectionArgs: Array<St
     return null
 }
 
+/**
+ * 주어진 텍스트를 접근성 서비스(예: TalkBack)를 통해 읽어줍니다.
+ *
+ * @param text 접근성 서비스를 통해 읽어줄 텍스트
+ */
 fun Context.announceForAccessibility(text: String) {
     val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+    // 새로운 접근성 이벤트 객체 생성
     val event = AccessibilityEvent.obtain()
+
+    // 접근성 서비스가 텍스트를 읽어주도록 하는 이벤트 유형
     event.eventType = AccessibilityEvent.TYPE_ANNOUNCEMENT
+
+    // 이벤트의 클래스 이름을 TextView로 설정
+    // 이는 이벤트가 TextView에서 발생한 것처럼 보이도록 하기 위함
     event.className = TextView::class.java.name
     event.packageName = packageName
+
+    //이벤트의 텍스트 목록에 text를 추가
     event.text.add(text)
+
+    // 접근성 서비스에 이벤트를 전달
     accessibilityManager.sendAccessibilityEvent(event)
 }
 
+/**
+ * TalkBack이 활성화되어 있는지 확인합니다.
+ *
+ * @return TalkBack이 활성화되어 있으면 true, 그렇지 않으면 false
+ */
 fun Context.isTallBackEnabled(): Boolean {
+    // 접근성 서비스 관리자
     val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+    // 터치 탐색 기능 활성화 여부 반환 (TalkBack 활성화 시 터치 탐색 기능도 활성화됨)
     return accessibilityManager.isTouchExplorationEnabled
 }
