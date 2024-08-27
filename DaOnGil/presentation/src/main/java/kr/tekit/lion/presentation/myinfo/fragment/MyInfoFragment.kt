@@ -96,6 +96,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
             binding.tvName.text = it
             if (requireContext().isTallBackEnabled()){
                 binding.tvNameTitle.setAccessibilityText("${ binding.tvNameTitle.text } $it")
+                binding.tvName.setAccessibilityText("${ binding.tvNameTitle.text } $it")
             }
         }
     }
@@ -107,20 +108,19 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 tvPhone.text = it.phone
 
                 if (requireContext().isTallBackEnabled()){
-                    tvPhone.setAccessibilityText(
-                        if (it.nickname.isEmpty()) getString(R.string.text_plz_enter_phone)
-                        else it.phone
-                    )
-                    tvNickname.setAccessibilityText(
-                        if (it.nickname.isEmpty()) getString(R.string.text_plz_enter_nickname)
-                        else it.nickname
-                    )
-
                     tvPhoneTitle.setAccessibilityText(
                         if (it.phone.isEmpty()) "${tvPhoneTitle.text} ${getString(R.string.text_plz_enter_phone)}"
                         else "${tvPhoneTitle.text} ${it.phone.formatPhoneNumber()}"
                     )
+                    tvPhone.setAccessibilityText(
+                        if (it.phone.isEmpty()) "${tvPhoneTitle.text} ${getString(R.string.text_plz_enter_phone)}"
+                        else "${tvPhoneTitle.text} ${it.phone.formatPhoneNumber()}"
+                    )
                     tvNicknameTitle.setAccessibilityText(
+                        if (it.nickname.isEmpty()) "${tvNicknameTitle.text} ${getString(R.string.text_plz_enter_nickname)}"
+                        else "${tvNicknameTitle.text} ${it.nickname}"
+                    )
+                    tvNickname.setAccessibilityText(
                         if (it.nickname.isEmpty()) "${tvNicknameTitle.text} ${getString(R.string.text_plz_enter_nickname)}"
                         else "${tvNicknameTitle.text} ${it.nickname}"
                     )
@@ -148,56 +148,56 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                         else "${tvBirthTitle.text} ${it.birth.formatBirthday()}"
                     )
                     tvBirth.setAccessibilityText(
-                        if (it.birth.isEmpty()) getString(R.string.text_plz_enter_birth)
-                        else it.birth.formatBirthday()
+                        if (it.birth.isEmpty()) "${tvBirthTitle.text} ${getString(R.string.text_plz_enter_birth)}"
+                        else "${tvBirthTitle.text} ${it.birth.formatBirthday()}"
                     )
                     tvBloodTypeTitle.setAccessibilityText(
                         if (it.bloodType.isEmpty()) "${tvBloodTypeTitle.text} ${getString(R.string.text_plz_enter_blood_type)}"
-                        else "${tvBloodTypeTitle.text} ${it.birth}"
+                        else "${tvBloodTypeTitle.text} ${it.bloodType}"
                     )
                     tvBloodType.setAccessibilityText(
-                        if (it.bloodType.isEmpty()) getString(R.string.text_plz_enter_blood_type)
-                        else it.bloodType
+                        if (it.bloodType.isEmpty()) "${tvBloodTypeTitle.text} ${getString(R.string.text_plz_enter_blood_type)}"
+                        else "${tvBloodTypeTitle.text} ${it.bloodType}"
                     )
                     tvDiseaseTitle.setAccessibilityText(
                         if (it.disease.isEmpty()) "${tvDiseaseTitle.text} ${getString(R.string.text_plz_enter_disease)}"
                         else "${tvDiseaseTitle.text} ${it.disease}}"
                     )
                     tvDisease.setAccessibilityText(
-                        if (it.disease.isEmpty()) getString(R.string.text_plz_enter_disease)
-                        else it.disease
+                        if (it.disease.isEmpty()) "${tvDiseaseTitle.text} ${getString(R.string.text_plz_enter_disease)}"
+                        else "${tvDiseaseTitle.text} ${it.disease}}"
                     )
                     tvAllergyTitle.setAccessibilityText(
                         if (it.allergy.isEmpty()) "${tvAllergyTitle.text} ${getString(R.string.text_plz_enter_allergy)}"
                         else "${tvAllergyTitle.text} ${it.allergy}"
                     )
                     tvAllergy.setAccessibilityText(
-                        if (it.allergy.isEmpty()) getString(R.string.text_plz_enter_allergy)
-                        else it.allergy
+                        if (it.allergy.isEmpty()) "${tvAllergyTitle.text} ${getString(R.string.text_plz_enter_allergy)}"
+                        else "${tvAllergyTitle.text} ${it.allergy}"
                     )
                     tvMedicineTitle.setAccessibilityText(
                         if (it.medication.isEmpty()) "${tvMedicineTitle.text} ${getString(R.string.text_plz_enter_medicine)}"
                         else "${tvMedicineTitle.text} ${it.medication}"
                     )
                     tvMedicine.setAccessibilityText(
-                        if (it.medication.isEmpty()) getString(R.string.text_plz_enter_medicine)
-                        else it.medication
+                        if (it.medication.isEmpty()) "${tvMedicineTitle.text} ${getString(R.string.text_plz_enter_medicine)}"
+                        else "${tvMedicineTitle.text} ${it.medication}"
                     )
                     tvRelation1.setAccessibilityText(
                         if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
                         else "${it.part1Rel} ${it.part1Phone.formatPhoneNumber()}"
                     )
                     tvContact1.setAccessibilityText(
-                        if (it.part1Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
-                        else it.part1Phone.formatPhoneNumber()
+                        if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part1Rel} ${it.part1Phone.formatPhoneNumber()}"
                     )
                     tvRelation2.setAccessibilityText(
                         if (it.part2Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
                         else "${it.part2Rel} ${it.part2Phone.formatPhoneNumber()}"
                     )
                     tvContact2.setAccessibilityText(
-                        if (it.part2Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
-                        else it.part2Phone.formatPhoneNumber()
+                        if (it.part2Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part2Rel} ${it.part2Phone.formatPhoneNumber()}"
                     )
                 }
             }
