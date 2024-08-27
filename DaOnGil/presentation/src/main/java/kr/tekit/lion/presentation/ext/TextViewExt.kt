@@ -23,6 +23,7 @@ fun TextView.setAccessibilityText(newText: CharSequence) {
             super.onInitializeAccessibilityNodeInfo(host, info)
             // 호스트가 TextView인 경우 접근성 텍스트 설정
             if (host is TextView) {
+                info.hintText = null
                 info.text = newText
             }
         }

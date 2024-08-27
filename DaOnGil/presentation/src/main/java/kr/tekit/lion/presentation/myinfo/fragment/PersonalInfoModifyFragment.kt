@@ -81,12 +81,6 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             tvPhone.setText(myInfo.phone)
 
             if (requireContext().isTallBackEnabled()) {
-
-                myInfoAnnounce.append(getString(R.string.text_nickname))
-                myInfoAnnounce.append(nickname)
-                myInfoAnnounce.append(getString(R.string.text_phone))
-                myInfoAnnounce.append(phone)
-
                 tvPhoneTitle.setAccessibilityText(
                     if (phone.isEmpty()) "${tvPhoneTitle.text} ${getString(R.string.text_plz_enter_phone)}"
                     else "${tvPhoneTitle.text} ${phone.formatPhoneNumber()}"
@@ -109,6 +103,14 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                     if (it != null) tvNickname.setAccessibilityText(it)
                     else tvNickname.setAccessibilityText(getString(R.string.text_plz_enter_nickname))
                 }
+
+                tvPhone.doAfterTextChanged {
+                    if (it != null) tvPhone.setAccessibilityText(it)
+                    else tvPhone.setAccessibilityText(getString(R.string.text_plz_enter_phone))
+                }
+
+                myInfoAnnounce.append("${getString(R.string.text_name)} $nickname")
+                myInfoAnnounce.append("${getString(R.string.text_phone)} $phone")
             }
 
             Glide.with(requireContext())

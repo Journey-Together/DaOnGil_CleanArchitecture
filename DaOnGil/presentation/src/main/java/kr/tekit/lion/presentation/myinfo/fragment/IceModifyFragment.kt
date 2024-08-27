@@ -1,15 +1,15 @@
 package kr.tekit.lion.presentation.myinfo.fragment
 
 import android.content.Context
-import android.graphics.Rect
+import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.TouchDelegate
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -35,6 +35,7 @@ import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.myinfo.vm.MyInfoViewModel
 
+
 @AndroidEntryPoint
 class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
 
@@ -49,14 +50,17 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
         else binding.toolbarIceModify.menu.clear()
 
         with(binding) {
+            repeatOnViewStarted {
+                collectMyInfo(this@with)
+            }
 
             backButton.setOnClickListener {
                 findNavController().popBackStack()
             }
 
             buttonIceSubmit.setOnClickListener {
-                if (isFormValid(binding)) {
-                    showSnackbar(binding, "나의 응급 정보가 수정 되었습니다.")
+                if (isFormValid(this@with)) {
+                    showSnackbar(this@with, "나의 응급 정보가 수정 되었습니다.")
                     viewModel.onCompleteModifyIce(
                         IceInfo(
                             birth = tvBirth.text.toString(),
@@ -73,7 +77,7 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                 }
             }
 
-            initTextField(binding)
+            initTextField(this@with)
             handleTextFieldEditorActions(binding)
         }
     }
@@ -84,184 +88,187 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
 
         repeatOnViewStarted {
             with(binding) {
-
                 tvBloodType.setAdapter(arrayAdapter)
                 tvBloodType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
                         val selectedBloodType = parent?.getItemAtPosition(position).toString()
+                        (parent?.getChildAt(0) as TextView).setTextColor(Color.BLUE)
                         viewModel.onSelectBloodType(selectedBloodType)
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
                 }
 
-                viewModel.myIceInfo.collect {
-
-                    val bloodTypeIndex = bloodType.indexOf(it.bloodType)
-                    if (bloodTypeIndex != -1) {
-                        binding.tvBloodType.setSelection(bloodTypeIndex)
+                if (requireContext().isTallBackEnabled()) {
+                    tvBirth.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvBirth.setAccessibilityText(getString(R.string.text_plz_enter_birth))
+                        else tvBirth.setAccessibilityText(it.toString().formatBirthday())
                     }
-                    tvBirth.setText(it.birth)
-                    tvDisease.setText(it.disease)
-                    tvAllergy.setText(it.allergy)
-                    tvMedicine.setText(it.medication)
-                    tvRelation1.setText(it.part1Rel)
-                    tvContact1.setText(it.part1Phone)
-                    tvRelation2.setText(it.part2Rel)
-                    tvContact2.setText(it.part2Phone)
 
-                    if (requireContext().isTallBackEnabled()) {
-
-                        tvBirth.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvBirth.setAccessibilityText(getString(R.string.text_plz_enter_birth))
-                            else tvBirth.setAccessibilityText(it.toString().formatBirthday())
-                        }
-
-                        tvDisease.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvDisease.setAccessibilityText(getString(R.string.text_plz_enter_disease))
-                            else tvDisease.setAccessibilityText(it)
-                        }
-
-                        tvAllergy.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvAllergy.setAccessibilityText(getString(R.string.text_plz_enter_allergy))
-                            else tvAllergy.setAccessibilityText(it)
-                        }
-
-                        tvMedicine.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvMedicine.setAccessibilityText(getString(R.string.text_plz_enter_medicine))
-                            else tvMedicine.setAccessibilityText(it)
-                        }
-
-                        tvRelation1.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvRelation1.setAccessibilityText(getString(R.string.text_plz_enter_relation))
-                            else tvRelation1.setAccessibilityText(it)
-                        }
-
-                        tvContact1.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvContact1.setAccessibilityText(getString(R.string.text_plz_enter_emergency_contact))
-                            else tvContact1.setAccessibilityText(it.toString().formatPhoneNumber())
-                        }
-
-                        tvRelation2.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvRelation2.setAccessibilityText(getString(R.string.text_plz_enter_relation))
-                            else tvRelation2.setAccessibilityText(it)
-                        }
-
-                        tvContact2.doAfterTextChanged {
-                            if (it.isNullOrBlank()) tvContact2.setAccessibilityText(getString(R.string.text_plz_enter_emergency_contact))
-                            else tvContact2.setAccessibilityText(it.toString().formatPhoneNumber())
-                        }
-
-                        tvBirthTitle.setAccessibilityText(
-                            if (it.birth.isEmpty()) "${tvBirthTitle.text} ${getString(R.string.text_plz_enter_birth)}"
-                            else "${tvBirthTitle.text} ${it.birth.formatBirthday()}"
-                        )
-
-                        tvBirth.setAccessibilityText(
-                            if (it.birth.isEmpty()) getString(R.string.text_plz_enter_birth)
-                            else it.birth.formatBirthday()
-                        )
-
-                        tvBloodTypeTitle.setAccessibilityText(
-                            if (it.bloodType.isEmpty()) "${tvBloodTypeTitle.text} ${getString(R.string.text_plz_enter_blood_type)}"
-                            else "${tvBloodTypeTitle.text} ${it.bloodType}"
-                        )
-
-                        tvDiseaseTitle.setAccessibilityText(
-                            if (it.disease.isEmpty()) "${tvDiseaseTitle.text} ${getString(R.string.text_plz_enter_disease)}"
-                            else "${tvDiseaseTitle.text} ${it.disease}}"
-                        )
-
-                        tvDisease.setAccessibilityText(
-                            if (it.disease.isEmpty()) getString(R.string.text_plz_enter_disease)
-                            else it.disease
-                        )
-
-                        tvAllergyTitle.setAccessibilityText(
-                            if (it.allergy.isEmpty()) "${tvAllergyTitle.text} ${getString(R.string.text_plz_enter_allergy)}"
-                            else "${tvAllergyTitle.text} ${it.allergy}"
-                        )
-
-                        tvAllergyTitle.setAccessibilityText(
-                            if (it.allergy.isEmpty()) "${tvAllergyTitle.text} ${getString(R.string.text_plz_enter_allergy)}"
-                            else "${tvAllergyTitle.text} ${it.allergy}"
-                        )
-
-                        tvAllergy.setAccessibilityText(
-                            if (it.allergy.isEmpty()) getString(R.string.text_plz_enter_allergy)
-                            else it.allergy
-                        )
-
-                        tvMedicineTitle.setAccessibilityText(
-                            if (it.medication.isEmpty()) "${tvMedicineTitle.text} ${getString(R.string.text_plz_enter_medicine)}"
-                            else "${tvMedicineTitle.text} ${it.medication}"
-                        )
-                        tvMedicine.setAccessibilityText(
-                            if (it.medication.isEmpty()) getString(R.string.text_plz_enter_medicine)
-                            else it.medication
-                        )
-
-                        tvRelation1.setAccessibilityText(
-                            if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
-                            else "${it.part1Rel} ${it.part1Phone.formatPhoneNumber()}"
-                        )
-
-                        tvRelation1.setAccessibilityText(
-                            if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
-                            else "${it.part1Rel} ${it.part1Phone.formatPhoneNumber()}"
-                        )
-                        tvContact1.setAccessibilityText(
-                            if (it.part1Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
-                            else it.part1Phone.formatPhoneNumber()
-                        )
-                        tvRelation2.setAccessibilityText(
-                            if (it.part2Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
-                            else "${it.part2Rel} ${it.part2Phone.formatPhoneNumber()}"
-                        )
-                        tvContact2.setAccessibilityText(
-                            if (it.part2Phone.isEmpty()) getString(R.string.text_plz_enter_emergency_contact)
-                            else it.part2Phone.formatPhoneNumber()
-                        )
-
-                        myInfoAnnounce.append(getString(R.string.text_birth))
-                        myInfoAnnounce.append(
-                            if (it.birth.isEmpty()) getString(R.string.text_plz_enter_birth)
-                            else it.birth.formatBirthday()
-                        )
-                        myInfoAnnounce.append(getString(R.string.text_blood_type))
-                        myInfoAnnounce.append(
-                            if (it.bloodType.isEmpty()) getString(R.string.text_plz_enter_blood_type)
-                            else it.bloodType
-                        )
-                        myInfoAnnounce.append(getString(R.string.text_disease))
-                        myInfoAnnounce.append(
-                            if (it.disease.isEmpty()) getString(R.string.text_plz_enter_disease)
-                            else it.disease
-                        )
-                        myInfoAnnounce.append(getString(R.string.text_allergy))
-                        myInfoAnnounce.append(
-                            if (it.allergy.isEmpty()) getString(R.string.text_plz_enter_allergy)
-                            else it.allergy
-                        )
-                        myInfoAnnounce.append(getString(R.string.text_medicine))
-                        myInfoAnnounce.append(
-                            if (it.medication.isEmpty()) getString(R.string.text_plz_enter_medicine)
-                            else it.medication
-                        )
-                        myInfoAnnounce.append(getString(R.string.text_emergency_contact))
-                        myInfoAnnounce.append(
-                            if (it.part1Rel.isEmpty()) getString(R.string.text_relation)
-                            else it.part1Rel
-                        )
-                        myInfoAnnounce.append(
-                            if (it.part1Phone.isEmpty()) getString(R.string.text_contact_ex)
-                            else it.part1Phone.formatPhoneNumber()
-                        )
-                        myInfoAnnounce.append(
-                            if (it.part2Rel.isEmpty()) getString(R.string.text_relation)
-                            else it.part2Rel.formatPhoneNumber()
-                        )
+                    tvDisease.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvDisease.setAccessibilityText(getString(R.string.text_plz_enter_disease))
+                        else tvDisease.setAccessibilityText(it)
                     }
+
+                    tvAllergy.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvAllergy.setAccessibilityText(getString(R.string.text_plz_enter_allergy))
+                        else tvAllergy.setAccessibilityText(it)
+                    }
+
+                    tvMedicine.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvMedicine.setAccessibilityText(getString(R.string.text_plz_enter_medicine))
+                        else tvMedicine.setAccessibilityText(it)
+                    }
+
+                    tvRelation1.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvRelation1.setAccessibilityText(getString(R.string.text_plz_enter_relation))
+                        else tvRelation1.setAccessibilityText(it)
+                    }
+
+                    tvContact1.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvContact1.setAccessibilityText(getString(R.string.text_plz_enter_emergency_contact))
+                        else tvContact1.setAccessibilityText(it.toString().formatPhoneNumber())
+                    }
+
+                    tvRelation2.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvRelation2.setAccessibilityText(getString(R.string.text_plz_enter_relation))
+                        else tvRelation2.setAccessibilityText(it)
+                    }
+
+                    tvContact2.doAfterTextChanged {
+                        if (it.isNullOrBlank()) tvContact2.setAccessibilityText(getString(R.string.text_plz_enter_emergency_contact))
+                        else tvContact2.setAccessibilityText(it.toString().formatPhoneNumber())
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun collectMyInfo(binding: FragmentIceModifyBinding) {
+        val bloodType = resources.getStringArray(R.array.blood_type).map { it.pronounceEachCharacter() }
+
+        with(binding) {
+            viewModel.myIceInfo.collect {
+                val bloodTypeIndex = bloodType.indexOf(it.bloodType)
+                if (bloodTypeIndex != -1) {
+                    binding.tvBloodType.setSelection(bloodTypeIndex)
+                }
+                tvBirth.setText(it.birth)
+                tvDisease.setText(it.disease)
+                tvAllergy.setText(it.allergy)
+                tvMedicine.setText(it.medication)
+                tvRelation1.setText(it.part1Rel)
+                tvContact1.setText(it.part1Phone)
+                tvRelation2.setText(it.part2Rel)
+                tvContact2.setText(it.part2Phone)
+
+                if (requireContext().isTallBackEnabled()) {
+
+                    tvBirthTitle.setAccessibilityText(
+                        if (it.birth.isEmpty()) "${tvBirthTitle.text} ${getString(R.string.text_plz_enter_birth)}"
+                        else "${tvBirthTitle.text} ${it.birth.formatBirthday()}"
+                    )
+
+                    tvBirth.setAccessibilityText(
+                        if (it.birth.isEmpty()) "${tvBirthTitle.text} ${getString(R.string.text_plz_enter_birth)}"
+                        else "${tvBirthTitle.text} ${it.birth.formatBirthday()}"
+                    )
+
+                    tvBloodTypeTitle.setAccessibilityText(
+                        if (it.bloodType.isEmpty()) "${tvBloodTypeTitle.text} ${getString(R.string.text_plz_enter_blood_type)}"
+                        else "${tvBloodTypeTitle.text} ${it.bloodType}"
+                    )
+
+                    tvDiseaseTitle.setAccessibilityText(
+                        if (it.disease.isEmpty()) "${tvDiseaseTitle.text} ${getString(R.string.text_plz_enter_disease)}"
+                        else "${tvDiseaseTitle.text} ${it.disease}}"
+                    )
+
+                    tvDisease.setAccessibilityText(
+                        if (it.disease.isEmpty()) "${tvDiseaseTitle.text} ${getString(R.string.text_plz_enter_disease)}"
+                        else "${tvDiseaseTitle.text} ${it.disease}}"
+                    )
+
+                    tvAllergyTitle.setAccessibilityText(
+                        if (it.allergy.isEmpty()) "${tvAllergyTitle.text} ${getString(R.string.text_plz_enter_allergy)}"
+                        else "${tvAllergyTitle.text} ${it.allergy}"
+                    )
+
+                    tvAllergy.setAccessibilityText(
+                        if (it.allergy.isEmpty()) "${tvAllergyTitle.text} ${getString(R.string.text_plz_enter_allergy)}"
+                        else "${tvAllergyTitle.text} ${it.allergy}"
+                    )
+
+                    tvMedicineTitle.setAccessibilityText(
+                        if (it.medication.isEmpty()) "${tvMedicineTitle.text} ${getString(R.string.text_plz_enter_medicine)}"
+                        else "${tvMedicineTitle.text} ${it.medication}"
+                    )
+                    tvMedicine.setAccessibilityText(
+                        if (it.medication.isEmpty()) "${tvMedicineTitle.text} ${getString(R.string.text_plz_enter_medicine)}"
+                        else "${tvMedicineTitle.text} ${it.medication}"
+                    )
+
+                    tvRelation1.setAccessibilityText(
+                        if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part1Rel} ${it.part1Phone.formatPhoneNumber()}"
+                    )
+
+                    tvContact1.setAccessibilityText(
+                        if (it.part1Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part1Rel} ${it.part1Phone.formatPhoneNumber()}"
+                    )
+                    tvRelation2.setAccessibilityText(
+                        if (it.part2Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part2Rel} ${it.part2Phone.formatPhoneNumber()}"
+                    )
+                    tvContact2.setAccessibilityText(
+                        if (it.part2Rel.isEmpty()) getString(R.string.text_plz_enter_relation)
+                        else "${it.part2Rel} ${it.part2Phone.formatPhoneNumber()}"
+                    )
+
+                    myInfoAnnounce.append(getString(R.string.text_birth))
+                    myInfoAnnounce.append(
+                        if (it.birth.isEmpty()) getString(R.string.text_plz_enter_birth)
+                        else it.birth.formatBirthday()
+                    )
+                    myInfoAnnounce.append(getString(R.string.text_blood_type))
+                    myInfoAnnounce.append(
+                        if (it.bloodType.isEmpty()) getString(R.string.text_plz_enter_blood_type)
+                        else it.bloodType
+                    )
+                    myInfoAnnounce.append(getString(R.string.text_disease))
+                    myInfoAnnounce.append(
+                        if (it.disease.isEmpty()) getString(R.string.text_plz_enter_disease)
+                        else it.disease
+                    )
+                    myInfoAnnounce.append(getString(R.string.text_allergy))
+                    myInfoAnnounce.append(
+                        if (it.allergy.isEmpty()) getString(R.string.text_plz_enter_allergy)
+                        else it.allergy
+                    )
+                    myInfoAnnounce.append(getString(R.string.text_medicine))
+                    myInfoAnnounce.append(
+                        if (it.medication.isEmpty()) getString(R.string.text_plz_enter_medicine)
+                        else it.medication
+                    )
+                    myInfoAnnounce.append(getString(R.string.text_emergency_contact))
+                    myInfoAnnounce.append(
+                        if (it.part1Rel.isEmpty()) getString(R.string.text_relation)
+                        else it.part1Rel
+                    )
+                    myInfoAnnounce.append(
+                        if (it.part1Phone.isEmpty()) getString(R.string.text_contact_ex)
+                        else it.part1Phone.formatPhoneNumber()
+                    )
+                    myInfoAnnounce.append(
+                        if (it.part2Rel.isEmpty()) getString(R.string.text_relation)
+                        else it.part2Rel.formatPhoneNumber()
+                    )
                 }
             }
         }
@@ -273,8 +280,7 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                 if (actionId == EditorInfo.IME_ACTION_DONE ||
                     event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
                 ) {
-                    val imm =
-                        requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(v.windowToken, 0)
                     tvBirth.clearFocus()
                     true
@@ -429,19 +435,4 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
             }
         }
     }
-}
-
-private fun View.expandTouchArea(size: Int){
-    // 1. 부모 뷰를 가져온다
-    val parent = this.parent as? View
-
-    parent?.touchDelegate = TouchDelegate(
-        Rect().apply {
-            // 2. 현재 뷰의 터치 영역을 가져온다.
-            getHitRect(this)
-            // 3. 터치 영역을 확장한다.
-            inset(size, size)
-        },
-        this
-    )
 }
