@@ -93,10 +93,8 @@
                 android:dropDownWidth="match_parent"
                 android:dropDownVerticalOffset="35dp"
                 android:labelFor="@string/text_blood_type"
-                android:popupBackground="#D5DBE6"
-                android:importantForAccessibility="no"
-                android:spinnerMode="dialog"/>
-
+                android:popupBackground="@color/background_color"
+                android:spinnerMode="dropdown"/>
 
             <TextView
                 android:id="@+id/tv_disease_title"
