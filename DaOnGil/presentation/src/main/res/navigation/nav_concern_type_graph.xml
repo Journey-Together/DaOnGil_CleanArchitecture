@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/concernTypeFragment"
-        android:name="kr.tekit.lion.daongil.presentation.concerntype.fragment.ConcernTypeFragment"
+        android:name="kr.tekit.lion.presentation.concerntype.fragment.ConcernTypeFragment"
         android:label="fragment_concern_type"
         tools:layout="@layout/fragment_concern_type" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/concernTypeModifyFragment"
-        android:name="kr.tekit.lion.daongil.presentation.concerntype.fragment.ConcernTypeModifyFragment"
+        android:name="kr.tekit.lion.presentation.concerntype.fragment.ConcernTypeModifyFragment"
         android:label="fragment_concern_type_modify"
         tools:layout="@layout/fragment_concern_type_modify" >
         <action
