@@ -43,4 +43,21 @@ class ConcernTypeViewModel @Inject constructor(
             networkErrorDelegate.handleNetworkError(it)
         }
     }
+
+    fun updateConcernType(requestBody: ConcernType) {
+        viewModelScope.launch {
+            memberRepository.updateConcernType(requestBody)
+                .onError {
+                    networkErrorDelegate.handleNetworkError(it)
+                }
+        }
+
+        _concernType.value = _concernType.value?.copy(
+            isPhysical = requestBody.isPhysical,
+            isVisual = requestBody.isVisual,
+            isHear = requestBody.isHear,
+            isChild = requestBody.isChild,
+            isElderly = requestBody.isElderly
+        )
+    }
 }
