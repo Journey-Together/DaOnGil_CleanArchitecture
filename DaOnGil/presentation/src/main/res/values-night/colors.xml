@@ -4,7 +4,7 @@
     <color name="semi_grey">#D9D9D9</color>
 
     <color name="background_color">#1C1B1F</color>
-    <color name="primary">#146EF8</color>
+    <color name="primary">#5384CC</color>
     <color name="text_primary">#FFFFFF</color>
     <color name="primary_disabled">#828282</color>
     <color name="item_background">#3A3A3A</color>
@@ -23,7 +23,8 @@
     <color name="chip_title">#C7C5BF</color>
     <color name="chip_background">#161615</color>
     <color name="reset_button">#3C3C3A</color>
-    <color name="search_view_background">#4E4E4B</color>
+    <color name="search_view_background">#363636</color>
+    <color name="search_view_category_name">#A6A5A5</color>
 
     <color name="search_view_main">#26A6A6</color>
     <color name="tab_selected_text_color">#26A6A6</color>
