@@ -1,7 +1,6 @@
 package kr.tekit.lion.presentation.main.fragment
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -14,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
-import kr.tekit.lion.presentation.ConcernTypeActivity
+import kr.tekit.lion.presentation.concerntype.ConcernTypeActivity
 import kr.tekit.lion.presentation.DeleteUserActivity
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.bookmark.BookmarkActivity
@@ -155,7 +154,9 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
 
     private fun moveConcernType(binding: FragmentMyInfoMainBinding) {
         binding.layoutConcernType.setOnClickListener {
-            startActivity(Intent(requireActivity(), ConcernTypeActivity::class.java))
+            val intent = Intent(requireActivity(), ConcernTypeActivity::class.java)
+            intent.putExtra("nickName", viewModel.myInfo.value.name)
+            startActivity(intent)
         }
     }
 
