@@ -1,9 +1,14 @@
 package kr.tekit.lion.presentation.main.adapter.viewholder
 
+import android.annotation.SuppressLint
+import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.presentation.databinding.ItemListSearchAreaBinding
+import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.main.model.AreaModel
 
 class AreaViewHolder(
@@ -25,6 +30,14 @@ class AreaViewHolder(
                 item.areas
             )
             selectedArea.setAdapter(areaAdapter)
+            if (root.context.isTallBackEnabled()) {
+                selectedArea.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position).toString()
+                    val selectedAreaMessage = "선택된 지역은 ${selectedItem}입니다."
+                    selectedArea.context.announceForAccessibility(selectedAreaMessage)
+                    selectedArea.context.announceForAccessibility("지역선택하단 시군구목록에서 시군구를 선택해보세요")
+                }
+            }
         }
     }
 }
