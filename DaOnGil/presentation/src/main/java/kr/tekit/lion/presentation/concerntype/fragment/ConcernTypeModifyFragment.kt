@@ -55,9 +55,9 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
     }
 
     private fun observeSelection(binding: FragmentConcernTypeModifyBinding) {
-//        viewModel.concernType.observe(viewLifecycleOwner) { concernType ->
-//            initSelection(binding, concernType)
-//        }
+        viewModel.concernType.observe(viewLifecycleOwner) { concernType ->
+            initSelection(binding, concernType)
+        }
     }
 
     private fun initSelection(binding: FragmentConcernTypeModifyBinding, concernType: ConcernType) {
@@ -114,7 +114,7 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
             val isElderly = binding.imageViewConcernTypeModifyElderly.tag.toString().toBoolean()
             val isChild = binding.imageViewConcernTypeModifyInfant.tag.toString().toBoolean()
 
-            //viewModel.updateConcernType(ConcernType(isPhysical, isHear, isVisual, isElderly, isChild))
+            viewModel.updateConcernType(ConcernType(isPhysical, isHear, isVisual, isElderly, isChild))
             showSnackbar(binding, "관심 유형이 수정되었습니다.")
             findNavController().popBackStack()
         }
