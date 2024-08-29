@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background_color"
@@ -21,6 +20,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
+                android:contentDescription="빈 영역입니다."
                 android:background="@drawable/mypage_profile_background">
 
                 <View
@@ -255,6 +255,16 @@
             android:layout_height="270dp"
             android:background="@drawable/mypage_profile_background">
 
+            <Button
+                android:id="@+id/read_script_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/floating_action_button"
+                android:text="@string/text_read_screen_info"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutProfile"
                 android:layout_width="match_parent"
@@ -268,8 +278,11 @@
                     android:id="@+id/btnLoginOrUpdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_basic"
-                    android:layout_marginBottom="@dimen/margin_big4"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:paddingEnd="@dimen/margin_basic"
+                    android:contentDescription="@string/text_modify_my_profile"
                     android:src="@drawable/ic_chevron_right_24px"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -280,16 +293,17 @@
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     android:layout_marginStart="@dimen/margin_basic"
+                    android:contentDescription="@string/text_profile_image"
                     app:cardCornerRadius="50dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:strokeWidth="0dp"
-                    tools:ignore="MissingConstraints">
+                    app:strokeWidth="0dp">
 
                     <ImageView
                         android:id="@+id/imgProfile"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:contentDescription="@string/text_profile_image"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_profile" />
 
@@ -305,21 +319,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="@dimen/font_big2"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/materialCardView"
-                    tools:text="다온길" />
-
-                <TextView
-                    android:id="@+id/tvUserNameTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_small2"
-                    android:layout_marginBottom="32dp"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:text="@string/text_sir"
-                    android:textColor="@color/text_primary"
-                    android:textSize="@dimen/font_big2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvNameOrLogin" />
+                    app:layout_constraintStart_toEndOf="@+id/materialCardView" />
 
                 <TextView
                     android:id="@+id/tvReview"
@@ -410,6 +410,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/margin_basic"
+                    android:contentDescription="@string/text_modify_interest_type"
                     android:src="@drawable/ic_chevron_right_24px"
                     app:tint="@color/text_tertiary" />
             </LinearLayout>
@@ -440,7 +441,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginRight="@dimen/margin_basic"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:contentDescription="@string/text_modify_bookmark"
                     android:src="@drawable/ic_chevron_right_24px"
                     app:tint="@color/text_tertiary" />
             </LinearLayout>
@@ -475,6 +477,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/margin_basic"
+                    android:contentDescription="@string/text_modify_place_review"
                     android:src="@drawable/ic_chevron_right_24px"
                     app:tint="@color/text_tertiary" />
             </LinearLayout>
@@ -512,6 +515,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/margin_basic"
+                    android:contentDescription="@string/text_logout_button"
                     android:src="@drawable/ic_chevron_right_24px"
                     app:tint="@color/text_tertiary" />
             </LinearLayout>
@@ -543,6 +547,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/margin_basic"
+                    android:contentDescription="@string/text_modify_sign_out"
                     android:src="@drawable/ic_chevron_right_24px"
                     app:tint="@color/text_tertiary" />
             </LinearLayout>

@@ -6,6 +6,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.CategoryBottomSheetLayoutBinding
+import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.main.model.AudioGuide
 import kr.tekit.lion.presentation.main.model.BabySpareChair
 import kr.tekit.lion.presentation.main.model.Braileblock
@@ -156,6 +158,9 @@ class CategoryBottomSheet(
                         chipGroupElderlyPerson.check(R.id.lend_chip)
                     }
                 }
+                if (requireContext().isTallBackEnabled()){
+                    requireContext().announceForAccessibility(getString(R.string.text_select_all_option))
+                }
             }
 
             btnReset.setOnClickListener {
@@ -176,6 +181,9 @@ class CategoryBottomSheet(
                     ElderlyPeople -> {
                         chipGroupElderlyPerson.clearCheck()
                     }
+                }
+                if (requireContext().isTallBackEnabled()){
+                    requireContext().announceForAccessibility(getString(R.string.text_reset_all_option))
                 }
             }
 

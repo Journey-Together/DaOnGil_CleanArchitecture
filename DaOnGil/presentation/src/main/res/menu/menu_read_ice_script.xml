@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/read_info"
+        android:icon="@drawable/ic_read_info"
+        app:showAsAction="always"
+        android:title="@string/text_read_my_ice_info_script" />
+    <item
+        android:id="@+id/read_script"
+        android:icon="@drawable/ic_read_script"
+        app:showAsAction="always"
+        android:title="@string/text_read_screen_info" />
+</menu>

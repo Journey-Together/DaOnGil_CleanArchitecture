@@ -3,13 +3,22 @@ package kr.tekit.lion.presentation.main.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchPlaceMainBinding
+import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.keyword.KeywordSearchActivity
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.ScreenState
@@ -27,6 +36,31 @@ class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSearchPlaceMainBinding.bind(view)
 
+        if (requireContext().isTallBackEnabled()){
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(3000)
+                requireContext().announceForAccessibility(
+                    getString(R.string.text_this_is_place_search)
+                            + getString(R.string.text_script_read_all_text)
+                )
+            }
+            with(binding){
+                readScriptBtn.visibility = View.VISIBLE
+                readScriptBtn.setOnClickListener {
+                    requireContext().announceForAccessibility(
+                        getString(R.string.text_script_guide_for_place_search)
+                    )
+                }
+                searchButton.accessibilityDelegate = object : View.AccessibilityDelegate(){
+                    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
+                        super.onInitializeAccessibilityNodeInfo(host, info)
+                        info.hintText = null
+                        info.contentDescription = "관광지텍스트검색"
+                    }
+                }
+            }
+        }
+
         childFragmentManager.beginTransaction().apply {
             add(R.id.fragmentContainerView, listFragment, ScreenState.List.name)
             add(R.id.fragmentContainerView, mapFragment, ScreenState.Map.name)
@@ -35,7 +69,7 @@ class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
         }
 
         with(binding) {
-            searchBar.setOnClickListener {
+            searchButton.setOnClickListener {
                 startActivity(Intent(requireContext(), KeywordSearchActivity::class.java))
             }
 

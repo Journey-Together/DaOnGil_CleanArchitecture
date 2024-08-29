@@ -4,6 +4,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.presentation.databinding.ItemListSearchSortBinding
+import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.main.model.SortModel
 
 class ItemCountViewHolder(
@@ -19,6 +21,10 @@ class ItemCountViewHolder(
                 sortContainer.visibility = VISIBLE
                 binding.totalCnt.text = itemCount.toString()
             }
+        }
+        val context = binding.root.context
+        if (context.isTallBackEnabled()) {
+            context.announceForAccessibility("총 ${itemCount}개의 장소를 찾았습니다.")
         }
     }
 }

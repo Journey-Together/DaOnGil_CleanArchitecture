@@ -5,7 +5,7 @@ import kr.tekit.lion.data.service.MemberService
 import kr.tekit.lion.data.common.execute
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.model.MyDefaultInfo
-import kr.tekit.lion.domain.model.Result
+import kr.tekit.lion.domain.exception.Result
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject

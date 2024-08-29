@@ -1,9 +1,16 @@
 package kr.tekit.lion.presentation.main.adapter.viewholder
 
+import android.util.Log
+import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
+import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemListSearchSigunguBinding
+import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.main.model.SigunguModel
 
 class SigunguViewHolder(
@@ -25,7 +32,15 @@ class SigunguViewHolder(
                 android.R.layout.simple_list_item_1,
                 item.sigungus
             )
-            binding.detailSelectedArea.setAdapter(sigunguAdapter)
+            Log.d("casxzcsc", item.toString())
+            detailSelectedArea.setAdapter(sigunguAdapter)
+            if (root.context.isTallBackEnabled()){
+                detailSelectedArea.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position).toString()
+                    val selectedAreaMessage = "선택된 지역은 ${selectedItem}입니다."
+                    detailSelectedArea.context.announceForAccessibility(selectedAreaMessage)
+                }
+            }
         }
     }
 }

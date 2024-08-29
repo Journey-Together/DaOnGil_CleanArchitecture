@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,8 +9,17 @@
         android:id="@+id/toolbarMyInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back_icon"
+        app:menu="@menu/menu_read_my_info_script"
         android:minHeight="?attr/actionBarSize">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/text_back_button"
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -237,7 +245,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/pretendard_semibold"
-                        android:text="개인 정보"
+                        android:text="@string/text_personal_info"
                         android:textColor="@color/text_primary"
                         android:textSize="18dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -250,12 +258,14 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_radius_50"
                         android:fontFamily="@font/pretendard_semibold"
+                        android:contentDescription="@string/text_script_move_to_profile_modify_page"
                         android:text="수정하기"
                         android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_small1"
+                        android:textSize="@dimen/font_big3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -271,32 +281,35 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_name_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/margin_big4"
                             android:layout_weight="1"
                             android:fontFamily="@font/pretendard_semibold"
-                            android:text="이름"
+                            android:text="@string/text_name"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/font_big3" />
 
                         <TextView
+                            android:id="@+id/tv_phone_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/margin_big4"
                             android:layout_weight="1"
                             android:fontFamily="@font/pretendard_semibold"
-                            android:text="전화번호"
+                            android:text="@string/text_phone"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/font_big3" />
 
                         <TextView
+                            android:id="@+id/tv_nickname_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/margin_big4"
                             android:layout_weight="1"
                             android:fontFamily="@font/pretendard_semibold"
-                            android:text="닉네임"
+                            android:text="@string/text_nickname"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/font_big3" />
 
@@ -314,7 +327,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/margin_big4"
                             android:fontFamily="@font/pretendard_medium"
-                            android:text="이름"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/font_big3" />
 
@@ -351,7 +363,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/margin_basic"
-                android:paddingTop="@dimen/margin_big1"
+                android:paddingTop="@dimen/margin_big2"
                 android:paddingRight="@dimen/margin_basic"
                 android:paddingBottom="@dimen/margin_big1">
 
@@ -364,7 +376,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/pretendard_semibold"
-                        android:text="나의 응급 정보"
+                        android:text="@string/text_my_ice_info"
                         android:textColor="@color/text_primary"
                         android:textSize="18dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -377,15 +389,17 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_radius_50"
                         android:fontFamily="@font/pretendard_semibold"
+                        android:contentDescription="@string/text_script_move_to_ice_modify_page"
                         android:text="수정하기"
                         android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_small1"
+                        android:textSize="@dimen/font_big3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
+                    android:id="@+id/tv_birth_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small1"
@@ -405,6 +419,7 @@
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
+                    android:id="@+id/tv_blood_type_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small1"
@@ -424,6 +439,7 @@
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
+                    android:id="@+id/tv_disease_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small1"
@@ -443,6 +459,7 @@
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
+                    android:id="@+id/tv_allergy_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small1"
@@ -462,6 +479,7 @@
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
+                    android:id="@+id/tv_medicine_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small1"
@@ -481,6 +499,7 @@
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
+                    android:id="@+id/tv_relation_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small1"
@@ -501,9 +520,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:fontFamily="@font/pretendard_medium"
-                        android:text="@string/text_relation"
-                        android:hint="@string/text_relation"
                         android:textColor="@color/text_secondary"
+                        android:hint="@string/text_relation"
                         android:textSize="@dimen/font_big3" />
 
                     <TextView
@@ -530,9 +548,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:fontFamily="@font/pretendard_medium"
-                        android:text="@string/text_relation"
-                        android:hint="@string/text_relation"
                         android:textColor="@color/text_secondary"
+                        android:hint="@string/text_relation"
                         android:textSize="@dimen/font_big3" />
 
                     <TextView
@@ -554,6 +571,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <TextView
