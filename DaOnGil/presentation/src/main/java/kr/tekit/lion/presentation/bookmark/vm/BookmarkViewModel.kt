@@ -12,12 +12,16 @@ import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.PlaceBookmark
 import kr.tekit.lion.domain.model.PlanBookmark
 import kr.tekit.lion.domain.repository.BookmarkRepository
+import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
     private val bookmarkRepository: BookmarkRepository
 ): ViewModel() {
+
+    @Inject
+    lateinit var networkErrorDelegate: NetworkErrorDelegate
 
     private val _placeBookmarkList = MutableLiveData<List<PlaceBookmark>>()
     val placeBookmarkList: LiveData<List<PlaceBookmark>> = _placeBookmarkList
@@ -34,7 +38,7 @@ class BookmarkViewModel @Inject constructor(
         bookmarkRepository.getPlaceBookmark().onSuccess {
             _placeBookmarkList.value = it
         }.onError {
-            Log.d("getPlaceBookmark", it.toString())
+            networkErrorDelegate.handleNetworkError(it)
         }
     }
 
@@ -42,7 +46,7 @@ class BookmarkViewModel @Inject constructor(
         bookmarkRepository.getPlanBookmark().onSuccess {
                 _planBookmarkList.value = it
         }.onError {
-            Log.d("getPlanBookmark", it.toString())
+            networkErrorDelegate.handleNetworkError(it)
         }
     }
 
@@ -55,7 +59,7 @@ class BookmarkViewModel @Inject constructor(
                 _placeBookmarkList.postValue(updatedList)
             }
         }.onError {
-            Log.d("updatePlaceBookmark", it.toString())
+            networkErrorDelegate.handleNetworkError(it)
         }
     }
 
@@ -68,7 +72,7 @@ class BookmarkViewModel @Inject constructor(
                 _planBookmarkList.postValue(updatedList)
             }
         }.onError {
-            Log.d("updatePlanBookmark", it.toString())
+            networkErrorDelegate.handleNetworkError(it)
         }
     }
 }
