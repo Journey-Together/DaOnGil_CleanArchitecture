@@ -1,10 +1,8 @@
-package kr.tekit.lion.presentation.concerntype
+package kr.tekit.lion.presentation.concerntype.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -24,28 +22,28 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
         val binding = FragmentConcernTypeBinding.bind(view)
 
-        val nickName = requireActivity().intent.getStringExtra("nickName")
-
-        initView(binding, nickName)
+        settingToolbar(binding)
+        observeNickname(binding)
         observeSelection(binding)
         moveConcernTypeModify(binding)
     }
 
-    private fun initView(binding: FragmentConcernTypeBinding, nickName: String?) {
-        with(binding) {
-            toolbarConcernType.setNavigationIcon(R.drawable.back_icon)
-            toolbarConcernType.setNavigationOnClickListener {
-                requireActivity().finish()
-            }
+    private fun settingToolbar(binding: FragmentConcernTypeBinding) {
+        binding.toolbarConcernType.setNavigationOnClickListener {
+            requireActivity().finish()
+        }
+    }
 
-            textViewConcernTypeUseNickname.text = nickName ?: ""
+    private fun observeNickname(binding: FragmentConcernTypeBinding) {
+        viewModel.nickName.observe(viewLifecycleOwner) { nickName ->
+            binding.textViewConcernTypeUseNickname.text = nickName
         }
     }
 
     private fun observeSelection(binding: FragmentConcernTypeBinding) {
-//        viewModel.concernType.observe(viewLifecycleOwner) { concernType ->
-//            initSelection(binding, concernType)
-//        }
+        viewModel.concernType.observe(viewLifecycleOwner) { concernType ->
+            initSelection(binding, concernType)
+        }
     }
 
     private fun initSelection(binding: FragmentConcernTypeBinding, concernType: ConcernType) {

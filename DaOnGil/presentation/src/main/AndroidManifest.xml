@@ -8,7 +8,7 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
-            android:name=".ConcernTypeActivity"
+            android:name=".concerntype.ConcernTypeActivity"
             android:exported="false" />
         <activity
             android:name=".bookmark.BookmarkActivity"
