@@ -9,12 +9,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSelectInterestBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.login.model.InterestType
 import kr.tekit.lion.presentation.login.vm.InterestViewModel
 import kr.tekit.lion.presentation.main.MainActivity
 
@@ -29,11 +33,11 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
         val binding = FragmentSelectInterestBinding.bind(view)
 
         val interestImageViews = mapOf(
-            1 to binding.physicalDisabilityImageView,
-            2 to binding.hearingImpairmentImageView,
-            3 to binding.visualImpairmentImageView,
-            4 to binding.elderlyPeopleImageView,
-            5 to binding.infantFamilyImageView
+            InterestType.Physical to binding.physicalDisabilityImageView,
+            InterestType.Hear to binding.hearingImpairmentImageView,
+            InterestType.Visual to binding.visualImpairmentImageView,
+            InterestType.Elderly to binding.elderlyPeopleImageView,
+            InterestType.Elderly to binding.infantFamilyImageView
         )
 
         interestImageViews.map { (typeNo, imageView) ->
@@ -43,20 +47,31 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
         }
 
         binding.selectInterestCompleteButton.setOnClickListener {
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.onClickSubmitButton()
-            }
-
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
-
+            viewModel.onClickSubmitButton()
         }
 
         repeatOnViewStarted {
-            viewModel.concernType.collectLatest { concernType ->
-                updateUI(binding, concernType)
+            supervisorScope {
+                launch {
+                    viewModel.errorMessage.collect {
+                        if (it != null) Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+
+                launch {
+                    viewModel.networkState.collect {
+                        if (it == NetworkState.Success) {
+                            startActivity(Intent(requireActivity(), MainActivity::class.java))
+                            requireActivity().finish()
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.concernType.collectLatest { concernType ->
+                        updateUI(binding, concernType)
+                    }
+                }
             }
         }
     }

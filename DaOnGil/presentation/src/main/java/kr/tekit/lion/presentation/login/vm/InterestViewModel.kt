@@ -1,18 +1,32 @@
 package kr.tekit.lion.presentation.login.vm
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.MemberRepository
+import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.login.model.InterestType
 import javax.inject.Inject
 
 @HiltViewModel
 class InterestViewModel @Inject constructor(
     private val memberRepository: MemberRepository
 ): ViewModel() {
+
+    @Inject
+    lateinit var networkErrorDelegate: NetworkErrorDelegate
+
+    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
+    val networkState: StateFlow<NetworkState?> get() = networkErrorDelegate.networkState
 
     private val _concernType = MutableStateFlow(ConcernType(
         isPhysical = false,
@@ -24,25 +38,25 @@ class InterestViewModel @Inject constructor(
 
     val concernType get() = _concernType.asStateFlow()
 
-    fun onSelectInterest(typeNo: Int) {
+    fun onSelectInterest(type: InterestType) {
         val currentInterests = _concernType.value
 
-        val updatedInterests = when(typeNo) {
-            1 -> currentInterests.copy(isPhysical = !currentInterests.isPhysical)
-            2 -> currentInterests.copy(isHear = !currentInterests.isHear)
-            3 -> currentInterests.copy(isVisual = !currentInterests.isVisual)
-            4 -> currentInterests.copy(isElderly = !currentInterests.isElderly)
-            5 -> currentInterests.copy(isChild = !currentInterests.isChild)
-            else -> currentInterests
+        val updatedInterests = when(type) {
+            InterestType.Physical -> currentInterests.copy(isPhysical = !currentInterests.isPhysical)
+            InterestType.Hear -> currentInterests.copy(isHear = !currentInterests.isHear)
+            InterestType.Visual -> currentInterests.copy(isVisual = !currentInterests.isVisual)
+            InterestType.Child -> currentInterests.copy(isElderly = !currentInterests.isElderly)
+            InterestType.Elderly -> currentInterests.copy(isChild = !currentInterests.isChild)
         }
 
-        _concernType.value = updatedInterests
+        _concernType.update { updatedInterests }
     }
 
-    suspend fun onClickSubmitButton(){
-        memberRepository.updateConcernType(_concernType.value)
-            .onError {
-                TODO("에러 처리 화면 디자인 및 구현 후 분기")
-            }
+    fun onClickSubmitButton() = viewModelScope.launch{
+        memberRepository.updateConcernType(_concernType.value).onSuccess {
+            networkErrorDelegate.handleNetworkSuccess()
+        }.onError {
+            networkErrorDelegate.handleNetworkError(it)
+        }
     }
 }
