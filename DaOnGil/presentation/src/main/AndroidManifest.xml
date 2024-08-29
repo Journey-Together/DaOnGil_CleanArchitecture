@@ -40,6 +40,9 @@
         <activity
             android:name=".main.MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".keyword.KeywordSearchActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

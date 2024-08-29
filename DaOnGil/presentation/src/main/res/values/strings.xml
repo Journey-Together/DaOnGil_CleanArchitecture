@@ -178,7 +178,7 @@
     <string name="text_block_board">해당 게시물/후기 차단하기</string>
     <string name="text_block_user">해당 작성자의 모든 게시물/후기 차단하기</string>
     <string name="text_report_error_message">신고 내용을 입력해주세요.</string>
-    <string name="text_searbar_hint">궁금한 여행지를 직접 검색 해보세요!</string>
+    <string name="text_searbar_hint">여행지를 직접 검색 해보세요!</string>
     <string name="text_search_guide1">딱 맞는 여행을 찾을 수 있도록</string>
     <string name="text_category">유형</string>
     <string name="text_search_guide2">을 선택해 보세요!</string>
@@ -277,6 +277,22 @@
     <string name="text_script_guide_for_my_info">
         나의정보화면입니다.
     </string>
+    <string name="text_this_is_place_search">
+        관광정보 화면입니다.
+    </string>
+    <string name="text_script_guide_for_place_search">
+        화면최상단에 텍스트 검색화면으로 이동하는버튼이있습니다.
+        버튼을 클릭하면 텍스트 검색화면으로 이동해드릴게요.
+        하단엔 여행 음식점 숙박 3개의탭이있습니다.
+        원하는탭을선택하시면 각탭에맞는 여행지를제공해드릴게요
+        하단에 청각장애 지체장애 시각장애 영유아동반 고령자별로
+        관광자검색옵션을선택할 수 있는버튼이 있어요.
+        하단에 지역을선택할 수 있는목록이 있으며
+        지역선택목록 하단에 시군구를 선택할수있는 목록이있어요,
+        검색하신관광지는 가장하단에제공됩니다.
+        화면오른쪽하단에 지도보기버튼이있습니다.
+        지도보기버튼을 클릭하면 지도화면으로 이동해드릴게요.
+    </string>
     <string name="text_read_all">모든 내용 읽기</string>
     <string name="text_read_screen_info">화면정보읽기</string>
     <string name="text_read_my_profile">나의 정보 읽기</string>
@@ -294,4 +310,8 @@
     <string name="text_read_my_ice_info_script">나의응급정보읽기</string>
     <string name="text_modify_profile_img_unselected">변경할프로필 사진이 선택되지 않았습니다.</string>
     <string name="text_modify_profile_img_selected">변경할프로필 사진이 선택 되었습니다.</string>
+    <string name="text_select_area">지역 선택</string>
+    <string name="text_nationwide">전국</string>
+    <string name="text_reset_all_option">모든옵션이 초기화되었습니다.</string>
+    <string name="text_select_all_option">모든옵션이 선택되었습니다.</string>
 </resources>

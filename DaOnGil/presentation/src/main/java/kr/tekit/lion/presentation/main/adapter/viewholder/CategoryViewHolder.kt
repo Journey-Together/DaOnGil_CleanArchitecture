@@ -1,5 +1,7 @@
 package kr.tekit.lion.presentation.main.adapter.viewholder
 
+import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -7,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemListSearchCategoryBinding
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.setClickEvent
 import kr.tekit.lion.presentation.main.model.CategoryModel
 import kr.tekit.lion.presentation.main.model.ElderlyPeople
@@ -64,7 +68,8 @@ class CategoryViewHolder(
         val context = binding.root.context
         when (count) {
             0, -1 -> {
-                textView.text = context.getString(textResId)
+                val currentText = context.getString(textResId)
+                textView.text = currentText
                 textView.setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -72,12 +77,17 @@ class CategoryViewHolder(
                     )
                 )
                 imageView.setImageDrawable(ContextCompat.getDrawable(context, unselectedIcon))
+                if (context.isTallBackEnabled()) imageView.setAccessibilityText(currentText)
             }
 
             else -> {
-                textView.text = "${context.getString(textResId)} $count"
+                val currentText = "${context.getString(textResId)} $count"
+                textView.text = currentText
                 textView.setTextColor(ContextCompat.getColor(context, R.color.search_view_main))
                 imageView.setImageDrawable(ContextCompat.getDrawable(context, selectedIcon))
+                if (context.isTallBackEnabled()) {
+                    imageView.setAccessibilityText(currentText + "개 옵션이 선택되었습니다")
+                }
             }
         }
     }

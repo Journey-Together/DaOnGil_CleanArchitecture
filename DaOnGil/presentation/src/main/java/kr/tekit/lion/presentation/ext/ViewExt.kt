@@ -1,6 +1,9 @@
 package kr.tekit.lion.presentation.ext
 
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.ImageView
+import android.widget.TextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -27,3 +30,18 @@ fun View.setClickEvent(
         .onEach { onClick.invoke() }
         .launchIn(uiScope)
 }
+
+fun View.setAccessibilityText(newText: CharSequence) {
+    accessibilityDelegate = object : View.AccessibilityDelegate() {
+        override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
+            super.onInitializeAccessibilityNodeInfo(host, info)
+            info.hintText = null
+            if (host is TextView) {
+                info.text = newText
+            } else if (host is ImageView) {
+                info.contentDescription = newText
+            }
+        }
+    }
+}
+
