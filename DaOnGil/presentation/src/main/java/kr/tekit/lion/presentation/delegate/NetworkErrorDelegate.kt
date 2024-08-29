@@ -25,17 +25,17 @@ class NetworkErrorDelegate @Inject constructor() {
 
     fun handleNetworkError(exception: NetworkError) {
         val errorState = when (exception) {
-            is ConnectError -> ConnectError.message
-            is TimeoutError -> TimeoutError.message
-            is UnknownHostError -> UnknownHostError.message
+            is ConnectError -> "${ConnectError.title} \n ${ConnectError.message}"
+            is TimeoutError -> "${TimeoutError.title} \n ${TimeoutError.message}"
+            is UnknownHostError -> "${UnknownError.title} \n ${UnknownHostError.message}"
             is HttpException -> when (exception) {
-                is BadRequestError -> BadRequestError.message
-                is AuthenticationError -> AuthenticationError.message
-                is AuthorizationError -> AuthorizationError.message
-                is NotFoundError -> NotFoundError.message
-                is ServerError -> ServerError.message
+                is BadRequestError -> "${BadRequestError.title} \n ${BadRequestError.message}"
+                is AuthenticationError -> "${AuthenticationError.title} \n ${AuthenticationError.message}"
+                is AuthorizationError -> "${AuthorizationError.title} \n ${AuthorizationError.message}"
+                is NotFoundError -> "${NotFoundError.title} \n ${NotFoundError.message}"
+                is ServerError -> "${ServerError.title} \n ${ServerError.message}"
             }
-            is UnknownError -> UnknownError.message
+            is UnknownError -> "${UnknownError.title} \n ${UnknownError.message}"
         }
         _errorMessage.value = errorState
     }
