@@ -45,7 +45,7 @@ class BookmarkActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
                     0 -> settingPlaceBookmarkRVAdapter()
-                    1 -> settingScheduleBookmarkRVAdapter()
+                    1 -> settingPlanBookmarkRVAdapter()
                 }
             }
 
@@ -87,7 +87,7 @@ class BookmarkActivity : AppCompatActivity() {
         }
     }
 
-    private fun settingScheduleBookmarkRVAdapter() {
+    private fun settingPlanBookmarkRVAdapter() {
         viewModel.planBookmarkList.observe(this) { planBookmarkList ->
             if (planBookmarkList.isNotEmpty()) {
                 binding.notExistBookmarkLayout.visibility = View.INVISIBLE
