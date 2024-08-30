@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,6 +16,7 @@ import kr.tekit.lion.presentation.bookmark.adapter.PlaceBookmarkRVAdapter
 import kr.tekit.lion.presentation.bookmark.adapter.PlanBookmarkRVAdapter
 import kr.tekit.lion.presentation.bookmark.vm.BookmarkViewModel
 import kr.tekit.lion.presentation.databinding.ActivityBookmarkBinding
+import kr.tekit.lion.presentation.ext.showSnackbar
 
 @AndroidEntryPoint
 class BookmarkActivity : AppCompatActivity() {
@@ -72,6 +76,8 @@ class BookmarkActivity : AppCompatActivity() {
                     },
                     onBookmarkClick = { placeId ->
                         viewModel.updatePlaceBookmark(placeId)
+
+                        this.showSnackbar(binding.root, "북마크가 삭제되었습니다.")
                     }
                 )
                 val rvState = binding.recyclerViewBookmark.layoutManager?.onSaveInstanceState()
@@ -103,6 +109,7 @@ class BookmarkActivity : AppCompatActivity() {
                     },
                     onBookmarkClick = { planId ->
                         viewModel.updatePlanBookmark(planId)
+                        this.showSnackbar(binding.root, "북마크가 삭제되었습니다.")
                     }
                 )
                 val rvState = binding.recyclerViewBookmark.layoutManager?.onSaveInstanceState()
