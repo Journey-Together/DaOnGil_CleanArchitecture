@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.ConcernType
-import kr.tekit.lion.domain.model.onError
-import kr.tekit.lion.domain.model.onSuccess
+import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
