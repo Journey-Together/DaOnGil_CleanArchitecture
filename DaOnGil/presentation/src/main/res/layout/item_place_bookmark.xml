@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/locationBookmarkCard"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_margin="@dimen/margin_big3"
+        android:paddingHorizontal="@dimen/margin_big2"
+        app:cardBackgroundColor="@color/card_background_color"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageViewLocationBookmark"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/empty_view_long"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_place_high_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLocationBookmark"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big4"
+                android:layout_marginBottom="@dimen/margin_big4"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/locationBookmarkBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:layout_marginRight="@dimen/margin_big4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bookmark_fill_icon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textViewLocationBookmark"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:layout_marginBottom="@dimen/margin_big3"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_regular"
+        android:lineSpacingMultiplier="0.9"
+        android:maxLines="1"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_small2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textViewLocationBookmarkName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLocationBookmarkName"
+        tools:text="여행지 주소" />
+
+    <TextView
+        android:id="@+id/textViewLocationBookmarkName"
+        android:layout_width="140dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_semibold"
+        android:lineSpacingMultiplier="0.9"
+        android:maxLines="1"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintStart_toStartOf="@+id/locationBookmarkCard"
+        app:layout_constraintTop_toBottomOf="@+id/locationBookmarkCard"
+        tools:text="여행지 이름" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
 import kr.tekit.lion.data.service.AuthService
+import kr.tekit.lion.data.service.BookmarkService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
 import kr.tekit.lion.data.service.PlaceService
@@ -48,6 +49,12 @@ internal object NetworkModule {
     @Singleton
     fun providePlaceService(retrofit: Retrofit): PlaceService {
         return retrofit.create(PlaceService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookmarkService(retrofit: Retrofit): BookmarkService {
+        return retrofit.create(BookmarkService::class.java)
     }
 
     @Provides
