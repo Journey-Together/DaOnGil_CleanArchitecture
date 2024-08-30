@@ -1,11 +1,11 @@
 package kr.tekit.lion.presentation.bookmark.vm
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -50,29 +50,45 @@ class BookmarkViewModel @Inject constructor(
         }
     }
 
-    fun updatePlaceBookmark(placeId: Long) = viewModelScope.launch {
-        bookmarkRepository.updatePlaceBookmark(placeId).onSuccess {
-            val updatedList = _placeBookmarkList.value.orEmpty().toMutableList()
-            val index = updatedList.indexOfFirst { it.placeId == placeId }
-            if (index != -1) {
-                updatedList.removeAt(index)
-                _placeBookmarkList.postValue(updatedList)
+    fun updatePlaceBookmark(placeId: Long) {
+        val currentList = _placeBookmarkList.value.orEmpty().toMutableList()
+        val itemIndex = currentList.indexOfFirst { it.placeId == placeId }
+
+        val itemToRestore = if (itemIndex != -1) currentList[itemIndex] else null
+
+        if (itemIndex != -1) {
+            currentList.removeAt(itemIndex)
+            _placeBookmarkList.value = currentList
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            bookmarkRepository.updatePlaceBookmark(placeId).onError {
+                itemToRestore?.let { placeBookmark ->
+                    currentList.add(itemIndex, placeBookmark)
+                    _placeBookmarkList.postValue(currentList)
+                }
             }
-        }.onError {
-            networkErrorDelegate.handleNetworkError(it)
         }
     }
 
-    fun updatePlanBookmark(planId: Long) = viewModelScope.launch {
-        bookmarkRepository.updatePlanBookmark(planId).onSuccess {
-            val updatedList = _planBookmarkList.value.orEmpty().toMutableList()
-            val index = updatedList.indexOfFirst { it.planId == planId }
-            if (index != -1) {
-                updatedList.removeAt(index)
-                _planBookmarkList.postValue(updatedList)
+    fun updatePlanBookmark(planId: Long) {
+        val currentList = _planBookmarkList.value.orEmpty().toMutableList()
+        val itemIndex = currentList.indexOfFirst { it.planId == planId }
+
+        val itemToRestore = if (itemIndex != -1) currentList[itemIndex] else null
+
+        if (itemIndex != -1) {
+            currentList.removeAt(itemIndex)
+            _planBookmarkList.value = currentList
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            bookmarkRepository.updatePlanBookmark(planId).onError {
+                itemToRestore?.let { planBookmark ->
+                    currentList.add(itemIndex, planBookmark)
+                    _planBookmarkList.postValue(currentList)
+                }
             }
-        }.onError {
-            networkErrorDelegate.handleNetworkError(it)
         }
     }
 }
