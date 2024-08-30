@@ -14,7 +14,9 @@ import android.view.accessibility.AccessibilityManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import kr.tekit.lion.presentation.R
 
 fun Context.showSoftInput(view: View) {
     val inputMethodManger =
@@ -136,4 +138,10 @@ fun Context.isTallBackEnabled(): Boolean {
     val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
     // 터치 탐색 기능 활성화 여부 반환 (TalkBack 활성화 시 터치 탐색 기능도 활성화됨)
     return accessibilityManager.isTouchExplorationEnabled
+}
+
+fun Context.showSnackbar(view: View, message: String, duration: Int = Snackbar.LENGTH_LONG) {
+    Snackbar.make(view, message, duration)
+        .setBackgroundTint(ContextCompat.getColor(this, R.color.text_secondary))
+        .show()
 }
