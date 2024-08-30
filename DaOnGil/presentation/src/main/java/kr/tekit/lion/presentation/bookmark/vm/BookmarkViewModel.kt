@@ -50,7 +50,7 @@ class BookmarkViewModel @Inject constructor(
         }
     }
 
-    fun updatePlaceBookmark(placeId: Long) {
+    fun updatePlaceBookmark(placeId: Long) = viewModelScope.launch(Dispatchers.IO) {
         val currentList = _placeBookmarkList.value.orEmpty().toMutableList()
         val itemIndex = currentList.indexOfFirst { it.placeId == placeId }
 
@@ -61,17 +61,15 @@ class BookmarkViewModel @Inject constructor(
             _placeBookmarkList.value = currentList
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            bookmarkRepository.updatePlaceBookmark(placeId).onError {
-                itemToRestore?.let { placeBookmark ->
-                    currentList.add(itemIndex, placeBookmark)
-                    _placeBookmarkList.postValue(currentList)
-                }
+        bookmarkRepository.updatePlaceBookmark(placeId).onError {
+            itemToRestore?.let { placeBookmark ->
+                currentList.add(itemIndex, placeBookmark)
+                _placeBookmarkList.postValue(currentList)
             }
         }
     }
 
-    fun updatePlanBookmark(planId: Long) {
+    fun updatePlanBookmark(planId: Long) = viewModelScope.launch(Dispatchers.IO) {
         val currentList = _planBookmarkList.value.orEmpty().toMutableList()
         val itemIndex = currentList.indexOfFirst { it.planId == planId }
 
@@ -82,12 +80,10 @@ class BookmarkViewModel @Inject constructor(
             _planBookmarkList.value = currentList
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            bookmarkRepository.updatePlanBookmark(planId).onError {
-                itemToRestore?.let { planBookmark ->
-                    currentList.add(itemIndex, planBookmark)
-                    _planBookmarkList.postValue(currentList)
-                }
+        bookmarkRepository.updatePlanBookmark(planId).onError {
+            itemToRestore?.let { planBookmark ->
+                currentList.add(itemIndex, planBookmark)
+                _planBookmarkList.postValue(currentList)
             }
         }
     }
