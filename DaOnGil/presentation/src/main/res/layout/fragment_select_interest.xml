@@ -51,6 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/text_physical_disability"
                 android:src="@drawable/physical_no_select" />
 
             <ImageView
@@ -58,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/text_visual_impairment"
                 android:src="@drawable/visual_no_select" />
         </LinearLayout>
 
@@ -72,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/text_hearing_impairment"
                 android:src="@drawable/hearing_no_select" />
 
             <ImageView
@@ -79,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/text_infant_family"
                 android:src="@drawable/infant_family_no_select" />
         </LinearLayout>
 
@@ -93,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/text_elderly_person"
                 android:src="@drawable/elderly_people_no_select" />
 
             <ImageView
@@ -100,6 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="false"
                 android:src="@drawable/background_rectangle" />
 
         </LinearLayout>
