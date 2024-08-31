@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_basic">
+
+        <ImageView
+            android:id="@+id/emergencyBottomImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_big4"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/emergencyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3" />
+
+                <TextView
+                    android:id="@+id/emergencyDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:layout_marginTop="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textColor="@color/emergency_color"
+                    android:textSize="@dimen/font_small1" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/emergencyAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                android:drawableStart="@drawable/address_icon"
+                android:drawablePadding="@dimen/margin_small2"
+                android:drawableTint="@color/text_quaternary"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendard_regular"
+                android:maxLines="1"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_small1" />
+
+            <TextView
+                android:id="@+id/emergencyCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                android:drawableStart="@drawable/call_icon"
+                android:drawablePadding="@dimen/margin_small2"
+                android:drawableTint="@color/text_quaternary"
+                android:fontFamily="@font/pretendard_regular"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_small1" />
+
+            <LinearLayout
+                android:id="@+id/emergencyBedLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/emergencyBedIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/emergency_radius"
+                    android:tint="@color/primary"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/emergencyBed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big3"
+        app:dividerColor="@color/primary_disabled"
+        app:dividerThickness="2dp" />
+
+</LinearLayout>
