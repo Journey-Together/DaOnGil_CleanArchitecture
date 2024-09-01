@@ -98,6 +98,12 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                     else tvBirth.setAccessibilityText(it.toString().formatBirthday())
                 }
 
+                tvBloodType.doAfterTextChanged {
+                    tvBloodTypeTitle.setAccessibilityText(
+                        getString(R.string.text_blood_type) + it.toString()
+                    )
+                }
+
                 tvDisease.doAfterTextChanged {
                     if (it.isNullOrBlank()) tvDisease.setAccessibilityText(getString(R.string.text_plz_enter_disease))
                     else tvDisease.setAccessibilityText(it)
