@@ -9,6 +9,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
+import kr.tekit.lion.data.dto.response.aed.AedJsonAdapter
+import kr.tekit.lion.data.service.AedService
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.BookmarkService
 import kr.tekit.lion.data.service.KorWithService
@@ -84,6 +86,20 @@ internal object NetworkModule {
         Retrofit.Builder()
             .baseUrl(BuildConfig.NAVER_MAP_BASE)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    private val aedMoshi = Moshi.Builder()
+        .add(AedJsonAdapter())
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    @Singleton
+    @Provides
+    fun provideAedService(okHttpClient: OkHttpClient): AedService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.AED_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(aedMoshi).asLenient())
             .client(okHttpClient)
             .build()
             .create()
