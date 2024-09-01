@@ -314,6 +314,12 @@
     <string name="text_nationwide">전국</string>
     <string name="text_reset_all_option">모든옵션이 초기화되었습니다.</string>
     <string name="text_select_all_option">모든옵션이 선택되었습니다.</string>
+
+
+    <string name="text_no_schedule">아직 등록된 일정이 없어요</string>
+    <string name="text_explore_public_schedule">공개일정 둘러보기</string>
+    <string name="text_add_new_schedule">새 여행 일정 추가하기</string>
+
     <string name="text_script_guide_onboarding">
         온보딩 화면입니다.좌우스와이프로 페이지를 넘길수있습니다.
         스킵하시려면 화면하단건너뛰기버튼을 눌러주세요.</string>

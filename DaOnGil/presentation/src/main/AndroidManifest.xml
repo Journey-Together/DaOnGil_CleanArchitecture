@@ -11,6 +11,9 @@
             android:name=".emergency.EmergencyInfoActivity"
             android:exported="false" />
         <activity
+            android:name=".myschedule.MyScheduleActivity"
+            android:exported="false" />        
+        <activity
             android:name=".emergency.PharmacyMapActivity"
             android:exported="false" />
         <activity
