@@ -8,14 +8,17 @@ import android.widget.ArrayAdapter
 import androidx.annotation.ArrayRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.DialogEmergencyAreaBinding
+import kr.tekit.lion.presentation.emergency.vm.EmergencyMapViewModel
 
+@AndroidEntryPoint
 class EmergencyAreaDialog(
 
 ) : DialogFragment(R.layout.dialog_emergency_area) {
 
-    // private val viewModel: EmergencyMapViewModel by activityViewModels()
+    private val viewModel: EmergencyMapViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,7 +37,7 @@ class EmergencyAreaDialog(
             emergencyAreaPositive.setOnClickListener {
                 val areaDetail =
                     if (emergencyDetailAreaSelected.text.toString() == "세종특별자치시") null else emergencyDetailAreaSelected.text.toString()
-                // viewModel.setArea(emergencyAreaSelected.text.toString(), areaDetail)
+                viewModel.setArea(emergencyAreaSelected.text.toString(), areaDetail)
                 emergencyAreaSelected.setText("")
                 emergencyDetailAreaSelected.setText("")
                 dismiss()
