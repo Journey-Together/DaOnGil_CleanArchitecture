@@ -4,6 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.tekit.lion.data.repository.AedRepositoryImpl
 import kr.tekit.lion.data.repository.AppThemeRepositoryImpl
 import kr.tekit.lion.data.repository.AreaCodeRepositoryImpl
 import kr.tekit.lion.data.repository.AuthRepositoryImpl
@@ -14,6 +15,7 @@ import kr.tekit.lion.data.repository.NaverMapRepositoryImpl
 import kr.tekit.lion.data.repository.PlaceRepositoryImpl
 import kr.tekit.lion.data.repository.RecentlySearchKeywordRepositoryImpl
 import kr.tekit.lion.data.repository.SigunguCodeRepositoryImpl
+import kr.tekit.lion.domain.repository.AedRepository
 import kr.tekit.lion.domain.repository.AppThemeRepository
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.AuthRepository
@@ -59,5 +61,8 @@ internal interface RepositoryModule {
 
     @Binds
     fun bindNaverMapRepository(naverMapRepositoryImpl: NaverMapRepositoryImpl): NaverMapRepository
+
+    @Binds
+    fun bindAedRepository(aedRepositoryImpl: AedRepositoryImpl): AedRepository
 
 }
