@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityEmergencyMapBinding
 import kr.tekit.lion.presentation.emergency.vm.EmergencyMapViewModel
 
