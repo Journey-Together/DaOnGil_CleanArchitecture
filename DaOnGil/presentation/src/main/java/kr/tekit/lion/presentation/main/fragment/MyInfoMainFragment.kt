@@ -13,7 +13,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.concerntype.ConcernTypeActivity
@@ -41,7 +40,9 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == MODIFY_RESULT_CODE) {
-            viewModel.onStateLoggedIn()
+            repeatOnViewStarted {
+                viewModel.onStateLoggedIn()
+            }
         }
     }
 
@@ -105,9 +106,10 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         isTalkbackEnabled: Boolean,
         talkbackText: StringBuilder
     ) {
-        viewModel.myInfo
-            .filter { it.name.isNotEmpty() }
-            .collect { myInfo ->
+        repeatOnViewStarted {
+            viewModel.onStateLoggedIn()
+        }
+        viewModel.myInfo.collect { myInfo ->
                 with(binding) {
                     val name = "${myInfo.name}님"
                     val review = "${tvReview.text} ${myInfo.reviewNum}개"
@@ -121,8 +123,9 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                     Glide.with(imgProfile.context)
                         .load(myInfo.profileImg)
                         .fallback(R.drawable.default_profile)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .into(imgProfile)
-
 
                     if (isTalkbackEnabled) {
                         talkbackText
@@ -202,12 +205,13 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         binding.mainContainer.visibility = View.VISIBLE
         with(binding) {
             userContainer.visibility = View.GONE
-            tvReview.text = getString(R.string.text_NameOrLogin)
             tvReviewCnt.visibility = View.GONE
             textViewMyInfoMainRegister.visibility = View.GONE
+            tvRegisteredData.visibility = View.GONE
+            readScriptBtn.visibility = View.GONE
+            tvReview.text = getString(R.string.text_NameOrLogin)
             tvNameOrLogin.text = getString(R.string.text_myInfo_Review)
             tvNameOrLogin.contentDescription = "로그인 버튼"
-            tvRegisteredData.visibility = View.GONE
             layoutProfile.setOnClickListener {
                 val intent = Intent(requireActivity(), LoginActivity::class.java)
                 startActivity(intent)
