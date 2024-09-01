@@ -12,6 +12,7 @@ import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.schedule.ScheduleMainViewModel
+import kr.tekit.lion.presentation.myschedule.MyScheduleActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -63,7 +64,8 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                 createNewSchedule()
             }
             textViewMyScheduleMore.setOnClickListener {
-                // 내 일정 더보기
+                val intent = Intent(requireActivity(), MyScheduleActivity::class.java)
+                startActivity(intent)
             }
             textViewPublicScheduleMore.setOnClickListener {
                 // 공개 일정 더보기
