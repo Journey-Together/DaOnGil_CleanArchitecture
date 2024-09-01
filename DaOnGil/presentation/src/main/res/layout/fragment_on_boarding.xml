@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/onBoardingFirstNextButton"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/onBoarding_vp" />
 
     <Button
-        android:id="@+id/onBoardingFirstNextButton"
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginStart="@dimen/margin_basic"
@@ -45,16 +45,15 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <TextView
-        android:id="@+id/onBoardingFirstTextView3"
+        android:id="@+id/btn_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/pretendard_regular"
         android:text="건너뛰기"
         android:textColor="@color/text_primary"
-        app:layout_constraintEnd_toEndOf="@+id/onBoardingFirstNextButton"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/onBoardingFirstNextButton"
-        app:layout_constraintTop_toBottomOf="@+id/onBoardingFirstNextButton" />
+        app:layout_constraintEnd_toEndOf="@+id/btn_next"
+        app:layout_constraintStart_toStartOf="@+id/btn_next"
+        app:layout_constraintTop_toBottomOf="@+id/btn_next" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

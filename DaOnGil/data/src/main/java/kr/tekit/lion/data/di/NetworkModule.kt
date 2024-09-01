@@ -13,6 +13,7 @@ import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.BookmarkService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
+import kr.tekit.lion.data.service.NaverMapService
 import kr.tekit.lion.data.service.PlaceService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -79,6 +80,16 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideNaverMapService(@NaverMap okHttpClient: OkHttpClient): NaverMapService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.NAVER_MAP_BASE)
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Singleton
+    @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) {
@@ -88,6 +99,31 @@ internal object NetworkModule {
             }
         }
         return OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
+    @NaverMap
+    @Singleton
+    @Provides
+    fun provideNaverMapClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("X-NCP-APIGW-API-KEY-ID", BuildConfig.NAVER_MAP_ID)
+                    .addHeader("X-NCP-APIGW-API-KEY", BuildConfig.NAVER_MAP_SECRET)
+                    .build()
+                chain.proceed(request)
+            }
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor)

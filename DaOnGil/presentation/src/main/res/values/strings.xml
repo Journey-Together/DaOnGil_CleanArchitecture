@@ -315,7 +315,31 @@
     <string name="text_reset_all_option">모든옵션이 초기화되었습니다.</string>
     <string name="text_select_all_option">모든옵션이 선택되었습니다.</string>
 
+
     <string name="text_no_schedule">아직 등록된 일정이 없어요</string>
     <string name="text_explore_public_schedule">공개일정 둘러보기</string>
     <string name="text_add_new_schedule">새 여행 일정 추가하기</string>
+
+    <string name="text_script_guide_onboarding">
+        온보딩 화면입니다.좌우스와이프로 페이지를 넘길수있습니다.
+        스킵하시려면 화면하단건너뛰기버튼을 눌러주세요.</string>
+    <string name="text_skip">건너뛰기</string>
+    <string name="text_hello_plz_login">안녕하세요!\n간편 로그인을 진행해주세요!</string>
+    <string name="text_kakao_login">카카오로그인</string>
+    <string name="text_naver_login">네이버로그인</string>
+    <string name="text_script_guide_last_onboarding_page">
+        마지막온보딩화면입니다 화면중간 시작하기버튼을 눌러회원가입없이 이용하실수 있습니다
+        회원가입또는 로그인하시려면 시작하기버튼 하단 로그인/회원가입 진행하기 버튼을눌러주세요.
+    </string>
+    <string name="text_onboarding_first_text1">여행의 모든 문턱을 낮추다</string>
+    <string name="text_onboarding_first_text2">다온길에서 무장애 여행 정보를 확인하세요</string>
+    <string name="text_onboarding_second_text1">안전한 여행의 첫 걸음</string>
+    <string name="text_onboarding_second_text2">언제 어디서든 응급 지원정보를 확인하세요</string>
+    <string name="text_onboarding_third_text1">한곳에서 완성되는 여행</string>
+    <string name="text_onboarding_third_text2">여행 계획부터 후기 공유까지 한번에 관리해요</string>
+    <string name="text_onboarding_fourth_text1">행복이 다가온 여행길, 다온길</string>
+    <string name="text_onboarding_fourth_text2">     모두를 위한 행운 이정표</string>
+    <string name="text_onboarding_fourth_text3">
+         누구든 떠날 자유, 모두가 누릴 행복
+    </string>
 </resources>
