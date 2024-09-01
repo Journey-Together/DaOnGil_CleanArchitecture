@@ -21,7 +21,6 @@ class EmergencyMapViewModel @Inject constructor(
 
     fun getUserLocationRegion(coords: String) = viewModelScope.launch {
         naverMapRepository.getReverseGeoCode(coords).onSuccess {
-            Log.d("test1234", it.toString())
             if(it.code == 0){
                 _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
             }
