@@ -9,6 +9,7 @@ import kr.tekit.lion.data.repository.AppThemeRepositoryImpl
 import kr.tekit.lion.data.repository.AreaCodeRepositoryImpl
 import kr.tekit.lion.data.repository.AuthRepositoryImpl
 import kr.tekit.lion.data.repository.BookmarkRepositoryImpl
+import kr.tekit.lion.data.repository.EmergencyRepositoryImpl
 import kr.tekit.lion.data.repository.KorWithRepositoryImpl
 import kr.tekit.lion.data.repository.MemberRepositoryImpl
 import kr.tekit.lion.data.repository.NaverMapRepositoryImpl
@@ -20,6 +21,7 @@ import kr.tekit.lion.domain.repository.AppThemeRepository
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.BookmarkRepository
+import kr.tekit.lion.domain.repository.EmergencyRepository
 import kr.tekit.lion.domain.repository.KorWithRepository
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.domain.repository.NaverMapRepository
@@ -65,4 +67,6 @@ internal interface RepositoryModule {
     @Binds
     fun bindAedRepository(aedRepositoryImpl: AedRepositoryImpl): AedRepository
 
+    @Binds
+    fun bindEmergencyRepository(emergencyRepositoryImpl: EmergencyRepositoryImpl): EmergencyRepository
 }
