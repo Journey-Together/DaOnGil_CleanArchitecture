@@ -8,6 +8,9 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".myschedule.MyScheduleActivity"
+            android:exported="false" />
+        <activity
             android:name=".concerntype.ConcernTypeActivity"
             android:exported="false" />
         <activity
