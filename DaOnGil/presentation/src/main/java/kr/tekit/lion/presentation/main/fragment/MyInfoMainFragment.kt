@@ -229,7 +229,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private fun navigateToConcernType(binding: FragmentMyInfoMainBinding) {
         binding.layoutConcernType.setOnClickListener {
             val intent = Intent(requireActivity(), ConcernTypeActivity::class.java)
-            intent.putExtra("nickName", viewModel.myInfo.value.name)
+            intent.putExtra("nickName", binding.tvNameOrLogin.text.toString())
             startActivity(intent)
         }
     }
