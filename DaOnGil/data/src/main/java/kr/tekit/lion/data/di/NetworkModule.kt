@@ -10,9 +10,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
 import kr.tekit.lion.data.dto.response.aed.AedJsonAdapter
+import kr.tekit.lion.data.dto.response.emergency.message.EmergencyMessageJsonAdapter
+import kr.tekit.lion.data.dto.response.emergency.realtime.EmergencyRealtimeJsonAdapter
 import kr.tekit.lion.data.service.AedService
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.BookmarkService
+import kr.tekit.lion.data.service.EmergencyService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
 import kr.tekit.lion.data.service.NaverMapService
@@ -100,6 +103,22 @@ internal object NetworkModule {
         Retrofit.Builder()
             .baseUrl(BuildConfig.AED_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(aedMoshi).asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    private val emergencyMoshi = Moshi.Builder()
+        .add(EmergencyRealtimeJsonAdapter())
+        .add(EmergencyMessageJsonAdapter())
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
+    @Singleton
+    @Provides
+    fun provideEmergencyService(okHttpClient: OkHttpClient): EmergencyService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.EMERGENCY_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(emergencyMoshi).asLenient())
             .client(okHttpClient)
             .build()
             .create()
