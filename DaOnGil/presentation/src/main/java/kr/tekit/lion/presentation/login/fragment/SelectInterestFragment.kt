@@ -17,6 +17,7 @@ import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSelectInterestBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.login.model.InterestType
 import kr.tekit.lion.presentation.login.vm.InterestViewModel
@@ -37,12 +38,12 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
             InterestType.Hear to binding.hearingImpairmentImageView,
             InterestType.Visual to binding.visualImpairmentImageView,
             InterestType.Elderly to binding.elderlyPeopleImageView,
-            InterestType.Elderly to binding.infantFamilyImageView
+            InterestType.Child to binding.infantFamilyImageView
         )
 
-        interestImageViews.map { (typeNo, imageView) ->
+        interestImageViews.map { (type, imageView) ->
             imageView.setOnClickListener {
-                viewModel.onSelectInterest(typeNo)
+                viewModel.onSelectInterest(type)
             }
         }
 
@@ -96,5 +97,8 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
         val anySelected = concernType.isPhysical || concernType.isHear || concernType.isVisual ||
                 concernType.isElderly || concernType.isChild
         binding.selectInterestCompleteButton.isEnabled = anySelected
+        if (requireContext().isTallBackEnabled() && !anySelected){
+            binding.selectInterestCompleteButton.contentDescription = "관심유형을 한개 이상선택해주세요"
+        }
     }
 }

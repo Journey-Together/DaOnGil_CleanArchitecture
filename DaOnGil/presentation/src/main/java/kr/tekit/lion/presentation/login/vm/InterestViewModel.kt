@@ -45,8 +45,8 @@ class InterestViewModel @Inject constructor(
             InterestType.Physical -> currentInterests.copy(isPhysical = !currentInterests.isPhysical)
             InterestType.Hear -> currentInterests.copy(isHear = !currentInterests.isHear)
             InterestType.Visual -> currentInterests.copy(isVisual = !currentInterests.isVisual)
-            InterestType.Child -> currentInterests.copy(isElderly = !currentInterests.isElderly)
-            InterestType.Elderly -> currentInterests.copy(isChild = !currentInterests.isChild)
+            InterestType.Child -> currentInterests.copy(isChild = !currentInterests.isChild)
+            InterestType.Elderly -> currentInterests.copy(isElderly = !currentInterests.isElderly)
         }
 
         _concernType.update { updatedInterests }
