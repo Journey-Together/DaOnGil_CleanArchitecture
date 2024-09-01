@@ -9,7 +9,7 @@ import javax.inject.Inject
 internal class AedRepositoryImpl @Inject constructor(
     private val aedDataSource: AedDataSource
 ): AedRepository {
-    override suspend fun getAedInfo(q0: String?, q1: String?): Result<List<AedMapInfo>> {
+    override suspend fun getAedInfo(q0: String?, q1: String?): List<AedMapInfo> {
         return aedDataSource.getAedInfo(q0, q1)
     }
 
