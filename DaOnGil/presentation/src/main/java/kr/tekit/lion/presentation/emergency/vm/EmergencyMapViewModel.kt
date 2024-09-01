@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.EmergencyMapInfo
 import kr.tekit.lion.domain.repository.NaverMapRepository
 import kr.tekit.lion.domain.usecase.base.onSuccess
 import kr.tekit.lion.domain.usecase.emergency.GetEmergencyMapInfoUseCase
+import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +21,9 @@ class EmergencyMapViewModel @Inject constructor(
     private val naverMapRepository: NaverMapRepository,
     private val getEmergencyMapInfoUseCase: GetEmergencyMapInfoUseCase
 ): ViewModel() {
+
+    @Inject
+    lateinit var networkErrorDelegate: NetworkErrorDelegate
 
     private val _area = MutableLiveData<String?>()
     val area : LiveData<String?> = _area
@@ -31,6 +36,8 @@ class EmergencyMapViewModel @Inject constructor(
             if(it.code == 0){
                 _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
             }
+        }.onError {
+            networkErrorDelegate.handleNetworkError(it)
         }
     }
 
