@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.service
 
-import kr.tekit.lion.data.dto.response.naverMap.ReverseGecodeResponse
+import kr.tekit.lion.data.dto.response.naverMap.ReverseGeocodeResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +11,5 @@ internal interface NaverMapService {
         @Query("coords") coords: String,
         @Query("orders") orders: String = "admcode",
         @Query("output") output: String = "json"
-    ) : ReverseGecodeResponse
+    ) : ReverseGeocodeResponse
 }

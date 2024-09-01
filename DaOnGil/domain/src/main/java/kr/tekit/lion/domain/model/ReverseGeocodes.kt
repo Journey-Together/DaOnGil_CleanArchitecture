@@ -1,11 +1,11 @@
 package kr.tekit.lion.domain.model
 
-data class ReverseGecodes(
+data class ReverseGeocodes(
     val code: Int?,
-    val results: List<ReverseGecode>,
+    val results: List<ReverseGeocode>,
 )
 
-data class ReverseGecode(
+data class ReverseGeocode(
     val area: String?,
     val areaDetail: String?
 )
