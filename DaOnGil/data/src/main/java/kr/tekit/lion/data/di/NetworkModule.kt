@@ -20,6 +20,7 @@ import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
 import kr.tekit.lion.data.service.NaverMapService
 import kr.tekit.lion.data.service.PlaceService
+import kr.tekit.lion.data.service.PlanService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -184,5 +185,10 @@ internal object NetworkModule {
             .add(EmergencyMessageJsonAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
+
+    @Provides
+    @Singleton
+    fun providePlanService(retrofit: Retrofit): PlanService {
+        return retrofit.create(PlanService::class.java)
     }
 }

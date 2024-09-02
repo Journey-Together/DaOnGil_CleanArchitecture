@@ -1,19 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".myschedule.MyScheduleActivity">
 
-    <TextView
-        android:id="@+id/textView2"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarMySchedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/back_icon">
+
+        <TextView
+            style="@style/Theme.Toolbar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_my_schedule" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutMySchedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_my_schedule"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_small1"
+        android:backgroundTint="@color/background_color"
+        app:tabGravity="start"
+        app:tabIndicatorFullWidth="true"
+        app:tabSelectedTextColor="@color/text_primary"
+        app:tabTextAppearance="@style/tabLayout_text_appearance"
+        app:tabTextColor="@color/text_tertiary">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_schedule_upcoming" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_schedule_elapsed" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMyScheduleList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/margin_big3"
+        android:paddingBottom="@dimen/margin_big2"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <LinearLayout
+        android:id="@+id/layoutMyScheduleEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/text_no_schedule"
+            android:textColor="@color/text_quaternary"
+            android:textSize="@dimen/font_big2" />
+
+        <TextView
+            android:id="@+id/textViewMyScheduleAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/margin_small1"
+            android:text="@string/add_schedule"
+            android:textColor="@color/text_quaternary"
+            android:textSize="@dimen/font_small2" />
+    </LinearLayout>
+</LinearLayout>
