@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_npf_guide" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_npf_name"
+        android:id="@+id/text_input_npf_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_basic"
@@ -104,7 +104,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_npf_name_title">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_npf_name"
+            android:id="@+id/edit_npf_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_medium"
@@ -126,7 +126,7 @@
         android:text="@string/text_schedule_form_period"
         android:textSize="@dimen/font_big1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_npf_name" />
+        app:layout_constraintTop_toBottomOf="@+id/text_input_npf_title" />
 
     <Button
         android:id="@+id/button_npf_set_period"
