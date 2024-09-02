@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonClass
 import kr.tekit.lion.domain.model.ReverseGeocode
 
 @JsonClass(generateAdapter = true)
-data class Result(
+internal data class Result(
     val code: Code?,
     val name: String?,
     val region: Region?
