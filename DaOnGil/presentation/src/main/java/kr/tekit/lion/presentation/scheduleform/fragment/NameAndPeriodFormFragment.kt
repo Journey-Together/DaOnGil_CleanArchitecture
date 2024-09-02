@@ -46,8 +46,8 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
         }
     }
 
-    private fun initView(binding: FragmentNameAndPeriodFormBinding){
-        with (binding){
+    private fun initView(binding: FragmentNameAndPeriodFormBinding) {
+        with(binding) {
             editNpfTitle.addTextChangedListener {
                 clearErrorMessage(textInputNpfTitle)
             }
@@ -130,7 +130,7 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
         }
     }
 
-    private fun clearErrorMessage(textInputLayout: TextInputLayout){
+    private fun clearErrorMessage(textInputLayout: TextInputLayout) {
         textInputLayout.error = null
     }
 }
