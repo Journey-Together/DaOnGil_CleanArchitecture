@@ -14,9 +14,18 @@
     <string name="result_empty">검색 결과가 없어요.\n다른 검색어를 입력해주세요.</string>
     <string name="bookmarked_places_empty">북마크한 여행지가 없어요.\n검색어를 입력해주세요.</string>
     <string name="add_new_schedule">새로운 일정추가</string>
+    <string name="modify_schedule">일정 수정</string>
     <string name="search_places_to_add">여행지 검색</string>
     <string name="confirm">확인</string>
     <string name="save">저장하기</string>
+    <string name="block_report">신고</string>
+    <string name="text_guide_info">새로운 여행 정보를\n입력해주세요</string>
+    <string name="text_guide_modify_info">여행 정보를\n입력해주세요</string>
+    <string name="text_guide_places">날짜마다 방문할\n여행지를 추가해주세요</string>
+    <string name="text_guide_confirm">입력하신 여행정보를\n확인해보세요</string>
+    <string name="text_number_of_result">검색결과 %s건</string>
+    <string name="text_selected_title">%s&#160;</string>
+    <string name="text_selected_period">| %s</string>
     <string name="inform_add_places">여행지를 추가해주세요</string>
 
     <string name="text_area">지역선택</string>
@@ -147,11 +156,9 @@
     <string name="text_schedule_form_name">여행 제목</string>
     <string name="hint_schedule_form_name">15자 이내로 입력해주세요</string>
     <string name="text_schedule_form_period">여행 기간</string>
-    <string name="hint_schedule_form_period"><b>＋</b> 여행 기간 설정하기</string>
+    <string name="hint_schedule_form_period">여행 기간을 설정해주세요</string>
     <string name="text_schedule_form_next">다음으로</string>
     <string name="text_schedule_form_add_place">새로운 장소 추가</string>
-
-    <string name="text_make_public">일정을 공개하시겠습니까?</string>
 
     <string name="tab_text_place">장소</string>
     <string name="tab_text_plan">일정</string>
