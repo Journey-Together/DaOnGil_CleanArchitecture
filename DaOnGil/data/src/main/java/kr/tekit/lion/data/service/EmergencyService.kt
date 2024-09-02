@@ -7,7 +7,7 @@ import kr.tekit.lion.data.dto.response.emergency.realtime.EmergencyRealtimeRespo
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface EmergencyService {
+internal interface EmergencyService {
 
     // 응급실 지역 실시간 정보
     @GET("getEmrrmRltmUsefulSckbdInfoInqire")

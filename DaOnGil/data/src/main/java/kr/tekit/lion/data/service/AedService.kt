@@ -5,7 +5,7 @@ import kr.tekit.lion.data.dto.response.aed.AedResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface AedService {
+internal interface AedService {
     @GET("getEgytAedManageInfoInqire")
     suspend fun getAedInfo(
         @Query("Q0") q0: String?,
