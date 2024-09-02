@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarEmergencyInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/back_icon">
+
+        <TextView
+            style="@style/Theme.Toolbar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내 주변 응급실 찾기" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/emergencyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:layout_marginEnd="@dimen/margin_small2"
+                    android:backgroundTint="@color/text_secondary"
+                    android:src="@drawable/address_icon" />
+
+                <TextView
+                    android:id="@+id/emergencyAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big3"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/emergencyCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_small2"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_radius_5"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="응급실"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_big3"
+                    app:backgroundTint="@color/button_tertiary"
+                    app:icon="@drawable/call_icon"
+                    app:iconTint="@color/white" />
+
+                <Button
+                    android:id="@+id/mainEmergencyCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_radius_5"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="대표 전화"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:backgroundTint="@color/primary"
+                    app:icon="@drawable/call_icon"
+                    app:iconTint="@color/text_primary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="응급실 실시간 정보"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big2" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="@color/text_secondary"
+                    android:src="@drawable/update_icon" />
+
+                <TextView
+                    android:id="@+id/emergencyUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small2" />
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                app:dividerColor="@color/primary_disabled"
+                app:dividerThickness="2dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="병상"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_small1" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:background="@drawable/emergency_radius"
+                    android:backgroundTint="@color/emergency_green" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="100%"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small2" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:background="@drawable/emergency_radius"
+                    android:backgroundTint="@color/emergency_yellow" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="50%~79%"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small2" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:background="@drawable/emergency_radius"
+                    android:backgroundTint="@color/emergency_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="50% 미만"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small2" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/emergencyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="응급실 병상"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/emergencyRadius"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/emergency_radius"
+                    android:gravity="center_vertical"
+                    android:backgroundTint="@color/primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/emergency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/emergencyRadius"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/kidEmergencyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="소아 응급실 병상"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/kidEmergencyRadius"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/emergency_radius"
+                    android:gravity="center_vertical"
+                    android:backgroundTint="@color/primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/kidEmergency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/kidEmergencyRadius"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/emergencyDialysisTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="응급 투석"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/emergencyDialysis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="108dp"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/emergencyDialysisTitle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/emergencyBirthTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="조산 산모"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/emergencyBirth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="108dp"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/emergencyBirthTitle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/emergencyBurnsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="중증 화상"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/emergencyBurns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="108dp"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/emergencyBurnsTitle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="응급실 이용 안내"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big2" />
+
+                <TextView
+                    android:id="@+id/emergencyMessageCount"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/margin_big4"
+                    android:background="@drawable/emergency_radius"
+                    android:backgroundTint="@color/primary"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center"
+                    android:text="10"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_small3" />
+
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                app:dividerColor="@color/primary_disabled"
+                app:dividerThickness="2dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/emrDefaultMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:backgroundTint="@color/item_background"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/text_tertiary"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_big3">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/emergency_message_img" />
+
+                        <TextView
+                            android:id="@+id/emergency_message_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_big4"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:text="응급실 이용 안내 메세지가 현재 없습니다."
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_small1"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/emergency_message_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="53dp"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/font_small3"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/emergencyMessageRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_emergency_message"
+                android:visibility="gone"
+                tools:itemCount="10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="유의사항"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                app:dividerColor="@color/primary_disabled"
+                app:dividerThickness="2dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:backgroundTint="@color/item_background"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/button_tertiary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_big3">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/emergency_notice_img" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_big4"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:text="모든 정보는 변경될 수 있으므로 병의원/약국/기관 또는 129, 119에 확인 후 이용바랍니다."
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_small1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_big3"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/emergency_notice_img"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_big4"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:text="응급실에 병상이 남아있더라도, 응급환자를 위한 침대일 수도 있으며, 응급도순으로 진료를 하는 이유로 바로 진료가 어려울 수도 있습니다."
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_small1"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

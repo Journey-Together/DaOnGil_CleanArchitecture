@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarAedInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/back_icon">
+
+        <TextView
+            style="@style/Theme.Toolbar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내 주변 AED 찾기" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_basic">
+
+            <TextView
+                android:id="@+id/aedName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="청원보건소"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:layout_marginEnd="@dimen/margin_small2"
+                    android:backgroundTint="@color/text_secondary"
+                    android:src="@drawable/address_icon" />
+
+                <TextView
+                    android:id="@+id/aedAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="충청북도 청주시 청원구 오창읍 과학산업3로 238, 청원보건소"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big3"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/emergencyCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_small2"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_radius_5"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="관리자"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_big3"
+                    app:backgroundTint="@color/button_tertiary"
+                    app:icon="@drawable/call_icon"
+                    app:iconTint="@color/white" />
+
+                <Button
+                    android:id="@+id/mainEmergencyCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_radius_5"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="대표 전화"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:backgroundTint="@color/primary"
+                    app:icon="@drawable/call_icon"
+                    app:iconTint="@color/text_primary" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="AED 이용 안내"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2" />
+
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                app:dividerColor="@color/primary_disabled"
+                app:dividerThickness="2dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedLocationTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="설치 위치"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedLocationIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_pin_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedLocationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedLocationIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedMonTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="월요일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedMonIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedMonTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedMonIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedTueTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="화요일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedTueIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedTueTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedTueIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedWedTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="수요일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedWedIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedWedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedWedIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedThuTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="목요일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedThuIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedThuTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedThuIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedFriTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="금요일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedFriIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedFriTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedFriIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedSatTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="토요일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedSatIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedSatTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedSatIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedSunTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="일요일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedSunIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedSunTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedSunIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4">
+
+                <TextView
+                    android:id="@+id/aedHolTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:text="공휴일"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/aedHolIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="180dp"
+                    android:background="@drawable/aed_time_icon"
+                    android:backgroundTint="@color/text_secondary"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aedHolTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/aedHolIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="유의사항"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                app:dividerColor="@color/primary_disabled"
+                app:dividerThickness="2dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:backgroundTint="@color/item_background"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/button_tertiary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_big3">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/emergency_notice_img" />
+
+                        <TextView
+                            android:id="@+id/aedSunWeekText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_big4"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_small1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_big3"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/emergency_message_img"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_big4"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:text="모든 정보는 변경될 수 있으므로 병의원/약국/기관 또는 129, 119에 확인 후 이용바랍니다."
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/font_small1"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
