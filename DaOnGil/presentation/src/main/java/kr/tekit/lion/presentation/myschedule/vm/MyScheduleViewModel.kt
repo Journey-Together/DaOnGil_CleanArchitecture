@@ -14,11 +14,12 @@ import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
+private const val INITIAL_PAGE_NO = 0
+
 @HiltViewModel
 class MyScheduleViewModel @Inject constructor(
     private val planRepository: PlanRepository
 ) : ViewModel() {
-
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
@@ -36,8 +37,8 @@ class MyScheduleViewModel @Inject constructor(
     private val _isLastElapsed = MutableLiveData<Boolean>()
 
     init {
-        getMyUpcomingScheduleList(0)
-        getMyElapsedScheduleList(0)
+        getMyUpcomingScheduleList(INITIAL_PAGE_NO)
+        getMyElapsedScheduleList(INITIAL_PAGE_NO)
     }
 
     private fun setUpcomingPageNo(pageNum: Int) {
@@ -53,7 +54,8 @@ class MyScheduleViewModel @Inject constructor(
         viewModelScope.launch {
             planRepository.getMyUpcomingScheduleList(page)
                 .onSuccess {
-                    _upcomingSchedules.value = it.myUpcomingScheduleList
+                    val newList = _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
+                    _upcomingSchedules.value = newList
                     _isLastUpcoming.value = it.last
                 }.onError {
                     networkErrorDelegate.handleNetworkError(it)
@@ -66,7 +68,8 @@ class MyScheduleViewModel @Inject constructor(
         viewModelScope.launch {
             planRepository.getMyElapsedScheduleList(page)
                 .onSuccess {
-                    _elapsedSchedules.value = it.myElapsedScheduleList
+                    val newList = _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
+                    _elapsedSchedules.value = newList
                     _isLastElapsed.value = it.last
                 }.onError {
                     networkErrorDelegate.handleNetworkError(it)
@@ -91,40 +94,18 @@ class MyScheduleViewModel @Inject constructor(
     }
 
     fun fetchNextUpcomingSchedules() {
-        val page = _upcomingPageNo.value
+        val pageNo = _upcomingPageNo.value
 
-        if (page != null) {
-            setUpcomingPageNo(page + 1) // 페이지 번호 갱신
-
-            viewModelScope.launch {
-                planRepository.getMyUpcomingScheduleList(page + 1)
-                    .onSuccess {
-                        val newList = _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
-                        _upcomingSchedules.value = newList
-                        _isLastUpcoming.value = it.last
-                    }.onError {
-                        networkErrorDelegate.handleNetworkError(it)
-                    }
-            }
+        pageNo?.let {
+            getMyUpcomingScheduleList(it+1)
         }
     }
 
     fun fetchNextElapsedSchedules() {
-        val page = _elapsedPageNo.value
+        val pageNo = _elapsedPageNo.value
 
-        if (page != null) {
-            setElapsedPageNo(page + 1)
-
-            viewModelScope.launch {
-                planRepository.getMyElapsedScheduleList(page + 1)
-                    .onSuccess {
-                        val newList = _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
-                        _elapsedSchedules.value = newList
-                        _isLastElapsed.value = it.last
-                    }.onError {
-                        networkErrorDelegate.handleNetworkError(it)
-                    }
-            }
+        pageNo?.let {
+            getMyElapsedScheduleList(it+1)
         }
     }
 }
