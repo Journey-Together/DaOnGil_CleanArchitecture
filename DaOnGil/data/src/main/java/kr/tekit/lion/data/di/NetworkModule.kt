@@ -93,32 +93,22 @@ internal object NetworkModule {
             .build()
             .create()
 
-    private val aedMoshi = Moshi.Builder()
-        .add(AedJsonAdapter())
-        .add(KotlinJsonAdapterFactory())
-        .build()
     @Singleton
     @Provides
-    fun provideAedService(okHttpClient: OkHttpClient): AedService =
+    fun provideAedService(okHttpClient: OkHttpClient, @AedMoshi moshi: Moshi): AedService =
         Retrofit.Builder()
             .baseUrl(BuildConfig.AED_BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(aedMoshi).asLenient())
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
             .client(okHttpClient)
             .build()
             .create()
 
-    private val emergencyMoshi = Moshi.Builder()
-        .add(EmergencyRealtimeJsonAdapter())
-        .add(EmergencyMessageJsonAdapter())
-        .add(KotlinJsonAdapterFactory())
-        .build()
-
     @Singleton
     @Provides
-    fun provideEmergencyService(okHttpClient: OkHttpClient): EmergencyService =
+    fun provideEmergencyService(okHttpClient: OkHttpClient, @EmergencyMoshi moshi: Moshi): EmergencyService =
         Retrofit.Builder()
             .baseUrl(BuildConfig.EMERGENCY_BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(emergencyMoshi).asLenient())
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
             .client(okHttpClient)
             .build()
             .create()
@@ -171,6 +161,27 @@ internal object NetworkModule {
         return Moshi.Builder()
             .add(LocalDateTime::class.java, Rfc3339DateJsonAdapter().nullSafe())
             .add(LocalDate::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @AedMoshi
+    @Provides
+    @Singleton
+    fun provideAedMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(AedJsonAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @EmergencyMoshi
+    @Provides
+    @Singleton
+    fun provideEmergencyMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(EmergencyRealtimeJsonAdapter())
+            .add(EmergencyMessageJsonAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
     }
