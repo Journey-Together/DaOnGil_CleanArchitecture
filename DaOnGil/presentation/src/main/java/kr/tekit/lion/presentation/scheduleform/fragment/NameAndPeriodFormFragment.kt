@@ -8,14 +8,24 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentNameAndPeriodFormBinding
+import kr.tekit.lion.presentation.ext.formatDateValue
+import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
+import java.util.Date
 import kotlin.concurrent.thread
 
+@AndroidEntryPoint
 class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_form) {
+
+    private val scheduleFormViewModel: ScheduleFormViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,7 +36,7 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
         initView(binding)
         setButtonClickListener(binding)
 
-        showSoftInput(binding.editNpfName)
+        showSoftInput(binding.editNpfTitle)
     }
 
     private fun initToolbar(binding: FragmentNameAndPeriodFormBinding) {
@@ -38,8 +48,8 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
 
     private fun initView(binding: FragmentNameAndPeriodFormBinding){
         with (binding){
-            editNpfName.addTextChangedListener {
-                clearErrorMessage(textInputNpfName)
+            editNpfTitle.addTextChangedListener {
+                clearErrorMessage(textInputNpfTitle)
             }
         }
     }
@@ -58,8 +68,8 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
                 )
                 dateRangePicker.addOnPositiveButtonClickListener {
                     // viewModel에 시작일, 종료일 데이터 전달
-//                scheduleFormViewModel.setStartDate(Date(it.first))
-//                scheduleFormViewModel.setEndDate(Date(it.second))
+                    scheduleFormViewModel.setStartDate(Date(it.first))
+                    scheduleFormViewModel.setEndDate(Date(it.second))
                     showPickedDates(binding)
                 }
             }
@@ -67,7 +77,7 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
             buttonNpfNextStep.setOnClickListener {
                 val isNameAndPeriodValidate = validateScheduleNameAndPeriod(this)
                 if (isNameAndPeriodValidate) {
-//                    scheduleFormViewModel.setTitle(editTextNPFName.text.toString())
+                    scheduleFormViewModel.setTitle(editNpfTitle.text.toString())
 
                     val navController = findNavController()
                     val action = NameAndPeriodFormFragmentDirections.toScheduleDetailsFormFragment()
@@ -78,35 +88,32 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
     }
 
     private fun showPickedDates(binding: FragmentNameAndPeriodFormBinding) {
-//        val startDate = scheduleFormViewModel.startDate.value
-//        val endDate = scheduleFormViewModel.endDate.value
-//        val startDateFormatted = startDate?.let {
-//            formatDateValue(startDate)
-//        }
-//        val endDateFormatted = endDate?.let {
-//            formatDateValue(endDate)
-//        }
-//        binding.buttonNPFSetPeriod.text =
-//            getString(R.string.picked_dates, startDateFormatted, endDateFormatted)
+        val formatPattern = "yyyy.MM.dd(E)"
+        val startDate = scheduleFormViewModel.startDate.value
+        val endDate = scheduleFormViewModel.endDate.value
+        val startDateFormatted = startDate?.formatDateValue(formatPattern)
+        val endDateFormatted = endDate?.formatDateValue(formatPattern)
+        binding.buttonNpfSetPeriod.text =
+            getString(R.string.picked_dates, startDateFormatted, endDateFormatted)
     }
 
     private fun validateScheduleNameAndPeriod(binding: FragmentNameAndPeriodFormBinding): Boolean {
         with(binding) {
-            editNpfName.apply {
-                val tempName = this.text.toString()
+            editNpfTitle.apply {
+                val tempTitle = this.text.toString()
 
-                if (tempName.isEmpty()) {
-                    textInputNpfName.error = "제목은 1글자 이상 입력해주세요"
+                if (tempTitle.isEmpty()) {
+                    textInputNpfTitle.error = "제목은 1글자 이상 입력해주세요"
                     return false
                 }
             }
 
-            //val hasStartDate = scheduleFormViewModel.hasStartDate()
+            val hasStartDate = scheduleFormViewModel.hasStartDate()
 
-//            if (!hasStartDate) {
-//                buttonNpfSetPeriod.showSnackbar("여행 기간을 설정해주세요", Snackbar.LENGTH_LONG)
-//                return false
-//            }
+            if (!hasStartDate) {
+                buttonNpfSetPeriod.showSnackbar("여행 기간을 설정해주세요", Snackbar.LENGTH_LONG)
+                return false
+            }
         }
 
         return true
