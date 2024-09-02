@@ -48,6 +48,11 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
 
     private fun initView(binding: FragmentNameAndPeriodFormBinding) {
         with(binding) {
+            // 이미 제목, 여행 기간이 저장된 경우
+            scheduleFormViewModel.title.value?.let { editNpfTitle.text }
+            val isDatesAvailable = scheduleFormViewModel.hasDates()
+            if(isDatesAvailable) showPickedDates(binding)
+
             editNpfTitle.addTextChangedListener {
                 clearErrorMessage(textInputNpfTitle)
             }
@@ -108,7 +113,7 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
                 }
             }
 
-            val hasStartDate = scheduleFormViewModel.hasStartDate()
+            val hasStartDate = scheduleFormViewModel.hasDates()
 
             if (!hasStartDate) {
                 buttonNpfSetPeriod.showSnackbar("여행 기간을 설정해주세요", Snackbar.LENGTH_LONG)
