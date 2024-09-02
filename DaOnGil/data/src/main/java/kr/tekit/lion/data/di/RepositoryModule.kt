@@ -12,6 +12,7 @@ import kr.tekit.lion.data.repository.KorWithRepositoryImpl
 import kr.tekit.lion.data.repository.MemberRepositoryImpl
 import kr.tekit.lion.data.repository.NaverMapRepositoryImpl
 import kr.tekit.lion.data.repository.PlaceRepositoryImpl
+import kr.tekit.lion.data.repository.PlanRepositoryImpl
 import kr.tekit.lion.data.repository.RecentlySearchKeywordRepositoryImpl
 import kr.tekit.lion.data.repository.SigunguCodeRepositoryImpl
 import kr.tekit.lion.domain.repository.AppThemeRepository
@@ -22,6 +23,7 @@ import kr.tekit.lion.domain.repository.KorWithRepository
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.domain.repository.NaverMapRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
+import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 
@@ -60,4 +62,6 @@ internal interface RepositoryModule {
     @Binds
     fun bindNaverMapRepository(naverMapRepositoryImpl: NaverMapRepositoryImpl): NaverMapRepository
 
+    @Binds
+    fun bindPlanRepository(planRepositoryImpl: PlanRepositoryImpl): PlanRepository
 }
