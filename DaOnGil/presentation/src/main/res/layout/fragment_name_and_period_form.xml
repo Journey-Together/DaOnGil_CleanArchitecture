@@ -1,6 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".scheduleform.fragment.NameAndPeriodFormFragment"/>
+    android:background="@color/navi_background"
+    tools:context=".scheduleform.fragment.NameAndPeriodFormFragment" >
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_npf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navi_background"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/back_icon">
+
+        <TextView
+            style="@style/Theme.Toolbar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_new_schedule" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <LinearLayout
+        android:id="@+id/layout_npf_step"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_npf">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@color/primary"
+            android:visibility="visible" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:background="@color/schedule_detail_divider"
+            android:visibility="visible" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@color/schedule_detail_divider"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_npf_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="@string/text_guide_info"
+        android:textSize="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_npf_step" />
+
+    <TextView
+        android:id="@+id/text_npf_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_big1"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_schedule_form_name"
+        android:textSize="@dimen/font_big1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_npf_guide" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_npf_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_big3"
+        android:textColorHint="@color/text_tertiary"
+        app:boxBackgroundColor="@color/text_box_background"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeWidth="0dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="15"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_npf_name_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_npf_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:hint="@string/hint_schedule_form_name"
+            android:inputType="text"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textSize="@dimen/font_big3" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/text_npf_period_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_big1"
+        android:enabled="false"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_schedule_form_period"
+        android:textSize="@dimen/font_big1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_npf_name" />
+
+    <Button
+        android:id="@+id/button_npf_set_period"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_big3"
+        android:layout_marginEnd="@dimen/margin_basic"
+        android:backgroundTint="@color/text_box_background"
+        android:fontFamily="@font/pretendard_regular"
+        android:gravity="start"
+        android:hint="@string/hint_schedule_form_period"
+        android:padding="@dimen/margin_big2"
+        android:textSize="@dimen/font_big2"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/calendar_icon"
+        app:iconTint="@color/text_input_start_icon_tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_npf_period_title" />
+
+    <Button
+        android:id="@+id/button_npf_next_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/background_radius_10"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="@string/text_schedule_form_next"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_npf_set_period"
+        app:layout_constraintVertical_bias="1" />
+</androidx.constraintlayout.widget.ConstraintLayout>
