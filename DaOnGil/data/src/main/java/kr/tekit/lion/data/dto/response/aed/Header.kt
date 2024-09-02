@@ -3,7 +3,7 @@ package kr.tekit.lion.data.dto.response.aed
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Header(
+internal data class Header(
     val resultCode: String,
     val resultMsg: String
 )

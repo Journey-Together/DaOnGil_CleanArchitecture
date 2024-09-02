@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
 
-class AedJsonAdapter {
+internal class AedJsonAdapter {
     @FromJson
     fun fromJson(reader: JsonReader): Items {
         val items = mutableListOf<Item>()

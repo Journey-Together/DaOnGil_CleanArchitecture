@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonClass
 import kr.tekit.lion.domain.model.AedMapInfo
 
 @JsonClass(generateAdapter = true)
-data class AedResponse(
+internal data class AedResponse(
     val response: Response
 ) {
     fun toDomainModel(): List<AedMapInfo>{
