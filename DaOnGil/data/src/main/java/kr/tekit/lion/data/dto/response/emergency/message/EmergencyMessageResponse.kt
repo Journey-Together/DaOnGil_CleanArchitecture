@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonClass
 import kr.tekit.lion.domain.model.EmergencyMessageInfo
 
 @JsonClass(generateAdapter = true)
-data class EmergencyMessageResponse(
+internal data class EmergencyMessageResponse(
     val response: Response
 ) {
     fun toDomainModel(): List<EmergencyMessageInfo> {

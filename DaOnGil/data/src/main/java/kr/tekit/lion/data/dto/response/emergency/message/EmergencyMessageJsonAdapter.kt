@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
 
-class EmergencyMessageJsonAdapter {
+internal class EmergencyMessageJsonAdapter {
     @FromJson
     fun fromJson(reader: JsonReader): Items {
         val items = mutableListOf<Item>()

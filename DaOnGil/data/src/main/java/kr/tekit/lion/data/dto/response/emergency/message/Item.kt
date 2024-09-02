@@ -3,7 +3,7 @@ package kr.tekit.lion.data.dto.response.emergency.message
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Item(
+internal data class Item(
     val dutyAddr: String?,
     val dutyName: String?,
     val emcOrgCod: String?,

@@ -3,7 +3,7 @@ package kr.tekit.lion.data.dto.response.emergency.basic
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Item(
+internal data class Item(
     val MKioskTy1: String?,
     val MKioskTy10: String?,
     val MKioskTy11: String?,

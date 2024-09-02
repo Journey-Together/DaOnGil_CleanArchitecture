@@ -3,7 +3,7 @@ package kr.tekit.lion.data.dto.response.emergency.realtime
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Item(
+internal data class Item(
     val rnum: Int?,
     val hpid: String?,
     val phpid: String?,
