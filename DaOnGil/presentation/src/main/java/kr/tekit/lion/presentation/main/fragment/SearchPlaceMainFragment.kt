@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +16,6 @@ import kr.tekit.lion.presentation.databinding.FragmentSearchPlaceMainBinding
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
-import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.keyword.KeywordSearchActivity
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.ScreenState
