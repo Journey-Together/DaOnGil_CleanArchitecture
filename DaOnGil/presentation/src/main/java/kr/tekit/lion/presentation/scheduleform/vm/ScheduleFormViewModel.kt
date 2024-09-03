@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.scheduleform.vm
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,6 +50,14 @@ class ScheduleFormViewModel @Inject constructor(
         return _title.value ?: ""
     }
 
+    fun getSchedulePeriod(): String {
+        val pattern = "yyyy-MM-dd"
+        val startDateString = _startDate.value?.formatDateValue(pattern)
+        val endDateString = _endDate.value?.formatDateValue(pattern)
+
+        return "$startDateString - $endDateString"
+    }
+
     private fun isScheduleEmpty(): Boolean {
         return schedule.value.isNullOrEmpty()
     }
@@ -60,10 +69,12 @@ class ScheduleFormViewModel @Inject constructor(
         if (startDate != null && endDate != null) {
             if(!isScheduleEmpty()){
                 updateScheduleList(startDate, endDate)
+                Log.d("test1234", "schedule : ${_schedule.value}")
                 return
             }
 
             val createdSchedule = createScheduleList(startDate, endDate)
+            Log.d("test1234", "schedule : ${_schedule.value}")
 
             _schedule.value = createdSchedule.toList()
         }
@@ -82,10 +93,10 @@ class ScheduleFormViewModel @Inject constructor(
         return schedule
     }
 
-    private fun updateScheduleList(startDate: Date, endDate: Date){
+    private fun updateScheduleList(startDate: Date, endDate: Date) : List<DailySchedule>{
         // 선택한 시작일, 종료일이 변하지 않은 경우
         if(isSchedulePeriodUnchanged(startDate, endDate)){
-            return
+            return emptyList()
         }
 
         val updatedSchedule = createScheduleList(startDate, endDate)
@@ -116,6 +127,11 @@ class ScheduleFormViewModel @Inject constructor(
                 }
             }
         }
+
+        _schedule.value = updatedSchedule.toList()
+
+        return updatedSchedule
+
     }
 
     private fun isSchedulePeriodUnchanged(startDate: Date, endDate: Date) : Boolean {
