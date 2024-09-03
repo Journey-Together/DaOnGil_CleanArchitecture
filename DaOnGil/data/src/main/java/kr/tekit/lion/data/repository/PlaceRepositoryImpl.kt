@@ -28,7 +28,7 @@ internal class PlaceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAutoCompleteKeyword(keyword: String): Flow<AutoCompleteKeyword> = flow {
-        val response = placeDataSource.getAutoCompleteKeyword(keyword)
-        emit(response.toDomainModel())
+        val response = placeDataSource.getAutoCompleteKeyword(keyword).toDomainModel()
+        emit(response)
     }
 }
