@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewMyScheduleElapsed"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:layout_marginBottom="@dimen/margin_small1"
+        android:backgroundTint="@color/item_background"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/viewMyScheduleElapsedDeco"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/days_elapsed"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewMyScheduleElapsedName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big3"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendard_semibold"
+                android:maxLines="1"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewMyScheduleElapsed"
+                app:layout_constraintStart_toEndOf="@+id/viewMyScheduleElapsedDeco"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="경주여행" />
+
+            <TextView
+                android:id="@+id/textViewMyScheduleElapsedPeriod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="@dimen/margin_big4"
+                android:fontFamily="@font/pretendard_light"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/buttonMyScheduleElapsedReview"
+                app:layout_constraintStart_toStartOf="@+id/textViewMyScheduleElapsedName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMyScheduleElapsedName"
+                tools:text="2024.04.01 - 04.05" />
+
+            <ImageView
+                android:id="@+id/imageViewMyScheduleElapsed"
+                android:layout_width="@dimen/search_bar_height"
+                android:layout_height="@dimen/search_bar_height"
+                android:layout_marginTop="@dimen/margin_small1"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:layout_marginBottom="@dimen/margin_small1"
+                android:contentDescription="@string/text_schedule_thumbnail_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/buttonMyScheduleElapsedReview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/empty_view_small" />
+
+            <Button
+                android:id="@+id/buttonMyScheduleElapsedReview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big3"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:layout_marginBottom="@dimen/margin_small1"
+                android:background="@drawable/background_radius_5"
+                android:minHeight="0dp"
+                android:text="@string/text_write_schedule_review"
+                android:textColor="@color/text_quinary"
+                app:backgroundTint="@color/button_quaternary"
+                app:icon="@drawable/edit_icon"
+                app:iconGravity="textStart"
+                app:iconTint="@color/text_quinary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/viewMyScheduleElapsedDeco" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

@@ -10,7 +10,9 @@
         <activity
             android:name=".scheduleform.ScheduleFormActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".emergency.EmergencyInfoActivity"
+            android:exported="false" />
         <activity
             android:name=".myschedule.MyScheduleActivity"
             android:exported="false" />        

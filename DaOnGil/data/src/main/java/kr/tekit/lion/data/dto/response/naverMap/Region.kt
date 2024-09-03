@@ -3,7 +3,7 @@ package kr.tekit.lion.data.dto.response.naverMap
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Region(
+internal data class Region(
     val area0: Area0?,
     val area1: Area0?,
     val area2: Area0?,
