@@ -72,4 +72,10 @@
 
     <color name="transparent">#00000000</color>
 
+    <color name="text_field_background">#414141</color>
+
+    <color name="photo_dialog_toolbar">#80000000</color>
+
+    <color name="text_num_of_review_images">#7A7A7A</color>
+
 </resources>
