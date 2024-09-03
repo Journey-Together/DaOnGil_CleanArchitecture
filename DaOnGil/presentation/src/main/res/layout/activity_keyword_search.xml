@@ -5,28 +5,33 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="40dp"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/search_bar"
+        app:layout_constraintEnd_toStartOf="@id/saerch_bar_container"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/margin_big4"
+        android:contentDescription="@string/text_back_button"
         app:navigationIcon="@drawable/back_icon"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/search_bar"
+    <LinearLayout
+        android:id="@+id/saerch_bar_container"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="@dimen/margin_big3"
-        android:layout_marginEnd="@dimen/margin_big4"
-        android:hint="관광지를 검색 해보세요!"
-        app:hintTextColor="@color/text_tertiary"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/toolbar"
         app:layout_constraintTop_toTopOf="parent">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/margin_big3"
+        android:layout_marginEnd="@dimen/margin_big4"
+        app:hintEnabled="false"
+        app:hintTextColor="@color/text_tertiary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_edit"
@@ -34,121 +39,20 @@
             android:layout_height="match_parent"
             app:hintTextColor="@color/text_tertiary"
             android:textCursorDrawable="@color/black"
+            android:hint="관광지를 검색 해보세요!"
             android:background="@drawable/search_bar_background"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/no_search_result_container"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical"
-
+        android:layout_height="0dp"
+        android:name="kr.tekit.lion.presentation.keyword.fragment.OnSearchFragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar">
-
-        <TextView
-            android:id="@+id/text_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/cafe24_oneprettynight"
-            android:gravity="center"
-            android:text="검색 결과가 없어요.\n 다른 검색어를 입력해주세요"
-            android:textSize="@dimen/font_big1"
-            app:layout_constraintBottom_toTopOf="@+id/img_no_result"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <pl.droidsonroids.gif.GifImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_basic"
-            android:src="@drawable/img_no_search_result"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_msg" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_suggestions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_big4"
-        android:layout_marginEnd="@dimen/margin_big4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
-
-    <LinearLayout
-        android:id="@+id/search_recent_searches_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background_color"
-        android:orientation="vertical"
-        android:visibility="visible"
-        android:layout_marginStart="@dimen/margin_big4"
-        android:layout_marginEnd="@dimen/margin_big4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small1"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/pretendard_semibold"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp"
-                android:text="@string/text_recently_search_keyword"
-                android:textSize="@dimen/font_big2"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_delete_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_small1"
-                android:layout_weight="1"
-                android:fontFamily="@font/pretendard_semibold"
-                android:gravity="end"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp"
-                android:text="@string/text_delete_all"
-                android:textSize="@dimen/font_big2"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_no_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/pretendard_semibold"
-            android:text="@string/text_no_recently_search_keyword"
-            android:textSize="@dimen/font_big3" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_recent_searches"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_big4"
-            android:orientation="horizontal" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/saerch_bar_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

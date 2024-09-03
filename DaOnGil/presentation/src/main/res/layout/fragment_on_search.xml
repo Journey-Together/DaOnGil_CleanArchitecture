@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".keyword.fragment.OnSearchFragment">
+
+    <LinearLayout
+        android:id="@+id/no_search_result_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small1"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:text="검색 결과가 없어요.\n 다른 검색어를 입력해주세요"
+            android:textSize="@dimen/font_big1"/>
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_basic"
+            android:src="@drawable/img_no_search_result"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_suggestions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_big4"
+        android:layout_marginEnd="@dimen/margin_big4"/>
+
+    <LinearLayout
+        android:id="@+id/search_recent_searches_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_marginStart="@dimen/margin_big4"
+        android:layout_marginEnd="@dimen/margin_big4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/text_recently_search_keyword"
+                android:textSize="@dimen/font_big2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_delete_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:gravity="end"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/text_delete_all"
+                android:textSize="@dimen/font_big2"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_no_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text="@string/text_no_recently_search_keyword"
+            android:textSize="@dimen/font_big3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recent_searches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big4"
+            android:orientation="horizontal" />
+    </LinearLayout>
+</FrameLayout>
