@@ -10,4 +10,30 @@
         android:id="@+id/search_result_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/no_search_result_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small1"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:text="검색 결과가 없어요.\n 다른 검색어를 입력해주세요"
+            android:textSize="@dimen/font_big1"/>
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_basic"
+            android:src="@drawable/img_no_search_result"/>
+
+    </LinearLayout>
 </FrameLayout>
