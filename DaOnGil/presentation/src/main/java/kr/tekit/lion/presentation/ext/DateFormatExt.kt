@@ -26,7 +26,7 @@ fun Date.calculateDaysUntilEndDate(endDate: Date) : Int {
 }
 
 /**
- * 현재 날짜로부터 지정한 일수 만큼 뒤의 날짜를  반환하는 확장 함수입니다.
+ * 현재 날짜로부터 지정한 일수 만큼 뒤의 날짜를 "M월 d일 (E)" 형식으로 반환
  *
  * @param days 추가할 일수
  * @return 지정한 일수만큼 뒤의 날짜
