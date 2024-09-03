@@ -89,4 +89,19 @@
     <color name="shimmer_start_color">#DDDDDD</color>
     <color name="shimmer_end_color">#AAAAAA</color>
 
+    <color name="schedule_detail_period">#CFD3D9</color>
+    <color name="schedule_detail_divider">#EEEEEE</color>
+    <color name="schedule_number">#FFFFFF</color>
+    <color name="schedule_report_button">#EFEFEF</color>
+    <color name="schedule_report_text">#5F6368</color>
+    <color name="schedule_detail_public">#FFFFFF</color>
+
+    <color name="text_box_background">#EEEEEF</color>
+    <color name="text_num_of_review_images">#878787</color>
+    <color name="radio_button_public_background_checked">#5F6368</color>
+    <color name="radio_button_public_background_default">#F4F6F8</color>
+    <color name="radio_button_public_text_default">#AFABAB</color>
+
+    <color name="text_input_start_icon_tint">#D0D0D1</color>
+
 </resources>

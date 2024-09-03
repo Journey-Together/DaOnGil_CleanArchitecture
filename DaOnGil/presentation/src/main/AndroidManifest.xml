@@ -8,6 +8,9 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".scheduleform.ScheduleFormActivity"
+            android:exported="false" />
+        <activity
             android:name=".emergency.EmergencyInfoActivity"
             android:exported="false" />
         <activity
