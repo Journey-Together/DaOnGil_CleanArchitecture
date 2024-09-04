@@ -13,6 +13,7 @@ import kr.tekit.lion.data.repository.EmergencyRepositoryImpl
 import kr.tekit.lion.data.repository.KorWithRepositoryImpl
 import kr.tekit.lion.data.repository.MemberRepositoryImpl
 import kr.tekit.lion.data.repository.NaverMapRepositoryImpl
+import kr.tekit.lion.data.repository.PharmacyRepositoryImpl
 import kr.tekit.lion.data.repository.PlaceRepositoryImpl
 import kr.tekit.lion.data.repository.PlanRepositoryImpl
 import kr.tekit.lion.data.repository.RecentlySearchKeywordRepositoryImpl
@@ -26,6 +27,7 @@ import kr.tekit.lion.domain.repository.EmergencyRepository
 import kr.tekit.lion.domain.repository.KorWithRepository
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.domain.repository.NaverMapRepository
+import kr.tekit.lion.domain.repository.PharmacyRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
@@ -71,6 +73,9 @@ internal interface RepositoryModule {
 
     @Binds
     fun bindEmergencyRepository(emergencyRepositoryImpl: EmergencyRepositoryImpl): EmergencyRepository
+
+    @Binds
+    fun bindPharmacyRepository(pharmacyRepositoryImpl: PharmacyRepositoryImpl): PharmacyRepository
 
     @Binds
     fun bindPlanRepository(planRepositoryImpl: PlanRepositoryImpl): PlanRepository
