@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
@@ -25,10 +26,13 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
 
         val searchText = arguments?.getString("searchText")
         searchText?.let {
+            requireActivity().findViewById<TextInputEditText>(R.id.search_edit).setText(searchText)
+
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.onChangeQuery(searchText)
             }
         }
+
 
         val rvAdapter = SearchResultAdapter{
 

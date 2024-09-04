@@ -6,12 +6,19 @@ import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityKeywordSearchBinding
-import kr.tekit.lion.presentation.keyword.fragment.OnSearchFragment
 import kr.tekit.lion.presentation.keyword.fragment.SearchResultFragment
 import kr.tekit.lion.presentation.keyword.model.KeywordInputState
 import kr.tekit.lion.presentation.keyword.vm.KeywordSearchViewModel
@@ -22,17 +29,10 @@ class KeywordSearchActivity : AppCompatActivity() {
     private val binding: ActivityKeywordSearchBinding by lazy {
         ActivityKeywordSearchBinding.inflate(layoutInflater)
     }
-    private val onSearchFragment by lazy { OnSearchFragment() }
-    private val searchResultFragment by lazy { SearchResultFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.fragment_container_view, onSearchFragment, OnSearchFragment::class.java.name)
-            commit()
-        }
 
         with(binding) {
             toolbar.setNavigationOnClickListener {
@@ -42,7 +42,9 @@ class KeywordSearchActivity : AppCompatActivity() {
             searchEdit.doAfterTextChanged {
                 if (it.isNullOrEmpty()){
                     viewModel.keywordInputStateChanged(KeywordInputState.Empty)
-                    moveToBackStack()
+                    if (isSearchResultFragment()){
+                        moveToBackStack()
+                    }
                 }else if (it.length >= 2) {
                     viewModel.inputTextChanged(it.toString())
                     viewModel.keywordInputStateChanged(KeywordInputState.NotEmpty)
@@ -56,8 +58,18 @@ class KeywordSearchActivity : AppCompatActivity() {
                 val isEnterKeyPressed = (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)
 
                 if (isImeActionDone || isEnterKeyPressed) {
-                    viewModel.insertKeyword(searchEdit.text.toString()) {
-                        showFragment(searchResultFragment)
+                    val keyword = searchEdit.text.toString()
+                    if (keyword.isEmpty()){
+                        Snackbar.make(root, getString(R.string.hint_search), Snackbar.LENGTH_SHORT).show()
+                    }else{
+                        viewModel.insertKeyword(searchEdit.text.toString()) {
+                            lifecycleScope.launch(Dispatchers.Main){
+                                findNavController(R.id.fragment_container_view).navigate(
+                                    R.id.action_to_searchResultFragment,
+                                    bundleOf("searchText" to searchEdit.text.toString())
+                                )
+                            }
+                        }
                     }
                     true
                 } else {
@@ -71,24 +83,13 @@ class KeywordSearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun showFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-
-        if (fragment is SearchResultFragment) {
-            val bundle = Bundle()
-            bundle.putString("searchText", binding.searchEdit.text.toString())
-            fragment.arguments = bundle
-        }
-
-        transaction.replace(R.id.fragment_container_view, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    private fun moveToBackStack() {
+        findNavController(R.id.fragment_container_view).navigate(R.id.action_to_onSearchFragment)
     }
 
-    private fun moveToBackStack(){
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view)
-        if (currentFragment is SearchResultFragment) {
-            onBackPressed()
-        }
+    private fun isSearchResultFragment(): Boolean {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        val currentFragment = navHostFragment.childFragmentManager.fragments[0]
+        return currentFragment is SearchResultFragment
     }
 }

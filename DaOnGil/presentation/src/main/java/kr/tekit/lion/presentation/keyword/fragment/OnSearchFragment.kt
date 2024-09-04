@@ -3,7 +3,9 @@ package kr.tekit.lion.presentation.keyword.fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filter
@@ -28,8 +30,10 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
 
         val recentlyKeywordAdapter = RecentlyKeywordAdapter(
             onClick = {
-                // 화면 이동 구현할것
-                moveFragment(SearchResultFragment(), it)
+                findNavController().navigate(
+                    R.id.action_to_searchResultFragment,
+                    bundleOf("searchText" to it)
+                )
             },
             onClickDeleteBtn = { keywordId ->
                 keywordId?.let { viewModel.deleteKeyword(it) }
