@@ -5,7 +5,9 @@ import kr.tekit.lion.data.dto.request.MapSearchRequest
 import kr.tekit.lion.data.dto.response.searchplace.list.toDomainModel
 import kr.tekit.lion.data.service.PlaceService
 import kr.tekit.lion.data.common.execute
+import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.search.ListSearchResultList
+import kr.tekit.lion.domain.exception.Result
 import javax.inject.Inject
 
 internal class PlaceDataSource @Inject constructor(
@@ -44,4 +46,8 @@ internal class PlaceDataSource @Inject constructor(
     )
 
     suspend fun getAutoCompleteKeyword(keyword: String) = placeService.getAutoCompleteKeyword(keyword)
+
+    suspend fun getPlaceMainInfo(areaCode: String, sigunguCode: String): Result<PlaceMainInfo> = execute {
+        placeService.getPlaceMainInfo(areaCode, sigunguCode).toDomainModel()
+    }
 }
