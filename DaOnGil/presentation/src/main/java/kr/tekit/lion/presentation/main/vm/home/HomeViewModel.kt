@@ -19,6 +19,7 @@ import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
+import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,6 +35,9 @@ class HomeViewModel @Inject constructor(
             // _appTheme.value = appThemeRepository.getAppTheme()
         }
     }
+
+    @Inject
+    lateinit var networkErrorDelegate: NetworkErrorDelegate
 
     private val _appTheme = MutableStateFlow(AppTheme.LIGHT)
     val appTheme = _appTheme.asStateFlow()
@@ -71,7 +75,7 @@ class HomeViewModel @Inject constructor(
                 _aroundPlaceInfo.value = it.aroundPlaceList
                 _recommendPlaceInfo.value = it.recommendPlaceList
             }.onError {
-                Log.d("getPlaceMain", it.toString())
+                networkErrorDelegate.handleNetworkError(it)
             }
         }
     }
