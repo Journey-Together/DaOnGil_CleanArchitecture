@@ -89,6 +89,10 @@
     <color name="shimmer_start_color">#DDDDDD</color>
     <color name="shimmer_end_color">#AAAAAA</color>
 
+    <color name="home_search_banner_background">#F4F4F4</color>
+    <color name="vp_item_background">#F9DA49</color>
+    <color name="home_recommend_item_text">#FFFFFF</color>
+
     <color name="schedule_detail_period">#CFD3D9</color>
     <color name="schedule_detail_divider">#EEEEEE</color>
     <color name="schedule_number">#FFFFFF</color>

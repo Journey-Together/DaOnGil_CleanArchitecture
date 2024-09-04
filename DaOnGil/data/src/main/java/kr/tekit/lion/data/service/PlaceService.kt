@@ -1,5 +1,6 @@
 package kr.tekit.lion.data.service
 
+import kr.tekit.lion.data.dto.response.mainplace.MainPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.AutoCompleteKeywordResponse
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
@@ -40,4 +41,10 @@ internal interface PlaceService {
         @Query("query") keyword: String,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): AutoCompleteKeywordResponse
+
+    @GET("place/main")
+    suspend fun getPlaceMainInfo(
+        @Query("areacode") areacode : String,
+        @Query("sigungucode") sigungucode : String
+    ): MainPlaceResponse
 }
