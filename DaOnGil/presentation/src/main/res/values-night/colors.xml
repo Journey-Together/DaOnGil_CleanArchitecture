@@ -76,4 +76,18 @@
     <color name="home_search_banner_background">#2E2E2E</color>
     <color name="vp_item_background">#0625B6</color>
 
+    <color name="schedule_detail_divider">#383838</color>
+    <color name="schedule_number">#000000</color>
+    <color name="schedule_report_button">#313131</color>
+    <color name="schedule_report_text">#969390</color>
+    <color name="schedule_detail_public">#262626</color>
+
+    <color name="text_box_background">#323231</color>
+    <color name="text_num_of_review_images">#7A7A7A</color>
+    <color name="radio_button_public_background_checked">#969390</color>
+    <color name="radio_button_public_background_default">#2E2C2B</color>
+    <color name="radio_button_public_text_default">#5E6161</color>
+
+    <color name="text_input_start_icon_tint">#474746</color>
+
 </resources>

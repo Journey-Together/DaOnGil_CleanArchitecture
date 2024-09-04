@@ -7,35 +7,47 @@
 
     <fragment
         android:id="@+id/nameAndPeriodFormFragment"
-        android:name="kr.tekit.lion.daongil.presentation.scheduleform.fragment.NameAndPeriodFormFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.NameAndPeriodFormFragment"
         android:label="@string/add_new_schedule"
         tools:layout="@layout/fragment_name_and_period_form" >
         <action
-            android:id="@+id/action_nameAndPeriodFormFragment_to_scheduleDetailsFormFragment"
+            android:id="@+id/to_scheduleDetailsFormFragment"
             app:destination="@id/scheduleDetailsFormFragment" />
     </fragment>
     <fragment
         android:id="@+id/scheduleDetailsFormFragment"
-        android:name="kr.tekit.lion.daongil.presentation.scheduleform.fragment.ScheduleDetailsFormFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ScheduleDetailsFormFragment"
         android:label="@string/add_new_schedule"
         tools:layout="@layout/fragment_schedule_details_form" >
         <action
-            android:id="@+id/action_scheduleDetailsFormFragment_to_formSearchFragment"
+            android:id="@+id/to_formSearchFragment"
             app:destination="@id/formSearchFragment" />
         <action
-            android:id="@+id/action_scheduleDetailsFormFragment_to_nameAndPeriodFormFragment"
+            android:id="@+id/to_nameAndPeriodFormFragment"
             app:destination="@id/nameAndPeriodFormFragment" />
+        <action
+            android:id="@+id/to_formScheduleConfirmFragment"
+            app:destination="@id/formScheduleConfirmFragment" />
     </fragment>
     <fragment
         android:id="@+id/formSearchFragment"
-        android:name="kr.tekit.lion.daongil.presentation.scheduleform.fragment.FormSearchFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.FormSearchFragment"
         android:label="@string/search_places_to_add"
         tools:layout="@layout/fragment_form_search" >
         <action
-            android:id="@+id/action_formSearchFragment_to_scheduleDetailsFormFragment"
+            android:id="@+id/to_scheduleDetailsFormFragment"
             app:destination="@id/scheduleDetailsFormFragment" />
         <argument
             android:name="schedulePosition"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/formScheduleConfirmFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ScheduleConfirmFormFragment"
+        android:label="@string/add_new_schedule"
+        tools:layout="@layout/fragment_schedule_confirm_form" >
+        <action
+            android:id="@+id/to_scheduleDetailsFormFragment"
+            app:destination="@id/scheduleDetailsFormFragment" />
     </fragment>
 </navigation>
