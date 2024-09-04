@@ -1,14 +1,19 @@
 package kr.tekit.lion.presentation.main.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
+import kr.tekit.lion.presentation.scheduleform.ScheduleFormActivity
 import kr.tekit.lion.presentation.databinding.FragmentScheduleMainBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.schedule.ScheduleMainViewModel
@@ -20,6 +25,14 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
     private var isUser = true
 
     private val viewModel: ScheduleMainViewModel by viewModels()
+
+    private val scheduleFormLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+//            viewModel.getMyMainPlanList()
+//            viewModel.getOpenPlanList()
+            view?.showSnackbar("일정이 저장되었습니다", Snackbar.LENGTH_LONG)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,7 +88,8 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
 
     private fun createNewSchedule() {
         if (isUser) {
-            // 일정 추가 화면으로 이동
+            val intent = Intent(requireActivity(), ScheduleFormActivity::class.java)
+            scheduleFormLauncher.launch(intent)
         } else {
             // 비회원 -> 로그인 다이얼로그
             showLoginDialog()

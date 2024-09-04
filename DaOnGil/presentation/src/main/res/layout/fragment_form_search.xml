@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".scheduleform.fragment.FormSearchFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/white"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_form_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/back_icon">
+
+            <TextView
+                style="@style/Theme.Toolbar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_places_to_add" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar_fs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_search"
+            app:backgroundTint="@color/primary_disabled" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_basic"
+            android:layout_marginTop="@dimen/margin_basic"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text="@string/bookmarked_places"
+            android:textSize="@dimen/font_big3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_fs_bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big3"
+            android:paddingHorizontal="@dimen/margin_basic"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/text_fs_bookmark_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:padding="50dp"
+            android:text="@string/bookmarked_places_empty"
+            android:textAlignment="center"
+            android:textSize="@dimen/font_big3"
+            android:visibility="gone"
+            app:drawableTopCompat="@drawable/onboarding_clover" />
+
+    </LinearLayout>
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view_fs_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:backgroundTint="@color/background_color"
+        app:layout_anchor="@id/search_bar_fs">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_fs_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/background_color"
+            android:clipToPadding="false"
+            android:paddingVertical="@dimen/margin_basic"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <TextView
+            android:id="@+id/text_fs_result_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/result_empty"
+            android:textAlignment="center"
+            android:textSize="@dimen/font_big3"
+            android:visibility="gone"
+            app:drawableTopCompat="@drawable/onboarding_clover" />
+
+    </com.google.android.material.search.SearchView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

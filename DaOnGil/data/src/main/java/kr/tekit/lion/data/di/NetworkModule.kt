@@ -9,8 +9,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
+import kr.tekit.lion.data.dto.response.aed.AedJsonAdapter
+import kr.tekit.lion.data.dto.response.emergency.message.EmergencyMessageJsonAdapter
+import kr.tekit.lion.data.dto.response.emergency.realtime.EmergencyRealtimeJsonAdapter
+import kr.tekit.lion.data.service.AedService
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.BookmarkService
+import kr.tekit.lion.data.service.EmergencyService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
 import kr.tekit.lion.data.service.NaverMapService
@@ -91,6 +96,26 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideAedService(okHttpClient: OkHttpClient, @AedMoshi moshi: Moshi): AedService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.AED_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Singleton
+    @Provides
+    fun provideEmergencyService(okHttpClient: OkHttpClient, @EmergencyMoshi moshi: Moshi): EmergencyService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.EMERGENCY_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Singleton
+    @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) {
@@ -140,6 +165,26 @@ internal object NetworkModule {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
+
+    @AedMoshi
+    @Provides
+    @Singleton
+    fun provideAedMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(AedJsonAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @EmergencyMoshi
+    @Provides
+    @Singleton
+    fun provideEmergencyMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(EmergencyRealtimeJsonAdapter())
+            .add(EmergencyMessageJsonAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
 
     @Provides
     @Singleton
