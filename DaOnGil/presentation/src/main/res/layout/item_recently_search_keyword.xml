@@ -36,6 +36,7 @@
         android:layout_weight="1"
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/margin_small1"
+        android:contentDescription="@string/text_delete_recently_search_keyword"
         android:src="@drawable/ic_close" />
 
 </LinearLayout>

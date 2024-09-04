@@ -22,16 +22,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_weight="1"
             android:backgroundTint="@color/search_view_background"
-            android:text="@string/hint_search"
-            android:textColor="@color/search_view_category_name"
             android:fontFamily="@font/pretendard_regular"
             android:gravity="start|center_vertical"
-            android:layout_weight="1"
+            android:text="@string/hint_search"
+            android:textColor="@color/search_view_category_name"
             app:icon="@drawable/ic_search"
-            app:iconTint="@color/text_primary"
             app:iconGravity="textStart"
-            app:iconPadding="8dp" />
+            app:iconPadding="8dp"
+            app:iconTint="@color/text_primary" />
 
         <ImageButton
             android:id="@+id/read_script_btn"

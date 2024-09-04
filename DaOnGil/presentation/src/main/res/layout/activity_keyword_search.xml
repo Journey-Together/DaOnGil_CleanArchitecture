@@ -27,11 +27,12 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:layout_marginTop="@dimen/margin_big3"
         android:layout_marginEnd="@dimen/margin_big4"
         app:hintEnabled="false"
         app:hintTextColor="@color/text_tertiary">
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_edit"
@@ -40,6 +41,8 @@
             app:hintTextColor="@color/text_tertiary"
             android:textCursorDrawable="@color/black"
             android:hint="관광지를 검색 해보세요!"
+            android:textColor="@color/black"
+            android:textColorHint="@color/text_tertiary"
             android:background="@drawable/search_bar_background"/>
 
     </com.google.android.material.textfield.TextInputLayout>
