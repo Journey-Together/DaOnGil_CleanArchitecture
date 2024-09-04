@@ -18,17 +18,12 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.NetworkError
-import kr.tekit.lion.domain.exception.onError
-import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.search.RecentlySearchKeyword
 import kr.tekit.lion.domain.model.search.toRecentlySearchKeyword
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.keyword.model.KeywordInputState
-import kr.tekit.lion.presentation.keyword.model.KeywordSearch
-import kr.tekit.lion.presentation.main.model.PlaceModel
-import kr.tekit.lion.presentation.main.model.toUiModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,9 +42,6 @@ class KeywordSearchViewModel @Inject constructor(
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
     val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
-
-    private val _place: MutableStateFlow<List<PlaceModel>> = MutableStateFlow(emptyList())
-    val place: StateFlow<List<PlaceModel>> = _place.asStateFlow()
 
     private val _recentlySearchKeyword = MutableStateFlow<List<RecentlySearchKeyword>>(emptyList())
     val recentlySearchKeyword = _recentlySearchKeyword.asStateFlow()
@@ -84,16 +76,6 @@ class KeywordSearchViewModel @Inject constructor(
 
     fun keywordInputStateChanged(state: KeywordInputState) {
         _searchState.value = state
-    }
-
-    fun onClickSearchButton(keyword: String) = viewModelScope.launch(Dispatchers.IO){
-        placeRepository.getSearchPlaceResultByList(
-            KeywordSearch(keyword = keyword, page = 0).toDomainModel()
-        ).onSuccess {
-            _place.value = it.toUiModel()
-        }.onError {
-            networkErrorDelegate.handleNetworkError(it)
-        }
     }
 
     private fun loadSavedKeyword() = viewModelScope.launch(Dispatchers.IO){

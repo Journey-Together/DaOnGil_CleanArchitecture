@@ -18,7 +18,7 @@ import kr.tekit.lion.presentation.keyword.vm.SearchResultViewModel
 
 @AndroidEntryPoint
 class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
-    private val viewModel: SearchResultViewModel by viewModels({ requireActivity() })
+    private val viewModel: SearchResultViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
