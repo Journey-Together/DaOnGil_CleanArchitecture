@@ -108,4 +108,8 @@
 
     <color name="text_input_start_icon_tint">#D0D0D1</color>
 
+    <color name="detail_divider">#1A000000</color>
+
+    <color name="home_background">#FFFFFF</color>
+
 </resources>
