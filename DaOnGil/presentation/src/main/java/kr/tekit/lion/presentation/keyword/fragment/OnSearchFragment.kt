@@ -29,7 +29,7 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
         val recentlyKeywordAdapter = RecentlyKeywordAdapter(
             onClick = {
                 // 화면 이동 구현할것
-                viewModel.onClickSearchButton(it)
+                moveFragment(SearchResultFragment(), it)
             },
             onClickDeleteBtn = { keywordId ->
                 keywordId?.let { viewModel.deleteKeyword(it) }
@@ -37,7 +37,6 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
         )
 
         val searchAdapter = SearchSuggestionsAdapter {
-            viewModel.onClickSearchButton(it)
             viewModel.insertKeyword(it) {
 
             }
@@ -122,6 +121,21 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
             }
         }
     }
+
+    private fun moveFragment(fragment: Fragment, keyword: String) {
+        val transaction = parentFragmentManager.beginTransaction()
+
+        if (fragment is SearchResultFragment) {
+            val bundle = Bundle()
+            bundle.putString("searchText", keyword)
+            fragment.arguments = bundle
+        }
+
+        transaction.replace(R.id.fragment_container_view, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
 
     private fun showDeleteConfirmDialog() {
         val dialog = ConfirmDialog(
