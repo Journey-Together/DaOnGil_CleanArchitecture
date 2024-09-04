@@ -9,8 +9,10 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityEmergencyInfoBinding
 import kr.tekit.lion.presentation.emergency.fragment.AedInfoFragment
 import kr.tekit.lion.presentation.emergency.fragment.EmergencyInfoFragment
+import kr.tekit.lion.presentation.emergency.fragment.PharmacyInfoFragment
 import kr.tekit.lion.presentation.emergency.vm.EmergencyInfoViewModel
 import kr.tekit.lion.presentation.model.EmergencyInfo
+import kr.tekit.lion.presentation.model.PharmacyInfo
 
 @AndroidEntryPoint
 class EmergencyInfoActivity : AppCompatActivity() {
@@ -25,15 +27,26 @@ class EmergencyInfoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val infoType = intent.getStringExtra("infoType")
-        val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("data", EmergencyInfo::class.java)
+        val data = if (infoType == "pharmacy") {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra("data", PharmacyInfo::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra<PharmacyInfo>("data")
+            }
         } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra("data")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra("data", EmergencyInfo::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra<EmergencyInfo>("data")
+            }
         }
-        if(infoType.equals("hospital")){
-            data?.emergencyId?.let { viewModel.getEmergencyMessage(it) }
+
+        if (infoType == "hospital") {
+            (data as? EmergencyInfo)?.emergencyId?.let { viewModel.getEmergencyMessage(it) }
         }
+
         replaceFragment()
     }
 
@@ -45,7 +58,7 @@ class EmergencyInfoActivity : AppCompatActivity() {
         when(name) {
             "hospital" -> fragmentManager.replace(R.id.emergency_info_container, EmergencyInfoFragment())
             "aed" -> fragmentManager.replace(R.id.emergency_info_container, AedInfoFragment())
-            // "pharmacy" -> fragmentManager.replace(R.id.emergency_info_container, PharmacyInfoFragment())
+            "pharmacy" -> fragmentManager.replace(R.id.emergency_info_container, PharmacyInfoFragment())
         }
 
         fragmentManager.commit()

@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.emergency.vm
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,18 +8,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
-import kr.tekit.lion.domain.model.EmergencyMapInfo
+import kr.tekit.lion.domain.model.PharmacyMapInfo
 import kr.tekit.lion.domain.repository.NaverMapRepository
-import kr.tekit.lion.domain.usecase.base.onError
-import kr.tekit.lion.domain.usecase.base.onSuccess
-import kr.tekit.lion.domain.usecase.emergency.GetEmergencyMapInfoUseCase
+import kr.tekit.lion.domain.repository.PharmacyRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
 @HiltViewModel
-class EmergencyMapViewModel @Inject constructor(
+class PharmacyMapViewModel @Inject constructor(
     private val naverMapRepository: NaverMapRepository,
-    private val getEmergencyMapInfoUseCase: GetEmergencyMapInfoUseCase
+    private val pharmacyRepository: PharmacyRepository
 ): ViewModel() {
 
     @Inject
@@ -29,10 +26,19 @@ class EmergencyMapViewModel @Inject constructor(
     private val _area = MutableLiveData<String?>()
     val area : LiveData<String?> = _area
 
-    private val _emergencyMapInfo = MutableLiveData<List<EmergencyMapInfo>>()
-    val emergencyMapInfo: LiveData<List<EmergencyMapInfo>> = _emergencyMapInfo
+    private val _pharmacyMapInfo = MutableLiveData<List<PharmacyMapInfo>>()
+    val pharmacyMapInfo : LiveData<List<PharmacyMapInfo>> = _pharmacyMapInfo
 
-    fun getUserLocationRegion(coords: String) = viewModelScope.launch {
+    fun getPharmacyMapInfo(Q0: String?, Q1: String?) =
+        viewModelScope.launch {
+            val areaDetail = if (Q0 == "세종특별자치시") null else Q1
+            pharmacyRepository.getPharmacy(Q0, Q1).onSuccess {
+                _pharmacyMapInfo.value = it
+            }.onError {
+                networkErrorDelegate.handleNetworkError(it)
+            }
+        }
+    fun getUserLocationRegion(coords: String)= viewModelScope.launch {
         naverMapRepository.getReverseGeoCode(coords).onSuccess {
             if(it.code == 0){
                 _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
@@ -41,13 +47,6 @@ class EmergencyMapViewModel @Inject constructor(
             networkErrorDelegate.handleNetworkError(it)
         }
     }
-
-    fun getEmergencyMapInfo(area: String?, areaDetail: String?) =
-        viewModelScope.launch {
-            getEmergencyMapInfoUseCase(area, areaDetail).onSuccess {
-                _emergencyMapInfo.value = it
-            }
-        }
 
     fun setArea(area: String?, areaDetail: String?) {
         if(areaDetail.isNullOrEmpty()){

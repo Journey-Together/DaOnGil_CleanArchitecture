@@ -12,7 +12,7 @@ data class EmergencyInfo(
     val aedList: AedInfo?
 ): Parcelable
 
-fun EmergencyMapInfo.toEmergencyMap(): EmergencyInfo {
+fun EmergencyMapInfo.toEmergencyInfo(): EmergencyInfo {
     return EmergencyInfo(
         hospitalList = this.hospitalList?.toHospitalInfo(),
         emergencyType = this.emergencyType,
