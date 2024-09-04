@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_radius_10"
+    android:backgroundTint="@color/card_background_color"
+    android:gravity="center"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_basic">
+
+    <TextView
+        android:id="@+id/dialog_mode_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_big3"
+        android:lineSpacingMultiplier="1.1"
+        android:text="안녕하세요 여행자님!\n고대비 설정이 필요하신가요?"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big1" />
+
+    <TextView
+        android:id="@+id/dialog_mode_title2_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:fontFamily="@font/pretendard_regular"
+        android:gravity="center"
+        android:text="설정시 콘텐츠 간의 구분이 더 명확해져요!"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_small1" />
+
+    <ImageView
+        android:id="@+id/dialog_mode_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/image_mode_setting" />
+
+    <Button
+        android:id="@+id/dialog_mode_positive_btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/background_radius_5"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="네! 고대비 설정할래요"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big3"
+        app:backgroundTint="@color/primary" />
+
+    <Button
+        android:id="@+id/dialog_mode_negative_btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/margin_small1"
+        android:background="@drawable/background_radius_5"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="아니요, 설정 안할래요"
+        android:textColor="#323232"
+        android:textSize="@dimen/font_big3"
+        app:backgroundTint="@color/button_secondary" />
+
+
+</LinearLayout>
