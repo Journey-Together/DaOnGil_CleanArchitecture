@@ -19,6 +19,7 @@ import kr.tekit.lion.data.service.EmergencyService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
 import kr.tekit.lion.data.service.NaverMapService
+import kr.tekit.lion.data.service.PharmacyService
 import kr.tekit.lion.data.service.PlaceService
 import kr.tekit.lion.data.service.PlanService
 import okhttp3.OkHttpClient
@@ -67,7 +68,7 @@ internal object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthService(okHttpClient: OkHttpClient): AuthService =
-         Retrofit.Builder()
+        Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .client(okHttpClient)
@@ -106,10 +107,25 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideEmergencyService(okHttpClient: OkHttpClient, @EmergencyMoshi moshi: Moshi): EmergencyService =
+    fun provideEmergencyService(
+        okHttpClient: OkHttpClient,
+        @EmergencyMoshi moshi: Moshi
+    ): EmergencyService =
         Retrofit.Builder()
             .baseUrl(BuildConfig.EMERGENCY_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Provides
+    @Singleton
+    fun providePharmacyService(
+        okHttpClient: OkHttpClient
+    ): PharmacyService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.PHARMACY_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .client(okHttpClient)
             .build()
             .create()
@@ -185,6 +201,7 @@ internal object NetworkModule {
             .add(EmergencyMessageJsonAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
+    }
 
     @Provides
     @Singleton
