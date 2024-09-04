@@ -185,6 +185,7 @@ internal object NetworkModule {
             .add(EmergencyMessageJsonAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
+    }
 
     @Provides
     @Singleton
