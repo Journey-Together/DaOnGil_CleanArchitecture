@@ -11,6 +11,7 @@ import kr.tekit.lion.domain.model.search.MapSearchResultList
 import kr.tekit.lion.domain.repository.PlaceRepository
 import javax.inject.Inject
 import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
 internal class PlaceRepositoryImpl @Inject constructor(
@@ -30,5 +31,9 @@ internal class PlaceRepositoryImpl @Inject constructor(
     override suspend fun getAutoCompleteKeyword(keyword: String): Flow<AutoCompleteKeyword> = flow {
         val response = placeDataSource.getAutoCompleteKeyword(keyword)
         emit(response.toDomainModel())
+    }
+
+    override suspend fun getPlaceMainInfo(areaCode: String, sigunguCode: String): Result<PlaceMainInfo> {
+        return placeDataSource.getPlaceMainInfo(areaCode, sigunguCode)
     }
 }
