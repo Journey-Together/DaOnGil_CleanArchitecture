@@ -35,8 +35,8 @@ class ScheduleDetailsFormFragment : Fragment(R.layout.fragment_schedule_details_
         }
     }
 
-    private fun initView(binding: FragmentScheduleDetailsFormBinding){
-        with(binding){
+    private fun initView(binding: FragmentScheduleDetailsFormBinding) {
+        with(binding) {
             val title = viewModel.getScheduleTitle()
             textSdfTitle.text = getString(R.string.text_selected_title, title)
             val period = viewModel.getSchedulePeriod()
@@ -47,8 +47,8 @@ class ScheduleDetailsFormFragment : Fragment(R.layout.fragment_schedule_details_
             }
         }
 
-        viewModel.schedule.observe(viewLifecycleOwner){
-            if( it != null ){
+        viewModel.schedule.observe(viewLifecycleOwner) {
+            if (it != null) {
                 settingScheduleFormAdapter(binding, it)
             }
         }
@@ -70,16 +70,17 @@ class ScheduleDetailsFormFragment : Fragment(R.layout.fragment_schedule_details_
             },
             onItemClickListener = { schedulePosition, placePosition ->
                 val placeId = dailyScheduleList[schedulePosition].dailyPlaces[placePosition].placeId
+                // TODO 주석 해제
 //                showPlaceDetail(placeId)
             },
             onRemoveButtonClickListener = { schedulePosition, placePosition ->
                 // viewModel에서 해당 place 제거
-//                scheduleFormViewModel.removePlace(schedulePosition, placePosition)
+                viewModel.removePlace(schedulePosition, placePosition)
             }
         )
     }
 
-    private fun navigateToConfirmScreen(){
+    private fun navigateToConfirmScreen() {
         val navController = findNavController()
         val action = ScheduleDetailsFormFragmentDirections.toFormScheduleConfirmFragment()
         navController.navigate(action)
