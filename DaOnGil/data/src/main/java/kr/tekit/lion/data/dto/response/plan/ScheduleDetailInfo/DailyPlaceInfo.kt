@@ -1,0 +1,21 @@
+package kr.tekit.lion.data.dto.response.plan.ScheduleDetailInfo
+
+import kr.tekit.lion.domain.model.SchedulePlace
+
+internal data class DailyPlaceInfo(
+    val category: String,
+    val imageUrl: String?,
+    val disabilityCategoryList: List<Int>,
+    val name: String,
+    val placeId: Long
+){
+    fun toDomainModel(): SchedulePlace {
+        return SchedulePlace(
+            placeId = placeId,
+            name = name,
+            category = category,
+            imageUrl = imageUrl ?: "",
+            disability = disabilityCategoryList
+        )
+    }
+}
