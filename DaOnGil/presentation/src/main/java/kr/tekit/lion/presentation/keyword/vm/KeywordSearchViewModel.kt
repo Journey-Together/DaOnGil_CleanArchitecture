@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -58,7 +59,11 @@ class KeywordSearchViewModel @Inject constructor(
         .distinctUntilChanged()
         .filter { it.isNotEmpty() }
         .flatMapLatest { keyword ->
-            placeRepository.getAutoCompleteKeyword(keyword)
+            if (searchState.value != KeywordInputState.Erasing) {
+                placeRepository.getAutoCompleteKeyword(keyword)
+            } else {
+                flow { }
+            }
         }
         .flowOn(Dispatchers.IO)
         .catch { e: Throwable ->
@@ -69,7 +74,7 @@ class KeywordSearchViewModel @Inject constructor(
 
 
     fun inputTextChanged(keyword: String) {
-        if (searchState.value !=  KeywordInputState.Erasing) {
+        if (searchState.value != KeywordInputState.Erasing) {
             _keyword.update { keyword }
         }
     }
