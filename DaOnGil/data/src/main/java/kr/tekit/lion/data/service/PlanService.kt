@@ -1,11 +1,13 @@
 package kr.tekit.lion.data.service
 
 
+import kr.tekit.lion.data.dto.response.plan.myMainSchedule.MyMainScheduleResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleElapsed.MyElapsedResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleUpcoming.MyUpcomingsResponse
 import kr.tekit.lion.data.dto.response.scheduleform.PlaceSearchResultsResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import kr.tekit.lion.data.dto.response.plan.openSchedule.OpenPlanListResponse
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -26,6 +28,7 @@ internal interface PlanService {
         @Query("page") page: Int
     ): MyElapsedResponse
 
+
     // 장소명 기반 여행지 검색 : size - 한 페이지 데이터 수, page - 페이지 넘버
     @GET("plan/search")
     suspend fun getPlaceSearchResults(
@@ -40,4 +43,17 @@ internal interface PlanService {
         @Body newPlan: RequestBody,
         @Tag authType: AuthType = AuthType.ACCESS_TOKEN
     )
+
+    // 내 일정 정보
+    @GET("plan/my")
+    suspend fun getMyMainSchedule(): MyMainScheduleResponse
+
+    // 공개 일정 정보
+    @GET("plan/open")
+    suspend fun getOpenPlanList(
+        @Query("size") size: Int,
+        @Query("page") page: Int,
+        @Tag authType: AuthType = AuthType.NO_AUTH,
+    ): OpenPlanListResponse
+
 }

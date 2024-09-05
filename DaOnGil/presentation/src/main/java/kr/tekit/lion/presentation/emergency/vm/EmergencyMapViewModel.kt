@@ -11,6 +11,7 @@ import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.EmergencyMapInfo
 import kr.tekit.lion.domain.repository.NaverMapRepository
+import kr.tekit.lion.domain.usecase.base.onError
 import kr.tekit.lion.domain.usecase.base.onSuccess
 import kr.tekit.lion.domain.usecase.emergency.GetEmergencyMapInfoUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
