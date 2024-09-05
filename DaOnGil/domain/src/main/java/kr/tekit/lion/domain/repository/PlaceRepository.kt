@@ -9,6 +9,9 @@ import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfo
 import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfoGuest
 import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
+import kr.tekit.lion.domain.model.placereview.NewReviewData
+import kr.tekit.lion.domain.model.placereview.NewReviewImages
+import kr.tekit.lion.domain.model.placereview.WritePlaceReview
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
 interface PlaceRepository {
@@ -23,4 +26,6 @@ interface PlaceRepository {
     suspend fun getPlaceDetailInfo(placeId: Long): Result<PlaceDetailInfo>
 
     suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest>
+
+    suspend fun writePlaceReviewData(placeId: Long, newReviewData: NewReviewData, reviewImages: NewReviewImages) : Result<WritePlaceReview>
 }
