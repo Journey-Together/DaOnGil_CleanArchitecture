@@ -1,5 +1,6 @@
 package kr.tekit.lion.data.service
 
+import kr.tekit.lion.data.dto.response.myreview.MyPlaceReviewResponse
 import kr.tekit.lion.data.dto.response.detailplace.DetailPlaceResponse
 import kr.tekit.lion.data.dto.response.detailplaceguest.DetailPlaceGuestResponse
 import kr.tekit.lion.data.dto.response.mainplace.MainPlaceResponse
@@ -9,9 +10,12 @@ import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.http.POST
+import okhttp3.ResponseBody
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
-import retrofit2.http.POST
+import retrofit2.http.PATCH
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -50,6 +54,25 @@ internal interface PlaceService {
         @Query("query") keyword: String,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): AutoCompleteKeywordResponse
+
+    @GET("place/review/my")
+    suspend fun getMyPlaceReview(
+        @Query("size") size: Int,
+        @Query("page") page: Int
+    ): MyPlaceReviewResponse
+
+    @DELETE("place/review/my/{reviewId}")
+    suspend fun deleteMyPlaceReview(
+        @Path("reviewId") reviewId: Long
+    )
+
+    @Multipart
+    @PATCH("place/review/my/{reviewId}")
+    suspend fun updateMyPlaceReviewData(
+        @Path("reviewId") reviewId: Long,
+        @Part("updateReviewDto") reviewUpdateReq: RequestBody,
+        @Part addImages: List<MultipartBody.Part>
+    )
 
     @GET("place/main")
     suspend fun getPlaceMainInfo(

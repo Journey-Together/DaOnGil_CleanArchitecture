@@ -20,7 +20,6 @@ import kr.tekit.lion.domain.model.placereview.NewReviewData
 import kr.tekit.lion.domain.model.placereview.NewReviewImages
 import kr.tekit.lion.domain.model.placereview.WritePlaceReview
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
-import okhttp3.ResponseBody
 
 internal class PlaceRepositoryImpl @Inject constructor(
     private val placeDataSource: PlaceDataSource
