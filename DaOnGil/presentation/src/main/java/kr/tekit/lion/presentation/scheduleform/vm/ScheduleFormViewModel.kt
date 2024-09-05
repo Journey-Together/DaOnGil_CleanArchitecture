@@ -18,6 +18,7 @@ import kr.tekit.lion.domain.model.scheduleform.NewPlan
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchInfoList
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
 import kr.tekit.lion.domain.repository.BookmarkRepository
+import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.ext.addDays
@@ -32,6 +33,7 @@ import javax.inject.Inject
 class ScheduleFormViewModel @Inject constructor(
     private val planRepository: PlanRepository,
     private val bookmarkRepository: BookmarkRepository,
+    private val placeRepository: PlaceRepository
 ) : ViewModel() {
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
@@ -256,29 +258,18 @@ class ScheduleFormViewModel @Inject constructor(
         selectedPlacePosition: Int,
         isBookmarkedPlace: Boolean
     ): Boolean {
-//        val placeId = if (isBookmarkedPlace) {
-//            _bookmarkedPlaces.value?.get(selectedPlacePosition)?.bookmarkedPlaceId
-//        } else {
-//            _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)?.placeId
-//        }
-        val placeInfo = _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)
+        val placeId = if (isBookmarkedPlace) {
+            _bookmarkedPlaces.value?.get(selectedPlacePosition)?.bookmarkedPlaceId
+        } else {
+            _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)?.placeId
+        }
 
-        // TODO 북마크 한 여행지 -> 정보 불러올 것
         // 선택한 관광지 정보가 같은 날에 추가된 경우
         val daySchedule = _schedule.value?.get(dayPosition)?.dailyPlaces
         daySchedule?.forEach {
-            if (it.placeId == placeInfo?.placeId) {
+            if (it.placeId == placeId) {
                 return true
             }
-        }
-        if (placeInfo != null) {
-            val formPlace = FormPlace(
-                placeInfo.placeId,
-                placeInfo.imageUrl,
-                placeInfo.placeName,
-                placeInfo.category
-            )
-            addNewPlace(formPlace, dayPosition)
         }
         return false
     }
@@ -293,7 +284,29 @@ class ScheduleFormViewModel @Inject constructor(
         }
     }
 
-    // TODO 관광지 정보 불러오기 API
+    fun getSearchedPlaceDetailInfo(
+        dayPosition: Int,
+        selectedPlacePosition: Int,
+        isBookmarkedPlace: Boolean
+    ) {
+        val placeId = if (isBookmarkedPlace) {
+            _bookmarkedPlaces.value?.get(selectedPlacePosition)?.bookmarkedPlaceId
+        } else {
+            _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)?.placeId
+        }
+
+        viewModelScope.launch {
+            placeId?.let {
+                placeRepository.getPlaceDetailInfo(placeId).onSuccess {
+                    val formPlace =
+                        FormPlace(it.placeId, it.image, it.name, it.category)
+                    addNewPlace(formPlace, dayPosition)
+                }.onError {
+                    networkErrorDelegate.handleNetworkError(it)
+                }
+            }
+        }
+    }
 
     fun submitNewPlan(callback: (Boolean, Boolean) -> Unit) {
         val title = _title.value
