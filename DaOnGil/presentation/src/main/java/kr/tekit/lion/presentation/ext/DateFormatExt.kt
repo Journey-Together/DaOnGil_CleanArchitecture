@@ -6,6 +6,12 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
+/**
+ * 날짜를 pattern에 맞는 형식으로 반환
+ *
+ * @param pattern 날짜 형식 (FormDateFormat에 선언된 패턴 사용 가능)
+ * @return 여행의 총 일수
+ */
 fun Date.formatDateValue(pattern: String) : String {
     val dateFormat = SimpleDateFormat(pattern, Locale.KOREA)
     return dateFormat.format(this)
@@ -29,7 +35,7 @@ fun Date.calculateDaysUntilEndDate(endDate: Date) : Int {
  * 현재 날짜로부터 지정한 일수 만큼 뒤의 날짜를 pattern에 맞는 형식으로 반환
  *
  * @param days 추가할 일수
- * @param pattern 날짜 형식 ("M월 d일 (E)", "yyyy-MM-dd")
+ * @param pattern 날짜 형식 ("M월 d일 (E)", "yyyy-MM-dd" 등 FormDateFormat에 선언된 패턴 사용 가능)
  * @return 지정한 일수만큼 뒤의 날짜
  */
 fun Date.addDays(days: Int, pattern: String): String {
