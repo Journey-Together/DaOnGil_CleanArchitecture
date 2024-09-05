@@ -71,7 +71,7 @@ internal interface PlaceService {
         @Part("updateReviewDto") reviewUpdateReq: RequestBody,
         @Part addImages: List<MultipartBody.Part>
     )
-=
+
     @GET("place/main")
     suspend fun getPlaceMainInfo(
         @Query("areacode") areacode : String,
