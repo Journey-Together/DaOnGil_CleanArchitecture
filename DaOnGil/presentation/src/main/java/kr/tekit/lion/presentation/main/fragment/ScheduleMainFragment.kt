@@ -19,9 +19,11 @@ import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.adapter.ScheduleMyAdapter
+import kr.tekit.lion.presentation.main.adapter.SchedulePublicAdapter
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.schedule.ScheduleMainViewModel
 import kr.tekit.lion.presentation.myschedule.MyScheduleActivity
+import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -31,30 +33,30 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
     private val viewModel: ScheduleMainViewModel by viewModels()
 
     private val scheduleReviewLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        /*if (result.resultCode == ResultCode.RESULT_REVIEW_WRITE) {
+        if (result.resultCode == ResultCode.RESULT_REVIEW_WRITE) {
             viewModel.getMyMainPlanList()
             viewModel.getOpenPlanList()
             view?.showSnackbar("후기가 저장되었습니다", Snackbar.LENGTH_LONG)
-        }*/
+        }
     }
 
     private val scheduleFormLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK) {
-//            viewModel.getMyMainPlanList()
-//            viewModel.getOpenPlanList()
+            viewModel.getMyMainPlanList()
+            viewModel.getOpenPlanList()
             view?.showSnackbar("일정이 저장되었습니다", Snackbar.LENGTH_LONG)
         }
     }
 
     private val scheduleDetailLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        /*if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == Activity.RESULT_OK) {
             view?.showSnackbar("일정이 삭제되었습니다", Snackbar.LENGTH_LONG)
             viewModel.getMyMainPlanList()
             viewModel.getOpenPlanList()
         } else {
             viewModel.getMyMainPlanList()
             viewModel.getOpenPlanList()
-        }*/
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,7 +67,7 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
         settingRecyclerView(binding)
         initButtonClickListener(binding)
 
-        // viewModel.getOpenPlanList()
+        viewModel.getOpenPlanList()
 
         repeatOnStarted {
             viewModel.loginState.collect { uiState ->
@@ -125,7 +127,7 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
             }
 
             // 공개 일정
-            /*recyclerViewPublicSchedule.apply {
+            recyclerViewPublicSchedule.apply {
                 viewModel.openPlanList.observe(viewLifecycleOwner) {
                     val schedulePublicAdapter = SchedulePublicAdapter(
                         itemClickListener = { position ->
@@ -139,7 +141,7 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                     schedulePublicAdapter.addItems(it)
                     adapter = schedulePublicAdapter
                 }
-            }*/
+            }
         }
     }
 
