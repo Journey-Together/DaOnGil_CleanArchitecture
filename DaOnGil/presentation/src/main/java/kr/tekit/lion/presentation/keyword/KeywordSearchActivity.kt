@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.keyword
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -17,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
+import kr.tekit.lion.presentation.TestActivity
 import kr.tekit.lion.presentation.databinding.ActivityKeywordSearchBinding
 import kr.tekit.lion.presentation.keyword.fragment.SearchResultFragment
 import kr.tekit.lion.presentation.keyword.model.KeywordInputState
@@ -36,10 +38,8 @@ class KeywordSearchActivity : AppCompatActivity() {
 
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val navController = findNavController(R.id.fragment_container_view)
-                if (navController.currentDestination?.id == R.id.searchResultFragment) {
-                    navController.navigate(R.id.action_to_onSearchFragment)
-                    viewModel.keywordInputStateChanged(KeywordInputState.Empty)
+                if (isSearchResultFragment()) {
+                    binding.searchEdit.text = null
                 }else{
                     finish()
                 }
@@ -50,8 +50,7 @@ class KeywordSearchActivity : AppCompatActivity() {
         with(binding) {
             toolbar.setNavigationOnClickListener {
                 if (isSearchResultFragment()){
-                    moveToBackStack()
-                    viewModel.keywordInputStateChanged(KeywordInputState.Empty)
+                    searchEdit.text = null
                 }else {
                     finish()
                 }
@@ -60,7 +59,7 @@ class KeywordSearchActivity : AppCompatActivity() {
             searchEdit.doAfterTextChanged {
                 if (it.isNullOrEmpty()){
                     viewModel.keywordInputStateChanged(KeywordInputState.Empty)
-                    if (isSearchResultFragment()){
+                    if (isSearchResultFragment()) {
                         moveToBackStack()
                     }
                 }else if (it.length >= 2) {
@@ -96,6 +95,7 @@ class KeywordSearchActivity : AppCompatActivity() {
             }
 
             saerchBarContainer.setOnClickListener {
+                searchEdit.text = null
                 moveToBackStack()
             }
         }
