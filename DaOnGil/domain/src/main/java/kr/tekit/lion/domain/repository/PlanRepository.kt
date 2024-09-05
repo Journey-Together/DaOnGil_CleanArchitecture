@@ -3,6 +3,7 @@ package kr.tekit.lion.domain.repository
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.model.scheduleform.NewPlan
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
 
 interface PlanRepository {
@@ -10,5 +11,7 @@ interface PlanRepository {
 
     suspend fun getMyElapsedScheduleList(page: Int): Result<MyElapsedSchedules>
 
-    suspend fun getPlaceSearchResult(word: String, page: Int) : Result<PlaceSearchResult>
+    suspend fun getPlaceSearchResult(word: String, page: Int): Result<PlaceSearchResult>
+
+    suspend fun addNewPlan(request: NewPlan): Result<Unit>
 }
