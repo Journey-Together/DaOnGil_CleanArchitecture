@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.scheduleform.vm
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,8 +11,10 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.BookmarkedPlace
+import kr.tekit.lion.domain.model.scheduleform.DailyPlace
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.domain.model.scheduleform.FormPlace
+import kr.tekit.lion.domain.model.scheduleform.NewPlan
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchInfoList
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
 import kr.tekit.lion.domain.repository.BookmarkRepository
@@ -124,11 +127,10 @@ class ScheduleFormViewModel @Inject constructor(
 
         val schedule = mutableListOf<DailySchedule>()
         for (day in 0..days) {
-            val dateInfo = startDate.addDays(day)
+            val dateInfo = startDate.addDays(day, "M월 d일 (E)")
             // 0일차가 아닌 1일차부터 표기하기 위해 day+1
             schedule.add(DailySchedule(day + 1, dateInfo, mutableListOf<FormPlace>()))
         }
-
         return schedule
     }
 
@@ -261,7 +263,7 @@ class ScheduleFormViewModel @Inject constructor(
 //        }
         val placeInfo = _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)
 
-
+        // TODO 북마크 한 여행지 -> 정보 불러올 것
         // 선택한 관광지 정보가 같은 날에 추가된 경우
         val daySchedule = _schedule.value?.get(dayPosition)?.dailyPlaces
         daySchedule?.forEach {
@@ -284,5 +286,56 @@ class ScheduleFormViewModel @Inject constructor(
                 networkErrorDelegate.handleNetworkError(it)
             }
         }
+    }
+
+    // TODO 관광지 정보 불러오기 API
+
+    fun submitNewPlan(callback: (Boolean, Boolean) -> Unit) {
+        val title = _title.value
+        val startDateString = _startDate.value?.formatDateValue("yyyy-MM-dd")
+        val endDateString = _endDate.value?.formatDateValue("yyyy-MM-dd")
+        val dailyPlace = getDailyPlaceList()
+
+        if (title != null && startDateString != null && endDateString != null) {
+            val newPlan = NewPlan(title, startDateString, endDateString, dailyPlace)
+
+            var requestFlag = false
+
+            viewModelScope.launch {
+                val success = try {
+                    planRepository.addNewPlan(newPlan).onSuccess {
+                        requestFlag = true
+                    }.onError {
+                        networkErrorDelegate.handleNetworkError(it)
+                    }
+                    true
+                } catch (e: Exception) {
+                    Log.d("submitNewPlan", "Error: ${e.message}")
+                    false
+                }
+                // 작업한 결과가 끝나면 success에 true를 반환해준다.
+                callback(success, requestFlag)
+            }
+        }
+    }
+
+
+    private fun getDailyPlaceList() : List<DailyPlace>{
+        val dailyPlaceList = mutableListOf<DailyPlace>()
+        val schedule = _schedule.value
+        val startDate = _startDate.value
+
+        startDate?.let {
+            schedule?.forEachIndexed { index, dailySchedule ->
+                val date = startDate.addDays(index, "yyyy-MM-dd")
+                val places = mutableListOf<Long>()
+                dailySchedule.dailyPlaces.forEach {
+                    places.add(it.placeId)
+                }
+                dailyPlaceList.add(DailyPlace(date, places))
+            }
+        }
+
+        return dailyPlaceList.toList()
     }
 }
