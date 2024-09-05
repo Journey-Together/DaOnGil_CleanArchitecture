@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/margin_basic"
-                    android:background="@color/home_background"
+                    android:background="@color/background_color"
                     android:src="@drawable/highcontrast_icon" />
 
             </com.google.android.material.appbar.MaterialToolbar>
