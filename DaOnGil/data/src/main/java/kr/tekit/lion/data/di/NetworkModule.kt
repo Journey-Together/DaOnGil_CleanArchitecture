@@ -3,7 +3,6 @@ package kr.tekit.lion.data.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +29,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module

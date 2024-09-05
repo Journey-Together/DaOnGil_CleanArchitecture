@@ -94,4 +94,7 @@
     <color name="text_input_start_icon_tint">#474746</color>
 
     <color name="detail_divider">#383838</color>
+
+    <color name="text_field_background">#414141</color>
+  
 </resources>

@@ -11,8 +11,10 @@ import kr.tekit.lion.domain.model.search.ListSearchResultList
 import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfo
 import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfoGuest
+import kr.tekit.lion.domain.model.placereview.WritePlaceReview
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 internal class PlaceDataSource @Inject constructor(
@@ -76,7 +78,15 @@ internal class PlaceDataSource @Inject constructor(
         placeService.getPlaceDetailInfo(placeId).toDomainModel()
     }
 
-    suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest> = execute{
+    suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest> = execute {
         placeService.getPlaceDetailInfoGuest(placeId).toDomainModel()
+    }
+
+    suspend fun writePlaceReviewData(
+        placeId: Long,
+        placeReviewReq: RequestBody,
+        images: List<MultipartBody.Part>
+    ): Result<WritePlaceReview> = execute {
+        placeService.writePlaceReviewData(placeId, placeReviewReq, images).toDomainModel()
     }
 }

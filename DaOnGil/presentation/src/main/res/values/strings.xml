@@ -360,4 +360,8 @@
     <string name="text_onboarding_fourth_text3">
          누구든 떠날 자유, 모두가 누릴 행복
     </string>
+
+    <string name="text_num_of_images">%d</string>
+    <string name="text_num_of_max_images">/4</string>
+
 </resources>
