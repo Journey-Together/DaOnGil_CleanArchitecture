@@ -152,7 +152,7 @@ class ScheduleFormViewModel @Inject constructor(
             val existingPlaces = currentSchedule[index].dailyPlaces
             if (existingPlaces.isEmpty()) continue
             updatedSchedule[index] = updatedSchedule[index].copy(
-                dailyPlaces = (updatedSchedule[index].dailyPlaces + existingPlaces)
+                dailyPlaces = (existingPlaces)
             )
         }
 
