@@ -9,10 +9,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
+import kr.tekit.lion.domain.model.BookmarkedPlace
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.domain.model.scheduleform.FormPlace
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchInfoList
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
+import kr.tekit.lion.domain.repository.BookmarkRepository
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.ext.addDays
@@ -23,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleFormViewModel @Inject constructor(
-    private val planRepository: PlanRepository
+    private val planRepository: PlanRepository,
+    private val bookmarkRepository: BookmarkRepository,
 ): ViewModel() {
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
@@ -39,6 +42,9 @@ class ScheduleFormViewModel @Inject constructor(
 
     private val _schedule = MutableLiveData<List<DailySchedule>?>()
     val schedule : LiveData<List<DailySchedule>?> get() = _schedule
+
+    private val _bookmarkedPlaces = MutableLiveData<List<BookmarkedPlace>>()
+    val bookmarkedPlaces: LiveData<List<BookmarkedPlace>> get() = _bookmarkedPlaces
 
     // 여행지 검색 화면 - 검색 결과 목록 + pageNo(0~), pageSize(itemSize), totalPages, last (t/f)
     private val _placeSearchResult = MutableLiveData<PlaceSearchResult>()
@@ -58,8 +64,9 @@ class ScheduleFormViewModel @Inject constructor(
     }
     val searchResultsWithNum : LiveData<List<PlaceSearchInfoList>> get() = _searchResultsWithNum
 
-
-    //
+    init {
+        getBookmarkedPlaceList()
+    }
 
     fun setStartDate(startDate: Date?){
         _startDate.value = startDate
@@ -267,5 +274,15 @@ class ScheduleFormViewModel @Inject constructor(
             addNewPlace(formPlace, dayPosition)
         }
         return false
+    }
+
+    private fun getBookmarkedPlaceList(){
+        viewModelScope.launch {
+            bookmarkRepository.getPlaceBookmarkList().onSuccess {
+                _bookmarkedPlaces.postValue(it)
+            }.onError {
+                networkErrorDelegate.handleNetworkError(it)
+            }
+        }
     }
 }
