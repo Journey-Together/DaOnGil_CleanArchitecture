@@ -5,7 +5,13 @@ import kr.tekit.lion.data.dto.request.MapSearchRequest
 import kr.tekit.lion.data.dto.response.searchplace.list.toDomainModel
 import kr.tekit.lion.data.service.PlaceService
 import kr.tekit.lion.data.common.execute
+import kr.tekit.lion.data.dto.response.myreview.MyPlaceReviewResponse
+import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.model.MyPlaceReview
 import kr.tekit.lion.domain.model.search.ListSearchResultList
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 internal class PlaceDataSource @Inject constructor(
@@ -44,4 +50,20 @@ internal class PlaceDataSource @Inject constructor(
     )
 
     suspend fun getAutoCompleteKeyword(keyword: String) = placeService.getAutoCompleteKeyword(keyword)
+
+    suspend fun getMyPlaceReview(size: Int, page: Int): Result<MyPlaceReview> = execute {
+        placeService.getMyPlaceReview(size, page).toDomainModel()
+    }
+
+    suspend fun deleteMyPlaceReview(reviewId: Long) = execute {
+        placeService.deleteMyPlaceReview(reviewId)
+    }
+
+    suspend fun updateMyPlaceReviewData(
+        reviewId: Long,
+        reviewUpdateReq: RequestBody,
+        addImages: List<MultipartBody.Part>
+    ) = execute {
+        placeService.updateMyPlaceReviewData(reviewId, reviewUpdateReq, addImages)
+    }
 }
