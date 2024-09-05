@@ -9,12 +9,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
-import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.ScheduleDetail
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.PlanRepository
-import kr.tekit.lion.domain.usecase.base.onError
 import kr.tekit.lion.domain.usecase.base.onSuccess
+import kr.tekit.lion.domain.usecase.bookmark.UpdateScheduleDetailBookmarkUseCase
 import kr.tekit.lion.domain.usecase.plan.DeleteMyPlanReviewUseCase
 import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailGuestUseCase
 import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailUseCase
@@ -30,7 +29,8 @@ class ScheduleDetailViewModel @Inject constructor(
     private val getScheduleDetailUseCase: GetScheduleDetailUseCase,
     private val getScheduleDetailGuestUseCase: GetScheduleDetailGuestUseCase,
     private val deleteMyPlanReviewUseCase: DeleteMyPlanReviewUseCase,
-    private val updateMyPlanPublicUseCase: UpdateMyPlanPublicUseCase
+    private val updateMyPlanPublicUseCase: UpdateMyPlanPublicUseCase,
+    private val updateScheduleDetailBookmarkUseCase: UpdateScheduleDetailBookmarkUseCase
 ): ViewModel() {
 
     @Inject
@@ -86,6 +86,15 @@ class ScheduleDetailViewModel @Inject constructor(
         viewModelScope.launch {
             planRepository.deleteMyPlanSchedule(planId).onError {
                 networkErrorDelegate.handleNetworkError(it)
+            }
+        }
+
+    fun updateScheduleDetailBookmark(planId: Long) =
+        viewModelScope.launch {
+            updateScheduleDetailBookmarkUseCase(planId).onSuccess {
+                _scheduleDetail.value = _scheduleDetail.value?.copy(
+                    isBookmark = it.state
+                )
             }
         }
 
