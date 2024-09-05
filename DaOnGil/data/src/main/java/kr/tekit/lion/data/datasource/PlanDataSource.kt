@@ -49,4 +49,8 @@ internal class PlanDataSource @Inject constructor(
     suspend fun getDetailScheduleReviewGuest(planId: Long): ScheduleDetailReview {
         return planService.getDetailScheduleReview(planId).toDomainModel()
     }
+
+    suspend fun deleteMyPlanReview(reviewId: Long): Result<Unit> = execute {
+        planService.deleteMyPlanReview(reviewId)
+    }
 }

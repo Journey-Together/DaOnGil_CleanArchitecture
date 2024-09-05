@@ -7,6 +7,7 @@ import kr.tekit.lion.data.dto.response.plan.myScheduleElapsed.MyElapsedResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleUpcoming.MyUpcomingsResponse
 import kr.tekit.lion.data.dto.response.plan.openSchedule.OpenPlanListResponse
 import kr.tekit.lion.data.dto.response.plan.scheduleDetailReview.ScheduleDetailReviewResponse
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -64,4 +65,10 @@ internal interface PlanService {
         @Path("planId") planId: Long,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): ScheduleDetailReviewResponse
+
+    // 여행 일정 후기 삭제
+    @DELETE("plan/review/{reviewId}")
+    suspend fun deleteMyPlanReview(
+        @Path("reviewId") reviewId: Long
+    )
 }
