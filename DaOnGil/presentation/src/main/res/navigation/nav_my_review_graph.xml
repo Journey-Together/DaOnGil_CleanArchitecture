@@ -4,42 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_my_review_graph"
     app:startDestination="@id/myReviewFragment">
-
     <fragment
         android:id="@+id/myReviewFragment"
-        android:name="kr.tekit.lion.daongil.presentation.myreview.fragment.MyReviewFragment"
+        android:name="kr.tekit.lion.presentation.myreview.fragment.MyReviewFragment"
         android:label="fragment_my_review"
         tools:layout="@layout/fragment_my_review" >
         <action
-            android:id="@+id/action_myReviewFragment_to_myReviewDetailFragment"
-            app:destination="@id/myReviewDetailFragment" />
-        <argument
-            android:name="reviewDeleted"
-            app:argType="boolean"
-            android:defaultValue="false" />
-    </fragment>
-    <fragment
-        android:id="@+id/myReviewDetailFragment"
-        android:name="kr.tekit.lion.daongil.presentation.myreview.fragment.MyReviewDetailFragment"
-        android:label="fragment_my_review_detail"
-        tools:layout="@layout/fragment_my_review_detail" >
-        <action
-            android:id="@+id/action_myReviewDetailFragment_to_myReviewFragment"
-            app:destination="@id/myReviewFragment" />
-        <action
-            android:id="@+id/action_myReviewDetailFragment_to_myReviewModifyFragment"
+            android:id="@+id/action_myReviewFragment_to_myReviewModifyFragment"
             app:destination="@id/myReviewModifyFragment" />
-        <argument
-            android:name="reviewId"
-            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/myReviewModifyFragment"
-        android:name="kr.tekit.lion.daongil.presentation.myreview.fragment.MyReviewModifyFragment"
+        android:name="kr.tekit.lion.presentation.myreview.fragment.MyReviewModifyFragment"
         android:label="fragment_my_review_modify"
         tools:layout="@layout/fragment_my_review_modify" >
-        <action
-            android:id="@+id/action_myReviewModifyFragment_to_myReviewDetailFragment"
-            app:destination="@id/myReviewDetailFragment" />
     </fragment>
 </navigation>

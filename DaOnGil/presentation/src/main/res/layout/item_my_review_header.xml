@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewMyReivewHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_basic"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_my_review_header"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewMyReivewTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small2"
+        android:fontFamily="@font/pretendard_medium"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintStart_toEndOf="@+id/textViewMyReivewHeader"
+        app:layout_constraintTop_toTopOf="@+id/textViewMyReivewHeader"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/textViewMyReivewHeaderCnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_my_review_header_cnt"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintStart_toEndOf="@+id/textViewMyReivewTotal"
+        app:layout_constraintTop_toTopOf="@+id/textViewMyReivewTotal" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big3"
+        app:dividerColor="@color/text_quinary"
+        app:dividerThickness="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMyReivewHeader" />
+</androidx.constraintlayout.widget.ConstraintLayout>

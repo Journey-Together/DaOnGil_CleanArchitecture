@@ -322,6 +322,15 @@
     <string name="text_reset_all_option">모든옵션이 초기화되었습니다.</string>
     <string name="text_select_all_option">모든옵션이 선택되었습니다.</string>
 
+    <string name="text_num_of_images">%d</string>
+    <string name="text_num_of_max_images">/4</string>
+    <string name="text_num_of_total_images">/%d</string>
+
+    <string name="text_my_review_modify_btn">수정</string>
+    <string name="text_my_review_delete_btn">삭제</string>
+    <string name="text_my_review_header">내가 쓴 총 후기</string>
+    <string name="text_my_review_header_cnt">개</string>
+
     <string name="text_schedule_thumbnail_image">일정 대표사진</string>
     <string name="text_place_thumbnail_image">여행지 대표사진</string>
     <string name="text_add_place_to_schedule">일정에 여행지 추가</string>
