@@ -51,6 +51,8 @@ class WriteReviewActivity : AppCompatActivity() {
                     selectedImages.add(uri)
                     imageRVAdapter.notifyDataSetChanged()
 
+                    binding.writeReviewImageNumTv.text = selectedImages.size.toString()
+
                     val path = this.toAbsolutePath(uri)
                     viewModel.setReviewImages(path!!)
                 } else {
@@ -71,6 +73,8 @@ class WriteReviewActivity : AppCompatActivity() {
                         // 이미지를 리스트에 추가하고 어댑터에 데이터 변경을 알림
                         selectedImages.add(it)
                         imageRVAdapter.notifyDataSetChanged()
+
+                        binding.writeReviewImageNumTv.text = selectedImages.size.toString()
 
                         val path = this.toAbsolutePath(uri)
                         viewModel.setReviewImages(path!!)
