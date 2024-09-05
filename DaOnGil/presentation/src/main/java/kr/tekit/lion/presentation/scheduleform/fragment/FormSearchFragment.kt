@@ -16,7 +16,7 @@ import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 
 class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
     private val args: FormSearchFragmentArgs by navArgs()
-    private val viewModel : ScheduleFormViewModel by activityViewModels()
+    private val viewModel: ScheduleFormViewModel by activityViewModels()
 
     private val searchResultAdapter by lazy {
         FormSearchResultAdapter(
@@ -25,7 +25,8 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
             },
             onItemClickListener = { selectedPlacePosition ->
                 val placeId = viewModel.getPlaceId(selectedPlacePosition)
-                if(placeId != -1L){
+                if (placeId != -1L) {
+                    // TODO 주석 해제
 //                    showPlaceDetail(placeId)
                 }
             }
@@ -47,18 +48,18 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
 
     }
 
-    private fun initToolbar(binding: FragmentFormSearchBinding){
+    private fun initToolbar(binding: FragmentFormSearchBinding) {
         binding.toolbarFormSearch.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
     }
 
-    private fun settingSearchResultRV(binding: FragmentFormSearchBinding){
+    private fun settingSearchResultRV(binding: FragmentFormSearchBinding) {
         binding.recyclerViewFsResult.apply {
             adapter = searchResultAdapter
-            addOnScrollEndListener{
-                with(viewModel){
-                    if(!isLastPage()){
+            addOnScrollEndListener {
+                with(viewModel) {
+                    if (!isLastPage()) {
                         getPlaceSearchResult(isNewRequest = false)
                     }
                 }
@@ -74,7 +75,11 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
         }
     }
 
-    private fun addNewPlace(schedulePosition: Int, selectedPlacePosition: Int, isBookmarkedPlace: Boolean) {
+    private fun addNewPlace(
+        schedulePosition: Int,
+        selectedPlacePosition: Int,
+        isBookmarkedPlace: Boolean
+    ) {
         val isDuplicate = viewModel.isPlaceAlreadyAdded(
             schedulePosition,
             selectedPlacePosition,
@@ -87,17 +92,16 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
         }
     }
 
-    private fun settingPlaceSearchView(binding: FragmentFormSearchBinding){
+    private fun settingPlaceSearchView(binding: FragmentFormSearchBinding) {
         binding.searchViewFsResult.apply {
             editText.setOnEditorActionListener { textView, actionId, event ->
-                if(event!=null && event.action == KeyEvent.ACTION_DOWN){
+                if (event != null && event.action == KeyEvent.ACTION_DOWN) {
                     val word = editText.text.toString()
-                    if(word.isEmpty()){
+                    if (word.isEmpty()) {
                         this.showSnackbar("검색어를 입력해주세요")
-                    }else{
+                    } else {
                         binding.recyclerViewFsResult.visibility = View.VISIBLE
                         binding.textFsResultEmpty.visibility = View.GONE
-                        // TODO 수정
                         viewModel.setKeyword(word)
                         viewModel.getPlaceSearchResult(isNewRequest = true)
                     }
