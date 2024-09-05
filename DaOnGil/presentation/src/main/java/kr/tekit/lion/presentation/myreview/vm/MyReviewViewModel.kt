@@ -18,6 +18,9 @@ import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import java.time.LocalDate
 import javax.inject.Inject
 
+private const val INITIAL_PAGE_NO = 0
+private const val REVIEW_GET_SIZE = 5
+
 @HiltViewModel
 class MyReviewViewModel @Inject constructor(
     private val placeRepository: PlaceRepository
@@ -53,10 +56,10 @@ class MyReviewViewModel @Inject constructor(
     private var isRequesting = false
 
     init {
-        getMyPlaceReview(5, 0)
+        getMyPlaceReview()
     }
 
-    private fun getMyPlaceReview(size: Int, page: Int) = viewModelScope.launch {
+    private fun getMyPlaceReview(size: Int = REVIEW_GET_SIZE, page: Int = INITIAL_PAGE_NO) = viewModelScope.launch {
         placeRepository.getMyPlaceReview(size, page).onSuccess {
             _myPlaceReview.value = it
 
@@ -68,7 +71,7 @@ class MyReviewViewModel @Inject constructor(
         }
     }
 
-    fun getNextMyPlaceReview(size: Int) = viewModelScope.launch {
+    fun getNextMyPlaceReview(size: Int = REVIEW_GET_SIZE) = viewModelScope.launch {
         val page = _myPlaceReview.value?.pageNo ?:0
 
         if (_isLastPage.value == false && !isRequesting) {

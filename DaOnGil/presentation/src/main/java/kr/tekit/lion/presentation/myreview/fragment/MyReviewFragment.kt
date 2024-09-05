@@ -82,7 +82,7 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
 
                 binding.recyclerViewMyReview.addOnScrollEndListener {
                     if (viewModel.isLastPage.value == false) {
-                        viewModel.getNextMyPlaceReview(5)
+                        viewModel.getNextMyPlaceReview()
                     }
                 }
             } else {
