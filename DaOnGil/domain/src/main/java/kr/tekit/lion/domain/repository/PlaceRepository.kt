@@ -27,5 +27,9 @@ interface PlaceRepository {
 
     suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest>
 
-    suspend fun writePlaceReviewData(placeId: Long, newReviewData: NewReviewData, reviewImages: NewReviewImages) : Result<WritePlaceReview>
+    suspend fun writePlaceReviewData(
+        placeId: Long,
+        newReviewData: NewReviewData,
+        reviewImages: NewReviewImages
+    ): Result<WritePlaceReview>
 }

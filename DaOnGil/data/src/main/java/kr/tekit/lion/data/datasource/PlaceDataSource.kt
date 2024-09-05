@@ -61,11 +61,15 @@ internal class PlaceDataSource @Inject constructor(
         placeService.getPlaceDetailInfo(placeId).toDomainModel()
     }
 
-    suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest> = execute{
+    suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest> = execute {
         placeService.getPlaceDetailInfoGuest(placeId).toDomainModel()
     }
 
-    suspend fun writePlaceReviewData(placeId: Long, placeReviewReq: RequestBody, images: List<MultipartBody.Part>): Result<WritePlaceReview> = execute {
+    suspend fun writePlaceReviewData(
+        placeId: Long,
+        placeReviewReq: RequestBody,
+        images: List<MultipartBody.Part>
+    ): Result<WritePlaceReview> = execute {
         placeService.writePlaceReviewData(placeId, placeReviewReq, images).toDomainModel()
     }
 }

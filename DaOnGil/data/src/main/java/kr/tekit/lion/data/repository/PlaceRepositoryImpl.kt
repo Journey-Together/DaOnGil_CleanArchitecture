@@ -41,7 +41,10 @@ internal class PlaceRepositoryImpl @Inject constructor(
         emit(response.toDomainModel())
     }
 
-    override suspend fun getPlaceMainInfo(areaCode: String, sigunguCode: String): Result<PlaceMainInfo> {
+    override suspend fun getPlaceMainInfo(
+        areaCode: String,
+        sigunguCode: String
+    ): Result<PlaceMainInfo> {
         return placeDataSource.getPlaceMainInfo(areaCode, sigunguCode)
     }
 
@@ -53,7 +56,15 @@ internal class PlaceRepositoryImpl @Inject constructor(
         return placeDataSource.getPlaceDetailInfoGuest(placeId)
     }
 
-    override suspend fun writePlaceReviewData(placeId: Long, newReviewData: NewReviewData, reviewImages: NewReviewImages) : Result<WritePlaceReview> {
-        return placeDataSource.writePlaceReviewData(placeId, newReviewData.toRequestBody(), reviewImages.toMultiPartBody())
+    override suspend fun writePlaceReviewData(
+        placeId: Long,
+        newReviewData: NewReviewData,
+        reviewImages: NewReviewImages
+    ): Result<WritePlaceReview> {
+        return placeDataSource.writePlaceReviewData(
+            placeId,
+            newReviewData.toRequestBody(),
+            reviewImages.toMultiPartBody()
+        )
     }
 }
