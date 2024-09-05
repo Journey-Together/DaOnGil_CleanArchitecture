@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.scheduleform.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentFormSearchBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.scheduleform.adapter.FormBookmarkedPlacesAdapter
 import kr.tekit.lion.presentation.scheduleform.adapter.FormSearchResultAdapter
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
@@ -32,8 +34,7 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
             onItemClickListener = { selectedPlacePosition ->
                 val placeId = viewModel.getPlaceId(selectedPlacePosition)
                 if (placeId != -1L) {
-                    // TODO 주석 해제
-//                    showPlaceDetail(placeId)
+                    navigateToPlaceDetail(placeId)
                 }
             }
         )
@@ -95,7 +96,12 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
         if (isDuplicate) {
             requireView().showSnackbar("이 여행지는 이미 일정에 추가되어 있습니다")
         } else {
-            // TODO 관광지 상세보기 API 연결해서 코드 수정
+            // 중복되지 않은 여행지는 일정에 추가
+            viewModel.getSearchedPlaceDetailInfo(
+                schedulePosition,
+                selectedPlacePosition,
+                isBookmarkedPlace
+            )
             findNavController().popBackStack()
         }
     }
@@ -143,5 +149,11 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
                 }
             }
         }
+    }
+
+    private fun navigateToPlaceDetail(placeId: Long){
+        val intent = Intent(requireActivity(), DetailActivity::class.java)
+        intent.putExtra("detailPlaceId", placeId)
+        startActivity(intent)
     }
 }
