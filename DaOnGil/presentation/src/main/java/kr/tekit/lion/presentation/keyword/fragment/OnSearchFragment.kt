@@ -27,7 +27,6 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentOnSearchBinding.bind(view)
-
         val recentlyKeywordAdapter = RecentlyKeywordAdapter(
             onClick = {
                 findNavController().navigate(
@@ -126,21 +125,6 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
         }
     }
 
-    private fun moveFragment(fragment: Fragment, keyword: String) {
-        val transaction = parentFragmentManager.beginTransaction()
-
-        if (fragment is SearchResultFragment) {
-            val bundle = Bundle()
-            bundle.putString("searchText", keyword)
-            fragment.arguments = bundle
-        }
-
-        transaction.replace(R.id.fragment_container_view, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-
     private fun showDeleteConfirmDialog() {
         val dialog = ConfirmDialog(
             "검색어 전체 삭제",
@@ -151,5 +135,10 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
         }
         dialog.isCancelable = false
         dialog.show(childFragmentManager, "showDeleteConfirmDialog")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.inputTextChanged("")
     }
 }
