@@ -17,4 +17,7 @@ interface PlanRepository {
     suspend fun getOpenPlanList(size: Int, page: Int): Result<OpenPlan>
 
     suspend fun getDetailScheduleInfo(planId: Long): ScheduleDetailInfo
+
+    suspend fun getDetailScheduleInfoGuest(planId: Long): ScheduleDetailInfo
+
 }

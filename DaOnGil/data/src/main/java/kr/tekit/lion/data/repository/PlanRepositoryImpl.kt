@@ -32,4 +32,8 @@ internal class PlanRepositoryImpl @Inject constructor(
     override suspend fun getDetailScheduleInfo(planId: Long): ScheduleDetailInfo {
         return planDataSource.getDetailScheduleInfo(planId)
     }
+
+    override suspend fun getDetailScheduleInfoGuest(planId: Long): ScheduleDetailInfo {
+        return planDataSource.getDetailScheduleInfoGuest(planId)
+    }
 }
