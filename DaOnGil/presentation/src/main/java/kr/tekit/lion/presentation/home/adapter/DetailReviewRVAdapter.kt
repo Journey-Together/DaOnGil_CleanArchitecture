@@ -50,6 +50,12 @@ class DetailReviewRVAdapter(private val reviewList : List<Review>)
                 } else {
                     itemDetailReviewBigRv.visibility = View.GONE
                 }
+
+                if (reviewData.myReview) {
+                    itemDetailReviewBigReportBtn.visibility = View.GONE
+                } else {
+                    itemDetailReviewBigReportBtn.visibility = View.VISIBLE
+                }
             }
         }
     }

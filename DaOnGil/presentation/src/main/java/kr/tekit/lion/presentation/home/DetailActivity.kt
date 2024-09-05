@@ -101,13 +101,13 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.detailWriteReviewBtn.setOnClickListener {
-            Intent(this, WriteReviewActivity::class.java).apply {
+            val intent = Intent(this, WriteReviewActivity::class.java).apply {
                 putExtra("reviewPlaceId", placeId)
                 putExtra("reviewPlaceName", placeName)
                 putExtra("reviewPlaceAddress", placeAddress)
                 putExtra("reviewPlaceImage", image)
-                startActivity(intent)
             }
+            startActivity(intent)
         }
 
         binding.detailModifyReviewBtn.setOnClickListener {

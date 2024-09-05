@@ -72,6 +72,10 @@
 
     <color name="transparent">#00000000</color>
 
+    <color name="text_field_background">#414141</color>
+
+    <color name="photo_dialog_toolbar">#80000000</color>
+
     <color name="home_search_banner_background">#2E2E2E</color>
     <color name="vp_item_background">#0625B6</color>
 

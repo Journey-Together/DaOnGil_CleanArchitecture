@@ -3,7 +3,7 @@ package kr.tekit.lion.data.dto.response.plan.myScheduleUpcoming
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PlanRes(
+internal data class PlanRes(
     val planId: Long,
     val title: String,
     val startDate: String,

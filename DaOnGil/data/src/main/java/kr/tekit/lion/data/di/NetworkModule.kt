@@ -3,12 +3,12 @@ package kr.tekit.lion.data.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
+import kr.tekit.lion.data.dto.request.util.LocalDateAdapter
 import kr.tekit.lion.data.dto.response.aed.AedJsonAdapter
 import kr.tekit.lion.data.dto.response.emergency.message.EmergencyMessageJsonAdapter
 import kr.tekit.lion.data.dto.response.emergency.realtime.EmergencyRealtimeJsonAdapter
@@ -27,10 +27,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -177,7 +175,7 @@ internal object NetworkModule {
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
             .add(LocalDateTime::class.java, Rfc3339DateJsonAdapter().nullSafe())
-            .add(LocalDate::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .add(LocalDateAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
     }

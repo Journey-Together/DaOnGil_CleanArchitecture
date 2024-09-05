@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:layout_marginBottom="@dimen/margin_small1"
+        android:backgroundTint="@color/item_background"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/view_search_result_deco"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/primary"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_search_result_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:layout_marginTop="@dimen/margin_big3"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendard_semibold"
+                android:lineSpacingMultiplier="1.1"
+                android:maxLines="2"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintEnd_toStartOf="@+id/button_search_result_add"
+                app:layout_constraintStart_toEndOf="@+id/image_search_result_thumbnail"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="여행지 이름" />
+
+            <TextView
+                android:id="@+id/text_search_result_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="@dimen/margin_big3"
+                android:fontFamily="@font/pretendard_light"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_search_result_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_search_result_name"
+                tools:text="관광지" />
+
+            <ImageView
+                android:id="@+id/image_search_result_thumbnail"
+                android:layout_width="58dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:layout_marginTop="@dimen/margin_small1"
+                android:layout_marginBottom="@dimen/margin_small1"
+                android:contentDescription="@string/text_place_thumbnail_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view_search_result_deco"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/empty_view" />
+
+            <ImageButton
+                android:id="@+id/button_search_result_add"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@color/item_background"
+                android:contentDescription="@string/text_add_place_to_schedule"
+                android:paddingHorizontal="@dimen/margin_big3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/form_add_icon"
+                app:tint="@color/primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
