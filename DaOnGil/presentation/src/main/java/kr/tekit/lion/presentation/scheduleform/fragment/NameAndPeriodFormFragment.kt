@@ -18,6 +18,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentNameAndPeriodFormBinding
 import kr.tekit.lion.presentation.ext.formatDateValue
 import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 import java.util.Date
 import kotlin.concurrent.thread
@@ -93,11 +94,10 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
     }
 
     private fun showPickedDates(binding: FragmentNameAndPeriodFormBinding) {
-        val formatPattern = "yyyy.MM.dd(E)"
         val startDate = scheduleFormViewModel.startDate.value
         val endDate = scheduleFormViewModel.endDate.value
-        val startDateFormatted = startDate?.formatDateValue(formatPattern)
-        val endDateFormatted = endDate?.formatDateValue(formatPattern)
+        val startDateFormatted = startDate?.formatDateValue(FormDateFormat.YYYY_MM_DD_E)
+        val endDateFormatted = endDate?.formatDateValue(FormDateFormat.YYYY_MM_DD_E)
         binding.buttonNpfSetPeriod.text =
             getString(R.string.picked_dates, startDateFormatted, endDateFormatted)
     }

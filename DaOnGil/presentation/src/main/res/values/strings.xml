@@ -323,6 +323,8 @@
     <string name="text_select_all_option">모든옵션이 선택되었습니다.</string>
 
     <string name="text_schedule_thumbnail_image">일정 대표사진</string>
+    <string name="text_place_thumbnail_image">여행지 대표사진</string>
+    <string name="text_add_place_to_schedule">일정에 여행지 추가</string>
     <string name="text_no_schedule">아직 등록된 일정이 없어요</string>
     <string name="text_explore_public_schedule">공개일정 둘러보기</string>
     <string name="text_add_new_schedule">새 여행 일정 추가하기</string>
