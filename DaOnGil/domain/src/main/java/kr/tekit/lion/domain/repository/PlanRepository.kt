@@ -25,7 +25,7 @@ interface PlanRepository {
 
     suspend fun getDetailScheduleReviewGuest(planId: Long): ScheduleDetailReview
 
-    suspend fun deleteMyPlanReview(reviewId: Long): Result<Unit>
+    suspend fun deleteMyPlanReview(reviewId: Long)
 
     suspend fun updateMyPlanPublic(planId: Long): Result<Unit>
 

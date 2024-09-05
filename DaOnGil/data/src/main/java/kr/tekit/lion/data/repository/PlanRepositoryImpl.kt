@@ -46,7 +46,7 @@ internal class PlanRepositoryImpl @Inject constructor(
         return planDataSource.getDetailScheduleReviewGuest(planId)
     }
 
-    override suspend fun deleteMyPlanReview(reviewId: Long): Result<Unit> {
+    override suspend fun deleteMyPlanReview(reviewId: Long) {
         return planDataSource.deleteMyPlanReview(reviewId)
     }
 
