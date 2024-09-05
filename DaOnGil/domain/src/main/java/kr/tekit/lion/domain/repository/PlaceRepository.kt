@@ -6,6 +6,8 @@ import kr.tekit.lion.domain.model.search.ListSearchResultList
 import kr.tekit.lion.domain.model.search.MapSearchOption
 import kr.tekit.lion.domain.model.search.MapSearchResultList
 import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfo
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfoGuest
 import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
@@ -17,4 +19,8 @@ interface PlaceRepository {
     suspend fun getAutoCompleteKeyword(keyword: String): Flow<AutoCompleteKeyword>
 
     suspend fun getPlaceMainInfo(areaCode: String, sigunguCode: String): Result<PlaceMainInfo>
+
+    suspend fun getPlaceDetailInfo(placeId: Long): Result<PlaceDetailInfo>
+
+    suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest>
 }

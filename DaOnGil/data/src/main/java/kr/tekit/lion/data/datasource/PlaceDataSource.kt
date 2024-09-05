@@ -8,6 +8,8 @@ import kr.tekit.lion.data.common.execute
 import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.search.ListSearchResultList
 import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfo
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfoGuest
 import javax.inject.Inject
 
 internal class PlaceDataSource @Inject constructor(
@@ -49,5 +51,13 @@ internal class PlaceDataSource @Inject constructor(
 
     suspend fun getPlaceMainInfo(areaCode: String, sigunguCode: String): Result<PlaceMainInfo> = execute {
         placeService.getPlaceMainInfo(areaCode, sigunguCode).toDomainModel()
+    }
+
+    suspend fun getPlaceDetailInfo(placeId: Long): Result<PlaceDetailInfo> = execute {
+        placeService.getPlaceDetailInfo(placeId).toDomainModel()
+    }
+
+    suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest> = execute{
+        placeService.getPlaceDetailInfoGuest(placeId).toDomainModel()
     }
 }

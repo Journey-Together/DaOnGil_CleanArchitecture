@@ -8,6 +8,15 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".home.WriteReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.ReviewListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.DetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".scheduleform.ScheduleFormActivity"
             android:exported="false" />
         <activity

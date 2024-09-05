@@ -11,6 +11,8 @@ import kr.tekit.lion.domain.model.search.MapSearchResultList
 import kr.tekit.lion.domain.repository.PlaceRepository
 import javax.inject.Inject
 import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfo
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfoGuest
 import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
@@ -35,5 +37,13 @@ internal class PlaceRepositoryImpl @Inject constructor(
 
     override suspend fun getPlaceMainInfo(areaCode: String, sigunguCode: String): Result<PlaceMainInfo> {
         return placeDataSource.getPlaceMainInfo(areaCode, sigunguCode)
+    }
+
+    override suspend fun getPlaceDetailInfo(placeId: Long): Result<PlaceDetailInfo> {
+        return placeDataSource.getPlaceDetailInfo(placeId)
+    }
+
+    override suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest> {
+        return placeDataSource.getPlaceDetailInfoGuest(placeId)
     }
 }
