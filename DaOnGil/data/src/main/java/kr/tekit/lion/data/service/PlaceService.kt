@@ -3,10 +3,16 @@ package kr.tekit.lion.data.service
 import kr.tekit.lion.data.dto.response.detailplace.DetailPlaceResponse
 import kr.tekit.lion.data.dto.response.detailplaceguest.DetailPlaceGuestResponse
 import kr.tekit.lion.data.dto.response.mainplace.MainPlaceResponse
+import kr.tekit.lion.data.dto.response.placereview.WritePlaceReviewResponse
 import kr.tekit.lion.data.dto.response.searchplace.AutoCompleteKeywordResponse
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Tag
@@ -62,4 +68,12 @@ internal interface PlaceService {
         @Path("placeId") placeId: Long,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): DetailPlaceGuestResponse
+
+    @Multipart
+    @POST("place/review/{placeId}")
+    suspend fun writePlaceReviewData(
+        @Path("placeId") placeId: Long,
+        @Part("placeReviewReq") placeReviewReq: RequestBody,
+        @Part images : List<MultipartBody.Part>?
+    ): WritePlaceReviewResponse
 }
