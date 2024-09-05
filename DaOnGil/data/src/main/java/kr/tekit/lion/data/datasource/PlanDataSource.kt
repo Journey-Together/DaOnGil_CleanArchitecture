@@ -6,6 +6,7 @@ import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 internal class PlanDataSource @Inject constructor(
@@ -26,5 +27,9 @@ internal class PlanDataSource @Inject constructor(
 
     suspend fun getPlaceSearchResult(word: String, page: Int) : Result<PlaceSearchResult> = execute{
         planService.getPlaceSearchResults(word, page, PLACE_SEARCH_PAGE_SIZE).toDomainModel()
+    }
+
+    suspend fun addNewPlan(request: RequestBody){
+        planService.addNewPlan(request)
     }
 }
