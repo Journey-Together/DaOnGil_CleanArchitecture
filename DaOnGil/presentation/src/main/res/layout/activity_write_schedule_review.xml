@@ -8,6 +8,340 @@
     android:background="@color/navi_background"
     tools:context=".schedulereview.WriteScheduleReviewActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_write_schedule_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navi_background"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/cancel_icon">
 
+        <TextView
+            style="@style/Theme.Toolbar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_write_schedule_review" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_write_schedule_review">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_wsr_schedule"
+                style="@style/Widget.Material3.CardView.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:backgroundTint="@color/item_background"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="4dp"
+                app:cardPreventCornerOverlap="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:id="@+id/view_wsr_deco"
+                        android:layout_width="5dp"
+                        android:layout_height="0dp"
+                        android:background="@color/primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_wsr_schedule_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_big4"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:maxLines="1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/font_big2"
+                        app:layout_constraintEnd_toEndOf="@+id/text_wsr_schedule_period"
+                        app:layout_constraintStart_toStartOf="@+id/text_wsr_schedule_period"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="경주여행" />
+
+                    <TextView
+                        android:id="@+id/text_wsr_schedule_period"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_big3"
+                        android:layout_marginTop="@dimen/margin_small2"
+                        android:layout_marginEnd="@dimen/margin_big3"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:fontFamily="@font/pretendard_light"
+                        android:textColor="@color/text_secondary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/image_wsr_schedule_thumbnail"
+                        app:layout_constraintStart_toEndOf="@+id/view_wsr_deco"
+                        app:layout_constraintTop_toBottomOf="@+id/text_wsr_schedule_title"
+                        tools:text="2024.04.01 - 04.05" />
+
+                    <ImageView
+                        android:id="@+id/image_wsr_schedule_thumbnail"
+                        android:layout_width="@dimen/search_bar_height"
+                        android:layout_height="@dimen/search_bar_height"
+                        android:layout_marginEnd="@dimen/margin_small1"
+                        android:contentDescription="@string/text_schedule_thumbnail_image"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/empty_view_small" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.willy.ratingbar.BaseRatingBar
+                android:id="@+id/ratingbar_wsr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:contentDescription="@string/text_schedule_satisfaction"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_wsr_schedule"
+                app:srb_drawableEmpty="@drawable/star_icon"
+                app:srb_drawableFilled="@drawable/star_filled_icon"
+                app:srb_isIndicator="false"
+                app:srb_minimumStars="0"
+                app:srb_numStars="5"
+                app:srb_rating="0"
+                app:srb_starHeight="40dp"
+                app:srb_starPadding="7dp"
+                app:srb_starWidth="40dp"
+                app:srb_stepSize="0.5" />
+
+            <View
+                android:id="@+id/view_wsr_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:layout_marginTop="@dimen/margin_basic"
+                android:background="@drawable/dotted_line_horizontal"
+                android:layerType="software"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingbar_wsr" />
+
+            <TextView
+                android:id="@+id/text_wsr_public_scope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_basic"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/text_is_schedule_public"
+                android:textSize="@dimen/font_big3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_wsr_divider" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_wsr_public_scope"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:layout_marginEnd="@dimen/margin_basic"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_wsr_public_scope"
+                app:layout_constraintTop_toBottomOf="@+id/text_wsr_public_scope">
+
+                <RadioButton
+                    android:id="@+id/radio_button_wsr_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_review_public_background"
+                    android:button="@null"
+                    android:text="@string/text_schedule_public"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_review_public_text" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_wsr_private"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_big4"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_review_public_background"
+                    android:button="@null"
+                    android:text="@string/text_schedule_private"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_review_public_text" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/text_wsr_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/text_schedule_review"
+                android:textSize="@dimen/font_big3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_wsr_public_scope" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_wsr_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:textColorHint="@color/text_tertiary"
+                app:boxBackgroundColor="@color/text_box_background"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_wsr_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_wsr_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="top"
+                    android:hint="@string/hint_review_content"
+                    android:inputType="textMultiLine"
+                    android:lines="7"
+                    android:maxLines="7"
+                    android:text=""
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_tertiary"
+                    android:textSize="@dimen/font_small1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/text_wsr_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/text_schedule_review_photo"
+                android:textSize="@dimen/font_big3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_wsr_content" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_wsr_add_photo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:layout_marginBottom="150dp"
+                app:cardCornerRadius="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_wsr_photo"
+                app:strokeColor="@color/primary_disabled"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/navi_background">
+
+                    <ImageButton
+                        android:id="@+id/button_wsr_add_photo"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/navi_background"
+                        android:contentDescription="@string/text_add_schedule_photo"
+                        android:paddingBottom="@dimen/margin_basic"
+                        android:src="@drawable/review_image_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_wsr_photo_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="@color/days_remaining"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/text_wsr_photo_num_max"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="@string/text_num_of_images" />
+
+                    <TextView
+                        android:id="@+id/text_wsr_photo_num_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/text_num_of_max_images"
+                        android:textColor="@color/text_num_of_review_images"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_wsr_photo_num" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_wsr_photos"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@+id/card_wsr_add_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/card_wsr_add_photo"
+                app:layout_constraintTop_toTopOf="@+id/card_wsr_add_photo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/button_wsr_submit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginBottom="@dimen/margin_basic"
+        android:background="@drawable/background_radius_10"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="@string/text_save_schedule_review"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_small1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

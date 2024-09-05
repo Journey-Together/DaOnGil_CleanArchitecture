@@ -120,6 +120,10 @@
     <string name="text_report_cancel">취소</string>
     <string name="text_report_submitted">신고가 접수되었습니다.</string>
 
+    <string name="text_is_schedule_public">공개 범주</string>
+    <string name="hint_review_content">후기를 입력해주세요</string>
+    <string name="text_add_schedule_photo">일정 후기 사진 추가 버튼</string>
+
     <string name="text_schedule_upcoming">다가오는 일정</string>
     <string name="text_schedule_elapsed">다녀온 일정</string>
     <string name="text_view_more">더보기</string>
