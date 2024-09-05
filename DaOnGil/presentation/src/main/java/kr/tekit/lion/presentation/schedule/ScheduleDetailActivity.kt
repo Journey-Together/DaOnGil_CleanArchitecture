@@ -41,9 +41,6 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
     private val viewModel: ScheduleDetailViewModel by viewModels()
 
-    // 북마크 여부
-    private var isBookmarked = false
-
     private val binding: ActivityScheduleDetailBinding by lazy{
         ActivityScheduleDetailBinding.inflate(layoutInflater)
     }
@@ -75,12 +72,12 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun initView(isUser: Boolean) {
+    private fun initView(isUser: Boolean, planId: Long) {
         with(binding) {
 
             viewModel.scheduleDetail.observe(this@ScheduleDetailActivity){ scheduleDetail ->
 
-                initToolbarMenu(isUser, scheduleDetail.isWriter, scheduleDetail.isPublic)
+                initToolbarMenu(isUser, scheduleDetail.isWriter, scheduleDetail.isPublic, scheduleDetail.isBookmark, planId)
 
                 settingScheduleAdapter(scheduleDetail)
                 schedulePublic.visibility = View.VISIBLE
@@ -232,12 +229,12 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
                     is LogInState.LoggedIn -> {
                         viewModel.getScheduleDetailInfo(planId)
-                        initView(true)
+                        initView(true, planId)
                     }
 
                     is LogInState.LoginRequired -> {
                         viewModel.getScheduleDetailInfoGuest(planId)
-                        initView(false)
+                        initView(false, planId)
                     }
                 }
             }
@@ -279,7 +276,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun initToolbarMenu(isUser: Boolean, isWriter: Boolean, isPublic: Boolean) {
+    private fun initToolbarMenu(isUser: Boolean, isWriter: Boolean, isPublic: Boolean, isBookmark: Boolean, planId: Long) {
 
         binding.toolbarViewSchedule.apply {
             menu.clear()
@@ -300,10 +297,15 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 inflateMenu(R.menu.menu_schedule_public)
                 val menuItemBookmark =
                     binding.toolbarViewSchedule.menu.findItem(R.id.menuSchedulPublicBookmark)
-                setBookmarkIcon(menuItemBookmark)
+                setBookmarkIcon(menuItemBookmark, isBookmark)
                 setOnMenuItemClickListener {
                     if (isUser) { // 로그인한 사용자
-                        toggleBookmarkState(menuItemBookmark)
+                        viewModel.updateScheduleDetailBookmark(planId)
+                        if(isBookmark){
+                            showSnackbar("북마크가 취소되었습니다")
+                        } else {
+                            showSnackbar("북마크 되었습니다")
+                        }
                     } else {
                         displayLoginDialog("여행 일정을 북마크하고 싶다면\n로그인을 진행해주세요")
                     }
@@ -313,19 +315,12 @@ class ScheduleDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setBookmarkIcon(menuItem: MenuItem) {
-        if (isBookmarked) {
+    private fun setBookmarkIcon(menuItem: MenuItem, isBookmark: Boolean) {
+        if (isBookmark) {
             menuItem.setIcon(R.drawable.bookmark_fill_scheduledetail_icon)
         } else {
             menuItem.setIcon(R.drawable.bookmark_schedule_detail_icon)
         }
-    }
-
-    private fun toggleBookmarkState(menuItem: MenuItem) {
-        // 북마크 상태 값 변경
-        isBookmarked = !isBookmarked
-        // 아이콘 변경
-        setBookmarkIcon(menuItem)
     }
 
     private fun initReviewMenu(isWriter: Boolean, isUser: Boolean, planId: Long, reviewId: Long) {
