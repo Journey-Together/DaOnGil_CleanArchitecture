@@ -19,9 +19,13 @@ import com.google.android.material.snackbar.Snackbar
 import kr.tekit.lion.presentation.R
 
 fun Context.showSoftInput(view: View) {
-    val inputMethodManger =
-        this.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+    val inputMethodManger = this.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManger.showSoftInput(view, 0)
+}
+
+fun Context.hideSoftInput(view: View) {
+    val inputMethodManager = this.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun Context.showPermissionSnackBar(view: View) {
