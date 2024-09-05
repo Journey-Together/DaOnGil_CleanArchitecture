@@ -2,7 +2,7 @@ package kr.tekit.lion.data.dto.request
 
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
-import kr.tekit.lion.data.dto.request.adapter.LocalDateAdapter
+import kr.tekit.lion.data.dto.request.util.LocalDateAdapter
 import kr.tekit.lion.domain.model.placereview.NewReviewData
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
