@@ -8,6 +8,10 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".schedulereview.WriteScheduleReviewActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".home.WriteReviewActivity"
             android:exported="false" />
         <activity
@@ -49,9 +53,9 @@
         <activity
             android:name=".login.LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".splash.OnBoardingActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".splash.OnBoardingActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".splash.SplashActivity"
             android:exported="true">
