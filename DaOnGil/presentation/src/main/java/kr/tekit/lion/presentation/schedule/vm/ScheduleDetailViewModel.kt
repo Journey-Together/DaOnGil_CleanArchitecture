@@ -16,6 +16,7 @@ import kr.tekit.lion.domain.usecase.base.onSuccess
 import kr.tekit.lion.domain.usecase.plan.DeleteMyPlanReviewUseCase
 import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailGuestUseCase
 import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailUseCase
+import kr.tekit.lion.domain.usecase.plan.UpdateMyPlanPublicUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
@@ -25,7 +26,8 @@ class ScheduleDetailViewModel @Inject constructor(
     private val planRepository: PlanRepository,
     private val getScheduleDetailUseCase: GetScheduleDetailUseCase,
     private val getScheduleDetailGuestUseCase: GetScheduleDetailGuestUseCase,
-    private val deleteMyPlanReviewUseCase: DeleteMyPlanReviewUseCase
+    private val deleteMyPlanReviewUseCase: DeleteMyPlanReviewUseCase,
+    private val updateMyPlanPublicUseCase: UpdateMyPlanPublicUseCase
 ): ViewModel() {
 
     @Inject
@@ -60,5 +62,16 @@ class ScheduleDetailViewModel @Inject constructor(
                 )
             }
         }
+
+    fun updateMyPlanPublic(planId: Long) =
+        viewModelScope.launch {
+            updateMyPlanPublicUseCase.invoke(planId).onSuccess {
+                _scheduleDetail.value = _scheduleDetail.value?.copy(
+                    isPublic = it.isPublic
+                )
+            }
+        }
+
+    
 
 }

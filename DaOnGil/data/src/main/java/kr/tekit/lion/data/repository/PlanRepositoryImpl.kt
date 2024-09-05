@@ -50,7 +50,7 @@ internal class PlanRepositoryImpl @Inject constructor(
         return planDataSource.deleteMyPlanReview(reviewId)
     }
 
-    override suspend fun updateMyPlanPublic(planId: Long): Result<Unit> {
+    override suspend fun updateMyPlanPublic(planId: Long) {
         return planDataSource.updateMyPlanPublic(planId)
     }
 
