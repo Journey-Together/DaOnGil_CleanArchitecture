@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.scheduleform.vm
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -105,13 +104,10 @@ class ScheduleFormViewModel @Inject constructor(
         if (startDate != null && endDate != null) {
             if(!isScheduleEmpty()){
                 updateScheduleList(startDate, endDate)
-                Log.d("test1234", "updated schedule : ${_schedule.value}")
                 return
             }
 
             val createdSchedule = createScheduleList(startDate, endDate)
-            Log.d("test1234", "created schedule : ${_schedule.value}")
-
             _schedule.value = createdSchedule.toList()
         }
     }
@@ -129,9 +125,9 @@ class ScheduleFormViewModel @Inject constructor(
         return schedule
     }
 
-    private fun updateScheduleList(startDate: Date, endDate: Date){
+    private fun updateScheduleList(startDate: Date, endDate: Date) {
         // 선택한 시작일, 종료일이 변하지 않은 경우
-        if(isSchedulePeriodUnchanged(startDate, endDate)){
+        if (isSchedulePeriodUnchanged(startDate, endDate)) {
             return
         }
 
@@ -141,25 +137,23 @@ class ScheduleFormViewModel @Inject constructor(
         val currentSize = _schedule.value?.size ?: 0
         val newSize = updatedSchedule.size
 
-        fun updateSchedulePlaces(targetIndex: Int, existingPlaces: List<FormPlace>){
-            updatedSchedule[targetIndex] = updatedSchedule[targetIndex].copy(
-                dailyPlaces = (updatedSchedule[targetIndex].dailyPlaces + existingPlaces).distinct()
+        // 기존에 추가한 여행지 목록을 새 일정에 복제
+        for (index in 0 until minOf(currentSize, newSize)) {
+            val existingPlaces = currentSchedule[index].dailyPlaces
+            if (existingPlaces.isEmpty()) continue
+            updatedSchedule[index] = updatedSchedule[index].copy(
+                dailyPlaces = (updatedSchedule[index].dailyPlaces + existingPlaces)
             )
         }
 
-        // 기존에 추가한 여행지 목록을 새 일정에 복제
-        for( index in 0 until minOf(currentSize, newSize)){
-            val existingPlaces = currentSchedule[index].dailyPlaces
-            if(existingPlaces.isEmpty()) continue
-            updateSchedulePlaces(index, existingPlaces)
-        }
-
         // 일정이 짧아진 경우, 마지막 날에 남은 여행지들을 추가해준다.
-        if(newSize < currentSize){
+        if (newSize < currentSize) {
             for (i in newSize until currentSize) {
                 val existingPlaces = currentSchedule[i].dailyPlaces
-                if(existingPlaces.isEmpty()) continue
-                updateSchedulePlaces(newSize - 1, existingPlaces)
+                if (existingPlaces.isEmpty()) continue
+                updatedSchedule[newSize - 1] = updatedSchedule[newSize - 1].copy(
+                    dailyPlaces = (updatedSchedule[newSize - 1].dailyPlaces + existingPlaces).distinct()
+                )
             }
         }
 
