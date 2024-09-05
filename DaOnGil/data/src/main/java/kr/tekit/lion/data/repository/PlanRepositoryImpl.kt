@@ -2,6 +2,7 @@ package kr.tekit.lion.data.repository
 
 import kr.tekit.lion.data.datasource.PlanDataSource
 import kr.tekit.lion.domain.exception.Result
+import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.repository.PlanRepository
@@ -16,5 +17,9 @@ internal class PlanRepositoryImpl @Inject constructor(
 
     override suspend fun getMyElapsedScheduleList(page: Int): Result<MyElapsedSchedules> {
         return planDataSource.getMyElapsedScheduleList(page)
+    }
+
+    override suspend fun getMyMainSchedule(): Result<List<MyMainSchedule?>?> {
+        return planDataSource.getMyMainSchedule()
     }
 }
