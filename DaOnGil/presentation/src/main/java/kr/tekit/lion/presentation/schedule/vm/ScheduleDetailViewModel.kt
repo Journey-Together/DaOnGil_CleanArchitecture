@@ -72,6 +72,11 @@ class ScheduleDetailViewModel @Inject constructor(
             }
         }
 
-    
+    fun deleteMyPlanSchedule(planId: Long) =
+        viewModelScope.launch {
+            planRepository.deleteMyPlanSchedule(planId).onError {
+                networkErrorDelegate.handleNetworkError(it)
+            }
+        }
 
 }
