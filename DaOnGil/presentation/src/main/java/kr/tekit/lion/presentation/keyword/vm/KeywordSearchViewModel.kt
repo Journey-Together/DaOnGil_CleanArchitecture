@@ -69,7 +69,7 @@ class KeywordSearchViewModel @Inject constructor(
 
 
     fun inputTextChanged(keyword: String) {
-        if (searchState.value ==  KeywordInputState.NotEmpty) {
+        if (searchState.value !=  KeywordInputState.Erasing) {
             _keyword.update { keyword }
         }
     }
