@@ -109,14 +109,14 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
 
                     launch {
                         viewModel.autocompleteKeyword.collect { suggestKeywords ->
-                            if (suggestKeywords.keywordList.isEmpty() &&
+                            if (suggestKeywords.isEmpty() &&
                                 viewModel.searchState.value == KeywordInputState.NotEmpty
                             ) {
                                 noSearchResultContainer.visibility = View.VISIBLE
                             } else {
                                 searchSuggestions.visibility = View.VISIBLE
                                 noSearchResultContainer.visibility = View.GONE
-                                searchAdapter.submitList(suggestKeywords.keywordList)
+                                searchAdapter.submitList(suggestKeywords)
                             }
                         }
                     }

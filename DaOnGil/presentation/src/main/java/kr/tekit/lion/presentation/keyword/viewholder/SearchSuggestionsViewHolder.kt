@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.keyword.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
+import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 import kr.tekit.lion.presentation.databinding.ItemSearchSuggestionBinding
 
 class SearchSuggestionsViewHolder(
@@ -8,11 +9,10 @@ class SearchSuggestionsViewHolder(
     private val onClick: (String) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: String){
+    fun bind(item: AutoCompleteKeyword){
         binding.root.setOnClickListener {
-            onClick(item)
+            onClick(item.keyword)
         }
-
-        binding.tvKeyword.text = item
+        binding.tvKeyword.text = item.keyword
     }
 }

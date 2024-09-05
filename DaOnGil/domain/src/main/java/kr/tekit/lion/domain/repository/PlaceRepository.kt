@@ -13,5 +13,5 @@ interface PlaceRepository {
 
     fun getSearchPlaceResultByMap(request: MapSearchOption): Flow<MapSearchResultList>
 
-    suspend fun getAutoCompleteKeyword(keyword: String): Flow<AutoCompleteKeyword>
+    suspend fun getAutoCompleteKeyword(keyword: String): Flow<List<AutoCompleteKeyword>>
 }

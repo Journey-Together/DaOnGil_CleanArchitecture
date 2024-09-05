@@ -1,6 +1,6 @@
 package kr.tekit.lion.data.service
 
-import kr.tekit.lion.data.dto.response.searchplace.AutoCompleteKeywordResponse
+import kr.tekit.lion.data.dto.response.searchplace.auto_complete_keyword.AutoCompleteKeywordResponse
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
 import retrofit2.http.GET
