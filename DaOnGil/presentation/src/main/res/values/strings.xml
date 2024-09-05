@@ -89,6 +89,7 @@
     <string name="text_schedule_review">후기</string>
     <string name="text_schedule_satisfaction">일정 만족도</string>
     <string name="text_schedule_report_review">신고하기</string>
+    <string name="text_schedule_detail_review">여행 후기</string>
     <string name="text_schedule_weather">예상 날씨</string>
     <string name="text_schedule_full">전체 일정</string>
     <string name="text_schedule_d_day">D-%d</string>
