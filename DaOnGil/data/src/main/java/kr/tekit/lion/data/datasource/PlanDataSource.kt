@@ -29,7 +29,7 @@ internal class PlanDataSource @Inject constructor(
         planService.getPlaceSearchResults(word, page, PLACE_SEARCH_PAGE_SIZE).toDomainModel()
     }
 
-    suspend fun addNewPlan(request: RequestBody){
+    suspend fun addNewPlan(request: RequestBody) = execute{
         planService.addNewPlan(request)
     }
 }
