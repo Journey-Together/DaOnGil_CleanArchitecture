@@ -9,6 +9,7 @@ import kr.tekit.lion.data.dto.response.plan.openSchedule.OpenPlanListResponse
 import kr.tekit.lion.data.dto.response.plan.scheduleDetailReview.ScheduleDetailReviewResponse
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Tag
@@ -70,5 +71,11 @@ internal interface PlanService {
     @DELETE("plan/review/{reviewId}")
     suspend fun deleteMyPlanReview(
         @Path("reviewId") reviewId: Long
+    )
+
+    // 일정 공개 비공개 수정
+    @PATCH("plan/{planId}/ispublic")
+    suspend fun updateMyPlanPublic(
+        @Path("planId") planId: Long
     )
 }

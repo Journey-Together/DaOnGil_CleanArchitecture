@@ -53,4 +53,8 @@ internal class PlanDataSource @Inject constructor(
     suspend fun deleteMyPlanReview(reviewId: Long): Result<Unit> = execute {
         planService.deleteMyPlanReview(reviewId)
     }
+
+    suspend fun updateMyPlanPublic(planId: Long): Result<Unit> = execute {
+        planService.updateMyPlanPublic(planId)
+    }
 }
