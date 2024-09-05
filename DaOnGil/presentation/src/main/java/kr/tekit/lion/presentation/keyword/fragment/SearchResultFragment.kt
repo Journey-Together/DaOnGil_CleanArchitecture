@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchResultBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
+import kr.tekit.lion.presentation.ext.hideSoftInput
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.keyword.adapter.SearchResultAdapter
 import kr.tekit.lion.presentation.keyword.vm.SearchResultViewModel
@@ -23,6 +24,8 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSearchResultBinding.bind(view)
+
+        requireContext().hideSoftInput(binding.noSearchResultContainer)
 
         val searchText = arguments?.getString("searchText")
         searchText?.let {
