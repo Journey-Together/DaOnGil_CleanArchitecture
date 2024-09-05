@@ -18,9 +18,5 @@
         android:name="kr.tekit.lion.presentation.myreview.fragment.MyReviewModifyFragment"
         android:label="fragment_my_review_modify"
         tools:layout="@layout/fragment_my_review_modify" >
-        <argument
-            android:name="myPlaceReviewInfo"
-            app:argType="kr.tekit.lion.presentation.myreview.model.MyPlaceReviewInfoData" />
-
     </fragment>
 </navigation>
