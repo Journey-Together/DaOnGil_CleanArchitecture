@@ -5,7 +5,7 @@ import kr.tekit.lion.domain.model.schedule.MyUpcomingScheduleInfo
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 
 @JsonClass(generateAdapter = true)
-data class MyUpcomingsResponse(
+internal data class MyUpcomingsResponse(
     val code: Int,
     val message: String,
     val data: Data,

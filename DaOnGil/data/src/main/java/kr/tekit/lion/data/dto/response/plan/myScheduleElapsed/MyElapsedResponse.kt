@@ -5,7 +5,7 @@ import kr.tekit.lion.domain.model.schedule.MyElapsedScheduleInfo
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 
 @JsonClass(generateAdapter = true)
-data class MyElapsedResponse(
+internal data class MyElapsedResponse(
     val code: Int,
     val message: String,
     val data: Data,
