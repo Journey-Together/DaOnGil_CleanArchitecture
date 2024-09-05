@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -30,7 +29,6 @@ import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.myreview.adapter.MyReviewModifyImageRVAdapter
-import kr.tekit.lion.presentation.myreview.model.toMyPlaceReviewInfo
 import kr.tekit.lion.presentation.myreview.vm.MyReviewViewModel
 import java.time.Instant
 import java.time.LocalDate
@@ -107,9 +105,6 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMyReviewModifyBinding.bind(view)
-
-        val args: MyReviewModifyFragmentArgs by navArgs()
-        viewModel.setReviewData(args.myPlaceReviewInfo.toMyPlaceReviewInfo())
 
         settingToolbar(binding)
         settingReviewData(binding)
