@@ -19,5 +19,6 @@ data class ScheduleDetail(
     val grade: Double?,
     val reviewImages: List<String>?,
     val hasReview: Boolean,
-    val profileUrl: String
+    val profileUrl: String,
+    val isBookmark: Boolean
 )
