@@ -77,4 +77,5 @@ dependencies {
     implementation(libs.coroutines.core.jvm)
 
     implementation (libs.shimmer)
+    implementation (libs.flexbox)
 }
