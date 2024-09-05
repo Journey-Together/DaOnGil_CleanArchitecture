@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
+import kr.tekit.lion.data.dto.request.util.LocalDateAdapter
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.BookmarkService
 import kr.tekit.lion.data.service.KorWithService
@@ -19,7 +20,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
@@ -99,7 +99,7 @@ internal object NetworkModule {
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
             .add(LocalDateTime::class.java, Rfc3339DateJsonAdapter().nullSafe())
-            .add(LocalDate::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .add(LocalDateAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
     }
