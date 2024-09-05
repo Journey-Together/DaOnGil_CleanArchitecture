@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
-import kr.tekit.lion.data.dto.request.adapter.LocalDateAdapter
+import kr.tekit.lion.data.dto.request.util.LocalDateAdapter
 import kr.tekit.lion.data.dto.response.aed.AedJsonAdapter
 import kr.tekit.lion.data.dto.response.emergency.message.EmergencyMessageJsonAdapter
 import kr.tekit.lion.data.dto.response.emergency.realtime.EmergencyRealtimeJsonAdapter
