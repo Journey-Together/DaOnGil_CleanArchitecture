@@ -7,10 +7,16 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentFormSearchBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.scheduleform.adapter.FormBookmarkedPlacesAdapter
 import kr.tekit.lion.presentation.scheduleform.adapter.FormSearchResultAdapter
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 
@@ -43,6 +49,7 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
 
         initToolbar(binding)
 
+        settingBookmarkedRV(binding, schedulePosition)
         settingSearchResultRV(binding)
         settingPlaceSearchView(binding)
 
@@ -88,6 +95,7 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
         if (isDuplicate) {
             requireView().showSnackbar("이 여행지는 이미 일정에 추가되어 있습니다")
         } else {
+            // TODO 관광지 상세보기 API 연결해서 코드 수정
             findNavController().popBackStack()
         }
     }
@@ -107,6 +115,32 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
                     }
                 }
                 false
+            }
+        }
+    }
+
+    private fun settingBookmarkedRV(binding: FragmentFormSearchBinding, schedulePosition: Int) {
+        val flexboxLayoutManager = FlexboxLayoutManager(requireActivity()).apply {
+            flexDirection = FlexDirection.ROW
+            flexWrap = FlexWrap.WRAP
+            alignItems = AlignItems.FLEX_START
+            justifyContent = JustifyContent.FLEX_START
+        }
+
+        viewModel.bookmarkedPlaces.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                binding.recyclerViewFsBookmark.apply {
+                    layoutManager = flexboxLayoutManager
+                    adapter = FormBookmarkedPlacesAdapter(it) { selectedPlacePosition ->
+                        addNewPlace(schedulePosition, selectedPlacePosition, true)
+                    }
+                }
+            } else {
+                // 북마크한 여행지가 없다면
+                binding.apply {
+                    recyclerViewFsBookmark.visibility = View.INVISIBLE
+                    textFsBookmarkEmpty.visibility = View.VISIBLE
+                }
             }
         }
     }
