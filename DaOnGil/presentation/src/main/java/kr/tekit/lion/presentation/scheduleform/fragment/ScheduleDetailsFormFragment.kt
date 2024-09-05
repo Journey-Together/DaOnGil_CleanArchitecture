@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.scheduleform.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -9,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentScheduleDetailsFormBinding
+import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.scheduleform.adapter.FormScheduleAdapter
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 
@@ -70,8 +72,7 @@ class ScheduleDetailsFormFragment : Fragment(R.layout.fragment_schedule_details_
             },
             onItemClickListener = { schedulePosition, placePosition ->
                 val placeId = dailyScheduleList[schedulePosition].dailyPlaces[placePosition].placeId
-                // TODO 주석 해제
-//                showPlaceDetail(placeId)
+                navigateToPlaceDetail(placeId)
             },
             onRemoveButtonClickListener = { schedulePosition, placePosition ->
                 // viewModel에서 해당 place 제거
@@ -86,10 +87,10 @@ class ScheduleDetailsFormFragment : Fragment(R.layout.fragment_schedule_details_
         navController.navigate(action)
     }
 
-//    private fun showPlaceDetail(placeId: Long){
-//        val intent = Intent(requireActivity(), DetailActivity::class.java)
-//        intent.putExtra("detailPlaceId", placeId)
-//        startActivity(intent)
-//    }
+    private fun navigateToPlaceDetail(placeId: Long) {
+        val intent = Intent(requireActivity(), DetailActivity::class.java)
+        intent.putExtra("detailPlaceId", placeId)
+        startActivity(intent)
+    }
 
 }
