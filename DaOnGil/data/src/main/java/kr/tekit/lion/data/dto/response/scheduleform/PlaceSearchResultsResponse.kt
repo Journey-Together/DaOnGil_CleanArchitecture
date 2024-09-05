@@ -6,7 +6,7 @@ import kr.tekit.lion.domain.model.scheduleform.PlaceSearchInfoList.TotalElements
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
 
 @JsonClass(generateAdapter = true)
-data class PlaceSearchResultsResponse(
+internal data class PlaceSearchResultsResponse(
     val code: Int,
     val message: String,
     val data: PlaceSearchResultsData
