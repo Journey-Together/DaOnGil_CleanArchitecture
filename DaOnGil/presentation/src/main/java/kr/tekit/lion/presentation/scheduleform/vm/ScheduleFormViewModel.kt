@@ -141,41 +141,25 @@ class ScheduleFormViewModel @Inject constructor(
         val currentSize = _schedule.value?.size ?: 0
         val newSize = updatedSchedule.size
 
-
-
-        // 새로운 일정이 더 길 때
-        if(newSize > currentSize){
-            currentSchedule.forEachIndexed { index, dailySchedule ->
-                val existingPlaces = dailySchedule.dailyPlaces
-                if(existingPlaces.isNotEmpty()) {
-                    updatedSchedule[index] = updatedSchedule[index].copy(
-                        dailyPlaces = updatedSchedule[index].dailyPlaces + existingPlaces
-                    )
-                }
-            }
+        fun updateSchedulePlaces(targetIndex: Int, existingPlaces: List<FormPlace>){
+            updatedSchedule[targetIndex] = updatedSchedule[targetIndex].copy(
+                dailyPlaces = (updatedSchedule[targetIndex].dailyPlaces + existingPlaces).distinct()
+            )
         }
 
-        if (newSize <= currentSize) {
-            updatedSchedule.forEachIndexed { index, dailySchedule ->
-                val existingPlaces = currentSchedule[index].dailyPlaces
-                if(existingPlaces.isNotEmpty()) {
-                    updatedSchedule[index] = updatedSchedule[index].copy(
-                        dailyPlaces = updatedSchedule[index].dailyPlaces + existingPlaces
-                    )
-                }
-            }
+        // 기존에 추가한 여행지 목록을 새 일정에 복제
+        for( index in 0 until minOf(currentSize, newSize)){
+            val existingPlaces = currentSchedule[index].dailyPlaces
+            if(existingPlaces.isEmpty()) continue
+            updateSchedulePlaces(index, existingPlaces)
+        }
 
-            // 새로운 일정이 더 짧을 때
-            // TODO 중복 제거
-            if(newSize < currentSize){
-                for (i in newSize until currentSize) {
-                    val existingPlaces = currentSchedule[i].dailyPlaces
-                    if(existingPlaces.isNotEmpty()) {
-                        updatedSchedule[newSize - 1] = updatedSchedule[newSize - 1].copy(
-                            dailyPlaces = updatedSchedule[newSize - 1].dailyPlaces + existingPlaces
-                        )
-                    }
-                }
+        // 일정이 짧아진 경우, 마지막 날에 남은 여행지들을 추가해준다.
+        if(newSize < currentSize){
+            for (i in newSize until currentSize) {
+                val existingPlaces = currentSchedule[i].dailyPlaces
+                if(existingPlaces.isEmpty()) continue
+                updateSchedulePlaces(newSize - 1, existingPlaces)
             }
         }
 
@@ -195,7 +179,7 @@ class ScheduleFormViewModel @Inject constructor(
         return (startDateStr==savedStartDate) && (endDateStr==savedEndDate)
     }
 
-    fun getPlaceSearchResult(isNewRequest : Boolean) { // TODO 호출 시점에 '검색어'를 _keyword에 저장
+    fun getPlaceSearchResult(isNewRequest : Boolean) {
         val page = if (isNewRequest) -1 else _placeSearchResult.value?.pageNo ?: -1
 
         val keyword = _keyword.value
