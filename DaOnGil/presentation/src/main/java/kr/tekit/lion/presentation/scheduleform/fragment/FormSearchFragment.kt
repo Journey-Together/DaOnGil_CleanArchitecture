@@ -29,7 +29,7 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
     private val searchResultAdapter by lazy {
         FormSearchResultAdapter(
             onPlaceSelectedListener = { selectedPlacePosition ->
-                addNewPlace(args.schedulePosition, selectedPlacePosition, false)
+                addNewPlaceToList(args.schedulePosition, selectedPlacePosition, false)
             },
             onItemClickListener = { selectedPlacePosition ->
                 val placeId = viewModel.getPlaceId(selectedPlacePosition)
@@ -83,7 +83,7 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
         }
     }
 
-    private fun addNewPlace(
+    private fun addNewPlaceToList(
         schedulePosition: Int,
         selectedPlacePosition: Int,
         isBookmarkedPlace: Boolean
@@ -96,12 +96,6 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
         if (isDuplicate) {
             requireView().showSnackbar("이 여행지는 이미 일정에 추가되어 있습니다")
         } else {
-            // 중복되지 않은 여행지는 일정에 추가
-            viewModel.getSearchedPlaceDetailInfo(
-                schedulePosition,
-                selectedPlacePosition,
-                isBookmarkedPlace
-            )
             findNavController().popBackStack()
         }
     }
@@ -138,7 +132,7 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
                 binding.recyclerViewFsBookmark.apply {
                     layoutManager = flexboxLayoutManager
                     adapter = FormBookmarkedPlacesAdapter(it) { selectedPlacePosition ->
-                        addNewPlace(schedulePosition, selectedPlacePosition, true)
+                        addNewPlaceToList(schedulePosition, selectedPlacePosition, true)
                     }
                 }
             } else {

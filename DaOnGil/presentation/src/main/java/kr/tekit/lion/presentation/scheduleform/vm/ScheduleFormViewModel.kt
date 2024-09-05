@@ -271,7 +271,31 @@ class ScheduleFormViewModel @Inject constructor(
                 return true
             }
         }
+
+        getPlaceInfoAndSave(dayPosition, selectedPlacePosition, isBookmarkedPlace)
+
         return false
+    }
+
+    private fun getPlaceInfoAndSave(
+        dayPosition: Int,
+        selectedPlacePosition: Int,
+        isBookmarkedPlace: Boolean
+    ) {
+        if (isBookmarkedPlace) {
+            getSearchedPlaceDetailInfo(dayPosition, selectedPlacePosition)
+        } else {
+            val placeInfo = _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)
+            if (placeInfo != null) {
+                val formPlace = FormPlace(
+                    placeInfo.placeId,
+                    placeInfo.imageUrl,
+                    placeInfo.placeName,
+                    placeInfo.category
+                )
+                addNewPlace(formPlace, dayPosition)
+            }
+        }
     }
 
     private fun getBookmarkedPlaceList() {
@@ -286,14 +310,9 @@ class ScheduleFormViewModel @Inject constructor(
 
     fun getSearchedPlaceDetailInfo(
         dayPosition: Int,
-        selectedPlacePosition: Int,
-        isBookmarkedPlace: Boolean
+        selectedPlacePosition: Int
     ) {
-        val placeId = if (isBookmarkedPlace) {
-            _bookmarkedPlaces.value?.get(selectedPlacePosition)?.bookmarkedPlaceId
-        } else {
-            _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)?.placeId
-        }
+        val placeId = _bookmarkedPlaces.value?.get(selectedPlacePosition)?.bookmarkedPlaceId
 
         viewModelScope.launch {
             placeId?.let {
