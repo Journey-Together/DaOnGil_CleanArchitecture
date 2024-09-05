@@ -6,6 +6,7 @@ import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.domain.model.OpenPlan
 import kr.tekit.lion.domain.model.ScheduleDetailInfo
+import kr.tekit.lion.domain.model.ScheduleDetailReview
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import javax.inject.Inject
@@ -39,5 +40,9 @@ internal class PlanDataSource @Inject constructor(
 
     suspend fun getDetailScheduleInfoGuest(planId: Long): ScheduleDetailInfo {
         return planService.getDetailScheduleInfo(planId).toDomainModel()
+    }
+
+    suspend fun getDetailScheduleReview(planId: Long): ScheduleDetailReview {
+        return planService.getDetailScheduleReview(planId).toDomainModel()
     }
 }

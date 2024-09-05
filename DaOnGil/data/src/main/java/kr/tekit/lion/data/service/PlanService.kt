@@ -1,11 +1,12 @@
 package kr.tekit.lion.data.service
 
 
-import kr.tekit.lion.data.dto.response.plan.ScheduleDetailInfo.ScheduleDetailResponse
+import kr.tekit.lion.data.dto.response.plan.scheduleDetailInfo.ScheduleDetailResponse
 import kr.tekit.lion.data.dto.response.plan.myMainSchedule.MyMainScheduleResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleElapsed.MyElapsedResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleUpcoming.MyUpcomingsResponse
 import kr.tekit.lion.data.dto.response.plan.openSchedule.OpenPlanListResponse
+import kr.tekit.lion.data.dto.response.plan.scheduleDetailReview.ScheduleDetailReviewResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -50,4 +51,10 @@ internal interface PlanService {
         @Path("planId") planId: Long,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): ScheduleDetailResponse
+
+    // 여행 일정 상세보기 페이지에서의 여행 일정 후기 정보 (로그인 버전)
+    @GET("plan/review/{planId}")
+    suspend fun getDetailScheduleReview(
+        @Path("planId") planId: Long
+    ): ScheduleDetailReviewResponse
 }
