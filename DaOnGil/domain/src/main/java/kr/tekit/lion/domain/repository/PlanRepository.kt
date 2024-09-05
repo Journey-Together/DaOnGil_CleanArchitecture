@@ -27,4 +27,6 @@ interface PlanRepository {
 
     suspend fun deleteMyPlanReview(reviewId: Long): Result<Unit>
 
+    suspend fun updateMyPlanPublic(planId: Long): Result<Unit>
+
 }
