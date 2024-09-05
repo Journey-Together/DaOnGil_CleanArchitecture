@@ -9,6 +9,7 @@ import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentScheduleConfirmFormBinding
 import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.scheduleform.adapter.FormConfirmScheduleAdapter
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 
@@ -58,8 +59,7 @@ class ScheduleConfirmFormFragment : Fragment(R.layout.fragment_schedule_confirm_
         binding.buttonScheduleFormSubmit.setOnClickListener { view ->
             viewModel.submitNewPlan{ _, requestFlag ->
                 if(requestFlag){
-                    // TODO 주석 해제
-//                    requireActivity().setResult(ResultCode.RESULT_SCHEDULE_EDIT)
+                    requireActivity().setResult(ResultCode.RESULT_SCHEDULE_EDIT)
                     requireActivity().finish()
                 }else{
                     view.showSnackbar("다시 시도해주세요")
