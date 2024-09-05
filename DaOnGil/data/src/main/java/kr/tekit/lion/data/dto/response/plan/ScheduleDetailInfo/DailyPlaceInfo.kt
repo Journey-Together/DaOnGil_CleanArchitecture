@@ -1,4 +1,4 @@
-package kr.tekit.lion.data.dto.response.plan.ScheduleDetailInfo
+package kr.tekit.lion.data.dto.response.plan.scheduleDetailInfo
 
 import kr.tekit.lion.domain.model.SchedulePlace
 

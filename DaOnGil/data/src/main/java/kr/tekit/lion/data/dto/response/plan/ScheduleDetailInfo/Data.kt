@@ -1,4 +1,4 @@
-package kr.tekit.lion.data.dto.response.plan.ScheduleDetailInfo
+package kr.tekit.lion.data.dto.response.plan.scheduleDetailInfo
 
 internal data class Data(
     val dailyList: List<Daily>,
