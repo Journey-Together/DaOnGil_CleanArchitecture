@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewRowSchedule"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:layout_marginBottom="@dimen/margin_small1"
+        android:backgroundTint="@color/item_background"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/viewRowScheduleRemainingDeco"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/primary"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/viewRowScheduleElapsedDeco"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/days_elapsed"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewRowScheduleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big3"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintEnd_toStartOf="@+id/textViewRowScheduleDDay"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/viewRowScheduleRemainingDeco"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="경주여행" />
+
+            <TextView
+                android:id="@+id/textViewRowScheduleDDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:enabled="true"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textColor="@color/color_schedule_d_day"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewRowScheduleName"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewRowSchedule"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/textViewRowScheduleName"
+                app:layout_constraintTop_toTopOf="@+id/textViewRowScheduleName"
+                tools:text="D-1" />
+
+            <TextView
+                android:id="@+id/textViewRowSchedulePeriod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="@dimen/margin_big4"
+                android:fontFamily="@font/pretendard_light"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/buttonRowScheduleReview"
+                app:layout_constraintStart_toStartOf="@+id/textViewRowScheduleName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewRowScheduleName"
+                tools:text="2024.04.01 - 2024.04.05" />
+
+            <ImageView
+                android:id="@+id/imageViewRowSchedule"
+                android:layout_width="@dimen/search_bar_height"
+                android:layout_height="@dimen/search_bar_height"
+                android:layout_marginTop="@dimen/margin_small1"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:layout_marginBottom="@dimen/margin_small1"
+                android:contentDescription="대표 사진"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/buttonRowScheduleReview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/empty_view_small" />
+
+            <Button
+                android:id="@+id/buttonRowScheduleReview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big3"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:layout_marginBottom="@dimen/margin_small1"
+                android:background="@drawable/background_radius_5"
+                android:minHeight="0dp"
+                android:text="@string/text_write_schedule_review"
+                android:textColor="@color/text_quinary"
+                android:visibility="gone"
+                app:backgroundTint="@color/button_quaternary"
+                app:icon="@drawable/edit_icon"
+                app:iconGravity="textStart"
+                app:iconTint="@color/text_quinary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/viewRowScheduleRemainingDeco" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
