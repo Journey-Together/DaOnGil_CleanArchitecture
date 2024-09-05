@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.internal.managers.ViewComponentManager
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemReviewBigImageBinding
+import kr.tekit.lion.presentation.ext.setImage
 import kr.tekit.lion.presentation.ext.showPhotoDialog
 
 class MyReviewImageRVAdapter(private val imageList: List<String>) :
@@ -32,10 +33,8 @@ class MyReviewImageRVAdapter(private val imageList: List<String>) :
         private val binding: ItemReviewBigImageBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(image: String, imageList: List<String>, position: Int) {
-            Glide.with(binding.reviewImage.context)
-                .load(image)
-                .error(R.drawable.empty_view_small)
-                .into(binding.reviewImage)
+
+            binding.root.context.setImage(binding.reviewImage, image)
 
             binding.reviewImage.setOnClickListener {
                 val context = binding.root.context
