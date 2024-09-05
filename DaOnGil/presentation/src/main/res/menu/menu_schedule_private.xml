@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuSchedulPrivate"
+        android:icon="@drawable/more_vert_icon"
+        android:title="@string/text_schedule_menu"
+        app:showAsAction="always" />
+</menu>

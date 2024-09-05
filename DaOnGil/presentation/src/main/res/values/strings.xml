@@ -85,14 +85,19 @@
 
     <string name="text_my_schedule">내 일정</string>
     <string name="text_public_schedule">공개 일정</string>
+    <string name="text_schedule_info_writer_not_leave_title">여행이 종료되지 않았습니다.</string>
+    <string name="text_schedule_info_writer_not_leave_content">종료 후 후기를 남겨주세요.</string>
+    <string name="text_schedule_info_not_leave_title">여행이 종료되지 않았습니다.</string>
+    <string name="text_schedule_info_not_leave_content">종료 후 후기가 작성될 예정입니다.</string>
+    <string name="text_schedule_info_leave_title">작성된 후기가 없습니다.</string>
+    <string name="text_schedule_info_leave_content">후기가 작성될 때까지 기다려주세요.</string>
     <string name="text_leave_schedule_review"><u>후기/만족도 남기기 ＞</u></string>
+    <string name="text_schedule_detail_review">여행 후기</string>
     <string name="text_schedule_review">후기</string>
     <string name="text_schedule_satisfaction">일정 만족도</string>
     <string name="text_schedule_report_review">신고하기</string>
-    <string name="text_schedule_detail_review">여행 후기</string>
     <string name="text_schedule_weather">예상 날씨</string>
-    <string name="text_schedule_full">전체 일정</string>
-    <string name="text_schedule_d_day">D-%d</string>
+    <string name="text_schedule_full">일정 보기</string>
     <string name="text_schedule_period">%s - %s</string>
     <string name="text_schedule_days">일차</string>
     <string name="text_schedule_place_empty">해당 일자에 추가된 여행지가 없습니다</string>
@@ -111,6 +116,7 @@
     <string name="text_schedule_changed_to_private">여행 일정이 비공개되었습니다.</string>
     <string name="text_schedule_changed_to_public">여행 일정이 공개되었습니다.</string>
     <string name="text_schedule_review_deleted">여행 일정 후기가 삭제되었습니다.</string>
+    <string name="text_schedule_deleted">여행 일정 후기가 삭제되었습니다.</string>
     <string name="text_report_reason">신고 사유</string>
     <string name="text_report_commercial_promotion">영리목적/홍보성</string>
     <string name="text_report_copyright_infringement">저작권 침해</string>
