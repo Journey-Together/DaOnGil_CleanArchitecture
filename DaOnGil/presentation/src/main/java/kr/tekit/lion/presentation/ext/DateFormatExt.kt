@@ -26,17 +26,18 @@ fun Date.calculateDaysUntilEndDate(endDate: Date) : Int {
 }
 
 /**
- * 현재 날짜로부터 지정한 일수 만큼 뒤의 날짜를 "M월 d일 (E)" 형식으로 반환
+ * 현재 날짜로부터 지정한 일수 만큼 뒤의 날짜를 pattern에 맞는 형식으로 반환
  *
  * @param days 추가할 일수
+ * @param pattern 날짜 형식 ("M월 d일 (E)", "yyyy-MM-dd")
  * @return 지정한 일수만큼 뒤의 날짜
  */
-fun Date.addDays(days: Int): String {
+fun Date.addDays(days: Int, pattern: String): String {
     val calendar = Calendar.getInstance()
     calendar.time = this
     calendar.add(Calendar.DAY_OF_MONTH, days)
 
-    val addedDateStr = SimpleDateFormat("M월 d일 (E)", Locale.KOREAN).format(calendar.time)
+    val addedDateStr = SimpleDateFormat(pattern, Locale.KOREAN).format(calendar.time)
 
     return addedDateStr
 }
