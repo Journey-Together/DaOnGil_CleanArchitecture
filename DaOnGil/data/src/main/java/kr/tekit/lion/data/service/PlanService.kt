@@ -78,4 +78,10 @@ internal interface PlanService {
     suspend fun updateMyPlanPublic(
         @Path("planId") planId: Long
     )
+
+    // 여행 일정 삭제
+    @DELETE("plan/{planId}")
+    suspend fun deleteMyPlanSchedule(
+        @Path("planId") planId: Long
+    )
 }
