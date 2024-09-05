@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewRowSchedulePublic"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small1"
+        android:backgroundTint="@color/navi_background"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageViewRowSchedulePublicThumb"
+                android:layout_width="0dp"
+                android:layout_height="112dp"
+                android:contentDescription="대표 사진"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/empty_view" />
+
+            <TextView
+                android:id="@+id/textViewRowSchedulePublicPeriod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/background_radius_50"
+                android:backgroundTint="@color/period_background"
+                android:fontFamily="@font/pretendard_semibold"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="@dimen/margin_small2"
+                android:textColor="@color/navi_background"
+                android:textSize="@dimen/font_small3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="3일일정" />
+
+            <TextView
+                android:id="@+id/textViewRowScheduleName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big4"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/margin_big4"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_small1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewRowSchedulePublicThumb"
+                tools:text="즐거운 경주 여행" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewRowSchedulePublicProfile"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="@dimen/margin_small2"
+                android:layout_marginBottom="@dimen/margin_big4"
+                app:cardCornerRadius="@dimen/search_bar_height"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textViewRowScheduleName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewRowScheduleName">
+
+                <ImageView
+                    android:id="@+id/imageViewRowSchedulePublicProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="프로필 사진"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/empty_view" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textViewRowSchedulePublicNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small2"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_small2"
+                app:layout_constraintBottom_toBottomOf="@+id/cardViewRowSchedulePublicProfile"
+                app:layout_constraintStart_toEndOf="@+id/cardViewRowSchedulePublicProfile"
+                app:layout_constraintTop_toTopOf="@+id/cardViewRowSchedulePublicProfile"
+                tools:text="김사자" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
