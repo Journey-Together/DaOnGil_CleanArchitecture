@@ -2,7 +2,7 @@ package kr.tekit.lion.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kr.tekit.lion.daongil.data.dto.remote.request.toRequestBody
+import kr.tekit.lion.data.dto.request.toRequestBody
 import kr.tekit.lion.data.datasource.PlaceDataSource
 import kr.tekit.lion.data.dto.request.toMultipartBody
 import kr.tekit.lion.data.dto.request.toRequestModel

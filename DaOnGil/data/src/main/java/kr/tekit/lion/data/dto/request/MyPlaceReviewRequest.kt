@@ -1,4 +1,4 @@
-package kr.tekit.lion.daongil.data.dto.remote.request
+package kr.tekit.lion.data.dto.request
 
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
@@ -10,7 +10,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.time.LocalDate
 
 @JsonClass(generateAdapter = true)
-data class MyPlaceReviewRequest(
+internal data class MyPlaceReviewRequest(
     val grade: Float,
     val date: LocalDate,
     val content: String,
