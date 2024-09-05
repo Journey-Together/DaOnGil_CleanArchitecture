@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,6 +28,12 @@ class MyInfoMainViewModel @Inject constructor(
     private val memberRepository: MemberRepository
 ): ViewModel() {
 
+    init {
+        viewModelScope.launch {
+            checkLoginState()
+        }
+    }
+
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
@@ -35,21 +43,12 @@ class MyInfoMainViewModel @Inject constructor(
     private val _loginState = MutableStateFlow<LogInState>(LogInState.Checking)
     val loginState = _loginState.asStateFlow()
 
-    private val _myInfo = MutableStateFlow(MyDefaultInfo())
-    val myInfo = _myInfo.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            checkLoginState()
-        }
-    }
+    private val _myInfo = MutableSharedFlow<MyDefaultInfo>()
+    val myInfo = _myInfo.asSharedFlow()
 
     private suspend fun checkLoginState(){
         authRepository.loggedIn.collect{ isLoggedIn ->
             if (isLoggedIn){
-                withContext(Dispatchers.IO){
-                    onStateLoggedIn()
-                }
                 _loginState.update { LogInState.LoggedIn }
             }
             else{
@@ -59,9 +58,11 @@ class MyInfoMainViewModel @Inject constructor(
         }
     }
 
-    fun onStateLoggedIn() = viewModelScope.launch{
+    suspend fun onStateLoggedIn(){
         memberRepository.getMyDefaultInfo().onSuccess { myInfo ->
-            _myInfo.value = myInfo
+            viewModelScope.launch {
+                _myInfo.emit(myInfo)
+            }
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }

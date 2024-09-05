@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/emergencyBottomSheetLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/bottom_sheet_background"
+    android:backgroundTint="@color/navi_background"
+    tools:context=".emergency.fragment.EmergencyBottomSheet"
+    app:behavior_peekHeight="40dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <ImageView
+        android:id="@+id/emergencyBottomSheetHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/bottom_sheet_head" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/emergencyBottomRv"
+        android:layout_marginTop="@dimen/margin_small1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_basic"
+        android:paddingEnd="@dimen/margin_basic"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_emergency_bottom"
+        tools:itemCount="10"/>
+
+
+</LinearLayout>

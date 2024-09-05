@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="생년월일"
+                android:text="@string/text_birth"
                 android:textSize="@dimen/font_big2" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_basic"
                 app:boxBackgroundColor="@color/background_color"
-                app:boxBackgroundMode="filled"
+                app:boxBackgroundMode="outline"
                 app:endIconMode="clear_text"
                 app:hintEnabled="false">
 
@@ -70,7 +70,8 @@
                     android:hint="@string/text_birth_ex"
                     android:inputType="number"
                     android:maxLength="8"
-                    android:paddingStart="@dimen/margin_small2"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,21 +81,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small2"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="혈액형"
+                android:text="@string/text_blood_type"
                 android:textSize="@dimen/font_big2" />
 
-            <Spinner
-                android:id="@+id/tvBloodType"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutBloodType"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/spinner_background"
-                style="@style/Widget.AppCompat.Spinner"
                 android:layout_marginBottom="@dimen/margin_basic"
-                android:dropDownWidth="match_parent"
-                android:dropDownVerticalOffset="35dp"
-                android:labelFor="@string/text_blood_type"
-                android:popupBackground="@color/background_color"
-                android:spinnerMode="dropdown"/>
+                app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="@color/background_color"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/tv_bloodType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:hint="@string/text_plz_enter_blood_type"
+                    android:inputType="none"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="@dimen/margin_big3"
+                    android:paddingBottom="@dimen/margin_big2"
+                    android:textSize="@dimen/font_big3"
+                    app:simpleItems="@array/blood_type" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tv_disease_title"
@@ -110,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_basic"
                 app:boxBackgroundColor="@color/background_color"
-                app:boxBackgroundMode="filled"
+                app:boxBackgroundMode="outline"
                 app:endIconMode="clear_text"
                 app:hintEnabled="false">
 
@@ -121,7 +134,8 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_plz_enter_disease"
                     android:inputType="text"
-                    android:paddingStart="@dimen/margin_small2"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_basic"
                 app:boxBackgroundColor="@color/background_color"
-                app:boxBackgroundMode="filled"
+                app:boxBackgroundMode="outline"
                 app:endIconMode="clear_text"
                 app:hintEnabled="false">
 
@@ -150,7 +164,8 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_plz_enter_allergy"
                     android:inputType="text"
-                    android:paddingStart="@dimen/margin_small2"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -168,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_basic"
                 app:boxBackgroundColor="@color/background_color"
-                app:boxBackgroundMode="filled"
+                app:boxBackgroundMode="outline"
                 app:endIconMode="clear_text"
                 app:hintEnabled="false">
 
@@ -179,7 +194,8 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_plz_enter_medicine"
                     android:inputType="text"
-                    android:paddingStart="@dimen/margin_small2"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -204,7 +220,7 @@
                     android:layout_marginRight="@dimen/margin_big4"
                     android:layout_weight="3"
                     app:boxBackgroundColor="@color/background_color"
-                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundMode="outline"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -213,6 +229,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/pretendard_medium"
                         android:hint="@string/text_relation"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:inputType="text"
                         android:textSize="@dimen/font_big3" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -223,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     app:boxBackgroundColor="@color/background_color"
-                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundMode="outline"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -233,7 +251,8 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:inputType="phone"
                         android:hint="@string/text_contact_ex"
-                        android:paddingStart="@dimen/margin_small2"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:textSize="@dimen/font_big3" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -251,7 +270,7 @@
                     android:layout_marginRight="@dimen/margin_big4"
                     android:layout_weight="3"
                     app:boxBackgroundColor="@color/background_color"
-                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundMode="outline"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -261,7 +280,8 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:hint="@string/text_relation"
                         android:inputType="text"
-                        android:paddingStart="@dimen/margin_small2"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:textSize="@dimen/font_big3" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -272,7 +292,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     app:boxBackgroundColor="@color/background_color"
-                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundMode="outline"
                     app:endIconMode="clear_text"
                     app:hintEnabled="false">
 
@@ -283,7 +303,8 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:inputType="phone"
                         android:hint="@string/text_contact_ex"
-                        android:paddingStart="@dimen/margin_small2"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:textSize="@dimen/font_big3" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

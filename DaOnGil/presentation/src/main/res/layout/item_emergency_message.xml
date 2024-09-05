@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/emrAedCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:backgroundTint="@color/item_background"
+        app:cardCornerRadius="10dp"
+        app:strokeColor="@color/text_tertiary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_big3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/emergency_message_img" />
+
+                <TextView
+                    android:id="@+id/emergency_message_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_big4"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="모든 성형외과 진료 불가 (안면외상, 안면 골절, 열상
+봉합 등)- 성형외과 의료진 부재"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/emergency_message_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="53dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="2024.02.05 12:15:01"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_small3"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

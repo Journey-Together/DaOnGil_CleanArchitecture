@@ -10,11 +10,19 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.BuildConfig
 import kr.tekit.lion.data.dto.request.util.LocalDateAdapter
+import kr.tekit.lion.data.dto.response.aed.AedJsonAdapter
+import kr.tekit.lion.data.dto.response.emergency.message.EmergencyMessageJsonAdapter
+import kr.tekit.lion.data.dto.response.emergency.realtime.EmergencyRealtimeJsonAdapter
+import kr.tekit.lion.data.service.AedService
 import kr.tekit.lion.data.service.AuthService
 import kr.tekit.lion.data.service.BookmarkService
+import kr.tekit.lion.data.service.EmergencyService
 import kr.tekit.lion.data.service.KorWithService
 import kr.tekit.lion.data.service.MemberService
+import kr.tekit.lion.data.service.NaverMapService
+import kr.tekit.lion.data.service.PharmacyService
 import kr.tekit.lion.data.service.PlaceService
+import kr.tekit.lion.data.service.PlanService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -60,7 +68,7 @@ internal object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthService(okHttpClient: OkHttpClient): AuthService =
-         Retrofit.Builder()
+        Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .client(okHttpClient)
@@ -72,6 +80,51 @@ internal object NetworkModule {
     fun provideKorWithService(okHttpClient: OkHttpClient): KorWithService =
         Retrofit.Builder()
             .baseUrl("https://apis.data.go.kr/B551011/KorWithService1/")
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Singleton
+    @Provides
+    fun provideNaverMapService(@NaverMap okHttpClient: OkHttpClient): NaverMapService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.NAVER_MAP_BASE)
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Singleton
+    @Provides
+    fun provideAedService(okHttpClient: OkHttpClient, @AedMoshi moshi: Moshi): AedService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.AED_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Singleton
+    @Provides
+    fun provideEmergencyService(
+        okHttpClient: OkHttpClient,
+        @EmergencyMoshi moshi: Moshi
+    ): EmergencyService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.EMERGENCY_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .client(okHttpClient)
+            .build()
+            .create()
+
+    @Provides
+    @Singleton
+    fun providePharmacyService(
+        okHttpClient: OkHttpClient
+    ): PharmacyService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.PHARMACY_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .client(okHttpClient)
             .build()
@@ -94,6 +147,31 @@ internal object NetworkModule {
             .build()
     }
 
+    @NaverMap
+    @Singleton
+    @Provides
+    fun provideNaverMapClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("X-NCP-APIGW-API-KEY-ID", BuildConfig.NAVER_MAP_ID)
+                    .addHeader("X-NCP-APIGW-API-KEY", BuildConfig.NAVER_MAP_SECRET)
+                    .build()
+                chain.proceed(request)
+            }
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
     @Provides
     @Singleton
     fun provideMoshi(): Moshi {
@@ -102,5 +180,32 @@ internal object NetworkModule {
             .add(LocalDateAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
+    }
+
+    @AedMoshi
+    @Provides
+    @Singleton
+    fun provideAedMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(AedJsonAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @EmergencyMoshi
+    @Provides
+    @Singleton
+    fun provideEmergencyMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(EmergencyRealtimeJsonAdapter())
+            .add(EmergencyMessageJsonAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun providePlanService(retrofit: Retrofit): PlanService {
+        return retrofit.create(PlanService::class.java)
     }
 }

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_radius_10"
+    android:backgroundTint="@color/background_color"
+    android:gravity="center"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_basic">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:text="@string/title_emergency_area_dialog"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:text="@string/subtitle_emergency_area_dialog"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_big3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emergencyAreaLayout"
+            style="@style/area_auto_complete_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="시도 선택"
+            android:textColorHint="@color/select_area_text">
+
+            <AutoCompleteTextView
+                android:id="@+id/emergencyAreaSelected"
+                style="@style/area_auto_complete_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emergencyDetailAreaLayout"
+            style="@style/area_auto_complete_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="시군구 선택"
+            android:textColorHint="@color/select_area_text"
+            android:visibility="gone">
+
+            <AutoCompleteTextView
+                android:id="@+id/emergencyDetailAreaSelected"
+                style="@style/area_auto_complete_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/emergencyAreaNegative"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="@dimen/margin_big4"
+            android:layout_weight="1"
+            android:background="@drawable/background_radius_5"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="취소"
+            android:textSize="@dimen/font_big3"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/button_secondary" />
+
+        <Button
+            android:id="@+id/emergencyAreaPositive"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_radius_5"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text="적용하기"
+            android:textColor="@color/color_text_emergency_area"
+            android:textSize="@dimen/font_big3"
+            android:backgroundTint="@color/color_button_emergency_area"
+            android:enabled="false"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -79,4 +79,6 @@ dependencies {
     implementation (libs.shimmer)
 
     implementation(libs.photoview)
+
+    implementation (libs.flexbox)
 }

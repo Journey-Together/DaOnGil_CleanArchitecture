@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/tourist_location_card"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_margin="6dp"
+        app:cardBackgroundColor="@color/card_background_color"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/tourist_location_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/empty_view_long"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/item_gradation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tourist_location_rv"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big4"
+                android:layout_marginBottom="@dimen/margin_big4"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tourist_location_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_semibold"
+        android:lineSpacingMultiplier="0.9"
+        android:maxLines="1"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintEnd_toEndOf="@+id/tourist_location_card"
+        app:layout_constraintStart_toStartOf="@+id/tourist_location_card"
+        app:layout_constraintTop_toBottomOf="@+id/tourist_location_card"
+        tools:text="여행지 이름" />
+
+    <TextView
+        android:id="@+id/tourist_location_address_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:layout_marginBottom="@dimen/margin_big3"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_regular"
+        android:lineSpacingMultiplier="0.9"
+        android:maxLines="1"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_small2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tourist_location_name_tv"
+        app:layout_constraintStart_toStartOf="@+id/tourist_location_name_tv"
+        app:layout_constraintTop_toBottomOf="@+id/tourist_location_name_tv"
+        tools:text="여행지 주소" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

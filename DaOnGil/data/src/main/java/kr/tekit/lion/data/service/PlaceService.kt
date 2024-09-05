@@ -1,6 +1,9 @@
 package kr.tekit.lion.data.service
 
 import kr.tekit.lion.data.dto.response.myreview.MyPlaceReviewResponse
+import kr.tekit.lion.data.dto.response.detailplace.DetailPlaceResponse
+import kr.tekit.lion.data.dto.response.detailplaceguest.DetailPlaceGuestResponse
+import kr.tekit.lion.data.dto.response.mainplace.MainPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.AutoCompleteKeywordResponse
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
@@ -68,4 +71,22 @@ internal interface PlaceService {
         @Part("updateReviewDto") reviewUpdateReq: RequestBody,
         @Part addImages: List<MultipartBody.Part>
     )
+=
+    @GET("place/main")
+    suspend fun getPlaceMainInfo(
+        @Query("areacode") areacode : String,
+        @Query("sigungucode") sigungucode : String
+    ): MainPlaceResponse
+
+    @GET("place/{placeId}")
+    suspend fun getPlaceDetailInfo(
+        @Path("placeId") placeId: Long,
+        @Tag authType: AuthType = AuthType.ACCESS_TOKEN
+    ): DetailPlaceResponse
+
+    @GET("place/guest/{placeId}")
+    suspend fun getPlaceDetailInfoGuest(
+        @Path("placeId") placeId: Long,
+        @Tag authType: AuthType = AuthType.NO_AUTH
+    ): DetailPlaceGuestResponse
 }

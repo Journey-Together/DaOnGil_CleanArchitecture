@@ -9,6 +9,9 @@ import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.MyPlaceReview
 import kr.tekit.lion.domain.model.MyPlaceReviewImages
 import kr.tekit.lion.domain.model.UpdateMyPlaceReview
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfo
+import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfoGuest
+import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
 interface PlaceRepository {
@@ -27,4 +30,10 @@ interface PlaceRepository {
         updateMyPlaceReview: UpdateMyPlaceReview,
         myPlaceReviewImages: MyPlaceReviewImages
     ): Result<Unit>
+
+    suspend fun getPlaceMainInfo(areaCode: String, sigunguCode: String): Result<PlaceMainInfo>
+
+    suspend fun getPlaceDetailInfo(placeId: Long): Result<PlaceDetailInfo>
+
+    suspend fun getPlaceDetailInfoGuest(placeId: Long): Result<PlaceDetailInfoGuest>
 }

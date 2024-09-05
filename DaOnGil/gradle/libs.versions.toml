@@ -40,6 +40,7 @@ googleServices = "4.4.2"
 firebaseBom = "33.1.2"
 firebaseCrashlytics = "2.9.9"
 shimmer="0.5.0"
+flexbox = "3.0.0"
 
 [libraries]
 photoview = { module = "io.getstream:photoview", version.ref = "photoview" }
@@ -89,6 +90,8 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref="shimmer" }
+flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
