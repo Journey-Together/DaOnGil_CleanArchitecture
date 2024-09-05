@@ -23,4 +23,6 @@ interface PlanRepository {
 
     suspend fun getDetailScheduleReview(planId: Long): ScheduleDetailReview
 
+    suspend fun getDetailScheduleReviewGuest(planId: Long): ScheduleDetailReview
+
 }
