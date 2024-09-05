@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             app:hintTextColor="@color/text_tertiary"
             android:textCursorDrawable="@color/black"
-            android:hint="관광지를 검색 해보세요!"
+            android:hint="@string/text_plz_enter_2_more"
             android:textColor="@color/black"
             android:textColorHint="@color/text_tertiary"
             android:background="@drawable/search_bar_background"/>
