@@ -15,7 +15,6 @@ import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.myreview.adapter.MyReviewRVAdapter
-import kr.tekit.lion.presentation.myreview.model.toMyPlaceReviewInfoData
 import kr.tekit.lion.presentation.myreview.vm.MyReviewViewModel
 
 @AndroidEntryPoint
@@ -57,9 +56,8 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
 //                        startActivity(intent)
                     },
                     onModifyClick = { myPlaceReviewInfo ->
-                        val myPlaceReviewInfoData = myPlaceReviewInfo.toMyPlaceReviewInfoData()
-                        val action = MyReviewFragmentDirections.actionMyReviewFragmentToMyReviewModifyFragment(myPlaceReviewInfoData)
-                        findNavController().navigate(action)
+                        viewModel.setReviewData(myPlaceReviewInfo)
+                        findNavController().navigate(R.id.action_myReviewFragment_to_myReviewModifyFragment)
                     },
                     onDeleteClick = { reviewId ->
                         ConfirmDialog(
