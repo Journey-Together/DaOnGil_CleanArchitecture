@@ -12,11 +12,7 @@
         tools:layout="@layout/fragment_on_search" >
         <action
             android:id="@+id/action_to_searchResultFragment"
-            app:destination="@id/searchResultFragment"
-            app:enterAnim="@anim/for_slide_in_right"
-            app:exitAnim="@anim/for_slide_out_left"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:destination="@id/searchResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"
