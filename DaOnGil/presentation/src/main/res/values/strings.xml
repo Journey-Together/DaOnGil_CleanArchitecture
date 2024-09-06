@@ -329,6 +329,7 @@
     <string name="text_num_of_images">%d</string>
     <string name="text_num_of_max_images">/4</string>
     <string name="text_num_of_total_images">/%d</string>
+    <string name="text_warning_review_content_empty">후기를 작성해 주세요</string>
 
     <string name="text_my_review_modify_btn">수정</string>
     <string name="text_my_review_delete_btn">삭제</string>
