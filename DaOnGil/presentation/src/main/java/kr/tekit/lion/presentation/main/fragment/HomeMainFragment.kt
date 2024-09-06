@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +45,7 @@ import kr.tekit.lion.presentation.databinding.ItemTouristRecommendBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showPermissionSnackBar
 import kr.tekit.lion.presentation.home.DetailActivity
+import kr.tekit.lion.presentation.home.model.HomeViewPagerPage
 import kr.tekit.lion.presentation.main.adapter.HomeLocationRVAdapter
 import kr.tekit.lion.presentation.main.adapter.HomeRecommendRVAdapter
 import kr.tekit.lion.presentation.main.adapter.HomeVPAdapter
@@ -77,12 +80,14 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeMainBinding.bind(view)
         repeatOnViewStarted {
-            viewModel.appTheme.collect{
-                when(it){
+            viewModel.appTheme.collect {
+                when (it) {
                     AppTheme.LIGHT ->
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
                     AppTheme.HIGH_CONTRAST ->
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
                     AppTheme.SYSTEM ->
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                 }
@@ -100,6 +105,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         checkLocationPermission(binding)
         settingVPAdapter(binding)
         getRecommendPlaceInfo(binding)
+        settingSearchBanner(binding)
     }
 
     private fun settingVPAdapter(binding: FragmentHomeMainBinding) {
@@ -109,12 +115,49 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             ContextCompat.getDrawable(requireContext(), R.drawable.item_home_vp3)
         )
 
-        val homeVPAdapter = HomeVPAdapter(images)
+        val homeVPAdapter = HomeVPAdapter(images) { position ->
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.homeMainFragment, true)
+                .build()
+
+            val page = HomeViewPagerPage.fromPosition(position)
+
+            when (page) {
+                HomeViewPagerPage.SearchPlace -> findNavController().navigate(
+                    R.id.action_homeMainFragment_to_searchPlaceMainFragment,
+                    null,
+                    navOptions
+                )
+
+                HomeViewPagerPage.Emergency -> findNavController().navigate(
+                    R.id.action_homeMainFragment_to_emergencyMainFragment,
+                    null,
+                    navOptions
+                )
+
+                HomeViewPagerPage.Schedule -> findNavController().navigate(
+                    R.id.action_homeMainFragment_to_scheduleMainFragment,
+                    null,
+                    navOptions
+                )
+            }
+        }
+
         binding.homeVp.adapter = homeVPAdapter
         binding.homeVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         binding.homeVpIndicator.setViewPager(binding.homeVp)
         startAutoSlide(homeVPAdapter, binding)
+    }
+
+    private fun settingSearchBanner(binding: FragmentHomeMainBinding) {
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.homeMainFragment, true)
+            .build()
+
+        binding.homeSearchBannerIv.setOnClickListener {
+            findNavController().navigate(R.id.action_homeMainFragment_to_searchPlaceMainFragment, null, navOptions)
+        }
     }
 
     private fun startAutoSlide(adpater: HomeVPAdapter, binding: FragmentHomeMainBinding) {
@@ -205,7 +248,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         aroundPlaceList: List<AroundPlace>
     ) {
         val homeLocationRVAdapter = HomeLocationRVAdapter(aroundPlaceList,
-            onClick = {position ->
+            onClick = { position ->
                 val context: Context = binding.root.context
                 val intent = Intent(context, DetailActivity::class.java)
                 intent.putExtra("detailPlaceId", aroundPlaceList[position].placeId)
