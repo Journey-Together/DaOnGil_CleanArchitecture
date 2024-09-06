@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuSchedulPublicBookmark"
+        android:icon="@drawable/bookmark_schedule_detail_icon"
+        android:iconTint="@color/white"
+        android:title="@string/text_schedule_bookmark"
+        app:showAsAction="always" />
+</menu>

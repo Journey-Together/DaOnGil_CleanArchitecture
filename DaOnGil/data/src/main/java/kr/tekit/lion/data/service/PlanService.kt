@@ -2,6 +2,7 @@ package kr.tekit.lion.data.service
 
 
 import kr.tekit.lion.data.dto.response.plan.briefScheduleInfo.BriefScheduleInfoResponse
+import kr.tekit.lion.data.dto.response.plan.scheduleDetailInfo.ScheduleDetailResponse
 import kr.tekit.lion.data.dto.response.plan.myMainSchedule.MyMainScheduleResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleElapsed.MyElapsedResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleUpcoming.MyUpcomingsResponse
@@ -12,6 +13,11 @@ import kr.tekit.lion.data.dto.response.plan.openSchedule.OpenPlanListResponse
 import okhttp3.MultipartBody
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import kr.tekit.lion.data.dto.response.plan.scheduleDetailReview.ScheduleDetailReviewResponse
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.PATCH
+import retrofit2.http.Path
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -82,5 +88,49 @@ internal interface PlanService {
     suspend fun addNewScheduleReviewTextOnly(
         @Path("planId") planId: Long,
         @Part("planReviewReq") scheduleReview: RequestBody,
+    )
+      
+    // 여행 일정 상세보기 (로그인버전)
+    @GET("plan/detail/{planId}")
+    suspend fun getDetailScheduleInfo(
+        @Path("planId") planId: Long
+    ): ScheduleDetailResponse
+
+    // 여행 일정 상세보기 (게스트버전)
+    @GET("plan/guest/detail/{planId}")
+    suspend fun getDetailScheduleInfoGuest(
+        @Path("planId") planId: Long,
+        @Tag authType: AuthType = AuthType.NO_AUTH
+    ): ScheduleDetailResponse
+
+    // 여행 일정 상세보기 페이지에서의 여행 일정 후기 정보 (로그인 버전)
+    @GET("plan/review/{planId}")
+    suspend fun getDetailScheduleReview(
+        @Path("planId") planId: Long
+    ): ScheduleDetailReviewResponse
+
+    // 여행 일정 상세보기 페이지에서의 여행 일정 후기 정보 (게스트 버전)
+    @GET("plan/guest/review/{planId}")
+    suspend fun getDetailScheduleReviewGuest(
+        @Path("planId") planId: Long,
+        @Tag authType: AuthType = AuthType.NO_AUTH
+    ): ScheduleDetailReviewResponse
+
+    // 여행 일정 후기 삭제
+    @DELETE("plan/review/{reviewId}")
+    suspend fun deleteMyPlanReview(
+        @Path("reviewId") reviewId: Long
+    )
+
+    // 일정 공개 비공개 수정
+    @PATCH("plan/{planId}/ispublic")
+    suspend fun updateMyPlanPublic(
+        @Path("planId") planId: Long
+    )
+
+    // 여행 일정 삭제
+    @DELETE("plan/{planId}")
+    suspend fun deleteMyPlanSchedule(
+        @Path("planId") planId: Long
     )
 }

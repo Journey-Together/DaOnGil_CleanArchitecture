@@ -11,5 +11,6 @@ internal data class ReviewGuestRes (
     val content : String,
     val reviewImgs : List<String>?,
     val grade : Float,
-    val date : LocalDate
+    val date : LocalDate,
+    val myReview : Boolean
 )

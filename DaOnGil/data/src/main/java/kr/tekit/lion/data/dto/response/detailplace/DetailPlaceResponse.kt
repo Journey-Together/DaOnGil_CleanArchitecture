@@ -36,7 +36,8 @@ internal data class DetailPlaceResponse(
                     content = it.content,
                     reviewId = it.reviewId,
                     grade = it.grade,
-                    date = it.date
+                    date = it.date,
+                    myReview = it.myReview
                 )
             },
             subDisability = data.subDisability?.map {

@@ -6,6 +6,8 @@ import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.domain.model.OpenPlan
 import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
+import kr.tekit.lion.domain.model.ScheduleDetailInfo
+import kr.tekit.lion.domain.model.ScheduleDetailReview
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
@@ -59,5 +61,33 @@ internal class PlanDataSource @Inject constructor(
         }else{
             planService.addNewScheduleReview(planId, scheduleReview, images)
         }
+    }
+
+    suspend fun getDetailScheduleInfo(planId: Long): ScheduleDetailInfo {
+        return planService.getDetailScheduleInfo(planId).toDomainModel()
+    }
+
+    suspend fun getDetailScheduleInfoGuest(planId: Long): ScheduleDetailInfo {
+        return planService.getDetailScheduleInfo(planId).toDomainModel()
+    }
+
+    suspend fun getDetailScheduleReview(planId: Long): ScheduleDetailReview {
+        return planService.getDetailScheduleReview(planId).toDomainModel()
+    }
+
+    suspend fun getDetailScheduleReviewGuest(planId: Long): ScheduleDetailReview {
+        return planService.getDetailScheduleReview(planId).toDomainModel()
+    }
+
+    suspend fun deleteMyPlanReview(reviewId: Long) {
+        planService.deleteMyPlanReview(reviewId)
+    }
+
+    suspend fun updateMyPlanPublic(planId: Long) {
+        planService.updateMyPlanPublic(planId)
+    }
+
+    suspend fun deleteMyPlanSchedule(planId: Long): Result<Unit> = execute {
+        planService.deleteMyPlanSchedule(planId)
     }
 }

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_radius_10"
+    android:backgroundTint="@color/card_background_color"
+    android:minWidth="300dp"
+    android:padding="@dimen/margin_basic">
+
+    <TextView
+        android:id="@+id/textViewReviewReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="@string/text_report_reason"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupRRR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewReviewReport">
+
+        <RadioButton
+            android:id="@+id/radioButtonRRRCommercial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/text_report_commercial_promotion"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/font_big3" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRRRCopyrightInfringement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/text_report_copyright_infringement"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/font_big3" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRRRObscenity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/text_report_obscenity"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/font_big3" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRRRVerbalAbuse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/text_report_verbal_abuse"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/font_big3" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRRRPrivacyExposure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/text_report_privacy_exposure"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/font_big3" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRRROther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/text_report_other"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/font_big3" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonNegativeReviewReport"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/background_radius_5"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_report_cancel"
+        android:textSize="@dimen/font_big3"
+        app:backgroundTint="@color/button_secondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonPositiveReviewReport"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupRRR" />
+
+    <Button
+        android:id="@+id/buttonPositiveReviewReport"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/background_radius_5"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/text_schedule_report_review"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big3"
+        app:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonNegativeReviewReport" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

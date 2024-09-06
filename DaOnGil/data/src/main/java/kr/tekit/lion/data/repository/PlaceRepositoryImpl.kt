@@ -23,6 +23,7 @@ import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.placereview.NewReviewData
 import kr.tekit.lion.domain.model.placereview.NewReviewImages
 import kr.tekit.lion.domain.model.placereview.WritePlaceReview
+import kr.tekit.lion.domain.model.placereviewlist.PlaceReviewInfo
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
 internal class PlaceRepositoryImpl @Inject constructor(
@@ -39,9 +40,9 @@ internal class PlaceRepositoryImpl @Inject constructor(
         emit(response.toDomainModel())
     }
 
-    override suspend fun getAutoCompleteKeyword(keyword: String): Flow<AutoCompleteKeyword> = flow {
-        val response = placeDataSource.getAutoCompleteKeyword(keyword)
-        emit(response.toDomainModel())
+    override suspend fun getAutoCompleteKeyword(keyword: String): Flow<List<AutoCompleteKeyword>> = flow {
+        val response = placeDataSource.getAutoCompleteKeyword(keyword).toDomainModel()
+        emit(response)
     }
 
     override suspend fun getMyPlaceReview(size: Int, page: Int): Result<MyPlaceReview> {
@@ -89,5 +90,9 @@ internal class PlaceRepositoryImpl @Inject constructor(
             newReviewData.toRequestBody(),
             reviewImages.toMultiPartBody()
         )
+    }
+
+    override suspend fun getPlaceReviewList(placeId: Long, page: Int, size: Int): Result<PlaceReviewInfo> {
+        return placeDataSource.getPlaceReviewList(placeId, page, size)
     }
 }

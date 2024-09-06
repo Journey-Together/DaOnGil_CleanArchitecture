@@ -24,6 +24,7 @@ import kr.tekit.lion.presentation.main.vm.schedule.ScheduleMainViewModel
 import kr.tekit.lion.presentation.myschedule.MyScheduleActivity
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
+import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -194,9 +195,9 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
     }
 
     private fun initScheduleDetailActivity(planId: Long){
-        /*val intent = Intent(requireActivity(), ScheduleDetailActivity::class.java)
+        val intent = Intent(requireActivity(), ScheduleDetailActivity::class.java)
         intent.putExtra("planId", planId)
-        scheduleDetailLauncher.launch(intent)*/
+        scheduleDetailLauncher.launch(intent)
     }
 
 }

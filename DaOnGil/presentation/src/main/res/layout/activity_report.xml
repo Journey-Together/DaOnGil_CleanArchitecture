@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".report.ReportActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/back_icon">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/text_report_title"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big2"
+            tools:layout_editor_absoluteX="156dp"
+            tools:layout_editor_absoluteY="19dp" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_basic">
+
+            <LinearLayout
+                android:id="@+id/layoutReport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_report_subtitle"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big2" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layoutDirection="rtl"
+                    android:layout_marginTop="@dimen/margin_big4"
+                    android:checkedButton="@id/radioButtonPirate">
+
+                    <RadioButton
+                        android:id="@+id/radioButtonPirate"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_report_reason_pirate"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:buttonTint="@color/text_primary" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonCurse"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_report_reason_curse"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:buttonTint="@color/text_primary" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonPromote"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_report_reason_promote"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:buttonTint="@color/text_primary" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonViolence"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_report_reason_violence"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:buttonTint="@color/text_primary" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonWrong"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_report_reason_wrong"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:buttonTint="@color/text_primary" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonEtc"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/text_report_reason_etc"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1"
+                        app:buttonTint="@color/text_primary" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/text_report_detail_reason_subtitle"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big2" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="@string/text_report_detail_reason_info"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutEtc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big4"
+                    app:boxBackgroundColor="@color/text_field_background"
+                    app:boxStrokeColor="@color/text_field_background"
+                    app:boxStrokeWidth="0dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="1000"
+                    app:cursorColor="@color/text_primary"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textFieldEtc"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:gravity="top"
+                        android:hint="@string/hint_report_reason_etc"
+                        android:inputType="text|textMultiLine"
+                        android:maxLength="1000"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_small1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big1"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/text_report_notify"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_small1" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonReport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/background_radius_10"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="@string/text_report_title"
+                android:textSize="@dimen/font_big2" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

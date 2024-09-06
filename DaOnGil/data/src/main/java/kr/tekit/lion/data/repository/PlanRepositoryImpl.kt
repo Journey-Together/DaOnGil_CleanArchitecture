@@ -7,6 +7,8 @@ import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.domain.model.OpenPlan
 import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
+import kr.tekit.lion.domain.model.ScheduleDetailInfo
+import kr.tekit.lion.domain.model.ScheduleDetailReview
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.model.schedule.NewScheduleReview
@@ -57,5 +59,33 @@ internal class PlanRepositoryImpl @Inject constructor(
             scheduleReview.toRequestBody(),
             images.toMultipartBodyList()
         )
+    }
+        
+    override suspend fun getDetailScheduleInfo(planId: Long): ScheduleDetailInfo {
+        return planDataSource.getDetailScheduleInfo(planId)
+    }
+
+    override suspend fun getDetailScheduleInfoGuest(planId: Long): ScheduleDetailInfo {
+        return planDataSource.getDetailScheduleInfoGuest(planId)
+    }
+
+    override suspend fun getDetailScheduleReview(planId: Long): ScheduleDetailReview {
+        return planDataSource.getDetailScheduleReview(planId)
+    }
+
+    override suspend fun getDetailScheduleReviewGuest(planId: Long): ScheduleDetailReview {
+        return planDataSource.getDetailScheduleReviewGuest(planId)
+    }
+
+    override suspend fun deleteMyPlanReview(reviewId: Long) {
+        return planDataSource.deleteMyPlanReview(reviewId)
+    }
+
+    override suspend fun updateMyPlanPublic(planId: Long) {
+        return planDataSource.updateMyPlanPublic(planId)
+    }
+
+    override suspend fun deleteMyPlanSchedule(planId: Long): Result<Unit> {
+        return planDataSource.deleteMyPlanSchedule(planId)
     }
 }

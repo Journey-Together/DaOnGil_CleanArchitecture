@@ -15,6 +15,7 @@ import kr.tekit.lion.domain.model.mainplace.PlaceMainInfo
 import kr.tekit.lion.domain.model.placereview.NewReviewData
 import kr.tekit.lion.domain.model.placereview.NewReviewImages
 import kr.tekit.lion.domain.model.placereview.WritePlaceReview
+import kr.tekit.lion.domain.model.placereviewlist.PlaceReviewInfo
 import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 
 interface PlaceRepository {
@@ -22,7 +23,7 @@ interface PlaceRepository {
 
     fun getSearchPlaceResultByMap(request: MapSearchOption): Flow<MapSearchResultList>
 
-    suspend fun getAutoCompleteKeyword(keyword: String): Flow<AutoCompleteKeyword>
+    suspend fun getAutoCompleteKeyword(keyword: String): Flow<List<AutoCompleteKeyword>>
 
     suspend fun getMyPlaceReview(size: Int, page: Int): Result<MyPlaceReview>
 
@@ -45,4 +46,7 @@ interface PlaceRepository {
         newReviewData: NewReviewData,
         reviewImages: NewReviewImages
     ): Result<WritePlaceReview>
+
+    suspend fun getPlaceReviewList(placeId: Long, size: Int, page: Int): Result<PlaceReviewInfo>
+
 }

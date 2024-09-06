@@ -10,6 +10,8 @@ import kr.tekit.lion.domain.model.OpenPlan
 import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
 import kr.tekit.lion.domain.model.schedule.NewScheduleReview
 import kr.tekit.lion.domain.model.schedule.ReviewImg
+import kr.tekit.lion.domain.model.ScheduleDetailInfo
+import kr.tekit.lion.domain.model.ScheduleDetailReview
 
 interface PlanRepository {
     suspend fun getMyUpcomingScheduleList(page: Int): Result<MyUpcomingSchedules>
@@ -31,4 +33,18 @@ interface PlanRepository {
         scheduleReview: NewScheduleReview,
         images: List<ReviewImg>
     ): Result<Unit>
+ 
+    suspend fun getDetailScheduleInfo(planId: Long): ScheduleDetailInfo
+
+    suspend fun getDetailScheduleInfoGuest(planId: Long): ScheduleDetailInfo
+
+    suspend fun getDetailScheduleReview(planId: Long): ScheduleDetailReview
+
+    suspend fun getDetailScheduleReviewGuest(planId: Long): ScheduleDetailReview
+
+    suspend fun deleteMyPlanReview(reviewId: Long)
+
+    suspend fun updateMyPlanPublic(planId: Long)
+
+    suspend fun deleteMyPlanSchedule(planId: Long): Result<Unit>
 }

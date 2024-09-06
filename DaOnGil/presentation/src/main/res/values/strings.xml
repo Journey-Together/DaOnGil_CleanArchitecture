@@ -85,13 +85,19 @@
 
     <string name="text_my_schedule">내 일정</string>
     <string name="text_public_schedule">공개 일정</string>
+    <string name="text_schedule_info_writer_not_leave_title">여행이 종료되지 않았습니다.</string>
+    <string name="text_schedule_info_writer_not_leave_content">종료 후 후기를 남겨주세요.</string>
+    <string name="text_schedule_info_not_leave_title">여행이 종료되지 않았습니다.</string>
+    <string name="text_schedule_info_not_leave_content">종료 후 후기가 작성될 예정입니다.</string>
+    <string name="text_schedule_info_leave_title">작성된 후기가 없습니다.</string>
+    <string name="text_schedule_info_leave_content">후기가 작성될 때까지 기다려주세요.</string>
     <string name="text_leave_schedule_review"><u>후기/만족도 남기기 ＞</u></string>
+    <string name="text_schedule_detail_review">여행 후기</string>
     <string name="text_schedule_review">후기</string>
     <string name="text_schedule_satisfaction">일정 만족도</string>
     <string name="text_schedule_report_review">신고하기</string>
     <string name="text_schedule_weather">예상 날씨</string>
-    <string name="text_schedule_full">전체 일정</string>
-    <string name="text_schedule_d_day">D-%d</string>
+    <string name="text_schedule_full">일정 보기</string>
     <string name="text_schedule_period">%s - %s</string>
     <string name="text_schedule_days">일차</string>
     <string name="text_schedule_place_empty">해당 일자에 추가된 여행지가 없습니다</string>
@@ -110,6 +116,7 @@
     <string name="text_schedule_changed_to_private">여행 일정이 비공개되었습니다.</string>
     <string name="text_schedule_changed_to_public">여행 일정이 공개되었습니다.</string>
     <string name="text_schedule_review_deleted">여행 일정 후기가 삭제되었습니다.</string>
+    <string name="text_schedule_deleted">여행 일정 후기가 삭제되었습니다.</string>
     <string name="text_report_reason">신고 사유</string>
     <string name="text_report_commercial_promotion">영리목적/홍보성</string>
     <string name="text_report_copyright_infringement">저작권 침해</string>
@@ -175,7 +182,7 @@
 
     <string name="text_my_review">작성한 후기가 없습니다.\n다녀온 여행지의 후기를 작성해보세요!</string>
 
-    <string name="text_report_title">신고/차단하기</string>
+    <string name="text_report_title">신고하기</string>
     <string name="text_report_subtitle">신고 사유 (필수)</string>
     <string name="text_report_reason_pirate">도용</string>
     <string name="text_report_reason_curse">비방 및 욕설</string>
@@ -183,12 +190,12 @@
     <string name="text_report_reason_violence">증오심 표현/노골적인 폭력</string>
     <string name="text_report_reason_wrong">잘못된 정보</string>
     <string name="text_report_reason_etc">기타</string>
-    <string name="hint_report_reason_etc">1000자 이내로 신고 내용을 입력해주세요.</string>
+    <string name="text_report_detail_reason_subtitle">상세한 신고 사유</string>
+    <string name="text_report_detail_reason_info">기타 사유 선택 시, 상세한 신고 사유는 필수입니다.</string>
+    <string name="hint_report_reason_etc">자세하게 신고 사유를 입력해주시면 신고 내용에 도움이 됩니다.</string>
     <string name="text_report_notify">※ 신고해주신 내용은 관리자 검토 후 조치가 진행됩니다.</string>
-    <string name="text_block_subtitle">차단 여부</string>
-    <string name="text_block_board">해당 게시물/후기 차단하기</string>
-    <string name="text_block_user">해당 작성자의 모든 게시물/후기 차단하기</string>
     <string name="text_report_error_message">신고 내용을 입력해주세요.</string>
+
     <string name="text_searbar_hint">여행지를 직접 검색 해보세요!</string>
     <string name="text_search_guide1">딱 맞는 여행을 찾을 수 있도록</string>
     <string name="text_category">유형</string>
@@ -365,5 +372,6 @@
     <string name="text_onboarding_fourth_text3">
          누구든 떠날 자유, 모두가 누릴 행복
     </string>
-
+    <string name="text_delete_recently_search_keyword">최근검색어삭제</string>
+    <string name="text_plz_enter_2_more">2글자 이상 입력해주세요.</string>
 </resources>
