@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/margin_basic"
+    android:paddingVertical="@dimen/margin_big1">
+
+    <TextView
+        android:id="@+id/textViewScheduleReviewManage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="@string/text_schedule_review_manage"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewScheduleReviewManageEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="20dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:gravity="center_vertical"
+        android:src="@drawable/edit_icon"
+        android:text="@string/text_schedule_edit"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big3"
+        app:drawableStartCompat="@drawable/edit_icon"
+        app:drawableTint="@color/text_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleReviewManage"
+        app:tint="@color/text_primary" />
+
+    <TextView
+        android:id="@+id/textViewScheduleReviewManageDelete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="20dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:gravity="center_vertical"
+        android:src="@drawable/delete_icon"
+        android:text="@string/text_schedule_delete"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big3"
+        app:drawableStartCompat="@drawable/delete_icon"
+        app:drawableTint="@color/text_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleReviewManageEdit"
+        app:tint="@color/text_primary" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
