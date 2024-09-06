@@ -26,7 +26,7 @@ fun NewScheduleReview.toRequestBody() : RequestBody {
     ).toRequestBody("application/json".toMediaTypeOrNull())
 }
 
-fun List<ReviewImg>.toMultipartBody(): List<MultipartBody.Part> {
+fun List<ReviewImg>.toMultipartBodyList(): List<MultipartBody.Part> {
     return this.map { image ->
         val file = File(image .path)
         val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
