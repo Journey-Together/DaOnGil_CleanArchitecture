@@ -9,6 +9,7 @@ import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
 
@@ -46,5 +47,17 @@ internal class PlanDataSource @Inject constructor(
 
     suspend fun getBriefScheduleInfo(planId: Long) : Result<BriefScheduleInfo> = execute {
         planService.getBriefScheduleInfo(planId).toDomainModel()
+    }
+
+    suspend fun addNewScheduleReview(
+        planId: Long,
+        scheduleReview: RequestBody,
+        images: List<MultipartBody.Part>?
+    ) = execute {
+        if(images.isNullOrEmpty()){
+            planService.addNewScheduleReviewTextOnly(planId, scheduleReview)
+        }else{
+            planService.addNewScheduleReview(planId, scheduleReview, images)
+        }
     }
 }
