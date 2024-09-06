@@ -6,6 +6,7 @@ import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.BookmarkedPlace
 import kr.tekit.lion.domain.model.PlaceBookmark
 import kr.tekit.lion.domain.model.PlanBookmark
+import kr.tekit.lion.domain.model.PlanDetailBookmark
 import javax.inject.Inject
 
 
@@ -30,5 +31,9 @@ internal class BookmarkDataSource @Inject constructor(
 
     suspend fun updatePlanBookmark(planId: Long) = execute {
         bookmarkService.updatePlanBookmark(planId)
+    }
+
+    suspend fun getPlanDetailBookmark(planId: Long): PlanDetailBookmark  {
+        return bookmarkService.getPlanDetailBookmark(planId).toDomainModel()
     }
 }

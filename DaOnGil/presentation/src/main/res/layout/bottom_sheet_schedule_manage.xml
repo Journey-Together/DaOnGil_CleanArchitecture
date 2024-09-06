@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/margin_basic"
+    android:paddingVertical="@dimen/margin_big1">
+
+    <TextView
+        android:id="@+id/textViewScheduleManage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="@string/text_schedule_manage"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/layoutScheduleManageEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleManage">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit_icon"
+            app:tint="@color/text_primary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_big2"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@string/text_schedule_edit"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutScheduleManageDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big2"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutScheduleManageEdit">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete_icon"
+            app:tint="@color/text_primary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_big2"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@string/text_schedule_delete"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutScheduleManagePublicToggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big2"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutScheduleManageDelete">
+
+        <ImageView
+            android:id="@+id/iconScheduleManagePublicToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_lock_open"
+            app:tint="@color/text_primary" />
+
+        <TextView
+            android:id="@+id/textViewScheduleManagePublicToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_big2"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@string/text_schedule_make_public"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big3" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -134,4 +134,11 @@
         <item name="android:insetBottom">0dp</item>
         <item name="cornerRadius">24dp</item>
     </style>
+
+    <style name="Theme.Toolbar.Main.Title.Color" parent="">
+        <item name="android:textSize">@dimen/font_big1</item>
+        <item name="android:fontFamily">@font/cafe24_oneprettynight</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:text">@string/toolbar_app_name</item>
+    </style>
 </resources>

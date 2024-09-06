@@ -3,6 +3,7 @@ package kr.tekit.lion.data.service
 import kr.tekit.lion.daongil.data.dto.remote.response.bookmark.PlaceBookmarkListResponse
 import kr.tekit.lion.daongil.data.dto.remote.response.bookmark.PlaceBookmarkResponse
 import kr.tekit.lion.daongil.data.dto.remote.response.bookmark.PlanBookmarkResponse
+import kr.tekit.lion.data.dto.response.bookmark.PlanDetailBookmarkResponse
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.Path
@@ -26,4 +27,9 @@ internal interface BookmarkService {
     suspend fun updatePlanBookmark(
         @Path("planId") planId: Long
     )
+
+    @GET("bookmark/plan/{planId}")
+    suspend fun getPlanDetailBookmark(
+        @Path("planId") planId: Long
+    ): PlanDetailBookmarkResponse
 }

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.WriteReviewActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/write_review_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/cancel_icon">
+
+        <TextView
+            style="@style/Theme.Toolbar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="후기 작성하기" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/write_review_toolbar"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/write_review_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_basic"
+                android:fontFamily="@font/pretendard_bold"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="여행지 이름" />
+
+            <com.willy.ratingbar.BaseRatingBar
+                android:id="@+id/write_review_ratingbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/write_review_title_tv"
+                app:srb_drawableEmpty="@drawable/star_icon"
+                app:srb_drawableFilled="@drawable/star_filled_icon"
+                app:srb_isIndicator="false"
+                app:srb_minimumStars="0"
+                app:srb_numStars="5"
+                app:srb_rating="0"
+                app:srb_starHeight="40dp"
+                app:srb_starPadding="6dp"
+                app:srb_starWidth="40dp"
+                app:srb_stepSize="0.5" />
+
+            <View
+                android:id="@+id/dividerMyReviewModify"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:layout_marginTop="@dimen/margin_basic"
+                android:background="@drawable/dotted_line_horizontal"
+                android:layerType="software"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/write_review_ratingbar" />
+
+            <TextView
+                android:id="@+id/write_review_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="방문 날짜"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dividerMyReviewModify" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/write_review_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:focusable="false"
+                app:boxBackgroundColor="@color/text_field_background"
+                app:boxStrokeColor="@color/text_field_background"
+                app:boxStrokeWidth="0dp"
+                app:cursorColor="@color/text_primary"
+                app:endIconMode="none"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/write_review_date_tv"
+                app:startIconDrawable="@drawable/calendar_icon"
+                app:startIconTint="@color/text_quaternary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/write_review_date_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="방문 날짜를 선택해주세요"
+                    android:paddingStart="45dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_tertiary"
+                    android:textSize="@dimen/font_small1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/write_review_text_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="후기"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintStart_toStartOf="@+id/write_review_date_layout"
+                app:layout_constraintTop_toBottomOf="@+id/write_review_date_layout" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/write_review_text_write_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:textColorHint="@color/text_tertiary"
+                app:boxBackgroundColor="@color/text_field_background"
+                app:boxStrokeColor="@color/text_field_background"
+                app:boxStrokeWidth="0dp"
+                app:cursorColor="@color/text_primary"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/write_review_text_tv">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/write_review_text_write_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="top"
+                    android:hint="방문 경험에 대한 솔직한 후기를 적어주세요"
+                    android:lines="7"
+                    android:maxLines="7"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_tertiary"
+                    android:textSize="@dimen/font_small1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/write_review_image_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="사진"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintStart_toStartOf="@+id/write_review_text_write_layout"
+                app:layout_constraintTop_toBottomOf="@+id/write_review_text_write_layout" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/write_review_image_card"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="@dimen/margin_big4"
+                app:cardBackgroundColor="@color/background_color"
+                app:cardCornerRadius="0dp"
+                app:layout_constraintStart_toStartOf="@id/write_review_image_tv"
+                app:layout_constraintTop_toBottomOf="@id/write_review_image_tv"
+                app:strokeColor="@color/primary_disabled"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/navi_background">
+
+                    <ImageButton
+                        android:id="@+id/write_review_image_add_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/navi_background"
+                        android:paddingBottom="@dimen/margin_basic"
+                        android:src="@drawable/review_image_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/write_review_image_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="@color/days_remaining"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/write_review_image_num_max_tv"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="@string/text_num_of_images" />
+
+                    <TextView
+                        android:id="@+id/write_review_image_num_max_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/text_num_of_max_images"
+                        android:textColor="@color/text_num_of_review_images"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/write_review_image_num_tv" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/write_review_image_rv"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@+id/write_review_image_card"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/write_review_image_card"
+                app:layout_constraintTop_toTopOf="@+id/write_review_image_card" />
+
+            <Button
+                android:id="@+id/write_review_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_basic"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="@dimen/margin_basic"
+                android:background="@drawable/background_radius_10"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="작성 완료"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/write_review_image_rv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.main.fragment.ScheduleMainFragment">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -57,7 +55,9 @@
                 android:id="@+id/textViewMyScheduleMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_basic"
+                android:layout_marginEnd="0dp"
+                android:paddingHorizontal="@dimen/margin_basic"
+                android:paddingVertical="@dimen/margin_small1"
                 android:text="@string/text_view_more"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewMySchedule"
@@ -102,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="아직 등록된 일정이 없어요"
+                        android:text="@string/text_no_schedule"
                         android:textColor="@color/text_quaternary"
                         android:textSize="@dimen/font_big2" />
 
@@ -126,7 +126,7 @@
                 android:layout_marginStart="@dimen/margin_basic"
                 android:layout_marginTop="@dimen/margin_big1"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="공개일정 둘러보기"
+                android:text="@string/text_explore_public_schedule"
                 android:textSize="@dimen/font_big1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardViewEmptySchedule" />
@@ -135,7 +135,8 @@
                 android:id="@+id/textViewPublicScheduleMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_basic"
+                android:paddingHorizontal="@dimen/margin_basic"
+                android:paddingVertical="@dimen/margin_small1"
                 android:text="@string/text_view_more"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewPublicSchedule"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -168,9 +169,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:backgroundTint="@color/floating_action_button"
-        android:contentDescription="추가하기"
+        android:contentDescription="@string/text_add_new_schedule"
         android:fontFamily="@font/pretendard_bold"
-        android:text="추가하기"
         android:textColor="@color/floating_action_button_title"
         app:icon="@drawable/ic_add_24px"
         app:iconTint="@color/floating_action_button_title"

@@ -13,10 +13,19 @@
     <string name="hint_search">검색어를 입력해주세요</string>
     <string name="result_empty">검색 결과가 없어요.\n다른 검색어를 입력해주세요.</string>
     <string name="bookmarked_places_empty">북마크한 여행지가 없어요.\n검색어를 입력해주세요.</string>
-    <string name="add_new_schedule">새로운 일정추가</string>
+    <string name="add_new_schedule">새로운 일정</string>
+    <string name="modify_schedule">일정 수정</string>
     <string name="search_places_to_add">여행지 검색</string>
     <string name="confirm">확인</string>
     <string name="save">저장하기</string>
+    <string name="block_report">신고</string>
+    <string name="text_guide_info">새로운 여행 정보를\n입력해주세요</string>
+    <string name="text_guide_modify_info">여행 정보를\n입력해주세요</string>
+    <string name="text_guide_places">날짜마다 방문할\n여행지를 추가해주세요</string>
+    <string name="text_guide_confirm">입력하신 여행정보를\n확인해보세요</string>
+    <string name="text_number_of_result">검색결과 %s건</string>
+    <string name="text_selected_title">%s&#160;</string>
+    <string name="text_selected_period">| %s</string>
     <string name="inform_add_places">여행지를 추가해주세요</string>
 
     <string name="text_area">지역선택</string>
@@ -76,13 +85,19 @@
 
     <string name="text_my_schedule">내 일정</string>
     <string name="text_public_schedule">공개 일정</string>
+    <string name="text_schedule_info_writer_not_leave_title">여행이 종료되지 않았습니다.</string>
+    <string name="text_schedule_info_writer_not_leave_content">종료 후 후기를 남겨주세요.</string>
+    <string name="text_schedule_info_not_leave_title">여행이 종료되지 않았습니다.</string>
+    <string name="text_schedule_info_not_leave_content">종료 후 후기가 작성될 예정입니다.</string>
+    <string name="text_schedule_info_leave_title">작성된 후기가 없습니다.</string>
+    <string name="text_schedule_info_leave_content">후기가 작성될 때까지 기다려주세요.</string>
     <string name="text_leave_schedule_review"><u>후기/만족도 남기기 ＞</u></string>
+    <string name="text_schedule_detail_review">여행 후기</string>
     <string name="text_schedule_review">후기</string>
     <string name="text_schedule_satisfaction">일정 만족도</string>
     <string name="text_schedule_report_review">신고하기</string>
     <string name="text_schedule_weather">예상 날씨</string>
-    <string name="text_schedule_full">전체 일정</string>
-    <string name="text_schedule_d_day">D-%d</string>
+    <string name="text_schedule_full">일정 보기</string>
     <string name="text_schedule_period">%s - %s</string>
     <string name="text_schedule_days">일차</string>
     <string name="text_schedule_place_empty">해당 일자에 추가된 여행지가 없습니다</string>
@@ -101,6 +116,7 @@
     <string name="text_schedule_changed_to_private">여행 일정이 비공개되었습니다.</string>
     <string name="text_schedule_changed_to_public">여행 일정이 공개되었습니다.</string>
     <string name="text_schedule_review_deleted">여행 일정 후기가 삭제되었습니다.</string>
+    <string name="text_schedule_deleted">여행 일정 후기가 삭제되었습니다.</string>
     <string name="text_report_reason">신고 사유</string>
     <string name="text_report_commercial_promotion">영리목적/홍보성</string>
     <string name="text_report_copyright_infringement">저작권 침해</string>
@@ -147,11 +163,9 @@
     <string name="text_schedule_form_name">여행 제목</string>
     <string name="hint_schedule_form_name">15자 이내로 입력해주세요</string>
     <string name="text_schedule_form_period">여행 기간</string>
-    <string name="hint_schedule_form_period"><b>＋</b> 여행 기간 설정하기</string>
+    <string name="hint_schedule_form_period">여행 기간을 설정해주세요</string>
     <string name="text_schedule_form_next">다음으로</string>
     <string name="text_schedule_form_add_place">새로운 장소 추가</string>
-
-    <string name="text_make_public">일정을 공개하시겠습니까?</string>
 
     <string name="tab_text_place">장소</string>
     <string name="tab_text_plan">일정</string>
@@ -314,6 +328,23 @@
     <string name="text_nationwide">전국</string>
     <string name="text_reset_all_option">모든옵션이 초기화되었습니다.</string>
     <string name="text_select_all_option">모든옵션이 선택되었습니다.</string>
+
+    <string name="text_num_of_images">%d</string>
+    <string name="text_num_of_max_images">/4</string>
+    <string name="text_num_of_total_images">/%d</string>
+
+    <string name="text_my_review_modify_btn">수정</string>
+    <string name="text_my_review_delete_btn">삭제</string>
+    <string name="text_my_review_header">내가 쓴 총 후기</string>
+    <string name="text_my_review_header_cnt">개</string>
+
+    <string name="text_schedule_thumbnail_image">일정 대표사진</string>
+    <string name="text_place_thumbnail_image">여행지 대표사진</string>
+    <string name="text_add_place_to_schedule">일정에 여행지 추가</string>
+    <string name="text_no_schedule">아직 등록된 일정이 없어요</string>
+    <string name="text_explore_public_schedule">공개일정 둘러보기</string>
+    <string name="text_add_new_schedule">새 여행 일정 추가하기</string>
+
     <string name="text_script_guide_onboarding">
         온보딩 화면입니다.좌우스와이프로 페이지를 넘길수있습니다.
         스킵하시려면 화면하단건너뛰기버튼을 눌러주세요.</string>

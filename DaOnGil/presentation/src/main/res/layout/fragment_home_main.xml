@@ -5,13 +5,209 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/home_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:src="@drawable/toolbar_clover_icon" />
+
+                <TextView
+                    style="@style/Theme.Toolbar.Main.Title.Color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small1"
+                    android:text="다온, 길" />
+
+                <ImageButton
+                    android:id="@+id/home_highcontrast_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:background="@color/background_color"
+                    android:src="@drawable/highcontrast_icon" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <TextView
+                android:id="@+id/home_welcome_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="어서오세요!"
+                android:textColor="@color/text_quaternary"
+                android:textSize="@dimen/font_big3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_toolbar" />
+
+            <TextView
+                android:id="@+id/home_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small2"
+                android:fontFamily="@font/pretendard_semibold"
+                android:lineSpacingMultiplier="1.1"
+                android:text="오늘은 어떤 여행길이 \n기다리고 있을까요?"
+                android:textColor="@color/text_primary"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="@+id/home_welcome_title_tv"
+                app:layout_constraintTop_toBottomOf="@id/home_welcome_title_tv" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_recommend_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_title_tv" />
+
+            <LinearLayout
+                android:id="@+id/home_recommend_rv_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:background="@color/transparent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_recommend_rv" />
+
+            <TextView
+                android:id="@+id/home_recommend_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big1"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="나에게 딱 맞는 여행기능"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_big1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_recommend_rv_indicator" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_vp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_basic"
+                android:layout_marginTop="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_recommend_title_tv" />
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/home_vp_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:ci_animator="@animator/scale_with_alpha"
+                app:ci_drawable="@drawable/indicator_selected"
+                app:ci_drawable_unselected="@drawable/indicator_unselected"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_vp" />
+
+            <TextView
+                android:id="@+id/home_my_location_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="주변엔 이런 곳이 있어요!"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_big1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_vp_indicator" />
+
+            <ImageView
+                android:id="@+id/home_my_location_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_basic"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/location_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_my_location_title_tv" />
+
+            <TextView
+                android:id="@+id/home_my_location_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small2"
+                android:layout_marginEnd="@dimen/margin_basic"
+                android:fontFamily="@font/pretendard_medium"
+                android:maxLines="2"
+                android:text="현재 위치"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_small1"
+                app:layout_constraintBottom_toBottomOf="@+id/home_my_location_iv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/home_my_location_iv"
+                app:layout_constraintTop_toTopOf="@+id/home_my_location_iv" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_my_location_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginTop="@dimen/margin_big3"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_my_location_iv"
+                app:spanCount="2" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/item_home_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_basic"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="@dimen/margin_basic"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_my_location_rv">
+
+                <ImageView
+                    android:id="@+id/home_search_banner_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/home_search_banner_background"
+                    android:src="@drawable/home_search_banner"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/home_my_location_rv" />
+
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

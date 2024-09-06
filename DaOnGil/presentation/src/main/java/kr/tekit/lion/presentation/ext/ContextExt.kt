@@ -15,8 +15,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import kr.tekit.lion.presentation.R
+import kr.tekit.lion.presentation.myreview.PhotoDialog
 
 fun Context.showSoftInput(view: View) {
     val inputMethodManger = this.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -148,4 +150,15 @@ fun Context.showSnackbar(view: View, message: String, duration: Int = Snackbar.L
     Snackbar.make(view, message, duration)
         .setBackgroundTint(ContextCompat.getColor(this, R.color.text_secondary))
         .show()
+}
+
+fun Context.showPhotoDialog(
+    fragmentManager: FragmentManager,
+    imageList: List<String>,
+    position: Int
+) {
+    PhotoDialog(
+        imageList,
+        position
+    ).show(fragmentManager, "PhotoDialog")
 }

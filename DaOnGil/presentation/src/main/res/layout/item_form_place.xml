@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_form_place"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/item_background"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view_form_place_deco"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/primary"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_form_place_thumbnail"
+                android:layout_width="58dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:layout_marginTop="@dimen/margin_small1"
+                android:layout_marginBottom="@dimen/margin_small1"
+                android:contentDescription="@string/text_place_thumbnail_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view_form_place_deco"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/empty_view" />
+
+            <TextView
+                android:id="@+id/text_form_place_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:layout_marginTop="@dimen/margin_big3"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendard_semibold"
+                android:lineSpacingMultiplier="1.1"
+                android:maxLines="3"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big2"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/button_form_place_remove"
+                app:layout_constraintStart_toEndOf="@+id/image_form_place_thumbnail"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="여행지 이름" />
+
+            <TextView
+                android:id="@+id/text_form_place_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="@dimen/margin_big3"
+                android:fontFamily="@font/pretendard_light"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_form_place_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_form_place_name"
+                tools:text="관광지" />
+
+            <ImageButton
+                android:id="@+id/button_form_place_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/background_radius_50"
+                android:backgroundTint="@color/item_background"
+                android:contentDescription="@string/text_schedule_delete"
+                android:paddingHorizontal="@dimen/margin_big3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/form_remove_icon"
+                app:tint="@color/primary" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

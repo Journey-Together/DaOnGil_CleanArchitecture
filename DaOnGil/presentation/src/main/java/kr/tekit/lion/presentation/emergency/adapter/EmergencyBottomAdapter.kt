@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kr.tekit.lion.domain.model.EmergencyMapInfo
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemEmergencyBottomBinding
 
 class EmergencyBottomAdapter(
-    // private val emergencyMapInfoList: List<EmergencyMapInfo>,
+    private val emergencyMapInfoList: List<EmergencyMapInfo>,
     private val itemClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<EmergencyBottomAdapter.EmergencyBottomViewHolder>() {
 
@@ -23,7 +24,7 @@ class EmergencyBottomAdapter(
             }
         }
 
-        /*fun bind(item: EmergencyMapInfo) {
+        fun bind(item: EmergencyMapInfo) {
             with(binding) {
                 if (item.emergencyType == "hospital") {
                     emergencyBottomImage.setImageResource(R.drawable.emergency_bottom_img)
@@ -57,11 +58,8 @@ class EmergencyBottomAdapter(
                     emergencyCall.text = item.aedList?.aedTel
                 }
             }
-        }*/
-
-        fun bind(){
-
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmergencyBottomViewHolder {
@@ -74,13 +72,11 @@ class EmergencyBottomAdapter(
     }
 
     override fun getItemCount(): Int {
-        // return emergencyMapInfoList.size
-        return 0
+        return emergencyMapInfoList.size
     }
 
     override fun onBindViewHolder(holder: EmergencyBottomViewHolder, position: Int) {
-        // holder.bind(emergencyMapInfoList[position])
-        holder.bind()
+        holder.bind(emergencyMapInfoList[position])
     }
 
 }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/margin_big2">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/item_detail_review_big_profile_iv"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_basic"
+        android:src="@drawable/default_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/profile_circle" />
+
+    <TextView
+        android:id="@+id/item_detail_review_big_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small1"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="이름"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintBottom_toBottomOf="@+id/item_detail_review_big_profile_iv"
+        app:layout_constraintStart_toEndOf="@+id/item_detail_review_big_profile_iv"
+        app:layout_constraintTop_toTopOf="@+id/item_detail_review_big_profile_iv" />
+
+    <com.willy.ratingbar.BaseRatingBar
+        android:id="@+id/item_detail_review_big_ratingbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/item_detail_review_big_profile_iv"
+        app:layout_constraintTop_toBottomOf="@+id/item_detail_review_big_profile_iv"
+        app:srb_drawableEmpty="@drawable/star_icon"
+        app:srb_drawableFilled="@drawable/star_filled_icon"
+        app:srb_isIndicator="true"
+        app:srb_minimumStars="0"
+        app:srb_numStars="5"
+        app:srb_rating="3.5"
+        app:srb_starHeight="15dp"
+        app:srb_starPadding="2dp"
+        app:srb_starWidth="15dp"
+        app:srb_stepSize="0.5" />
+
+    <TextView
+        android:id="@+id/item_detail_review_big_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small1"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="2024.00.00"
+        android:textColor="@color/text_quaternary"
+        android:textSize="@dimen/font_small2"
+        app:layout_constraintBottom_toBottomOf="@id/item_detail_review_big_ratingbar"
+        app:layout_constraintStart_toEndOf="@+id/item_detail_review_big_ratingbar"
+        app:layout_constraintTop_toTopOf="@id/item_detail_review_big_ratingbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_detail_review_big_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small1"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/margin_basic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_detail_review_big_content" />
+
+    <TextView
+        android:id="@+id/item_detail_review_big_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="리뷰 내용입니다"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_small2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_detail_review_big_ratingbar" />
+
+    <ImageView
+        android:id="@+id/item_detail_review_big_report_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_basic"
+        android:background="@color/background_color"
+        android:src="@drawable/review_report_icon"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/item_detail_review_big_nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/item_detail_review_big_nickname" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
