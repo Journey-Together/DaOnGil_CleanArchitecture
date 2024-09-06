@@ -8,5 +8,5 @@ data class Data(
     @Json(name = "keyword")
     val keyword: String,
     @Json(name = "placeId")
-    val placeId: Int
+    val placeId: Long
 )
