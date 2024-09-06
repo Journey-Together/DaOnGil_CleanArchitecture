@@ -178,7 +178,7 @@
 
     <string name="text_my_review">작성한 후기가 없습니다.\n다녀온 여행지의 후기를 작성해보세요!</string>
 
-    <string name="text_report_title">신고/차단하기</string>
+    <string name="text_report_title">신고하기</string>
     <string name="text_report_subtitle">신고 사유 (필수)</string>
     <string name="text_report_reason_pirate">도용</string>
     <string name="text_report_reason_curse">비방 및 욕설</string>
@@ -186,12 +186,12 @@
     <string name="text_report_reason_violence">증오심 표현/노골적인 폭력</string>
     <string name="text_report_reason_wrong">잘못된 정보</string>
     <string name="text_report_reason_etc">기타</string>
-    <string name="hint_report_reason_etc">1000자 이내로 신고 내용을 입력해주세요.</string>
+    <string name="text_report_detail_reason_subtitle">상세한 신고 사유</string>
+    <string name="text_report_detail_reason_info">기타 사유 선택 시, 상세한 신고 사유는 필수입니다.</string>
+    <string name="hint_report_reason_etc">자세하게 신고 사유를 입력해주시면 신고 내용에 도움이 됩니다.</string>
     <string name="text_report_notify">※ 신고해주신 내용은 관리자 검토 후 조치가 진행됩니다.</string>
-    <string name="text_block_subtitle">차단 여부</string>
-    <string name="text_block_board">해당 게시물/후기 차단하기</string>
-    <string name="text_block_user">해당 작성자의 모든 게시물/후기 차단하기</string>
     <string name="text_report_error_message">신고 내용을 입력해주세요.</string>
+
     <string name="text_searbar_hint">여행지를 직접 검색 해보세요!</string>
     <string name="text_search_guide1">딱 맞는 여행을 찾을 수 있도록</string>
     <string name="text_category">유형</string>
