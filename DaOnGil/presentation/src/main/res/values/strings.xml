@@ -180,11 +180,8 @@
     <string name="text_report_reason_wrong">잘못된 정보</string>
     <string name="text_report_reason_etc">기타</string>
     <string name="text_report_detail_reason_subtitle">상세한 신고 사유</string>
-    <string name="text_report_detail_reason_info">
-        자세하게 신고 사유를 입력해주시면 신고 내용에 도움이 됩니다.
-        \n기타 사유 선택 시, 상세한 신고 사유는 필수입니다.
-    </string>
-    <string name="hint_report_reason_etc">1000자 이내로 신고 내용을 입력해주세요.</string>
+    <string name="text_report_detail_reason_info">기타 사유 선택 시, 상세한 신고 사유는 필수입니다.</string>
+    <string name="hint_report_reason_etc">자세하게 신고 사유를 입력해주시면 신고 내용에 도움이 됩니다.</string>
     <string name="text_report_notify">※ 신고해주신 내용은 관리자 검토 후 조치가 진행됩니다.</string>
     <string name="text_report_error_message">신고 내용을 입력해주세요.</string>
 
