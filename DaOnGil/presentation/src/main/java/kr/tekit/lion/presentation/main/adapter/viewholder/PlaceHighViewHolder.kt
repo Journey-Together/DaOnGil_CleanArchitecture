@@ -12,13 +12,13 @@ import kr.tekit.lion.presentation.main.model.PlaceModel
 
 class PlaceHighViewHolder(
     private val binding: ItemPlaceHighBinding,
-    private val onSelectPlace: (String) -> Unit
+    private val onSelectPlace: (Long) -> Unit
 )
     : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: PlaceModel) {
         with(binding) {
             root.setOnClickListener {
-                onSelectPlace(item.placeId)
+                onSelectPlace(item.placeId.toLong())
             }
 
             tvName.text = item.placeName

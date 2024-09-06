@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.main.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchListBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter
 import kr.tekit.lion.presentation.main.adapter.ListSearchAdapter.Companion.VIEW_TYPE_PLACE
 import kr.tekit.lion.presentation.main.bottomsheet.CategoryBottomSheet
@@ -64,7 +66,9 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                 viewModel.onSelectedSigungu(it)
             },
             onSelectPlace = {
-
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra("detailPlaceId", it)
+                startActivity(intent)
             }
         )
 
