@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.RowScheduleMyBinding
-import kr.tekit.lion.presentation.ext.setImage
+import kr.tekit.lion.presentation.ext.setImageSmall
 
 class ScheduleMyAdapter(
     private val itemClickListener: (Int) -> Unit,
@@ -45,7 +45,7 @@ class ScheduleMyAdapter(
                     item.startDate,
                     item.endDate
                 )
-                root.context.setImage(imageViewRowSchedule, item.imageUrl)
+                root.context.setImageSmall(imageViewRowSchedule, item.imageUrl)
 
                 // 다녀온 일정인 경우
                 if (item.remainDate == null) {
