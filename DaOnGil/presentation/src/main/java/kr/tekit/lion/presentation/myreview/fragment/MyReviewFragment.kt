@@ -62,14 +62,16 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
                         findNavController().navigate(R.id.action_myReviewFragment_to_myReviewModifyFragment)
                     },
                     onDeleteClick = { reviewId ->
-                        ConfirmDialog(
+                        val deleteDialog = ConfirmDialog(
                             "여행지 후기 삭제",
                             "삭제한 데이터는 되돌릴 수 없습니다.",
                             "삭제하기"
                         ) {
                             viewModel.deleteMyPlaceReview(reviewId)
                             requireContext().showSnackbar(binding.root, "여행지 후기가 삭제되었습니다.")
-                        }.show(requireActivity().supportFragmentManager, "ConfirmDialogTag")
+                        }
+                        deleteDialog.isCancelable = false
+                        deleteDialog.show(requireActivity().supportFragmentManager, "ConfirmDialogTag")
                     }
                 )
 
