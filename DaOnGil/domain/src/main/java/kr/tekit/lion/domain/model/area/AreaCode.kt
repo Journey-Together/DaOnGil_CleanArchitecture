@@ -12,7 +12,7 @@ data class AreaCodeList(
         return areaList.map { it.name }
     }
 
-    fun findAreaCode(areaName: String): String?{
-        return areaList.find { it.name == areaName }?.code
+    fun findAreaCode(areaName: String): String{
+        return areaList.find { it.name == areaName }?.code ?: ""
     }
 }

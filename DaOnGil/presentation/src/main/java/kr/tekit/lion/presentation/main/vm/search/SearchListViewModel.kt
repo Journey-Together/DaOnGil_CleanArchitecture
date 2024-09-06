@@ -228,7 +228,7 @@ class SearchListViewModel @Inject constructor(
                             currentUiState
                         }
                     }
-                    if (result.isLastPage) _isLastPage.update { true }
+                    if (result.isLastPage) _isLastPage.value = true
                     networkErrorDelegate.handleNetworkSuccess()
                 }
                 .onError { e ->
@@ -261,8 +261,8 @@ class SearchListViewModel @Inject constructor(
     }
 
     fun onSelectedArea(areaName: String) = viewModelScope.launch(Dispatchers.IO) {
-        val currentAreaCode = listOptionState.value.areaCode ?: ""
-        val newAreaCode = areaCode.value.findAreaCode(areaName) ?: ""
+        val currentAreaCode = listOptionState.value.areaCode
+        val newAreaCode = areaCode.value.findAreaCode(areaName)
 
         if (currentAreaCode != newAreaCode) {
             clearPlace()
@@ -299,8 +299,8 @@ class SearchListViewModel @Inject constructor(
     }
 
     fun onSelectedSigungu(sigunguName: String) = viewModelScope.launch(Dispatchers.IO) {
-        val currentSigunguCode = listOptionState.value.sigunguCode ?: ""
-        val newSigunguCode = sigunguCode.value.findSigunguCode(sigunguName) ?: ""
+        val currentSigunguCode = listOptionState.value.sigunguCode
+        val newSigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
 
         if (currentSigunguCode != newSigunguCode){
             clearPlace()
