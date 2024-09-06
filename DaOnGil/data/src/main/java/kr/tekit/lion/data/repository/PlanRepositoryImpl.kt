@@ -1,6 +1,7 @@
 package kr.tekit.lion.data.repository
 
 import kr.tekit.lion.data.datasource.PlanDataSource
+import kr.tekit.lion.data.dto.request.toMultiPartBodyList
 import kr.tekit.lion.data.dto.request.toMultipartBodyList
 import kr.tekit.lion.data.dto.request.toRequestBody
 import kr.tekit.lion.domain.exception.Result
@@ -9,9 +10,11 @@ import kr.tekit.lion.domain.model.OpenPlan
 import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
 import kr.tekit.lion.domain.model.ScheduleDetailInfo
 import kr.tekit.lion.domain.model.ScheduleDetailReview
+import kr.tekit.lion.domain.model.schedule.ModifiedScheduleReview
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.model.schedule.NewScheduleReview
+import kr.tekit.lion.domain.model.schedule.ReviewImage
 import kr.tekit.lion.domain.model.schedule.ReviewImg
 import kr.tekit.lion.domain.model.scheduleform.NewPlan
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
@@ -60,7 +63,19 @@ internal class PlanRepositoryImpl @Inject constructor(
             images.toMultipartBodyList()
         )
     }
-        
+
+    override suspend fun modifyScheduleReview(
+        reviewId: Long,
+        scheduleReview: ModifiedScheduleReview,
+        images: List<ReviewImage>?
+    ): Result<Unit> {
+        return planDataSource.modifyNewScheduleReview(
+            reviewId,
+            scheduleReview.toRequestBody(),
+            images?.toMultiPartBodyList()
+        )
+    }
+
     override suspend fun getDetailScheduleInfo(planId: Long): ScheduleDetailInfo {
         return planDataSource.getDetailScheduleInfo(planId)
     }
