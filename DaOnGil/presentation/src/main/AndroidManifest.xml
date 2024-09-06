@@ -8,6 +8,9 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".report.ReportActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.WriteReviewActivity"
             android:exported="false" />
         <activity
@@ -24,7 +27,7 @@
             android:exported="false" />
         <activity
             android:name=".myschedule.MyScheduleActivity"
-            android:exported="false" />        
+            android:exported="false" />
         <activity
             android:name=".emergency.PharmacyMapActivity"
             android:exported="false" />
