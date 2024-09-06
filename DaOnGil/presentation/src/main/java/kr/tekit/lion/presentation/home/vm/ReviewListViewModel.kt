@@ -11,12 +11,17 @@ import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.placereviewlist.PlaceReviewInfo
 import kr.tekit.lion.domain.repository.PlaceRepository
+import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
 @HiltViewModel
 class ReviewListViewModel @Inject constructor(
     private val getPlaceReviewListRepository: PlaceRepository
 ) : ViewModel() {
+
+    @Inject
+    lateinit var networkErrorDelegate: NetworkErrorDelegate
+
     private val _placeReviewInfo = MutableLiveData<PlaceReviewInfo>()
     val placeReviewInfo : LiveData<PlaceReviewInfo> = _placeReviewInfo
 
@@ -33,10 +38,9 @@ class ReviewListViewModel @Inject constructor(
 
     fun getPlaceReview(placeId: Long) = viewModelScope.launch {
         getPlaceReviewListRepository.getPlaceReviewList(placeId, PAGE_SIZE, 0).onSuccess {
-            Log.d("getPlaceReview", it.toString())
             _placeReviewInfo.value = it
         }.onError {
-            Log.d("getPlaceReview", it.toString())
+            networkErrorDelegate.handleNetworkError(it)
         }
     }
 
@@ -55,7 +59,7 @@ class ReviewListViewModel @Inject constructor(
                     _placeReviewInfo.value = newReviewData
                 }
             }.onError {
-                Log.d("getNewPlaceReview", it.toString())
+                networkErrorDelegate.handleNetworkError(it)
             }
         }
     }
