@@ -5,6 +5,7 @@ import kr.tekit.lion.data.service.PlanService
 import kr.tekit.lion.domain.exception.Result
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.domain.model.OpenPlan
+import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
 import kr.tekit.lion.domain.model.schedule.MyElapsedSchedules
 import kr.tekit.lion.domain.model.schedule.MyUpcomingSchedules
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
@@ -41,5 +42,9 @@ internal class PlanDataSource @Inject constructor(
 
     suspend fun getOpenPlanList(size: Int, page: Int): Result<OpenPlan> = execute {
         planService.getOpenPlanList(size, page).toDomainModel()
+    }
+
+    suspend fun getBriefScheduleInfo(planId: Long) : Result<BriefScheduleInfo> = execute {
+        planService.getBriefScheduleInfo(planId).toDomainModel()
     }
 }
