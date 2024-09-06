@@ -11,13 +11,11 @@ import okhttp3.RequestBody
 import retrofit2.http.Body
 import kr.tekit.lion.data.dto.response.plan.openSchedule.OpenPlanListResponse
 import okhttp3.MultipartBody
-import retrofit2.http.GET
 import retrofit2.http.Multipart
 import kr.tekit.lion.data.dto.response.plan.scheduleDetailReview.ScheduleDetailReviewResponse
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
-import retrofit2.http.Path
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
