@@ -1,8 +1,6 @@
 package kr.tekit.lion.presentation.keyword
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
@@ -18,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
-import kr.tekit.lion.presentation.TestActivity
 import kr.tekit.lion.presentation.databinding.ActivityKeywordSearchBinding
 import kr.tekit.lion.presentation.keyword.fragment.SearchResultFragment
 import kr.tekit.lion.presentation.keyword.model.KeywordInputState
