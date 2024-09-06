@@ -7,6 +7,7 @@ import kr.tekit.lion.domain.model.scheduleform.NewPlan
 import kr.tekit.lion.domain.model.scheduleform.PlaceSearchResult
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.domain.model.OpenPlan
+import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
 
 interface PlanRepository {
     suspend fun getMyUpcomingScheduleList(page: Int): Result<MyUpcomingSchedules>
@@ -20,4 +21,6 @@ interface PlanRepository {
     suspend fun getMyMainSchedule(): Result<List<MyMainSchedule?>?>
 
     suspend fun getOpenPlanList(size: Int, page: Int): Result<OpenPlan>
+
+    suspend fun getBriefScheduleInfo(planId: Long) : Result<BriefScheduleInfo>
 }
