@@ -258,10 +258,14 @@ class SearchListViewModel @Inject constructor(
     }
 
     fun onSelectedArea(areaName: String) = viewModelScope.launch(Dispatchers.IO) {
-        clearPlace()
-        val areaCode = areaCode.value.findAreaCode(areaName) ?: ""
-        listOptionState.update { it.copy(areaCode = areaCode) }
-        updateSigunguModel(areaCode)
+        val currentAreaCode = listOptionState.value.areaCode ?: ""
+        val newAreaCode = areaCode.value.findAreaCode(areaName) ?: ""
+
+        if (currentAreaCode != newAreaCode) {
+            clearPlace()
+            listOptionState.update { it.copy(areaCode = newAreaCode) }
+            updateSigunguModel(newAreaCode)
+        }
     }
 
     private fun updateSigunguModel(areaCode: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -292,10 +296,13 @@ class SearchListViewModel @Inject constructor(
     }
 
     fun onSelectedSigungu(sigunguName: String) = viewModelScope.launch(Dispatchers.IO) {
-        clearPlace()
-        val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
-        listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
-        viewModelScope.launch((Dispatchers.IO)) {
+        val currentSigunguCode = listOptionState.value.sigunguCode ?: ""
+        val newSigunguCode = sigunguCode.value.findSigunguCode(sigunguName) ?: ""
+
+        if (currentSigunguCode != newSigunguCode){
+            clearPlace()
+            val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
+            listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
             _uiState.update { uiState ->
                 uiState.map { uiModel ->
                     if (uiModel is SigunguModel) {
