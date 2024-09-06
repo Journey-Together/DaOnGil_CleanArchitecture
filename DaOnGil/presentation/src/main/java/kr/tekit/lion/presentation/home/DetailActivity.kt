@@ -29,7 +29,9 @@ import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.home.adapter.DetailDisabilityRVAdapter
 import kr.tekit.lion.presentation.home.adapter.DetailInfoRVAdapter
 import kr.tekit.lion.presentation.home.adapter.DetailReviewRVAdapter
+import kr.tekit.lion.presentation.home.model.toReviewInfo
 import kr.tekit.lion.presentation.home.vm.DetailViewModel
+import kr.tekit.lion.presentation.myreview.MyReviewActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -109,10 +111,18 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             startActivity(intent)
         }
+    }
+
+    private fun settingModifyBtn(review: Review) {
 
         binding.detailModifyReviewBtn.setOnClickListener {
+            val intent = Intent(this, MyReviewActivity::class.java)
+            val reviewInfo = review.toReviewInfo()
+            intent.putExtra("reviewInfo", reviewInfo)
 
+            startActivity(intent)
         }
+
     }
 
     private fun handleCommonDetailPlaceInfo(
@@ -130,8 +140,18 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         category: String,
         subDisability: List<SubDisability>?
     ) {
-        reviewList?.let { settingReviewRVAdapter(it) }
+        reviewList?.let {
+            settingReviewRVAdapter(it)
+
+            val myReview = it.filter { review -> review.myReview }
+
+            myReview.forEach { review ->
+                settingModifyBtn(review)
+            }
+        }
+
         settingDisabilityRVAdapter(disability)
+
         if (subDisability != null) {
             settingDetailInfoRVAdapter(subDisability)
         }
@@ -169,7 +189,6 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     .into(detailThumbnailIv)
             }
         }
-
 
         val cameraUpdate = CameraUpdate.scrollTo(LatLng(longitude, latitude))
         naverMap.moveCamera(cameraUpdate)
