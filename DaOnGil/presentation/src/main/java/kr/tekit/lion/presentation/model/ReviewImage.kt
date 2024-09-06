@@ -1,6 +1,6 @@
-package kr.tekit.lion.domain.model.schedule
+package kr.tekit.lion.presentation.model
 
-import com.sun.jndi.toolkit.url.Uri
+import android.net.Uri
 
 data class ReviewImage(
     val imageUrl: String? = null,
