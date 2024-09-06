@@ -11,11 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchListBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.home.DetailActivity
@@ -99,42 +101,64 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                 }
             }
         }
-        repeatOnViewStarted {
-            supervisorScope {
-                launch {
-                    sharedViewModel.sharedOptionState.collect {
-                        viewModel.onChangeMapState(it)
-                    }
-                }
 
-                launch {
-                    sharedViewModel.tabState.collect {
-                        binding.rvSearchResult.scrollToPosition(0)
-                        viewModel.onSelectedTab(it)
-                    }
-                }
-
-                launch {
-                    viewModel.uiState
-                        .filter { uiState ->
-                            uiState.any { it is AreaModel && it.areas.isNotEmpty() }
-                        }.collect {
-                            mainAdapter.submitList(it)
+        with(binding) {
+            repeatOnViewStarted {
+                supervisorScope {
+                    launch {
+                        sharedViewModel.sharedOptionState.collect {
+                            viewModel.onChangeMapState(it)
                         }
-                }
-
-                launch {
-                    sharedViewModel.bottomSheetOptionState.collect {
-                        viewModel.modifyCategoryModel(it)
                     }
-                }
 
-                launch {
-                    viewModel.errorMessage
-                        .filter { it != null }
-                        .collect { msg ->
-                            //msg?.let { mainAdapter.submitList(it) }
+                    launch {
+                        sharedViewModel.tabState.collect {
+                            binding.rvSearchResult.scrollToPosition(0)
+                            viewModel.onSelectedTab(it)
                         }
+                    }
+
+                    launch {
+                        viewModel.networkState.collect { networkState ->
+                            when (networkState) {
+                                is NetworkState.Loading -> {
+                                    searchListProgressBar.visibility = View.VISIBLE
+                                }
+                                is NetworkState.Success -> {
+                                    searchListProgressBar.visibility = View.GONE
+                                }
+                            }
+                        }
+                    }
+
+                    launch {
+                        viewModel.uiState
+                            .filter { uiState ->
+                                uiState.any { it is AreaModel && it.areas.isNotEmpty() }
+                            }.collect {
+                                mainAdapter.submitList(it)
+                            }
+                    }
+
+                    launch {
+                        sharedViewModel.bottomSheetOptionState.collect {
+                            viewModel.modifyCategoryModel(it)
+                        }
+                    }
+
+                    launch {
+                        viewModel.errorMessage.collect { msg ->
+                            Log.d("czxcasas", msg.toString())
+                            if (msg == null) {
+                                rvSearchResult.visibility = View.VISIBLE
+                                noSearchResultContainer.visibility = View.GONE
+                            } else {
+                                rvSearchResult.visibility = View.GONE
+                                noSearchResultContainer.visibility = View.VISIBLE
+                                textMsg.text = msg
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -150,4 +174,5 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
     fun mapChanged(state: Boolean) {
         viewModel.onMapChanged(state)
     }
+
 }
