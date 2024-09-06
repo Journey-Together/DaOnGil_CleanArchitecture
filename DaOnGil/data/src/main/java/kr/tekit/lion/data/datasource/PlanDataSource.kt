@@ -63,6 +63,18 @@ internal class PlanDataSource @Inject constructor(
         }
     }
 
+    suspend fun modifyNewScheduleReview(
+        planId: Long,
+        scheduleReview: RequestBody,
+        images: List<MultipartBody.Part>?
+    ) = execute {
+        if(images.isNullOrEmpty()){
+            planService.modifyScheduleReviewTextOnly(planId, scheduleReview)
+        }else{
+            planService.modifyScheduleReview(planId, scheduleReview, images)
+        }
+    }
+
     suspend fun getDetailScheduleInfo(planId: Long): ScheduleDetailInfo {
         return planService.getDetailScheduleInfo(planId).toDomainModel()
     }
@@ -90,4 +102,6 @@ internal class PlanDataSource @Inject constructor(
     suspend fun deleteMyPlanSchedule(planId: Long): Result<Unit> = execute {
         planService.deleteMyPlanSchedule(planId)
     }
+
+
 }
