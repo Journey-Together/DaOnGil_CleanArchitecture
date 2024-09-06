@@ -64,6 +64,7 @@ class SearchListViewModel @Inject constructor(
     }
 
     val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
+    val networkState get() = networkErrorDelegate.networkState
 
     private val _uiState: MutableStateFlow<List<ListSearchUIModel>> = MutableStateFlow(
         listOf(
@@ -207,6 +208,7 @@ class SearchListViewModel @Inject constructor(
 
     private fun loadPlaces() = viewModelScope.launch((Dispatchers.IO)) {
         listOptionState.collect { listOption ->
+            networkErrorDelegate.handleNetworkLoading()
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
                     _uiState.update {
@@ -227,6 +229,7 @@ class SearchListViewModel @Inject constructor(
                         }
                     }
                     if (result.isLastPage) _isLastPage.update { true }
+                    networkErrorDelegate.handleNetworkSuccess()
                 }
                 .onError { e ->
                     networkErrorDelegate.handleNetworkError(e)
