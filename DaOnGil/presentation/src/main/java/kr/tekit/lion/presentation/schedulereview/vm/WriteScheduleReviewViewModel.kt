@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.schedulereview.vm
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.schedule.BriefScheduleInfo
+import kr.tekit.lion.domain.model.schedule.NewScheduleReview
 import kr.tekit.lion.domain.model.schedule.ReviewImg
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
@@ -76,5 +78,26 @@ class WriteScheduleReviewViewModel @Inject constructor (
     fun isMoreImageAttachable(): Boolean{
         val currentValue = _numOfImages.value ?: 0
         return currentValue in 0..3
+    }
+
+    fun submitScheduleReview(planId: Long, reviewDetail: NewScheduleReview, callback: (Boolean, Boolean) -> Unit){
+        val images = _imagePaths.value?.toMutableList() ?: mutableListOf<ReviewImg>()
+        viewModelScope.launch {
+            var requestFlag = false
+            val success = try {
+                planRepository.addNewScheduleReview(planId, reviewDetail, images)
+                    .onSuccess {
+                        requestFlag = true
+                    }
+                    .onError {
+                        networkErrorDelegate.handleNetworkError(it)
+                    }
+                true
+            } catch (e: Exception) {
+                Log.d("submitScheduleReview", "Error: ${e.message}")
+                false
+            }
+            callback(success, requestFlag)
+        }
     }
 }

@@ -16,12 +16,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
+import kr.tekit.lion.domain.model.schedule.NewScheduleReview
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityWriteScheduleReviewBinding
 import kr.tekit.lion.presentation.ext.setImage
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_WRITE
 import kr.tekit.lion.presentation.schedulereview.adapter.WriteReviewImageAdapter
 import kr.tekit.lion.presentation.schedulereview.vm.WriteScheduleReviewViewModel
 
@@ -139,7 +141,28 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
                 }
             }
 
-            // TODO button Submit
+            buttonWsrSubmit.setOnClickListener {
+                val isValid = isReviewValid()
+                if (!isValid) return@setOnClickListener
+
+                val isPrivateOrPublic = radioGroupWsrPublicScope.checkedRadioButtonId
+                val isPublic = when (isPrivateOrPublic) {
+                    R.id.radio_button_wsr_public -> true
+                    else -> false // isPrivateOrPublic == R.id.radioButtonWriteScheReviewPrivate
+                }
+
+                val reviewContent = editWsrContent.text.toString()
+                val reviewRating = ratingbarWsr.rating
+
+                val reviewDetail = NewScheduleReview(reviewRating, reviewContent, isPublic)
+
+                viewModel.submitScheduleReview(planId, reviewDetail) { _, requestFlag ->
+                    if (requestFlag) {
+                        setResult(RESULT_REVIEW_WRITE)
+                        finish()
+                    }
+                }
+            }
         }
     }
 
