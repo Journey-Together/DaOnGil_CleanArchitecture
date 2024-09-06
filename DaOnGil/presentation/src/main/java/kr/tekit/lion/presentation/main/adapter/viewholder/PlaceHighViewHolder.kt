@@ -10,10 +10,17 @@ import kr.tekit.lion.presentation.databinding.ItemPlaceHighBinding
 import kr.tekit.lion.presentation.main.adapter.DisabilityRVAdapter
 import kr.tekit.lion.presentation.main.model.PlaceModel
 
-class PlaceHighViewHolder(private val binding: ItemPlaceHighBinding)
+class PlaceHighViewHolder(
+    private val binding: ItemPlaceHighBinding,
+    private val onSelectPlace: (String) -> Unit
+)
     : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: PlaceModel) {
         with(binding) {
+            root.setOnClickListener {
+                onSelectPlace(item.placeId)
+            }
+
             tvName.text = item.placeName
             tvAddr.text = item.placeAddr
             val disabilityList = item.disability

@@ -1,27 +1,30 @@
 package kr.tekit.lion.presentation.keyword
 
 import android.os.Bundle
-import android.view.View
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityKeywordSearchBinding
-import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.keyword.fragment.SearchResultFragment
+import kr.tekit.lion.presentation.keyword.model.KeywordInputState
 import kr.tekit.lion.presentation.keyword.vm.KeywordSearchViewModel
-import kr.tekit.lion.presentation.main.adapter.RecentlyKeywordAdapter
-import kr.tekit.lion.presentation.main.adapter.SearchSuggestionsAdapter
-import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 
 @AndroidEntryPoint
 class KeywordSearchActivity : AppCompatActivity() {
     private val viewModel: KeywordSearchViewModel by viewModels()
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val binding: ActivityKeywordSearchBinding by lazy {
         ActivityKeywordSearchBinding.inflate(layoutInflater)
     }
@@ -30,97 +33,83 @@ class KeywordSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val recentlyKeywordAdapter = RecentlyKeywordAdapter(
-            onClick = {
-                // 화면 이동 구현할것
-                viewModel.onClickSearchButton(it)
-            },
-            onClickDeleteBtn = { keywordId ->
-                keywordId?.let { viewModel.deleteKeyword(it) }
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isSearchResultFragment()) {
+                    binding.searchEdit.text = null
+                }else{
+                    finish()
+                }
             }
-        )
-
-        val searchAdapter = SearchSuggestionsAdapter{
-            viewModel.onClickSearchButton(it)
-            viewModel.insertKeyword(it)
         }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
 
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val keywordLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
-
-        with(binding){
-            toolbar.setNavigationOnClickListener{
-                finish()
+        with(binding) {
+            toolbar.setNavigationOnClickListener {
+                if (isSearchResultFragment()){
+                    searchEdit.text = null
+                }else {
+                    finish()
+                }
             }
-            searchSuggestions.adapter = searchAdapter
-            searchSuggestions.layoutManager = layoutManager
+
             searchEdit.doAfterTextChanged {
-                searchRecentSearchesContainer.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.GONE
-                if (!it.isNullOrEmpty()) viewModel.updateKeyword(it.toString())
+                if (it.isNullOrEmpty()){
+                    viewModel.keywordInputStateChanged(KeywordInputState.Empty)
+                    if (isSearchResultFragment()) {
+                        moveToBackStack()
+                    }
+                }else if (it.length >= 2) {
+                    viewModel.inputTextChanged(it.toString())
+                    viewModel.keywordInputStateChanged(KeywordInputState.NotEmpty)
+                }else if (it.length < 2){
+                    viewModel.keywordInputStateChanged(KeywordInputState.Erasing)
+                }
             }
 
-            rvRecentSearches.adapter = recentlyKeywordAdapter
-            rvRecentSearches.layoutManager = keywordLayoutManager
-            (rvRecentSearches.layoutManager as LinearLayoutManager).stackFromEnd = true
+            searchEdit.setOnEditorActionListener { _, actionId, event ->
+                val isImeActionDone = (event == null && actionId == EditorInfo.IME_ACTION_DONE)
+                val isEnterKeyPressed = (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)
 
-            tvDeleteAll.setOnClickListener {
-                showDeleteConfirmDialog()
+                if (isImeActionDone || isEnterKeyPressed) {
+                    val keyword = searchEdit.text.toString()
+                    if (keyword.isEmpty()){
+                        Snackbar.make(root, getString(R.string.hint_search), Snackbar.LENGTH_SHORT).show()
+                    }else{
+                        viewModel.insertKeyword(searchEdit.text.toString()) {
+                            lifecycleScope.launch(Dispatchers.Main){
+                                findNavController(R.id.fragment_container_view).navigate(
+                                    R.id.action_to_searchResultFragment,
+                                    bundleOf("searchText" to searchEdit.text.toString())
+                                )
+                            }
+                        }
+                    }
+                    true
+                } else {
+                    false
+                }
             }
-        }
 
-        repeatOnStarted {
-            supervisorScope {
-                launch {
-                    viewModel.recentlySearchKeyword.collect {
-                        if (it.isEmpty()) {
-                            binding.rvRecentSearches.visibility = View.GONE
-                            binding.tvNoSearch.visibility = View.VISIBLE
-                        } else {
-                            binding.rvRecentSearches.visibility = View.VISIBLE
-                            binding.tvNoSearch.visibility = View.GONE
-                        }
-                        recentlyKeywordAdapter.submitList(it)
-                    }
-                }
-
-                launch {
-                    viewModel.errorMessage
-                        .filter { it != null }
-                        .collect {
-                            binding.textMsg.text = it
-                            binding.noSearchResultContainer.visibility = View.VISIBLE
-                            binding.searchRecentSearchesContainer.visibility = View.GONE
-                            binding.searchSuggestions.visibility = View.GONE
-                        }
-                }
-
-                launch {
-                    repeatOnStarted {
-                        viewModel.autocompleteKeyword.collectLatest {
-                            searchAdapter.submitList(it.keywordList)
-                            setNoSearchResultVisibility(
-                                it.keywordList.isEmpty() && binding.searchEdit.text.toString().isNotEmpty()
-                            )
-                        }
-                    }
-                }
+            saerchBarContainer.setOnClickListener {
+                searchEdit.text = null
+                moveToBackStack()
             }
         }
     }
 
-    private fun setNoSearchResultVisibility(isVisible: Boolean) {
-        binding.noSearchResultContainer.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun moveToBackStack() {
+        findNavController(R.id.fragment_container_view).navigate(R.id.action_to_onSearchFragment)
     }
 
-    private fun showDeleteConfirmDialog() {
-        val dialog = ConfirmDialog(
-            "검색어 전체 삭제",
-            "최근 검색어를 모두\n삭제하시겠습니까?",
-            "삭제하기",
-        ){
-            viewModel.deleteAllKeyword()
-        }
-        dialog.isCancelable = false
-        dialog.show(this.supportFragmentManager, "showDeleteConfirmDialog")
+    private fun isSearchResultFragment(): Boolean {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        val currentFragment = navHostFragment.childFragmentManager.fragments[0]
+        return currentFragment is SearchResultFragment
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        backPressedCallback.remove()
     }
 }

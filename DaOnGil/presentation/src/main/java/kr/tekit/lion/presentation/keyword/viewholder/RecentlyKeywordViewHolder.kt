@@ -1,4 +1,4 @@
-package kr.tekit.lion.presentation.main.adapter.viewholder
+package kr.tekit.lion.presentation.keyword.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.search.RecentlySearchKeyword

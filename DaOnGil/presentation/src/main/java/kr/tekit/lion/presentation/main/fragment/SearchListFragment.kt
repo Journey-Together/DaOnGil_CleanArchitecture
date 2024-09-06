@@ -62,6 +62,9 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
             },
             onSelectSigungu = {
                 viewModel.onSelectedSigungu(it)
+            },
+            onSelectPlace = {
+
             }
         )
 

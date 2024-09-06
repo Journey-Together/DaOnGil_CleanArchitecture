@@ -45,7 +45,7 @@ class NetworkErrorDelegate @Inject constructor() {
     }
 }
 
-sealed class NetworkState(){
+sealed class NetworkState{
     data object Loading: NetworkState()
     data object Success: NetworkState()
 }

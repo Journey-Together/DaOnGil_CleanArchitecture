@@ -1,4 +1,4 @@
-package kr.tekit.lion.data.dto.remote.request.util
+package kr.tekit.lion.data.dto.request.util
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi

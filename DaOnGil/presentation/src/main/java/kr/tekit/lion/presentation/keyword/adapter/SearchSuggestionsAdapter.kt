@@ -1,16 +1,16 @@
-package kr.tekit.lion.presentation.main.adapter
+package kr.tekit.lion.presentation.keyword.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import kr.tekit.lion.domain.model.search.AutoCompleteKeyword
 import kr.tekit.lion.presentation.databinding.ItemSearchSuggestionBinding
-import kr.tekit.lion.presentation.main.adapter.viewholder.SearchSuggestionsViewHolder
+import kr.tekit.lion.presentation.keyword.viewholder.SearchSuggestionsViewHolder
 
 class SearchSuggestionsAdapter(
     private val onClick: (String) -> Unit
-) : ListAdapter<String, SearchSuggestionsViewHolder>(DIFF_CALLBACK) {
+) : ListAdapter<AutoCompleteKeyword, SearchSuggestionsViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSuggestionsViewHolder {
         return SearchSuggestionsViewHolder(
@@ -26,12 +26,12 @@ class SearchSuggestionsAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<String>() {
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-                return oldItem == newItem
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<AutoCompleteKeyword>() {
+            override fun areContentsTheSame(oldItem: AutoCompleteKeyword, newItem: AutoCompleteKeyword): Boolean {
+                return oldItem.placeId == newItem.placeId
             }
 
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+            override fun areItemsTheSame(oldItem: AutoCompleteKeyword, newItem: AutoCompleteKeyword): Boolean {
                 return oldItem == newItem
             }
         }
