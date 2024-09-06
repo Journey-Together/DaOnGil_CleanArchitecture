@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +23,7 @@ import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.schedule.ScheduleMainViewModel
 import kr.tekit.lion.presentation.myschedule.MyScheduleActivity
 import kr.tekit.lion.presentation.schedule.ResultCode
+import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
 import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 
@@ -114,9 +114,9 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                             }
                         },
                         reviewClickListener = { position ->
-                            /*val intent = Intent(requireActivity(), WriteScheduleReviewActivity::class.java)
+                            val intent = Intent(requireActivity(), WriteScheduleReviewActivity::class.java)
                             intent.putExtra("planId", it[position]?.planId)
-                            scheduleReviewLauncher.launch(intent)*/
+                            scheduleReviewLauncher.launch(intent)
                         }
                     )
                     myscheduleAdapter.addItems(it as List<MyMainSchedule>)
@@ -133,8 +133,8 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                     val schedulePublicAdapter = SchedulePublicAdapter(
                         itemClickListener = { position ->
                             // to do - 여행 일정 idx 전달
-                            val planId = it[position]?.planId
-                            planId?.let {
+                            val planId = it[position].planId
+                            planId.let {
                                 initScheduleDetailActivity(it)
                             }
                         }

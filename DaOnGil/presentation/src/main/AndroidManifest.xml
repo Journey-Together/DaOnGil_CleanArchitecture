@@ -8,6 +8,9 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".schedulereview.WriteScheduleReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".report.ReportActivity"
             android:exported="false" />
         <activity
