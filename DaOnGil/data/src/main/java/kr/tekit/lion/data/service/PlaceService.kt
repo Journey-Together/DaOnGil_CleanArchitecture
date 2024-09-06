@@ -5,6 +5,7 @@ import kr.tekit.lion.data.dto.response.detailplace.DetailPlaceResponse
 import kr.tekit.lion.data.dto.response.detailplaceguest.DetailPlaceGuestResponse
 import kr.tekit.lion.data.dto.response.mainplace.MainPlaceResponse
 import kr.tekit.lion.data.dto.response.placereview.WritePlaceReviewResponse
+import kr.tekit.lion.data.dto.response.placereviewlist.PlaceReviewResponse
 import kr.tekit.lion.data.dto.response.searchplace.AutoCompleteKeywordResponse
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
@@ -99,4 +100,12 @@ internal interface PlaceService {
         @Part("placeReviewReq") placeReviewReq: RequestBody,
         @Part images : List<MultipartBody.Part>?
     ): WritePlaceReviewResponse
+
+    @GET("place/review/{placeId}")
+    suspend fun getPlaceReviewList(
+        @Path("placeId") placeId: Long,
+        @Query("size") size: Int,
+        @Query("page") page: Int,
+        @Tag authType: AuthType = AuthType.ACCESS_TOKEN
+    ): PlaceReviewResponse
 }
