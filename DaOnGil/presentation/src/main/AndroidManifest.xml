@@ -11,6 +11,9 @@
             android:name=".report.ReportActivity"
             android:exported="false" />
         <activity
+            android:name=".schedule.ScheduleDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.WriteReviewActivity"
             android:exported="false" />
         <activity
@@ -53,14 +56,10 @@
             android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".splash.OnBoardingActivity"
-            android:exported="false" />
-        <activity
             android:name=".splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -69,7 +68,8 @@
             android:exported="false" />
         <activity
             android:name=".keyword.KeywordSearchActivity"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

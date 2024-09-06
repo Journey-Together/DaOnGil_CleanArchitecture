@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginHorizontal="@dimen/margin_basic">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/margin_small1">
+
+        <TextView
+            android:id="@+id/schedulePlacePostion"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:text="1"
+            android:gravity="center"
+            android:background="@drawable/white_radius"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/pretendard_bold"
+            android:textColor="@color/schedule_number"
+            android:textSize="@dimen/font_small1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewItemSPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small2"
+        android:layout_marginBottom="@dimen/margin_small1"
+        android:backgroundTint="@color/navi_background"
+        app:cardCornerRadius="5dp"
+        app:cardPreventCornerOverlap="true"
+        app:strokeColor="@color/schedule_detail_divider"
+        app:strokeWidth="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewItemSPlaceName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big4"
+                android:layout_marginTop="@dimen/margin_big4"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/font_big3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewItemSPlaceCategory"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="00 식당가나다라마바사아자차카타파항ㄹㅇㄹㄴㄹㄷㄹㄴㄹㄴㄹㄴㄹㄴㅇㄹ" />
+
+            <TextView
+                android:id="@+id/textViewItemSPlaceCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:layout_marginEnd="@dimen/margin_small1"
+                android:fontFamily="@font/pretendard_regular"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/font_small2"
+                app:layout_constraintEnd_toStartOf="@id/iconItemSPlaceMore"
+                app:layout_constraintStart_toEndOf="@+id/textViewItemSPlaceName"
+                app:layout_constraintTop_toTopOf="@id/iconItemSPlaceMore"
+                app:layout_constraintBottom_toBottomOf="@id/iconItemSPlaceMore"
+                tools:text="음식점" />
+
+            <ImageView
+                android:id="@+id/iconItemSPlaceMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:contentDescription="@string/text_view_detail"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/right_icon" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small1"
+                android:layout_marginTop="@dimen/margin_small1"
+                android:layout_marginBottom="@dimen/margin_big4"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewItemSPlaceName">
+
+                <ImageView
+                    android:id="@+id/iconISPPhysicalDisability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:contentDescription="@string/text_physical_disability"
+                    app:srcCompat="@drawable/schedule_detail_physical_disability" />
+
+                <ImageView
+                    android:id="@+id/iconISPVisualImpairment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:contentDescription="@string/text_visual_impairment"
+                    app:srcCompat="@drawable/schedule_detail_visual_impairment" />
+
+                <ImageView
+                    android:id="@+id/iconISPHearingImpairment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:contentDescription="@string/text_hearing_impairment"
+                    app:srcCompat="@drawable/schedule_detail_hearing_impaired" />
+
+                <ImageView
+                    android:id="@+id/iconISPInfantFamily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:contentDescription="@string/text_infant_family"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/schedule_detail_infant_family" />
+
+                <ImageView
+                    android:id="@+id/iconISPElderlyPeople"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_small2"
+                    android:contentDescription="@string/text_elderly_person"
+                    app:srcCompat="@drawable/schedule_detail_elderly" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

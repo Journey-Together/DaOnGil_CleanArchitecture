@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import kr.tekit.lion.domain.model.search.RecentlySearchKeyword
 import kr.tekit.lion.presentation.databinding.ItemRecentlySearchKeywordBinding
-import kr.tekit.lion.presentation.main.adapter.viewholder.RecentlyKeywordViewHolder
+import kr.tekit.lion.presentation.keyword.viewholder.RecentlyKeywordViewHolder
 
 class RecentlyKeywordAdapter(
     private val onClick: (String) -> Unit,
