@@ -6,14 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.presentation.databinding.ItemHomeVpBinding
 
-class HomeVPAdapter(private val images: List<Drawable>)
-    : RecyclerView.Adapter<HomeVPAdapter.ImageViewHolder>(){
+class HomeVPAdapter(
+    private val images: List<Drawable>,
+    private val onItemClickListener: (Int) -> Unit
+) : RecyclerView.Adapter<HomeVPAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val binding : ItemHomeVpBinding = ItemHomeVpBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false)
+        val binding: ItemHomeVpBinding = ItemHomeVpBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
 
-        return ImageViewHolder(binding)
+        return ImageViewHolder(binding, onItemClickListener)
     }
 
     override fun getItemCount(): Int = images.size
@@ -22,11 +25,20 @@ class HomeVPAdapter(private val images: List<Drawable>)
         holder.bind(images[position], position + 1)
     }
 
-    class ImageViewHolder(private val binding: ItemHomeVpBinding)
-        : RecyclerView.ViewHolder(binding.root) {
+    class ImageViewHolder(
+        private val binding: ItemHomeVpBinding,
+        private val onItemClickListener: (Int) -> Unit
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(image: Drawable, currentPage: Int) {
             binding.itemHomeIv.setImageDrawable(image)
             binding.itemHomeCountTv.text = currentPage.toString()
+
+            binding.root.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    onItemClickListener(bindingAdapterPosition)
+                }
+            }
         }
     }
 }
