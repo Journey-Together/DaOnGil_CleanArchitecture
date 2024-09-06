@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +14,8 @@ import kr.tekit.lion.presentation.bookmark.adapter.PlanBookmarkRVAdapter
 import kr.tekit.lion.presentation.bookmark.vm.BookmarkViewModel
 import kr.tekit.lion.presentation.databinding.ActivityBookmarkBinding
 import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.home.DetailActivity
+import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
 
 @AndroidEntryPoint
 class BookmarkActivity : AppCompatActivity() {
@@ -69,14 +68,13 @@ class BookmarkActivity : AppCompatActivity() {
                 val placeBookmarkRVAdapter = PlaceBookmarkRVAdapter(
                     placeBookmarkList,
                     itemClickListener = { position ->
-//                        val placeBookmark = placeBookmarkList[position]
-//                        val intent = Intent(this, DetailActivity::class.java)
-//                        intent.putExtra("detailPlaceId", placeBookmark.placeId)
-//                        startActivity(intent)
+                        val placeBookmark = placeBookmarkList[position]
+                        val intent = Intent(this, DetailActivity::class.java)
+                        intent.putExtra("detailPlaceId", placeBookmark.placeId)
+                        startActivity(intent)
                     },
                     onBookmarkClick = { placeId ->
                         viewModel.updatePlaceBookmark(placeId)
-
                         this.showSnackbar(binding.root, "북마크가 삭제되었습니다.")
                     }
                 )
@@ -102,10 +100,10 @@ class BookmarkActivity : AppCompatActivity() {
                 val planBookmarkRVAdapter = PlanBookmarkRVAdapter(
                     planBookmarkList,
                     itemClickListener = { position ->
-//                        val planBookmark = planBookmarkList[position]
-//                        val intent = Intent(this, ScheduleDetailActivity::class.java)
-//                        intent.putExtra("planId", planBookmark.planId)
-//                        startActivity(intent)
+                        val planBookmark = planBookmarkList[position]
+                        val intent = Intent(this, ScheduleDetailActivity::class.java)
+                        intent.putExtra("planId", planBookmark.planId)
+                        startActivity(intent)
                     },
                     onBookmarkClick = { planId ->
                         viewModel.updatePlanBookmark(planId)
