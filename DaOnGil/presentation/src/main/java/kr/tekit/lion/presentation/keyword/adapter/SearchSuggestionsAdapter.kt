@@ -9,7 +9,7 @@ import kr.tekit.lion.presentation.databinding.ItemSearchSuggestionBinding
 import kr.tekit.lion.presentation.keyword.viewholder.SearchSuggestionsViewHolder
 
 class SearchSuggestionsAdapter(
-    private val onClick: (String) -> Unit
+    private val onClick: (AutoCompleteKeyword) -> Unit
 ) : ListAdapter<AutoCompleteKeyword, SearchSuggestionsViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSuggestionsViewHolder {

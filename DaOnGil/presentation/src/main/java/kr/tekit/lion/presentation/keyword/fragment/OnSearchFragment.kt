@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.keyword.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -14,6 +15,7 @@ import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentOnSearchBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.keyword.adapter.SearchSuggestionsAdapter
 import kr.tekit.lion.presentation.keyword.model.KeywordInputState
 import kr.tekit.lion.presentation.keyword.vm.KeywordSearchViewModel
@@ -40,8 +42,10 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
         )
 
         val searchAdapter = SearchSuggestionsAdapter {
-            viewModel.insertKeyword(it) {
-
+            viewModel.insertKeyword(it.keyword) {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra("detailPlaceId", it.placeId)
+                startActivity(intent)
             }
         }
 

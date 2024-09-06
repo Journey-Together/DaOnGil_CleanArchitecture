@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.keyword.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -18,6 +19,7 @@ import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.hideSoftInput
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.keyword.adapter.SearchResultAdapter
 import kr.tekit.lion.presentation.keyword.vm.SearchResultViewModel
 
@@ -42,7 +44,9 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
 
 
         val rvAdapter = SearchResultAdapter {
-
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("detailPlaceId", it)
+            startActivity(intent)
         }
 
         with(binding.searchResultRv) {
