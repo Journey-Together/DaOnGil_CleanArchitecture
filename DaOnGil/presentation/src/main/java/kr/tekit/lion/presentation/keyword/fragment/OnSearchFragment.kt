@@ -70,14 +70,14 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
                 supervisorScope {
                     launch {
                         viewModel.recentlySearchKeyword.collect {
-                            if (it.isEmpty()) {
+                            if (it.list.isEmpty()) {
                                 rvRecentSearches.visibility = View.GONE
                                 tvNoSearch.visibility = View.VISIBLE
                             } else {
                                 rvRecentSearches.visibility = View.VISIBLE
                                 tvNoSearch.visibility = View.GONE
                             }
-                            recentlyKeywordAdapter.submitList(it)
+                            recentlyKeywordAdapter.submitList(it.list)
                         }
                     }
 

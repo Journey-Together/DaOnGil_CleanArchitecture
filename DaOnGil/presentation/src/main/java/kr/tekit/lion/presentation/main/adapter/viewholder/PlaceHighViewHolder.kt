@@ -18,7 +18,7 @@ class PlaceHighViewHolder(
     fun bind(item: PlaceModel) {
         with(binding) {
             root.setOnClickListener {
-                onSelectPlace(item.placeId.toLong())
+                onSelectPlace(item.placeId)
             }
 
             tvName.text = item.placeName
