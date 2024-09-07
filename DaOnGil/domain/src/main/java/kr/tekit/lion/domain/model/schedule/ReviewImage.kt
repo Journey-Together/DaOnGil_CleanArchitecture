@@ -1,10 +1,10 @@
-package kr.tekit.lion.presentation.model
+package kr.tekit.lion.domain.model.schedule
 
-import android.net.Uri
+import java.net.URI
 
 data class ReviewImage(
     val imageUrl: String? = null,
-    val imageUri: Uri,
+    val imageUri: URI,
     // 갤러리에서 선택한 이미지의 file Path
     val imagePath: String? = null
 )
