@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.schedulereview.vm
 
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,14 +10,14 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.schedule.ModifiedScheduleReview
-import kr.tekit.lion.domain.model.schedule.ReviewImg
-import kr.tekit.lion.presentation.model.ReviewImage
+import kr.tekit.lion.domain.model.schedule.ReviewImage
 import kr.tekit.lion.domain.model.schedule.ScheduleReviewInfo
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.domain.usecase.base.onError
 import kr.tekit.lion.domain.usecase.base.onSuccess
 import kr.tekit.lion.domain.usecase.plan.GetScheduleReviewInfoUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import java.net.URI
 import javax.inject.Inject
 
 @HiltViewModel
@@ -93,7 +92,7 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
             val reviewImages = it.map { imageUrl ->
                 ReviewImage(
                     imageUrl = imageUrl,
-                    imageUri = Uri.parse(imageUrl),
+                    imageUri = URI(imageUrl),
                     imagePath = null
                 )
             }
@@ -148,19 +147,15 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
         } ?: true
     }
 
-    private fun getNewImages() : List<ReviewImg> {
+    private fun getNewImages() : List<ReviewImage> {
         val originalImageSize = _originalReview.value?.imageList?.size ?: 0
         val deletedImageSize = _deleteImgUrls.value?.size ?: 0
         val currentImageSize = _imageList.value?.size ?: 0
 
         val startPoint = originalImageSize - deletedImageSize
 
-        val newImages = _imageList.value?.subList(startPoint, currentImageSize)
+        val newImages = _imageList.value?.subList(startPoint, currentImageSize) ?: emptyList()
 
-        val newImagePaths = newImages?.mapNotNull { reviewImage ->
-            reviewImage.imagePath?.let { imagePath -> ReviewImg(path = imagePath) }
-        } ?: emptyList()
-
-        return newImagePaths
+        return newImages
     }
 }

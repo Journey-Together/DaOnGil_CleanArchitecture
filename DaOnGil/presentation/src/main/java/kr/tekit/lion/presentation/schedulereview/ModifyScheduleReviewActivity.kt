@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
-import kr.tekit.lion.presentation.model.ReviewImage
+import kr.tekit.lion.domain.model.schedule.ReviewImage
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityModifyScheduleReviewBinding
 import kr.tekit.lion.presentation.ext.setImage
@@ -25,6 +25,7 @@ import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedulereview.adapter.ModifyReviewImageAdapter
 import kr.tekit.lion.presentation.schedulereview.vm.ModifyScheduleReviewViewModel
+import java.net.URI
 
 @AndroidEntryPoint
 class ModifyScheduleReviewActivity : AppCompatActivity() {
@@ -210,8 +211,13 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
     private fun saveImageDataAndPath(uri: Uri) {
         val imagePath = toAbsolutePath(uri)
         if (imagePath != null) {
-            val newImage = ReviewImage(imageUri = uri, imagePath = imagePath)
-            viewModel.addNewReviewImage(newImage)
+            try {
+                val newImage = ReviewImage(imageUri = URI(uri.toString()), imagePath = imagePath)
+                viewModel.addNewReviewImage(newImage)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
         }
     }
 

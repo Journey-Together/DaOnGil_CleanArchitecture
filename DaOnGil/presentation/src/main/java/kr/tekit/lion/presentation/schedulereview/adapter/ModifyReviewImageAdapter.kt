@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemReviewWriteImageBinding
-import kr.tekit.lion.presentation.model.ReviewImage
+import kr.tekit.lion.domain.model.schedule.ReviewImage
 
 class ModifyReviewImageAdapter (
     private val images : List<ReviewImage>,
@@ -41,8 +41,10 @@ class ModifyReviewImageAdapter (
         }
 
         fun bind(reviewImage: ReviewImage) {
+            val javaUriString = reviewImage.imageUri.toString()
+
             Glide.with(binding.itemWriteReviewImage.context)
-                .load(reviewImage.imageUri)
+                .load(javaUriString)
                 .error(R.drawable.empty_view_small)
                 .into(binding.itemWriteReviewImage)
         }
