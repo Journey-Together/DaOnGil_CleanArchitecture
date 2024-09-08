@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.login.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
+import kr.tekit.lion.domain.repository.ActivationRepository
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -19,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InterestViewModel @Inject constructor(
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val activationRepository: ActivationRepository
 ): ViewModel() {
 
     @Inject
@@ -58,5 +61,10 @@ class InterestViewModel @Inject constructor(
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
+    }
+
+    suspend fun saveUserActivation(onSuccess: () -> Unit){
+        activationRepository.saveUserActivation(true)
+        onSuccess()
     }
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentOnBoardingBinding
@@ -22,6 +23,7 @@ import kr.tekit.lion.presentation.login.vm.OnBoardingViewModel
 import kr.tekit.lion.presentation.main.MainActivity
 import kr.tekit.lion.presentation.splash.adapter.OnBoardingImageVPAdapter
 
+@AndroidEntryPoint
 class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
     private val viewModel: OnBoardingViewModel by viewModels()
 
@@ -114,6 +116,8 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                         textView.text = "로그인/회원가입 진행하기"
 
                         nextButton.setOnClickListener {
+                            viewModel.saveUserActivation()
+
                             val intent = Intent(requireContext(), MainActivity::class.java)
                             startActivity(intent)
                             requireActivity().finish()
@@ -145,9 +149,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                         }
                     }
 
-                    //if (requireContext().isTallBackEnabled()) {
-                        Log.d("vjghvhjvhm", viewModel.focusOn.value.toString())
-
+                    if (requireContext().isTallBackEnabled()) {
                         when (position) {
                             1 -> {
                                 if (viewModel.focusOn.value != FocusOn.ViewPager) {
@@ -172,7 +174,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                             }
                         }
                     }
-                //}
+                }
             })
         }
     }

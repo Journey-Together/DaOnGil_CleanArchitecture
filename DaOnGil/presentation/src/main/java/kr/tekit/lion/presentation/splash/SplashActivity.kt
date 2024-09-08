@@ -5,8 +5,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivitySplashBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
@@ -56,22 +58,35 @@ class SplashActivity : AppCompatActivity() {
                 this.layoutParams = layoutParams
 
                 this.start()
-                repeatOnStarted {
-                    viewModel.logInState.collect { state ->
-                        when (state) {
-                            is LogInState.LoggedIn -> {
-                                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                                finish()
-                            }
+            }
 
-                            is LogInState.LoginRequired -> {
-                                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                                finish()
-                            }
+            repeatOnStarted {
+                viewModel.userActivationState.collect {
+                    delay(4000)
+                    if (it) {
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        finish()
+                    } else {
+                        viewModel.checkLoginStatus()
+                    }
+                }
+            }
 
-                            is LogInState.Checking -> {
-                                return@collect
-                            }
+            repeatOnStarted {
+                viewModel.logInState.collect { state ->
+                    when (state) {
+                        is LogInState.LoggedIn -> {
+                            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                            finish()
+                        }
+
+                        is LogInState.LoginRequired -> {
+                            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                            finish()
+                        }
+
+                        is LogInState.Checking -> {
+                            return@collect
                         }
                     }
                 }

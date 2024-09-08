@@ -2,6 +2,7 @@ package kr.tekit.lion.presentation.login.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -62,8 +63,14 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
                 launch {
                     viewModel.networkState.collect {
                         if (it == NetworkState.Success) {
-                            startActivity(Intent(requireActivity(), MainActivity::class.java))
-                            requireActivity().finish()
+                            Log.d("czxcdsd", "NetworkState Success")
+
+                            viewModel.saveUserActivation{
+                                Log.d("czxcdsd", "startActivity")
+
+                                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                                requireActivity().finish()
+                            }
                         }
                     }
                 }
