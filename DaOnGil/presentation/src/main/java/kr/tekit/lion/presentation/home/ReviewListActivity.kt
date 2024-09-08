@@ -13,9 +13,11 @@ import kr.tekit.lion.domain.model.placereviewlist.PlaceReview
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityReviewListBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
+import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.home.adapter.ReviewListRVAdapter
 import kr.tekit.lion.presentation.home.vm.ReviewListViewModel
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
 class ReviewListActivity : AppCompatActivity() {
@@ -31,7 +33,25 @@ class ReviewListActivity : AppCompatActivity() {
         val placeId = intent.getLongExtra("reviewPlaceId", -1)
 
         settingToolbar()
-        getReviewListInfo(placeId)
+
+        repeatOnStarted {
+            viewModel.loginState.collect { uiState ->
+                when (uiState) {
+                    is LogInState.Checking -> {
+                        return@collect
+                    }
+
+                    is LogInState.LoggedIn -> {
+                        getReviewListInfo(placeId)
+                    }
+
+                    is LogInState.LoginRequired -> {
+                        getReviewListInfoGuest(placeId)
+                    }
+                }
+            }
+        }
+
     }
 
     private fun settingToolbar() {
@@ -62,6 +82,29 @@ class ReviewListActivity : AppCompatActivity() {
         binding.reviewListRv.addOnScrollEndListener {
             if (viewModel.isLastPage.value == false) {
                 viewModel.getNewPlaceReview(placeId)
+            }
+        }
+
+        viewModel.placeReviewInfo.observe(this@ReviewListActivity) { placeReviewInfo ->
+            binding.reviewListTitleTv.text = placeReviewInfo.placeName
+            binding.reviewListAddressTv.text = placeReviewInfo.placeAddress
+            binding.reviewListCount2Tv.text = placeReviewInfo.placeReviewList.size.toString()
+
+            Glide.with(binding.reviewListThumbnailIv)
+                .load(placeReviewInfo.placeImg)
+                .error(R.drawable.empty_view)
+                .into(binding.reviewListThumbnailIv)
+
+            settingReviewListRVAdapter(placeReviewInfo.placeReviewList)
+        }
+    }
+
+    private fun getReviewListInfoGuest(placeId : Long) {
+        viewModel.getPlaceReviewGuest(placeId)
+
+        binding.reviewListRv.addOnScrollEndListener {
+            if (viewModel.isLastPage.value == false) {
+                viewModel.getNewPlaceReviewGuest(placeId)
             }
         }
 
