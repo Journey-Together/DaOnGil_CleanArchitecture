@@ -9,7 +9,7 @@ import kr.tekit.lion.presentation.main.adapter.viewholder.PlaceHighViewHolder
 import kr.tekit.lion.presentation.main.model.PlaceModel
 
 class SearchResultAdapter(
-    private val onSelectPlace: (String) -> Unit
+    private val onSelectPlace: (Long) -> Unit
 ): ListAdapter<PlaceModel, PlaceHighViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceHighViewHolder {

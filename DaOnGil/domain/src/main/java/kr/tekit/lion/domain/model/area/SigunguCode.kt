@@ -13,7 +13,7 @@ data class SigunguCodeList(
         return sigunguList.map { it.sigunguName }
     }
 
-    fun findSigunguCode(sigunguName: String): String? {
-        return sigunguList.find { it.sigunguName == sigunguName }?.sigunguCode
+    fun findSigunguCode(sigunguName: String): String {
+        return sigunguList.find { it.sigunguName == sigunguName }?.sigunguCode ?: ""
     }
 }

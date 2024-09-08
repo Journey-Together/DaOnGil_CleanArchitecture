@@ -13,6 +13,7 @@
         android:fontFamily="@font/pretendard_medium"
         android:text="@string/text_search_guide1"
         android:textSize="@dimen/font_big1"
+        android:layout_marginTop="@dimen/margin_small1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
