@@ -87,6 +87,23 @@ internal interface PlanService {
         @Path("planId") planId: Long,
         @Part("planReviewReq") scheduleReview: RequestBody,
     )
+
+    // 여행 일정 후기 수정
+    @Multipart
+    @PATCH("plan/review/{reviewId}")
+    suspend fun modifyScheduleReview(
+        @Path("reviewId") reviewId: Long,
+        @Part("planReviewReq") scheduleReview: RequestBody,
+        @Part images: List<MultipartBody.Part>
+    )
+
+    // 여행 일정 후기 수정 (이미지 제외)
+    @Multipart
+    @PATCH("plan/review/{reviewId}")
+    suspend fun modifyScheduleReviewTextOnly(
+        @Path("reviewId") reviewId: Long,
+        @Part("planReviewReq") scheduleReview: RequestBody
+    )
       
     // 여행 일정 상세보기 (로그인버전)
     @GET("plan/detail/{planId}")

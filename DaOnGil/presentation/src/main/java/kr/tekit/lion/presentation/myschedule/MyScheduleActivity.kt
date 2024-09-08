@@ -15,6 +15,7 @@ import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.myschedule.vm.MyScheduleViewModel
 import kr.tekit.lion.presentation.schedule.ResultCode
+import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
 import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
 
 @AndroidEntryPoint
@@ -40,7 +41,7 @@ class MyScheduleActivity : AppCompatActivity() {
         MyScheduleUpcomingAdapter { planPosition ->
             val planId = viewModel.getUpcomingPlanId(planPosition)
             if (planId != -1L) {
-//                navigateToScheduleDetailActivity(planId)
+                navigateToScheduleDetailActivity(planId)
             }
         }
     }
@@ -58,7 +59,7 @@ class MyScheduleActivity : AppCompatActivity() {
             onScheduleItemClicked = { planPosition ->
                 val planId = viewModel.getElapsedPlanId(planPosition)
                 if (planId != -1L) {
-//                    navigateToScheduleDetailActivity(planId)
+                    navigateToScheduleDetailActivity(planId)
                 }
             }
         )
@@ -152,10 +153,10 @@ class MyScheduleActivity : AppCompatActivity() {
         binding.recyclerViewMyScheduleList.visibility = View.GONE
     }
 
-//    private fun navigateToScheduleDetailActivity(planId: Long) {
-//        val intent = Intent(this, ScheduleDetailActivity::class.java)
-//        intent.putExtra("planId", planId)
-//        scheduleLauncher.launch(intent)
-//    }
+    private fun navigateToScheduleDetailActivity(planId: Long) {
+        val intent = Intent(this, ScheduleDetailActivity::class.java)
+        intent.putExtra("planId", planId)
+        scheduleLauncher.launch(intent)
+    }
 
 }

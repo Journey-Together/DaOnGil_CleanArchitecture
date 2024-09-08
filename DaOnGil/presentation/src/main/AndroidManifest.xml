@@ -8,6 +8,9 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".schedulereview.ModifyScheduleReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".schedulereview.WriteScheduleReviewActivity"
             android:exported="false" />
         <activity
@@ -63,6 +66,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -71,8 +75,7 @@
             android:exported="false" />
         <activity
             android:name=".keyword.KeywordSearchActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
     </application>
 
 </manifest>
