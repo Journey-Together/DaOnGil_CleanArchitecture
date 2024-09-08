@@ -24,6 +24,8 @@ interface PlanRepository {
 
     suspend fun addNewPlan(request: NewPlan): Result<Unit>
 
+    suspend fun modifySchedule(planId: Long, request: NewPlan): Result<Unit>
+
     suspend fun getMyMainSchedule(): Result<List<MyMainSchedule?>?>
 
     suspend fun getOpenPlanList(size: Int, page: Int): Result<OpenPlan>
