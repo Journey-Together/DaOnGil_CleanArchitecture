@@ -104,6 +104,10 @@ class ModifyScheduleFormViewModel @Inject constructor(
         return _title.value ?: ""
     }
 
+    fun setKeyword(keyword: String) {
+        _keyword.value = keyword
+    }
+
     private fun getBookmarkedPlaceList(){
         viewModelScope.launch {
             bookmarkRepository.getPlaceBookmarkList().onSuccess {
@@ -133,8 +137,7 @@ class ModifyScheduleFormViewModel @Inject constructor(
             DailySchedule(
                 dailyIdx = index,
                 dailyDate = formatDateValue(
-                    dateString = dailyPlan.dailyPlanDate,
-                    pattern = FormDateFormat.M_D_E
+                    dateString = dailyPlan.dailyPlanDate
                 ),
                 dailyPlaces = dailyPlan.schedulePlaces.map { schedulePlace ->
                     FormPlace(
@@ -150,10 +153,10 @@ class ModifyScheduleFormViewModel @Inject constructor(
     }
 
     /** String 형태의 날짜를 다른 형태의 String 으로 변환 */
-    private fun formatDateValue(dateString: String, pattern: String) : String{
+    private fun formatDateValue(dateString: String) : String{
         // Date 객체로 변환한 뒤, String 으로 다시 변환
         val date = dateString.convertStringToDate()
-        return date.formatDateValue(pattern)
+        return date.formatDateValue(FormDateFormat.M_D_E)
     }
 
     fun formatPickedDates(pattern: String) : String {
@@ -224,6 +227,30 @@ class ModifyScheduleFormViewModel @Inject constructor(
         _schedule.value = updatedSchedule.toList()
     }
 
+    fun getPlaceSearchResult(isNewRequest: Boolean) {
+        val page = if (isNewRequest) -1 else _placeSearchResult.value?.pageNo ?: -1
+
+        val keyword = _keyword.value
+
+        if (keyword != null) {
+            viewModelScope.launch {
+                planRepository.getPlaceSearchResult(keyword, page + 1)
+                    .onSuccess {
+                        if (isNewRequest) {
+                            _placeSearchResult.value = it
+                        } else {
+                            val newList =
+                                _placeSearchResult.value?.placeInfoList.orEmpty() + it.placeInfoList
+                            val updatedResult = it.copy(placeInfoList = newList)
+                            _placeSearchResult.value = updatedResult
+                        }
+                    }.onError {
+                        networkErrorDelegate.handleNetworkError(it)
+                    }
+            }
+        }
+    }
+
     private fun addNewPlace(newPlace: FormPlace, dayPosition: Int) {
         // 업데이트 될 기존 데이터
         val updatedSchedule = _schedule.value?.toMutableList()
@@ -256,6 +283,77 @@ class ModifyScheduleFormViewModel @Inject constructor(
             removedSchedule[dayPosition] = daySchedule.copy(dailyPlaces = removedPlaces)
             // 데이터 갱신
             _schedule.value = removedSchedule
+        }
+    }
+
+    fun getPlaceId(selectedPlacePosition: Int): Long {
+        val placeId =
+            _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)?.placeId ?: -1L
+
+        return placeId
+    }
+
+    fun isPlaceAlreadyAdded(
+        dayPosition: Int,
+        selectedPlacePosition: Int,
+        isBookmarkedPlace: Boolean
+    ): Boolean {
+        val placeId = if (isBookmarkedPlace) {
+            _bookmarkedPlaces.value?.get(selectedPlacePosition)?.bookmarkedPlaceId
+        } else {
+            _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)?.placeId
+        }
+
+        // 선택한 관광지 정보가 같은 날에 추가된 경우
+        val daySchedule = _schedule.value?.get(dayPosition)?.dailyPlaces
+        daySchedule?.forEach {
+            if (it.placeId == placeId) {
+                return true
+            }
+        }
+
+        getPlaceInfoAndSave(dayPosition, selectedPlacePosition, isBookmarkedPlace)
+
+        return false
+    }
+
+    private fun getPlaceInfoAndSave(
+        dayPosition: Int,
+        selectedPlacePosition: Int,
+        isBookmarkedPlace: Boolean
+    ) {
+        if (isBookmarkedPlace) {
+            getBookmarkedPlaceDetailInfo(dayPosition, selectedPlacePosition)
+        } else {
+            val placeInfo = _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)
+            if (placeInfo != null) {
+                val formPlace = FormPlace(
+                    placeInfo.placeId,
+                    placeInfo.imageUrl,
+                    placeInfo.placeName,
+                    placeInfo.category
+                )
+                addNewPlace(formPlace, dayPosition)
+            }
+        }
+    }
+
+    private fun getBookmarkedPlaceDetailInfo(
+        dayPosition: Int,
+        selectedPlacePosition: Int
+    ) {
+        val placeId = _bookmarkedPlaces.value?.get(selectedPlacePosition)?.bookmarkedPlaceId
+
+        viewModelScope.launch {
+            placeId?.let {
+                placeRepository.getPlaceDetailInfo(placeId).onSuccess {
+                    val formPlace =
+                        FormPlace(it.placeId, it.image, it.name, it.category)
+                    addNewPlace(formPlace, dayPosition)
+                }.onError {
+                    networkErrorDelegate.handleNetworkError(it)
+                }
+            }
         }
     }
 }
