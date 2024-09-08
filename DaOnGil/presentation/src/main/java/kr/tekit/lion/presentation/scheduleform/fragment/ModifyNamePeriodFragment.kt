@@ -1,19 +1,29 @@
 package kr.tekit.lion.presentation.scheduleform.fragment
 
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentModifyNamePeriodBinding
+import kr.tekit.lion.presentation.databinding.FragmentNameAndPeriodFormBinding
 import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.ext.showSoftInput
+import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import kr.tekit.lion.presentation.scheduleform.model.OriginalScheduleInfo
 import kr.tekit.lion.presentation.scheduleform.vm.ModifyScheduleFormViewModel
 import java.util.Date
+import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) {
@@ -26,29 +36,40 @@ class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) 
         val binding = FragmentModifyNamePeriodBinding.bind(view)
 
         initToolbar(binding)
+        initView(binding)
         initScheduleData(binding)
         initButtonClickListener(binding)
-
     }
 
-    private fun initToolbar(binding: FragmentModifyNamePeriodBinding){
+    private fun initToolbar(binding: FragmentModifyNamePeriodBinding) {
         binding.toolbarModifyNpf.setNavigationOnClickListener {
+            requireActivity().setResult(Activity.RESULT_CANCELED)
             requireActivity().finish()
         }
     }
 
-    private fun initScheduleData(binding: FragmentModifyNamePeriodBinding) {
-        val originalScheduleInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireActivity().intent.getParcelableExtra(
-                "scheduleInfo",
-                OriginalScheduleInfo::class.java
-            )
-        } else {
-            requireActivity().intent.getParcelableExtra("scheduleInfo") as? OriginalScheduleInfo
+    private fun initView(binding: FragmentModifyNamePeriodBinding) {
+        with(binding) {
+            editModiyNpfTitle.addTextChangedListener {
+                clearErrorMessage(textInputModifyNpfTitle)
+            }
         }
+    }
 
-        originalScheduleInfo?.let {
-            viewModel.initScheduleDetailInfo(it)
+    private fun initScheduleData(binding: FragmentModifyNamePeriodBinding) {
+        if (!viewModel.hasStartDate()) {
+            val originalScheduleInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requireActivity().intent.getParcelableExtra(
+                    "scheduleInfo",
+                    OriginalScheduleInfo::class.java
+                )
+            } else {
+                requireActivity().intent.getParcelableExtra("scheduleInfo") as? OriginalScheduleInfo
+            }
+
+            originalScheduleInfo?.let {
+                viewModel.initScheduleDetailInfo(it)
+            }
         }
 
         initScheduleTitleAndPeriod(binding)
@@ -59,7 +80,7 @@ class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) 
             binding.editModiyNpfTitle.setText(it)
         }
         viewModel.endDate.observe(viewLifecycleOwner) {
-            val pickedDates = viewModel.formatPickedDates()
+            val pickedDates = viewModel.formatPickedDates(FormDateFormat.YYYY_MM_DD_E)
             binding.buttonModifyNpfSetPeriod.text = pickedDates
         }
     }
@@ -72,7 +93,10 @@ class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) 
                     .setTitleText("조회기간을 설정해주세요")
                     .build()
 
-                dateRangePicker.show(requireActivity().supportFragmentManager, "ModifyScheduleFormSetPeriod")
+                dateRangePicker.show(
+                    requireActivity().supportFragmentManager,
+                    "ModifyScheduleFormSetPeriod"
+                )
                 dateRangePicker.addOnPositiveButtonClickListener {
                     viewModel.setStartDate(Date(it.first))
                     viewModel.setEndDate(Date(it.second))
@@ -80,20 +104,21 @@ class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) 
             }
 
             buttonModifyNpfNextStep.setOnClickListener { view ->
-                val isNameAndPeriodValidate = validateScheduleNameAndPeriod(this)
+                val isNameAndPeriodValidate = validateScheduleTitleAndPeriod(this)
 
-                if(isNameAndPeriodValidate){
+                if (isNameAndPeriodValidate) {
                     viewModel.setTitle(editModiyNpfTitle.text.toString())
 
                     val navController = findNavController()
-                    val action = ModifyNamePeriodFragmentDirections.toModifyScheduleDetailsFragment()
+                    val action =
+                        ModifyNamePeriodFragmentDirections.toModifyScheduleDetailsFragment()
                     navController.navigate(action)
                 }
             }
         }
     }
 
-    private fun validateScheduleNameAndPeriod(binding: FragmentModifyNamePeriodBinding): Boolean {
+    private fun validateScheduleTitleAndPeriod(binding: FragmentModifyNamePeriodBinding): Boolean {
         with(binding) {
             editModiyNpfTitle.apply {
                 val tempName = this.text.toString()
@@ -115,4 +140,7 @@ class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) 
         return true
     }
 
+    private fun clearErrorMessage(textInputLayout: TextInputLayout) {
+        textInputLayout.error = null
+    }
 }
