@@ -23,12 +23,12 @@ import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.report.ReportActivity
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_EDIT
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_WRITE
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_SCHEDULE_EDIT
 import kr.tekit.lion.presentation.schedule.adapter.ScheduleImageViewPagerAdapter
 import kr.tekit.lion.presentation.schedule.adapter.ScheduleListAdapter
-import kr.tekit.lion.presentation.schedule.customview.ReviewReportDialog
 import kr.tekit.lion.presentation.schedule.customview.ScheduleManageBottomSheet
 import kr.tekit.lion.presentation.schedule.customview.ScheduleReviewManageBottomSheet
 import kr.tekit.lion.presentation.schedule.vm.ScheduleDetailViewModel
@@ -59,6 +59,14 @@ class ScheduleDetailActivity : AppCompatActivity() {
             }
             RESULT_REVIEW_EDIT -> {
                 binding.root.showSnackbar("리뷰가 수정되었습니다")
+            }
+        }
+    }
+
+    private val reportLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        when(result.resultCode){
+            RESULT_OK -> {
+                binding.root.showSnackbar("신고가 완료되었습니다")
             }
         }
     }
@@ -341,13 +349,11 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 visibility = View.VISIBLE
                 setOnClickListener {
                     if (isUser) {
-                        val reviewReportDialog = ReviewReportDialog { reasonType ->
-                            // TO DO -> 서버에 신고 내용 접수
-                            // 리뷰 idx : scheduleDetail.reviewIdx. 신고 사유: reasonType (Int/String)
-                            binding.toolbarViewSchedule.showSnackbar(getString(R.string.text_report_submitted))
-                        }
-                        reviewReportDialog.isCancelable = false
-                        reviewReportDialog.show(supportFragmentManager, "ModeSettingDialog")
+                        val newIntent = Intent(
+                            this@ScheduleDetailActivity,
+                            ReportActivity::class.java
+                        )
+                        reportLauncher.launch(newIntent)
                     } else {
                         displayLoginDialog("여행 후기를 신고하고 싶다면\n로그인을 진행해주세요")
                     }
