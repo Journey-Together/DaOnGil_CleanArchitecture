@@ -94,4 +94,8 @@ internal class PlaceDataSource @Inject constructor(
     suspend fun getPlaceReviewList(placeId: Long, size: Int, page: Int) : Result<PlaceReviewInfo> = execute {
         placeService.getPlaceReviewList(placeId, size, page).toDomainModel()
     }
+
+    suspend fun getPlaceReviewListGuest(placeId: Long, size: Int, page: Int) : Result<PlaceReviewInfo> = execute {
+        placeService.getPlaceReviewListGuest(placeId, size, page).toDomainModel()
+    }
 }
