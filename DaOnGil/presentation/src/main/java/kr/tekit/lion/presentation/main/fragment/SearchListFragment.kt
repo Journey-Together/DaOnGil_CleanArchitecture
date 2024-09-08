@@ -2,7 +2,6 @@ package kr.tekit.lion.presentation.main.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -11,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -148,7 +146,7 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
 
                     launch {
                         viewModel.errorMessage.collect { msg ->
-                            Log.d("czxcasas", msg.toString())
+                            searchListProgressBar.visibility = View.GONE
                             if (msg == null) {
                                 rvSearchResult.visibility = View.VISIBLE
                                 noSearchResultContainer.visibility = View.GONE
