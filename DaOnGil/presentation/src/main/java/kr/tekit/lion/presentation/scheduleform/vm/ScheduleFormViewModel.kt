@@ -283,7 +283,7 @@ class ScheduleFormViewModel @Inject constructor(
         isBookmarkedPlace: Boolean
     ) {
         if (isBookmarkedPlace) {
-            getSearchedPlaceDetailInfo(dayPosition, selectedPlacePosition)
+            getBookmarkedPlaceDetailInfo(dayPosition, selectedPlacePosition)
         } else {
             val placeInfo = _placeSearchResult.value?.placeInfoList?.get(selectedPlacePosition)
             if (placeInfo != null) {
@@ -308,7 +308,7 @@ class ScheduleFormViewModel @Inject constructor(
         }
     }
 
-    fun getSearchedPlaceDetailInfo(
+    private fun getBookmarkedPlaceDetailInfo(
         dayPosition: Int,
         selectedPlacePosition: Int
     ) {
