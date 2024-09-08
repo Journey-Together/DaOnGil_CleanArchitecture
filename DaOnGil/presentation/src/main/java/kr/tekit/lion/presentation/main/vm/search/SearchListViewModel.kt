@@ -140,7 +140,7 @@ class SearchListViewModel @Inject constructor(
                 ElderlyPeople.filterCodes,
                 type
             )
-        }.copy(page = 0)
+        }
     }
 
     private fun updateOptionState(
@@ -159,7 +159,8 @@ class SearchListViewModel @Inject constructor(
         }
         return listOptionState.value.copy(
             disabilityType = updatedDisabilityTypes,
-            detailFilter = updatedDetailFilters
+            detailFilter = updatedDetailFilters,
+            page = 0
         )
     }
 
@@ -266,7 +267,8 @@ class SearchListViewModel @Inject constructor(
 
         if (currentAreaCode != newAreaCode) {
             clearPlace()
-            listOptionState.update { it.copy(areaCode = newAreaCode) }
+            _isLastPage.value = false
+            listOptionState.update { it.copy(areaCode = newAreaCode, sigunguCode = null, page = 0) }
             updateSigunguModel(newAreaCode)
         }
     }
@@ -304,6 +306,8 @@ class SearchListViewModel @Inject constructor(
 
         if (currentSigunguCode != newSigunguCode){
             clearPlace()
+            _isLastPage.value = false
+
             val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
             listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
             _uiState.update { uiState ->
@@ -324,7 +328,7 @@ class SearchListViewModel @Inject constructor(
 
     private suspend fun loadAreaCodes() {
         val areaInfoList = areaCodeRepository.getAllAreaCodes()
-        areaCode.update { areaInfoList }
+        areaCode.value = areaInfoList
         viewModelScope.launch((Dispatchers.IO)) {
             _uiState.update { uiStateList ->
                 uiStateList.map { uiModel ->
