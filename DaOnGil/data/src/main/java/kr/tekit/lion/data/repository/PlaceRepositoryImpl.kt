@@ -95,4 +95,8 @@ internal class PlaceRepositoryImpl @Inject constructor(
     override suspend fun getPlaceReviewList(placeId: Long, page: Int, size: Int): Result<PlaceReviewInfo> {
         return placeDataSource.getPlaceReviewList(placeId, page, size)
     }
+
+    override suspend fun getPlaceReviewListGuest(placeId: Long, page: Int, size: Int): Result<PlaceReviewInfo> {
+        return placeDataSource.getPlaceReviewListGuest(placeId, page, size)
+    }
 }
