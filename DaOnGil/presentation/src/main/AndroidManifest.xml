@@ -8,6 +8,9 @@
 
     <application android:theme="@style/Base.Theme.DaOnGil">
         <activity
+            android:name=".scheduleform.ModifyScheduleFormActivity"
+            android:exported="false" />
+        <activity
             android:name=".schedulereview.ModifyScheduleReviewActivity"
             android:exported="false" />
         <activity
@@ -75,7 +78,7 @@
             android:exported="false" />
         <activity
             android:name=".keyword.KeywordSearchActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>
