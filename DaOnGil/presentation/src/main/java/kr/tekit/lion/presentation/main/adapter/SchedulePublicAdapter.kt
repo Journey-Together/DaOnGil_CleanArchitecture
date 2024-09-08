@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.OpenPlanInfo
 import kr.tekit.lion.presentation.databinding.RowSchedulePublicBinding
-import kr.tekit.lion.presentation.ext.setImage
+import kr.tekit.lion.presentation.ext.setImageSmall
 
 class SchedulePublicAdapter(
     private val itemClickListener: (Int) -> Unit
@@ -33,8 +33,8 @@ class SchedulePublicAdapter(
                 textViewRowScheduleName.text = item.title
                 textViewRowSchedulePublicNickname.text = item.memberNickname
 
-                root.context.setImage(imageViewRowSchedulePublicThumb, item.imageUrl)
-                root.context.setImage(imageViewRowSchedulePublicProfile, item.memberImageUrl)
+                root.context.setImageSmall(imageViewRowSchedulePublicThumb, item.imageUrl)
+                root.context.setImageSmall(imageViewRowSchedulePublicProfile, item.memberImageUrl)
             }
 
         }

@@ -18,7 +18,7 @@ import kr.tekit.lion.domain.model.ScheduleDetail
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityScheduleDetailBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
-import kr.tekit.lion.presentation.ext.setImage
+import kr.tekit.lion.presentation.ext.setImageSmall
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.login.LoginActivity
@@ -117,7 +117,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
                         cardViewScheduleReview.visibility = View.VISIBLE
                         cardViewScheduleEmptyReview.visibility = View.GONE
-                        this@ScheduleDetailActivity.setImage(ivProfileImage, scheduleDetail.profileUrl)
+                        this@ScheduleDetailActivity.setImageSmall(ivProfileImage, scheduleDetail.profileUrl)
                         textNickname.text = scheduleDetail.nickname
                         ratingBarScheduleSatisfaction.rating = scheduleDetail.grade?.toFloat() ?: 0F
                         textViewScheduleReviewContent.text = scheduleDetail.content
@@ -126,31 +126,31 @@ class ScheduleDetailActivity : AppCompatActivity() {
                             when (reviewImages.size) {
                                 1 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
                                 }
                                 2 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
                                     scheduleReviewImg2.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
                                 }
                                 3 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
                                     scheduleReviewImg2.visibility = View.VISIBLE
                                     scheduleReviewImg3.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg3, reviewImages[2])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
                                 }
                                 4 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
                                     scheduleReviewImg2.visibility = View.VISIBLE
                                     scheduleReviewImg3.visibility = View.VISIBLE
                                     scheduleReviewImg4.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg3, reviewImages[2])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg4, reviewImages[3])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
                                 }
                                 5 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
@@ -158,11 +158,11 @@ class ScheduleDetailActivity : AppCompatActivity() {
                                     scheduleReviewImg3.visibility = View.VISIBLE
                                     scheduleReviewImg4.visibility = View.VISIBLE
                                     scheduleReviewImg5.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg3, reviewImages[2])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg4, reviewImages[3])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg5, reviewImages[4])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg5, reviewImages[4])
                                 }
                             }
                         }

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.scheduleform.FormPlace
 import kr.tekit.lion.presentation.databinding.ItemFormPlaceBinding
-import kr.tekit.lion.presentation.ext.setImage
+import kr.tekit.lion.presentation.ext.setImageSmall
 
 class FormConfirmPlaceAdapter(private val places: List<FormPlace>) :
     RecyclerView.Adapter<FormConfirmPlaceAdapter.FormConfirmPlaceViewHolder>() {
@@ -34,7 +34,7 @@ class FormConfirmPlaceAdapter(private val places: List<FormPlace>) :
                 textFormPlaceName.text = place.placeName
 
                 place.placeImage?.let {
-                    imageFormPlaceThumbnail.context.setImage(
+                    imageFormPlaceThumbnail.context.setImageSmall(
                         imageFormPlaceThumbnail, it
                     )
                 }

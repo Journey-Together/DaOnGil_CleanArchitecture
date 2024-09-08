@@ -9,7 +9,7 @@ import kr.tekit.lion.domain.model.scheduleform.PlaceSearchInfoList
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemFormSearchResultBinding
 import kr.tekit.lion.presentation.databinding.ItemFormSearchTotalBinding
-import kr.tekit.lion.presentation.ext.setImage
+import kr.tekit.lion.presentation.ext.setImageSmall
 
 class FormSearchResultAdapter(
     private val onPlaceSelectedListener: (selectedPlacePosition: Int) -> Unit,
@@ -71,7 +71,7 @@ class FormSearchResultAdapter(
                 textSearchResultName.text = placeSearchInfo.placeName
                 textSearchResultCategory.text = placeSearchInfo.category
                 placeSearchInfo.imageUrl?.let {
-                    imageSearchResultThumbnail.context.setImage(imageSearchResultThumbnail, it)
+                    imageSearchResultThumbnail.context.setImageSmall(imageSearchResultThumbnail, it)
                 }
             }
         }
