@@ -13,6 +13,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivitySplashBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.login.LoginActivity
+import kr.tekit.lion.presentation.login.OnBoardingActivity
 import kr.tekit.lion.presentation.main.MainActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 import kr.tekit.lion.presentation.splash.vm.SplashViewModel
@@ -81,7 +82,7 @@ class SplashActivity : AppCompatActivity() {
                         }
 
                         is LogInState.LoginRequired -> {
-                            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
                             finish()
                         }
 

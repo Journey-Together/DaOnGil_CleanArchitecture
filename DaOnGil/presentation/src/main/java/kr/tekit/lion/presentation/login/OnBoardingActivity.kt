@@ -1,21 +1,25 @@
-package kr.tekit.lion.presentation.login.fragment
+package kr.tekit.lion.presentation.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kr.tekit.lion.presentation.R
-import kr.tekit.lion.presentation.databinding.FragmentOnBoardingBinding
+import kr.tekit.lion.presentation.databinding.ActivityOnBoardingBinding
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.isTallBackEnabled
+import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.login.model.FocusOn
 import kr.tekit.lion.presentation.login.model.OnBoardingPage
@@ -24,19 +28,22 @@ import kr.tekit.lion.presentation.main.MainActivity
 import kr.tekit.lion.presentation.splash.adapter.OnBoardingImageVPAdapter
 
 @AndroidEntryPoint
-class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
+class OnBoardingActivity : AppCompatActivity() {
+    private val binding by lazy {
+        ActivityOnBoardingBinding.inflate(layoutInflater)
+    }
     private val viewModel: OnBoardingViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentOnBoardingBinding.bind(view)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-        if (requireContext().isTallBackEnabled()) {
-            requireContext().announceForAccessibility(getString(R.string.text_script_guide_onboarding))
+        if (this.isTallBackEnabled()) {
+            this.announceForAccessibility(getString(R.string.text_script_guide_onboarding))
         }
 
         val pages = listOfNotNull(
-            ContextCompat.getDrawable(requireContext(), R.drawable.onboarding_first)?.let {
+            ContextCompat.getDrawable(this, R.drawable.onboarding_first)?.let {
                 OnBoardingPage(
                     it,
                     getString(R.string.text_onboarding_first_text1),
@@ -44,7 +51,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                     ""
                 )
             },
-            ContextCompat.getDrawable(requireContext(), R.drawable.onboarding_second)?.let {
+            ContextCompat.getDrawable(this, R.drawable.onboarding_second)?.let {
                 OnBoardingPage(
                     it,
                     getString(R.string.text_onboarding_second_text1),
@@ -52,7 +59,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                     ""
                 )
             },
-            ContextCompat.getDrawable(requireContext(), R.drawable.onboarding_third)?.let {
+            ContextCompat.getDrawable(this, R.drawable.onboarding_third)?.let {
                 OnBoardingPage(
                     it,
                     getString(R.string.text_onboarding_third_text1),
@@ -60,7 +67,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                     ""
                 )
             },
-            ContextCompat.getDrawable(requireContext(), R.drawable.onboarding_last)?.let {
+            ContextCompat.getDrawable(this, R.drawable.onboarding_last)?.let {
                 OnBoardingPage(
                     it, getString(R.string.text_onboarding_fourth_text1),
                     getString(R.string.text_onboarding_fourth_text2),
@@ -72,7 +79,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
         val onBoardingVPAdapter = OnBoardingImageVPAdapter(pages)
 
         with(binding) {
-            if (requireContext().isTallBackEnabled()) {
+            if (this@OnBoardingActivity.isTallBackEnabled()) {
                 onBoardingVp.accessibilityDelegate = object : View.AccessibilityDelegate() {
                     override fun sendAccessibilityEvent(host: View, eventType: Int) {
                         super.sendAccessibilityEvent(host, eventType)
@@ -118,19 +125,21 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                         nextButton.setOnClickListener {
                             viewModel.saveUserActivation()
 
-                            val intent = Intent(requireContext(), MainActivity::class.java)
+                            val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
                             startActivity(intent)
-                            requireActivity().finish()
+                            finish()
                         }
 
                         textView.setOnClickListener {
-                            view.findNavController().navigate(R.id.to_loginFragment)
+                            startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java))
                         }
 
-                        if (requireContext().isTallBackEnabled()) {
-                            repeatOnViewStarted {
+                        if (this@OnBoardingActivity.isTallBackEnabled()) {
+                            repeatOnStarted {
                                 delay(3000)
-                                requireContext().announceForAccessibility(getString(R.string.text_script_guide_last_onboarding_page))
+                                this@OnBoardingActivity.announceForAccessibility(
+                                    getString(R.string.text_script_guide_last_onboarding_page)
+                                )
                             }
                         }
 
@@ -149,27 +158,27 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
                         }
                     }
 
-                    if (requireContext().isTallBackEnabled()) {
+                    if (this@OnBoardingActivity.isTallBackEnabled()) {
                         when (position) {
                             1 -> {
                                 if (viewModel.focusOn.value != FocusOn.ViewPager) {
-                                    requireContext().announceForAccessibility(
+                                    this@OnBoardingActivity.announceForAccessibility(
                                         getString(R.string.text_onboarding_second_text1) +
-                                        getString(R.string.text_onboarding_second_text2)
+                                                getString(R.string.text_onboarding_second_text2)
                                     )
                                 }
                             }
                             2 -> if (viewModel.focusOn.value != FocusOn.ViewPager) {
-                                requireContext().announceForAccessibility(
+                                this@OnBoardingActivity.announceForAccessibility(
                                     getString(R.string.text_onboarding_third_text1) +
-                                    getString(R.string.text_onboarding_third_text2)
+                                            getString(R.string.text_onboarding_third_text2)
                                 )
                             }
                             3 -> if (viewModel.focusOn.value != FocusOn.ViewPager) {
-                                requireContext().announceForAccessibility(
+                                this@OnBoardingActivity.announceForAccessibility(
                                     getString(R.string.text_onboarding_fourth_text1) +
-                                    getString(R.string.text_onboarding_fourth_text2) +
-                                    getString(R.string.text_onboarding_fourth_text3)
+                                            getString(R.string.text_onboarding_fourth_text2) +
+                                            getString(R.string.text_onboarding_fourth_text3)
                                 )
                             }
                         }

@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.login.vm
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
