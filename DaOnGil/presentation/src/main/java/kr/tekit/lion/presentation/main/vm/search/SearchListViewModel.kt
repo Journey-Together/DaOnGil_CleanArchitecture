@@ -15,6 +15,7 @@ import kr.tekit.lion.domain.model.area.AreaCodeList
 import kr.tekit.lion.domain.model.area.SigunguCodeList
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
+import kr.tekit.lion.domain.model.search.ListSearchResultList
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
@@ -212,25 +213,7 @@ class SearchListViewModel @Inject constructor(
             networkErrorDelegate.handleNetworkLoading()
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
-                    _uiState.update {
-                        val currentUiState = it.toMutableList()
-                        val sortModelIndex = currentUiState.indexOfFirst { it is SortModel }
-                        currentUiState[sortModelIndex] = SortModel(result.itemSize)
-
-                        val noPlaceModelIndex = currentUiState.indexOfFirst { it is NoPlaceModel }
-
-                        if (result.itemSize == 0 && noPlaceModelIndex == -1) {
-                            currentUiState.add(NoPlaceModel())
-                            currentUiState
-                        } else {
-                            if (noPlaceModelIndex != -1) currentUiState.removeAt(noPlaceModelIndex)
-                            val newPlaceModels = result.toUiModel()
-                            currentUiState.addAll(newPlaceModels)
-                            currentUiState
-                        }
-                    }
-                    if (result.isLastPage) _isLastPage.value = true
-                    networkErrorDelegate.handleNetworkSuccess()
+                    modifyUiState(result)
                 }
                 .onError { e ->
                     networkErrorDelegate.handleNetworkError(e)
@@ -243,18 +226,37 @@ class SearchListViewModel @Inject constructor(
         listOptionState.take(1).collect { listOption ->
             placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
                 .onSuccess { result ->
-                    _uiState.update { uiState ->
-                        val currentUiState = uiState.toMutableList()
-                        val newPlaceModels = result.toUiModel()
-                        currentUiState.addAll(newPlaceModels)
-                        currentUiState
-                    }
-                    if (result.isLastPage) _isLastPage.value = true
+                    modifyUiState(result)
                 }
                 .onError { e ->
                     networkErrorDelegate.handleNetworkError(e)
                 }
         }
+    }
+
+    private fun modifyUiState(newUiState: ListSearchResultList){
+        _uiState.update {
+            val currentUiState = it.toMutableList()
+            val sortModelIndex = currentUiState.indexOfFirst { it is SortModel }
+            currentUiState[sortModelIndex] = SortModel(newUiState.itemSize)
+
+            val noPlaceModelIndex = currentUiState.indexOfFirst { it is NoPlaceModel }
+            val itemSize = newUiState.itemSize
+
+            if (itemSize == 0 && noPlaceModelIndex == -1) {
+                currentUiState.add(NoPlaceModel())
+                currentUiState
+            } else if (itemSize > 0) {
+                if (noPlaceModelIndex != -1) currentUiState.removeAt(noPlaceModelIndex)
+                val newPlaceModels = newUiState.toUiModel()
+                currentUiState.addAll(newPlaceModels)
+                currentUiState
+            }else{
+                currentUiState
+            }
+        }
+        _isLastPage.value = newUiState.isLastPage
+        networkErrorDelegate.handleNetworkSuccess()
     }
 
     private fun clearPlace(){
@@ -267,7 +269,6 @@ class SearchListViewModel @Inject constructor(
 
         if (currentAreaCode != newAreaCode) {
             clearPlace()
-            _isLastPage.value = false
             listOptionState.update { it.copy(areaCode = newAreaCode, sigunguCode = null, page = 0) }
             updateSigunguModel(newAreaCode)
         }
@@ -306,7 +307,6 @@ class SearchListViewModel @Inject constructor(
 
         if (currentSigunguCode != newSigunguCode){
             clearPlace()
-            _isLastPage.value = false
 
             val sigunguCode = sigunguCode.value.findSigunguCode(sigunguName)
             listOptionState.update { it.copy(sigunguCode = sigunguCode, page = 0) }
