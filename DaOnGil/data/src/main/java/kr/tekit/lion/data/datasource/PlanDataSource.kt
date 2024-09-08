@@ -31,12 +31,16 @@ internal class PlanDataSource @Inject constructor(
         planService.getMyElapsedScheduleList(PAGE_SIZE, page).toDomainModel()
     }
 
-    suspend fun getPlaceSearchResult(word: String, page: Int) : Result<PlaceSearchResult> = execute{
+    suspend fun getPlaceSearchResult(word: String, page: Int): Result<PlaceSearchResult> = execute {
         planService.getPlaceSearchResults(word, page, PLACE_SEARCH_PAGE_SIZE).toDomainModel()
     }
 
-    suspend fun addNewPlan(request: RequestBody) = execute{
+    suspend fun addNewPlan(request: RequestBody): Result<Unit> = execute {
         planService.addNewPlan(request)
+    }
+
+    suspend fun modifySchedule(planId: Long, request: RequestBody): Result<Unit> = execute {
+        planService.modifySchedule(planId, request)
     }
 
     suspend fun getMyMainSchedule(): Result<List<MyMainSchedule?>?> = execute {
@@ -47,7 +51,7 @@ internal class PlanDataSource @Inject constructor(
         planService.getOpenPlanList(size, page).toDomainModel()
     }
 
-    suspend fun getBriefScheduleInfo(planId: Long) : Result<BriefScheduleInfo> = execute {
+    suspend fun getBriefScheduleInfo(planId: Long): Result<BriefScheduleInfo> = execute {
         planService.getBriefScheduleInfo(planId).toDomainModel()
     }
 
@@ -55,10 +59,10 @@ internal class PlanDataSource @Inject constructor(
         planId: Long,
         scheduleReview: RequestBody,
         images: List<MultipartBody.Part>?
-    ) = execute {
-        if(images.isNullOrEmpty()){
+    ): Result<Unit> = execute {
+        if (images.isNullOrEmpty()) {
             planService.addNewScheduleReviewTextOnly(planId, scheduleReview)
-        }else{
+        } else {
             planService.addNewScheduleReview(planId, scheduleReview, images)
         }
     }
@@ -67,10 +71,10 @@ internal class PlanDataSource @Inject constructor(
         planId: Long,
         scheduleReview: RequestBody,
         images: List<MultipartBody.Part>?
-    ) = execute {
-        if(images.isNullOrEmpty()){
+    ): Result<Unit> = execute {
+        if (images.isNullOrEmpty()) {
             planService.modifyScheduleReviewTextOnly(planId, scheduleReview)
-        }else{
+        } else {
             planService.modifyScheduleReview(planId, scheduleReview, images)
         }
     }
