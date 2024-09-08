@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kr.tekit.lion.data.datasource.AppThemeDataSource
 import kr.tekit.lion.data.datasource.AuthDataSource
+import kr.tekit.lion.data.datasource.ActivationDataSource
 import kr.tekit.lion.data.datasource.TokenDataSource
 import kr.tekit.lion.data.service.AuthService
 import javax.inject.Singleton
@@ -34,4 +35,10 @@ internal object DataSourceModule {
     fun provideAppThemeDataSource(
         @ApplicationContext context: Context
     ): AppThemeDataSource = AppThemeDataSource(context)
+
+    @Singleton
+    @Provides
+    fun provideFirstLogInDataSource(
+        @ApplicationContext context: Context
+    ): ActivationDataSource = ActivationDataSource(context)
 }
