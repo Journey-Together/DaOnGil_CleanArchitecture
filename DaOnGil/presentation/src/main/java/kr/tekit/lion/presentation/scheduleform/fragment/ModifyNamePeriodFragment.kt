@@ -3,11 +3,8 @@ package kr.tekit.lion.presentation.scheduleform.fragment
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -16,14 +13,11 @@ import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentModifyNamePeriodBinding
-import kr.tekit.lion.presentation.databinding.FragmentNameAndPeriodFormBinding
 import kr.tekit.lion.presentation.ext.showSnackbar
-import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import kr.tekit.lion.presentation.scheduleform.model.OriginalScheduleInfo
 import kr.tekit.lion.presentation.scheduleform.vm.ModifyScheduleFormViewModel
 import java.util.Date
-import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) {
@@ -108,6 +102,7 @@ class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) 
 
                 if (isNameAndPeriodValidate) {
                     viewModel.setTitle(editModiyNpfTitle.text.toString())
+                    viewModel.refreshScheduleIfPeriodChanged()
 
                     val navController = findNavController()
                     val action =
