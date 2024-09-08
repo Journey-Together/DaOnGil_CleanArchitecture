@@ -14,10 +14,11 @@ data class ReviewInfo (
     val reviewImgs : List<String>?,
     val grade : Float,
     val date : LocalDate,
-    val myReview : Boolean
+    val myReview : Boolean,
+    val placeName: String
 ): Parcelable
 
-fun Review.toReviewInfo(): ReviewInfo {
+fun Review.toReviewInfo(placeName: String): ReviewInfo {
     return ReviewInfo(
         reviewId = this.reviewId,
         nickname = this.nickname,
@@ -26,6 +27,7 @@ fun Review.toReviewInfo(): ReviewInfo {
         reviewImgs = this.reviewImgs,
         grade = this.grade,
         date = this.date,
-        myReview = this.myReview
+        myReview = this.myReview,
+        placeName = placeName
     )
 }
