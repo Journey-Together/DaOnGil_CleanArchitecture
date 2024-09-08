@@ -8,7 +8,17 @@
         android:id="@+id/homeMainFragment"
         android:name="kr.tekit.lion.presentation.main.fragment.HomeMainFragment"
         android:label="fragment_home_main"
-        tools:layout="@layout/fragment_home_main" />
+        tools:layout="@layout/fragment_home_main" >
+        <action
+            android:id="@+id/action_homeMainFragment_to_searchPlaceMainFragment"
+            app:destination="@id/searchPlaceMainFragment" />
+        <action
+            android:id="@+id/action_homeMainFragment_to_emergencyMainFragment"
+            app:destination="@id/emergencyMainFragment" />
+        <action
+            android:id="@+id/action_homeMainFragment_to_scheduleMainFragment"
+            app:destination="@id/scheduleMainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchPlaceMainFragment"
         android:name="kr.tekit.lion.presentation.main.fragment.SearchPlaceMainFragment"

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_keyword_search_graph"
+    app:startDestination="@id/onSearchFragment">
+
+    <fragment
+        android:id="@+id/onSearchFragment"
+        android:name="kr.tekit.lion.presentation.keyword.fragment.OnSearchFragment"
+        android:label="fragment_on_search"
+        tools:layout="@layout/fragment_on_search" >
+        <action
+            android:id="@+id/action_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="kr.tekit.lion.presentation.keyword.fragment.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" >
+        <action
+            android:id="@+id/action_to_onSearchFragment"
+            app:destination="@id/onSearchFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/for_slide_in_right"
+            app:popExitAnim="@anim/for_slide_out_left"
+            />
+        <argument
+            android:name="searchText"
+            app:argType="string" />
+    </fragment>
+</navigation>

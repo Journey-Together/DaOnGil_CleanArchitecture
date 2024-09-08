@@ -1,6 +1,7 @@
 package kr.tekit.lion.data.service
 
 
+import kr.tekit.lion.data.dto.response.plan.briefScheduleInfo.BriefScheduleInfoResponse
 import kr.tekit.lion.data.dto.response.plan.scheduleDetailInfo.ScheduleDetailResponse
 import kr.tekit.lion.data.dto.response.plan.myMainSchedule.MyMainScheduleResponse
 import kr.tekit.lion.data.dto.response.plan.myScheduleElapsed.MyElapsedResponse
@@ -9,12 +10,15 @@ import kr.tekit.lion.data.dto.response.scheduleform.PlaceSearchResultsResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import kr.tekit.lion.data.dto.response.plan.openSchedule.OpenPlanListResponse
+import okhttp3.MultipartBody
+import retrofit2.http.Multipart
 import kr.tekit.lion.data.dto.response.plan.scheduleDetailReview.ScheduleDetailReviewResponse
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
-import retrofit2.http.Path
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Tag
 
@@ -61,6 +65,46 @@ internal interface PlanService {
         @Tag authType: AuthType = AuthType.NO_AUTH,
     ): OpenPlanListResponse
 
+    // 일정 간단한 정보 (한 개)
+    @GET("plan/{planId}")
+    suspend fun getBriefScheduleInfo(
+        @Path("planId") planId: Long
+    ) : BriefScheduleInfoResponse
+
+    // 여행 일정 후기 작성 (사진을 첨부한 경우)
+    @Multipart
+    @POST("plan/review/{planId}")
+    suspend fun addNewScheduleReview(
+        @Path("planId") planId: Long,
+        @Part("planReviewReq") scheduleReview: RequestBody,
+        @Part images: List<MultipartBody.Part>
+    )
+
+    // 여행 일정 후기 작성
+    @Multipart
+    @POST("plan/review/{planId}")
+    suspend fun addNewScheduleReviewTextOnly(
+        @Path("planId") planId: Long,
+        @Part("planReviewReq") scheduleReview: RequestBody,
+    )
+
+    // 여행 일정 후기 수정
+    @Multipart
+    @PATCH("plan/review/{reviewId}")
+    suspend fun modifyScheduleReview(
+        @Path("reviewId") reviewId: Long,
+        @Part("planReviewReq") scheduleReview: RequestBody,
+        @Part images: List<MultipartBody.Part>
+    )
+
+    // 여행 일정 후기 수정 (이미지 제외)
+    @Multipart
+    @PATCH("plan/review/{reviewId}")
+    suspend fun modifyScheduleReviewTextOnly(
+        @Path("reviewId") reviewId: Long,
+        @Part("planReviewReq") scheduleReview: RequestBody
+    )
+      
     // 여행 일정 상세보기 (로그인버전)
     @GET("plan/detail/{planId}")
     suspend fun getDetailScheduleInfo(

@@ -10,6 +10,15 @@
         <activity
             android:name=".schedule.PublicScheduleActivity"
             android:exported="false" />
+        <activity      
+            android:name=".schedulereview.ModifyScheduleReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".schedulereview.WriteScheduleReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".report.ReportActivity"
+            android:exported="false" />
         <activity
             android:name=".schedule.ScheduleDetailActivity"
             android:exported="false" />
@@ -56,9 +65,6 @@
             android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".splash.OnBoardingActivity"
-            android:exported="false" />
-        <activity
             android:name=".splash.SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -72,7 +78,7 @@
             android:exported="false" />
         <activity
             android:name=".keyword.KeywordSearchActivity"
-            android:exported="false" />
+            android:exported="false"></activity>
     </application>
 
 </manifest>

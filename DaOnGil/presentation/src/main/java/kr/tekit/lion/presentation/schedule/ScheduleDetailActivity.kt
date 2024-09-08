@@ -32,6 +32,8 @@ import kr.tekit.lion.presentation.schedule.customview.ReviewReportDialog
 import kr.tekit.lion.presentation.schedule.customview.ScheduleManageBottomSheet
 import kr.tekit.lion.presentation.schedule.customview.ScheduleReviewManageBottomSheet
 import kr.tekit.lion.presentation.schedule.vm.ScheduleDetailViewModel
+import kr.tekit.lion.presentation.schedulereview.ModifyScheduleReviewActivity
+import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
@@ -177,14 +179,14 @@ class ScheduleDetailActivity : AppCompatActivity() {
                                 getString(R.string.text_leave_schedule_review)
 
                             cardViewScheduleEmptyReview.setOnClickListener {
-                                /*val newIntent =
+                                val newIntent =
                                     Intent(
                                         this@ScheduleDetailActivity,
                                         WriteScheduleReviewActivity::class.java
                                     )
                                 val planId = intent.getLongExtra("planId", -1)
                                 newIntent.putExtra("planId", planId)
-                                scheduleReviewLauncher.launch(newIntent)*/
+                                scheduleReviewLauncher.launch(newIntent)
                             }
                         } else {
                             cardViewScheduleEmptyReview.visibility = View.VISIBLE
@@ -418,10 +420,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 binding.imageButtonScheduleManageReview.showSnackbar(getString(R.string.text_schedule_review_deleted))
             },
             onReviewEditClickListener = {
-                /*val newIntent =
+                val newIntent =
                     Intent(this@ScheduleDetailActivity, ModifyScheduleReviewActivity::class.java)
                 newIntent.putExtra("planId", planId)
-                scheduleReviewLauncher.launch(newIntent)*/
+                scheduleReviewLauncher.launch(newIntent)
             }).show(supportFragmentManager, "ScheduleReviewManageBottomSheet")
     }
 }

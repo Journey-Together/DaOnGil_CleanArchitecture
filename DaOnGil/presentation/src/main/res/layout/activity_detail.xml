@@ -223,11 +223,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_big4"
                 android:layout_marginEnd="@dimen/margin_basic"
+                android:layout_marginTop="1dp"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="주소입니다"
                 android:textColor="@color/text_secondary"
                 android:textSize="@dimen/font_small1"
-                app:layout_constraintBottom_toBottomOf="@+id/detail_basic_address_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/detail_basic_address_tv"
                 app:layout_constraintTop_toTopOf="@+id/detail_basic_address_tv" />
@@ -236,10 +236,10 @@
                 android:id="@+id/detail_call_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_big4"
                 android:src="@drawable/detail_call_icon"
                 app:layout_constraintStart_toStartOf="@+id/detail_address_iv"
-                app:layout_constraintTop_toBottomOf="@+id/detail_address_iv" />
+                app:layout_constraintTop_toTopOf="@+id/detail_call_tv"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_call_tv"/>
 
             <TextView
                 android:id="@+id/detail_call_tv"
@@ -250,34 +250,31 @@
                 android:text="문의"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/font_big3"
-                app:layout_constraintBottom_toBottomOf="@+id/detail_call_iv"
                 app:layout_constraintStart_toEndOf="@+id/detail_call_iv"
-                app:layout_constraintTop_toTopOf="@+id/detail_call_iv" />
+                app:layout_constraintTop_toTopOf="@+id/detail_call_content_tv" />
 
             <TextView
                 android:id="@+id/detail_call_content_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_big4"
-                android:layout_marginEnd="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big4"
                 android:autoLink="phone"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="010-1111-1111"
                 android:textColor="@color/text_secondary"
                 android:textSize="@dimen/font_small1"
-                app:layout_constraintBottom_toBottomOf="@+id/detail_call_tv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/detail_call_tv"
-                app:layout_constraintTop_toTopOf="@+id/detail_call_tv" />
+                app:layout_constraintEnd_toEndOf="@+id/detail_basic_address_content_tv"
+                app:layout_constraintStart_toStartOf="@+id/detail_basic_address_content_tv"
+                app:layout_constraintTop_toBottomOf="@+id/detail_basic_address_content_tv" />
 
             <ImageView
                 android:id="@+id/detail_link_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_big4"
                 android:src="@drawable/detail_link_icon"
                 app:layout_constraintStart_toStartOf="@+id/detail_call_iv"
-                app:layout_constraintTop_toBottomOf="@+id/detail_call_iv" />
+                app:layout_constraintTop_toTopOf="@+id/detail_homepage_tv"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_homepage_tv"/>
 
             <TextView
                 android:id="@+id/detail_homepage_tv"
@@ -288,25 +285,22 @@
                 android:text="링크"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/font_big3"
-                app:layout_constraintBottom_toBottomOf="@+id/detail_link_iv"
                 app:layout_constraintStart_toEndOf="@+id/detail_link_iv"
-                app:layout_constraintTop_toTopOf="@+id/detail_link_iv" />
+                app:layout_constraintTop_toTopOf="@+id/detail_homepage_content_tv" />
 
             <TextView
                 android:id="@+id/detail_homepage_content_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_big4"
-                android:layout_marginEnd="@dimen/margin_basic"
+                android:layout_marginTop="@dimen/margin_big4"
                 android:autoLink="web"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="링크 url"
                 android:textColor="@color/text_secondary"
                 android:textSize="@dimen/font_small1"
-                app:layout_constraintBottom_toBottomOf="@+id/detail_homepage_tv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/detail_homepage_tv"
-                app:layout_constraintTop_toTopOf="@+id/detail_homepage_tv" />
+                app:layout_constraintEnd_toEndOf="@+id/detail_call_content_tv"
+                app:layout_constraintStart_toStartOf="@+id/detail_call_content_tv"
+                app:layout_constraintTop_toBottomOf="@+id/detail_call_content_tv"/>
 
             <TextView
                 android:id="@+id/detail_service_title_tv"

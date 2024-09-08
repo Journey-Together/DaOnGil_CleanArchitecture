@@ -8,6 +8,6 @@ data class ListSearchResult (
 
 data class ListSearchResultList(
     val places: List<ListSearchResult>,
-    val isLastPage: Boolean = false,
+    val isLastPage: Boolean,
     val itemSize: Int
 )

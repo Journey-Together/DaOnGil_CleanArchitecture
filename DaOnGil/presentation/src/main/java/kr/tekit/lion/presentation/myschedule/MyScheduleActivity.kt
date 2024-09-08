@@ -1,7 +1,9 @@
 package kr.tekit.lion.presentation.myschedule
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
@@ -10,7 +12,11 @@ import kr.tekit.lion.presentation.myschedule.adapter.MyScheduleElapsedAdapter
 import kr.tekit.lion.presentation.myschedule.adapter.MyScheduleUpcomingAdapter
 import kr.tekit.lion.presentation.databinding.ActivityMyScheduleBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.myschedule.vm.MyScheduleViewModel
+import kr.tekit.lion.presentation.schedule.ResultCode
+import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
+import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
 
 @AndroidEntryPoint
 class MyScheduleActivity : AppCompatActivity() {
@@ -20,22 +26,22 @@ class MyScheduleActivity : AppCompatActivity() {
         ActivityMyScheduleBinding.inflate(layoutInflater)
     }
 
-//    private val scheduleLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            viewModel.getMyUpcomingScheduleList(0)
-//            viewModel.getMyElapsedScheduleList(0)
-//            when (result.resultCode) {
-//                ResultCode.RESULT_REVIEW_WRITE -> {
-//                    binding.root.showSnackbar("후기가 저장되었습니다")
-//                }
-//            }
-//        }
+    private val scheduleLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            viewModel.getMyUpcomingScheduleList(0)
+            viewModel.getMyElapsedScheduleList(0)
+            when (result.resultCode) {
+                ResultCode.RESULT_REVIEW_WRITE -> {
+                    binding.root.showSnackbar("후기가 저장되었습니다")
+                }
+            }
+        }
 
     private val upcomingAdapter by lazy {
         MyScheduleUpcomingAdapter { planPosition ->
             val planId = viewModel.getUpcomingPlanId(planPosition)
             if (planId != -1L) {
-//                navigateToScheduleDetailActivity(planId)
+                navigateToScheduleDetailActivity(planId)
             }
         }
     }
@@ -45,15 +51,15 @@ class MyScheduleActivity : AppCompatActivity() {
             onReviewButtonClicked = { planPosition ->
                 val planId = viewModel.getElapsedPlanId(planPosition)
                 if (planId != -1L) {
-//                    val intent = Intent(this, WriteScheduleReviewActivity::class.java)
-//                    intent.putExtra("planId", planId)
-//                    scheduleLauncher.launch(intent)
+                    val intent = Intent(this, WriteScheduleReviewActivity::class.java)
+                    intent.putExtra("planId", planId)
+                    scheduleLauncher.launch(intent)
                 }
             },
             onScheduleItemClicked = { planPosition ->
                 val planId = viewModel.getElapsedPlanId(planPosition)
                 if (planId != -1L) {
-//                    navigateToScheduleDetailActivity(planId)
+                    navigateToScheduleDetailActivity(planId)
                 }
             }
         )
@@ -147,10 +153,10 @@ class MyScheduleActivity : AppCompatActivity() {
         binding.recyclerViewMyScheduleList.visibility = View.GONE
     }
 
-//    private fun navigateToScheduleDetailActivity(planId: Long) {
-//        val intent = Intent(this, ScheduleDetailActivity::class.java)
-//        intent.putExtra("planId", planId)
-//        scheduleLauncher.launch(intent)
-//    }
+    private fun navigateToScheduleDetailActivity(planId: Long) {
+        val intent = Intent(this, ScheduleDetailActivity::class.java)
+        intent.putExtra("planId", planId)
+        scheduleLauncher.launch(intent)
+    }
 
 }

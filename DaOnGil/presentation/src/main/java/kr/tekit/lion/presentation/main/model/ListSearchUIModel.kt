@@ -27,12 +27,12 @@ data class NoPlaceModel(
 ) : ListSearchUIModel()
 
 data class PlaceModel(
-    val placeName: String = "",
-    val placeAddr: String = "",
-    val placeId: String = "",
+    val placeName: String,
+    val placeAddr: String,
+    val placeId: Long,
     val placeImg: String = "",
     val disability: List<String> = emptyList(),
-    val itemCount: Int = 0
+    val itemCount: Int
 ) : ListSearchUIModel()
 
 fun ListSearchResultList.toUiModel(): List<PlaceModel> =
@@ -40,7 +40,7 @@ fun ListSearchResultList.toUiModel(): List<PlaceModel> =
         PlaceModel(
             placeName = it.place.name,
             placeAddr = it.place.address,
-            placeId = it.place.placeId.toString(),
+            placeId = it.place.placeId,
             placeImg = it.place.image,
             disability = it.place.disability,
             itemCount = itemSize

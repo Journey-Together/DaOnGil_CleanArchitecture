@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.myreview.fragment
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -13,6 +14,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentMyReviewBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.home.ReviewListActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.myreview.adapter.MyReviewRVAdapter
 import kr.tekit.lion.presentation.myreview.vm.MyReviewViewModel
@@ -51,23 +53,25 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
                     myPlaceReview,
                     myPlaceReview.myPlaceReviewInfoList,
                     onMoveReviewListClick = { reviewPlaceId ->
-//                        val intent = Intent(requireContext(), ReviewListActivity::class.java)
-//                        intent.putExtra("reviewPlaceId", reviewPlaceId)
-//                        startActivity(intent)
+                        val intent = Intent(requireContext(), ReviewListActivity::class.java)
+                        intent.putExtra("reviewPlaceId", reviewPlaceId)
+                        startActivity(intent)
                     },
                     onModifyClick = { myPlaceReviewInfo ->
                         viewModel.setReviewData(myPlaceReviewInfo)
                         findNavController().navigate(R.id.action_myReviewFragment_to_myReviewModifyFragment)
                     },
                     onDeleteClick = { reviewId ->
-                        ConfirmDialog(
+                        val deleteDialog = ConfirmDialog(
                             "여행지 후기 삭제",
                             "삭제한 데이터는 되돌릴 수 없습니다.",
                             "삭제하기"
                         ) {
                             viewModel.deleteMyPlaceReview(reviewId)
                             requireContext().showSnackbar(binding.root, "여행지 후기가 삭제되었습니다.")
-                        }.show(requireActivity().supportFragmentManager, "ConfirmDialogTag")
+                        }
+                        deleteDialog.isCancelable = false
+                        deleteDialog.show(requireActivity().supportFragmentManager, "ConfirmDialogTag")
                     }
                 )
 

@@ -3,9 +3,8 @@ package kr.tekit.lion.data.repository
 import kr.tekit.lion.domain.model.IceInfo
 import kr.tekit.lion.domain.model.MyInfo
 import kr.tekit.lion.data.datasource.MemberDataSource
-import kr.tekit.lion.data.dto.remote.request.toRequestBody
-import kr.tekit.lion.data.dto.request.toMultipartBody
 import kr.tekit.lion.data.dto.request.toRequestBody
+import kr.tekit.lion.data.dto.request.toMultipartBody
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.model.MyDefaultInfo
 import kr.tekit.lion.domain.model.PersonalInfo
