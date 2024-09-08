@@ -18,6 +18,8 @@ import kr.tekit.lion.domain.repository.BookmarkRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.ext.addDays
+import kr.tekit.lion.presentation.ext.calculateDaysUntilEndDate
 import kr.tekit.lion.presentation.ext.convertStringToDate
 import kr.tekit.lion.presentation.ext.formatDateValue
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
@@ -45,9 +47,6 @@ class ModifyScheduleFormViewModel @Inject constructor(
 
     private val _endDate = MutableLiveData<Date?>()
     val endDate: LiveData<Date?> get() = _endDate
-
-    // 기간이 한 번이라도 수정되었는지 확인하는 flag
-    val _isPeriodChanged = MutableLiveData<Boolean>(false)
 
     private val _title = MutableLiveData<String?>()
     val title: LiveData<String?> get() = _title
@@ -99,6 +98,10 @@ class ModifyScheduleFormViewModel @Inject constructor(
 
     fun isLastPage(): Boolean {
         return _placeSearchResult.value?.last ?: true
+    }
+
+    fun getScheduleTitle(): String {
+        return _title.value ?: ""
     }
 
     private fun getBookmarkedPlaceList(){
@@ -153,11 +156,106 @@ class ModifyScheduleFormViewModel @Inject constructor(
         return date.formatDateValue(pattern)
     }
 
-    fun formatPickedDates() : String {
+    fun formatPickedDates(pattern: String) : String {
         val startDateFormatted =
-            _startDate.value?.formatDateValue(FormDateFormat.YYYY_MM_DD_E)
+            _startDate.value?.formatDateValue(pattern)
         val endDateFormatted =
-            _endDate.value?.formatDateValue(FormDateFormat.YYYY_MM_DD_E)
+            _endDate.value?.formatDateValue(pattern)
         return "$startDateFormatted - $endDateFormatted"
+    }
+
+    fun refreshScheduleIfPeriodChanged(){
+        val originalStart = _originalSchedule.value?.startDate?.convertStringToDate()
+        val currentStart = _startDate.value
+
+        val originalEnd =_originalSchedule.value?.endDate?.convertStringToDate()
+        val currentEnd =_endDate.value
+
+        val isStartDateChanged = originalStart==currentStart
+        val isEndDateChanged = originalEnd==currentEnd
+
+        // 수정되기 전 일정의 여행 기간과, 새로 선택한 날짜가 다른 경우
+        if(!isStartDateChanged || !isEndDateChanged){
+            if(currentStart != null && currentEnd != null) {
+                updateScheduleList(currentStart, currentEnd)
+            }
+        }
+    }
+
+    private fun createScheduleList(startDate: Date, endDate: Date): MutableList<DailySchedule> {
+        val days = startDate.calculateDaysUntilEndDate(endDate)
+
+        val schedule = mutableListOf<DailySchedule>()
+        for (day in 0..days) {
+            val dateInfo = startDate.addDays(day, FormDateFormat.M_D_E)
+            // 0일차가 아닌 1일차부터 표기하기 위해 day+1
+            schedule.add(DailySchedule(day + 1, dateInfo, mutableListOf<FormPlace>()))
+        }
+        return schedule
+    }
+
+    private fun updateScheduleList(startDate: Date, endDate: Date) {
+        val updatedSchedule = createScheduleList(startDate, endDate)
+        val currentSchedule = _schedule.value ?: emptyList()
+
+        val currentSize = _schedule.value?.size ?: 0
+        val newSize = updatedSchedule.size
+
+        // 기존에 추가한 여행지 목록을 새 일정에 복제
+        for (index in 0 until minOf(currentSize, newSize)) {
+            val existingPlaces = currentSchedule[index].dailyPlaces
+            if (existingPlaces.isEmpty()) continue
+            updatedSchedule[index] = updatedSchedule[index].copy(
+                dailyPlaces = (existingPlaces)
+            )
+        }
+
+        // 일정이 짧아진 경우, 마지막 날에 남은 여행지들을 추가해준다.
+        if (newSize < currentSize) {
+            for (i in newSize until currentSize) {
+                val existingPlaces = currentSchedule[i].dailyPlaces
+                if (existingPlaces.isEmpty()) continue
+                updatedSchedule[newSize - 1] = updatedSchedule[newSize - 1].copy(
+                    dailyPlaces = (updatedSchedule[newSize - 1].dailyPlaces + existingPlaces).distinct()
+                )
+            }
+        }
+
+        _schedule.value = updatedSchedule.toList()
+    }
+
+    private fun addNewPlace(newPlace: FormPlace, dayPosition: Int) {
+        // 업데이트 될 기존 데이터
+        val updatedSchedule = _schedule.value?.toMutableList()
+        val daySchedule = updatedSchedule?.get(dayPosition)
+
+        if (daySchedule != null) {
+            // 업데이트할 날짜의 장소 목록
+            val updatedPlaces = daySchedule.dailyPlaces.toMutableList()
+            // 검색 결과에서 선택한 장소 정보를 추가
+            updatedPlaces.add(newPlace)
+            // copy = 일부 속성만 변경할 수 있게 해준다.
+            // 여기선 dailyPlaces 속성만 updatedPlaces 로 바꿔준다.
+            updatedSchedule[dayPosition] = daySchedule.copy(dailyPlaces = updatedPlaces)
+            // 데이터 갱신
+            _schedule.value = updatedSchedule
+        }
+    }
+
+    fun removePlace(dayPosition: Int, placePosition: Int) {
+        // 하나의 장소를 삭제할 예정인 기존 데이터
+        val removedSchedule = _schedule.value?.toMutableList()
+        val daySchedule = removedSchedule?.get(dayPosition)
+
+        if (daySchedule != null) {
+            // 하나의 장소를 삭제할 날짜의 장소 목록
+            val removedPlaces = daySchedule.dailyPlaces.toMutableList()
+            // 선택된 장소 정보를 List에서 제거
+            removedPlaces.removeAt(placePosition)
+            // 수정된 데이터를 반영해준다.
+            removedSchedule[dayPosition] = daySchedule.copy(dailyPlaces = removedPlaces)
+            // 데이터 갱신
+            _schedule.value = removedSchedule
+        }
     }
 }
