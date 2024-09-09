@@ -19,8 +19,7 @@ internal data class MyUpcomingsResponse(
                     startDate = it.startDate,
                     endDate = it.endDate,
                     imageUrl = it.imageUrl ?: "",
-                    //remainDate = it.remainDate
-                    remainDate = "D-1"
+                    remainDate = it.remainDate
                 )
             },
             last = data.last

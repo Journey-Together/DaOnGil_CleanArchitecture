@@ -9,5 +9,5 @@ internal data class PlanRes(
     val startDate: String,
     val endDate: String,
     val imageUrl: String?,
-    // val remainDate: String,
+     val remainDate: String,
 )
