@@ -29,6 +29,8 @@ class ConcernTypeViewModel @Inject constructor(
     private val _concernType = MutableLiveData<ConcernType>()
     val concernType: LiveData<ConcernType> = _concernType
 
+    val networkState get() = networkErrorDelegate.networkState
+
     init {
         val userNickName = savedStateHandle.get<String>("nickName") ?: ""
         _nickName.value = userNickName
@@ -39,6 +41,7 @@ class ConcernTypeViewModel @Inject constructor(
     private fun getConcernType() = viewModelScope.launch {
         memberRepository.getConcernType().onSuccess {
             _concernType.value = it
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
