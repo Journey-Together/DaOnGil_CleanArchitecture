@@ -28,8 +28,11 @@ class MyScheduleActivity : AppCompatActivity() {
 
     private val scheduleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            viewModel.getMyUpcomingScheduleList(0)
-            viewModel.getMyElapsedScheduleList(0)
+            if(result.resultCode == RESULT_CANCELED) return@registerForActivityResult
+
+            // 일정 목록 갱신
+            viewModel.refreshScheduleList()
+
             when (result.resultCode) {
                 ResultCode.RESULT_REVIEW_WRITE -> {
                     binding.root.showSnackbar("후기가 저장되었습니다")
