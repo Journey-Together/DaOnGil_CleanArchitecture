@@ -33,7 +33,6 @@ import kr.tekit.lion.presentation.schedule.customview.ScheduleManageBottomSheet
 import kr.tekit.lion.presentation.schedule.customview.ScheduleReviewManageBottomSheet
 import kr.tekit.lion.presentation.schedule.vm.ScheduleDetailViewModel
 import kr.tekit.lion.presentation.scheduleform.ModifyScheduleFormActivity
-import kr.tekit.lion.presentation.scheduleform.model.toOriginalScheduleInfo
 import kr.tekit.lion.presentation.schedulereview.ModifyScheduleReviewActivity
 import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
@@ -405,8 +404,8 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 finish()
             },
             onScheduleEditClickListener = {
-                // 일정 수정할 때 필요한 정보만 분리
-                val scheduleInfo = viewModel.scheduleDetail.value?.toOriginalScheduleInfo(planId)
+                // 일정 수정할 때 필요한 정보만 분리 (ViewModel에서 데이터 처리)
+                val scheduleInfo = viewModel.selectDataForModification(planId)
 
                 val newIntent =
                     Intent(this@ScheduleDetailActivity, ModifyScheduleFormActivity::class.java)
