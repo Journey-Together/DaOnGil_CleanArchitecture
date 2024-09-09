@@ -3,15 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_navigation_graph"
-    app:startDestination="@id/onBoardingFragment">
-    <fragment
-        android:id="@+id/onBoardingFragment"
-        android:name="kr.tekit.lion.presentation.login.fragment.OnBoardingFragment"
-        android:label="OnBoardingFragment" >
-        <action
-            android:id="@+id/to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+    app:startDestination="@id/loginFragment">
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="kr.tekit.lion.presentation.login.fragment.LoginFragment"

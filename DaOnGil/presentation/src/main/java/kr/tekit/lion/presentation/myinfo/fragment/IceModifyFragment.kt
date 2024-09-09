@@ -2,6 +2,7 @@ package kr.tekit.lion.presentation.myinfo.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -58,6 +59,7 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                     viewModel.onCompleteModifyIce(
                         IceInfo(
                             birth = tvBirth.text.toString(),
+                            bloodType = tvBloodType.text.toString(),
                             disease = tvDisease.text.toString(),
                             allergy = tvAllergy.text.toString(),
                             medication = tvMedicine.text.toString(),

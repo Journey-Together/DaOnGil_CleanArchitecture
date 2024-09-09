@@ -15,7 +15,7 @@ import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
-import kr.tekit.lion.presentation.myinfo.model.ModifyState
+import kr.tekit.lion.presentation.myinfo.model.ImgModifyState
 import kr.tekit.lion.presentation.myinfo.model.UserProfileImg
 import javax.inject.Inject
 
@@ -27,10 +27,9 @@ class MyInfoViewModel @Inject constructor(
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
-    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
-    val networkState: StateFlow<NetworkState?> get() = networkErrorDelegate.networkState
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
-    private val _modifyState = MutableStateFlow(ModifyState.ImgUnSelected)
+    private val _modifyState = MutableStateFlow(ImgModifyState.ImgUnSelected)
     val modifyState = _modifyState.asStateFlow()
 
     private val _myPersonalInfo = MutableStateFlow(PersonalInfo())
@@ -63,16 +62,16 @@ class MyInfoViewModel @Inject constructor(
             _profileImg.update { it.copy(imagePath = myInfo.profileImage ?: "") }
 
             _iceInfo.value = IceInfo(
-                    bloodType = myInfo.bloodType ?: "",
-                    birth = myInfo.birth ?: "",
-                    disease = myInfo.disease ?: "",
-                    allergy = myInfo.allergy ?: "",
-                    medication = myInfo.medication ?: "",
-                    part1Rel = myInfo.part1Rel ?: "",
-                    part1Phone = myInfo.part1Phone ?: "",
-                    part2Rel = myInfo.part2Rel ?: "",
-                    part2Phone = myInfo.part2Phone ?: ""
-                )
+                bloodType = myInfo.bloodType ?: "",
+                birth = myInfo.birth ?: "",
+                disease = myInfo.disease ?: "",
+                allergy = myInfo.allergy ?: "",
+                medication = myInfo.medication ?: "",
+                part1Rel = myInfo.part1Rel ?: "",
+                part1Phone = myInfo.part1Phone ?: "",
+                part2Rel = myInfo.part2Rel ?: "",
+                part2Phone = myInfo.part2Phone ?: ""
+            )
             networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
@@ -108,6 +107,7 @@ class MyInfoViewModel @Inject constructor(
         _iceInfo.update {
             it.copy(
                 birth = newIceInfo.birth,
+                bloodType = newIceInfo.bloodType,
                 disease = newIceInfo.disease,
                 allergy = newIceInfo.allergy,
                 medication = newIceInfo.medication,
@@ -124,15 +124,11 @@ class MyInfoViewModel @Inject constructor(
         }
     }
 
-    fun onSelectBloodType(bloodType: String) {
-        _iceInfo.update { it.copy(bloodType = bloodType) }
-    }
-
     fun onSelectProfileImage(imgUrl: String?) {
         imgUrl?.let { _profileImg.update { it.copy(imagePath = imgUrl) } }
     }
 
     fun modifyStateChange() {
-        _modifyState.value = ModifyState.ImgSelected
+        _modifyState.value = ImgModifyState.ImgSelected
     }
 }

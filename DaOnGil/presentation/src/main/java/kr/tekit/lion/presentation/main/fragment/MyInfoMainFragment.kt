@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.main.fragment
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -64,7 +63,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                     )
                 }
             }
-        }else{
+        } else {
             binding.readScriptBtn.visibility = View.GONE
             binding.readScriptBtn.setOnClickListener(null)
         }
@@ -73,7 +72,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             supervisorScope {
                 launch { handleLoginState(binding, isTalkbackEnabled, textToAnnounce) }
                 launch { handleNetworkState(binding) }
-                launch { handleErrorMessage(binding, isTalkbackEnabled) }
             }
         }
     }
@@ -90,6 +88,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                     setUiLoggedInState(binding)
                     collectMyInfo(binding, isTalkbackEnabled, talkbackText)
                 }
+
                 is LogInState.LoginRequired -> {
                     setUiLoginRequiredState(binding)
                     if (isTalkbackEnabled) {
@@ -110,54 +109,52 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             viewModel.onStateLoggedIn()
         }
         viewModel.myInfo.collect { myInfo ->
-                with(binding) {
-                    val name = "${myInfo.name}님"
-                    val review = "${tvReview.text} ${myInfo.reviewNum}개"
-                    val registeredData = "${myInfo.date + 1}일째"
+            with(binding) {
+                val name = "${myInfo.name}님"
+                val review = "${tvReview.text} ${myInfo.reviewNum}개"
+                val registeredData = "${myInfo.date + 1}일째"
 
-                    tvNameOrLogin.text = name
-                    tvReviewCnt.text = myInfo.reviewNum.toString()
-                    tvRegisteredData.visibility = View.VISIBLE
-                    tvRegisteredData.text = registeredData
+                tvNameOrLogin.text = name
+                tvReviewCnt.text = myInfo.reviewNum.toString()
+                tvRegisteredData.visibility = View.VISIBLE
+                tvRegisteredData.text = registeredData
 
-                    Glide.with(imgProfile.context)
-                        .load(myInfo.profileImg)
-                        .fallback(R.drawable.default_profile)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(imgProfile)
+                Glide.with(imgProfile.context)
+                    .load(myInfo.profileImg)
+                    .fallback(R.drawable.default_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(imgProfile)
 
-                    if (isTalkbackEnabled) {
-                        talkbackText
-                            .append(name)
-                            .append(review)
-                            .append("${textViewMyInfoMainRegister.text} $registeredData")
-                            .append(getString(R.string.text_script_read_all_text))
+                if (isTalkbackEnabled) {
+                    talkbackText
+                        .append(name)
+                        .append(review)
+                        .append("${textViewMyInfoMainRegister.text} $registeredData")
+                        .append(getString(R.string.text_script_read_all_text))
 
-                        requireContext().announceForAccessibility(talkbackText.toString())
+                    requireContext().announceForAccessibility(talkbackText.toString())
 
-                        tvNameOrLogin.setAccessibilityText(name)
-                        tvReview.setAccessibilityText(review)
-                        textViewMyInfoMainRegister.setAccessibilityText(
-                            "${textViewMyInfoMainRegister.text} $registeredData"
-                        )
-                    }
+                    tvNameOrLogin.setAccessibilityText(name)
+                    tvReview.setAccessibilityText(review)
+                    textViewMyInfoMainRegister.setAccessibilityText(
+                        "${textViewMyInfoMainRegister.text} $registeredData"
+                    )
                 }
-            }
-    }
-
-    private suspend fun handleNetworkState(binding: FragmentMyInfoMainBinding){
-        viewModel.networkState.collect {
-            if (it == NetworkState.Success){
-                stopShimmer(binding)
             }
         }
     }
 
-    private suspend fun handleErrorMessage(binding: FragmentMyInfoMainBinding, isTalkbackEnabled: Boolean){
-        viewModel.errorMessage.collect {
-            if (it != null) {
-                showErrorPage(binding, it, isTalkbackEnabled)
+    private suspend fun handleNetworkState(binding: FragmentMyInfoMainBinding) {
+        viewModel.networkState.collect {
+            when(it){
+                NetworkState.Loading -> startShimmer(binding)
+                NetworkState.Success -> {
+                    stopShimmer(binding)
+                    binding.errorContainer.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
+                }
+                is NetworkState.Error -> showErrorPage(binding, it.msg)
             }
         }
     }
@@ -170,22 +167,26 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private fun stopShimmer(binding: FragmentMyInfoMainBinding) {
-        with(binding){
+        with(binding) {
             shimmerFrameLayout.stopShimmer()
             shimmerFrameLayout.visibility = View.GONE
             mainContainer.visibility = View.VISIBLE
         }
     }
 
-    private fun showErrorPage(binding: FragmentMyInfoMainBinding, msg: String, isTalkbackEnabled: Boolean) {
+    private fun showErrorPage(
+        binding: FragmentMyInfoMainBinding,
+        msg: String,
+    ) {
         with(binding) {
             errorContainer.visibility = View.VISIBLE
             mainContainer.visibility = View.GONE
             shimmerFrameLayout.visibility = View.GONE
             shimmerFrameLayout.stopShimmer()
+            progressBar.visibility = View.GONE
             textMsg.text = msg
 
-            if (isTalkbackEnabled){
+            if (requireContext().isTallBackEnabled()) {
                 requireActivity().announceForAccessibility(msg)
             }
         }
@@ -272,7 +273,18 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         Snackbar.make(requireView(), "로그아웃", Snackbar.LENGTH_SHORT).show()
     }
 
-    companion object{
+    companion object {
         const val MODIFY_RESULT_CODE = 10001
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.networkState.value is NetworkState.Error){
+            if(viewModel.loginState.value is LogInState.LoggedIn) {
+                repeatOnViewStarted {
+                    viewModel.onStateLoggedIn()
+                }
+            }
+        }
     }
 }

@@ -64,7 +64,6 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
     val networkState get() = networkErrorDelegate.networkState
 
     private val _uiState: MutableStateFlow<List<ListSearchUIModel>> = MutableStateFlow(

@@ -32,6 +32,7 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerFrameLayout"
         android:layout_width="match_parent"
@@ -574,6 +575,17 @@
         android:visibility="gone"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/img_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_basic"
+            android:src="@drawable/onboarding_clover"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_msg" />
+
         <TextView
             android:id="@+id/text_msg"
             android:layout_width="wrap_content"
@@ -585,17 +597,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/img_no_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_basic"
-            android:src="@drawable/img_no_search_result"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_msg" />
 
     </LinearLayout>
 </LinearLayout>
