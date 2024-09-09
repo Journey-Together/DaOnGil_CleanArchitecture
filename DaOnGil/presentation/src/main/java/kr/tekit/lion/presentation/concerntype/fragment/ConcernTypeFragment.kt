@@ -26,14 +26,32 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
         val binding = FragmentConcernTypeBinding.bind(view)
 
-        repeatOnViewStarted {
-            viewModel.networkState.collect { networkState ->
-                when (networkState) {
-                    is NetworkState.Loading -> {
-                        binding.concernTypeProgressBar.visibility = View.VISIBLE
+        with(binding) {
+            repeatOnViewStarted {
+                launch {
+                    viewModel.networkState.collect { networkState ->
+                        when (networkState) {
+                            is NetworkState.Loading -> {
+                                concernTypeProgressBar.visibility = View.VISIBLE
+                            }
+                            is NetworkState.Success -> {
+                                concernTypeProgressBar.visibility = View.GONE
+                            }
+                        }
                     }
-                    is NetworkState.Success -> {
-                        binding.concernTypeProgressBar.visibility = View.GONE
+                }
+
+                launch {
+                    viewModel.errorMessage.collect { msg ->
+                        concernTypeProgressBar.visibility = View.GONE
+
+                        if (msg != null) {
+                            concernTypeLayout.visibility = View.GONE
+                            concernTypeDivider.visibility = View.GONE
+                            concernTypeModifyLayout.visibility = View.GONE
+                            concernTypeErrorLayout.visibility = View.VISIBLE
+                            concernTypeErrorMsg.text = msg
+                        }
                     }
                 }
             }
