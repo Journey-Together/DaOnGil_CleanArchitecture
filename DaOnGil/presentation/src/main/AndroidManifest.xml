@@ -74,8 +74,11 @@
             android:name=".main.MainActivity"
             android:exported="false" />
         <activity
+            android:name=".login.OnBoardingActivity"
+            android:exported="false"/>
+        <activity
             android:name=".keyword.KeywordSearchActivity"
-            android:exported="false"></activity>
+            android:exported="false"/>
     </application>
 
 </manifest>
