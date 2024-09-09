@@ -198,6 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_big4"
+            android:lineSpacingMultiplier="1.2"
             android:fontFamily="@font/cafe24_oneprettynight"
             android:gravity="center"
             android:text="TextView"
