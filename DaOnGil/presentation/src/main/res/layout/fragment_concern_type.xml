@@ -28,7 +28,7 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/concernTypeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -139,16 +139,17 @@
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider"
+        android:id="@+id/concernTypeDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_big4"
         app:dividerColor="@color/text_tertiary"
         app:dividerThickness="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/concernTypeLayout" />
 
     <LinearLayout
+        android:id="@+id/concernTypeModifyLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_big4"
@@ -156,7 +157,7 @@
         android:padding="@dimen/margin_basic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider">
+        app:layout_constraintTop_toBottomOf="@+id/concernTypeDivider">
 
         <TextView
             android:layout_width="match_parent"
@@ -174,6 +175,33 @@
             android:fontFamily="@font/pretendard_bold"
             android:text="관심 유형 수정하기"
             android:textSize="@dimen/font_big2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/concernTypeErrorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarConcernType">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/onboarding_clover" />
+
+        <TextView
+            android:id="@+id/concernTypeErrorMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big4"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="@dimen/font_big1" />
     </LinearLayout>
 
     <ProgressBar
