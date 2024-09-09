@@ -11,7 +11,6 @@ import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.hasAnyTrue
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.MemberRepository
-import kr.tekit.lion.domain.usecase.areacode.InitAreaCodeInfoUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
@@ -19,7 +18,6 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val memberRepository: MemberRepository,
-    private val initAreaCodeInfoUseCase: InitAreaCodeInfoUseCase,
 ) : ViewModel() {
 
     @Inject
@@ -27,7 +25,6 @@ class LoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            initAreaCodeInfoUseCase()
             checkIsFirstUser()
         }
     }

@@ -7,7 +7,6 @@ import kr.tekit.lion.domain.exception.AuthenticationError
 import kr.tekit.lion.domain.exception.AuthorizationError
 import kr.tekit.lion.domain.exception.BadRequestError
 import kr.tekit.lion.domain.exception.ConnectError
-import kr.tekit.lion.domain.exception.CustomNetworkError
 import kr.tekit.lion.domain.exception.HttpException
 import kr.tekit.lion.domain.exception.NetworkError
 import kr.tekit.lion.domain.exception.NotFoundError
