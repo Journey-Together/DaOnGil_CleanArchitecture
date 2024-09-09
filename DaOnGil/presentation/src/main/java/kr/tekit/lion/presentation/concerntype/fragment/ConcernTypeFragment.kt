@@ -5,12 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.concerntype.vm.ConcernTypeViewModel
 import kr.tekit.lion.presentation.databinding.FragmentConcernTypeBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 
 @AndroidEntryPoint
 class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
@@ -21,6 +25,19 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentConcernTypeBinding.bind(view)
+
+        repeatOnViewStarted {
+            viewModel.networkState.collect { networkState ->
+                when (networkState) {
+                    is NetworkState.Loading -> {
+                        binding.concernTypeProgressBar.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Success -> {
+                        binding.concernTypeProgressBar.visibility = View.GONE
+                    }
+                }
+            }
+        }
 
         settingToolbar(binding)
         observeNickname(binding)
