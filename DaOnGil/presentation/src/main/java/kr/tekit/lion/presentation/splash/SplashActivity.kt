@@ -2,17 +2,15 @@ package kr.tekit.lion.presentation.splash
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivitySplashBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
-import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.login.OnBoardingActivity
 import kr.tekit.lion.presentation.main.MainActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
@@ -63,7 +61,7 @@ class SplashActivity : AppCompatActivity() {
 
             repeatOnStarted {
                 viewModel.userActivationState.collect {
-                    delay(4000)
+                    delay(2700)
                     if (it) {
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                         finish()
