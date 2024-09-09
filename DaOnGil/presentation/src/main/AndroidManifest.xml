@@ -11,6 +11,9 @@
             android:name=".scheduleform.ModifyScheduleFormActivity"
             android:exported="false" />
         <activity
+            android:name=".schedule.PublicScheduleActivity"
+            android:exported="false" />
+        <activity   
             android:name=".schedulereview.ModifyScheduleReviewActivity"
             android:exported="false" />
         <activity

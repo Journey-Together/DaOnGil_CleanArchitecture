@@ -1,15 +1,12 @@
 package kr.tekit.lion.presentation.myreview.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import dagger.hilt.android.internal.managers.ViewComponentManager
-import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemReviewBigImageBinding
-import kr.tekit.lion.presentation.ext.setImage
+import kr.tekit.lion.presentation.ext.setImageSmall
 import kr.tekit.lion.presentation.ext.showPhotoDialog
 
 class MyReviewImageRVAdapter(private val imageList: List<String>) :
@@ -34,7 +31,7 @@ class MyReviewImageRVAdapter(private val imageList: List<String>) :
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(image: String, imageList: List<String>, position: Int) {
 
-            binding.root.context.setImage(binding.reviewImage, image)
+            binding.root.context.setImageSmall(binding.reviewImage, image)
 
             binding.reviewImage.setOnClickListener {
                 val context = binding.root.context

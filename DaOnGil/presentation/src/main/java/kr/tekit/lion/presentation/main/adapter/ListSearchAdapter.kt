@@ -41,7 +41,7 @@ class ListSearchAdapter(
     private val onClickElderlyPeople: (ElderlyPeople) -> Unit,
     private val onSelectArea: (String) -> Unit,
     private val onSelectSigungu: (String) -> Unit,
-    private val onSelectPlace: (String) -> Unit
+    private val onSelectPlace: (Long) -> Unit
 ) : ListAdapter<ListSearchUIModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     override fun getItemViewType(position: Int): Int {

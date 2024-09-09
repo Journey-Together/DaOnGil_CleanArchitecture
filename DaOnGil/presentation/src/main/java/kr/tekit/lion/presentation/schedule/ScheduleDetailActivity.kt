@@ -18,17 +18,17 @@ import kr.tekit.lion.domain.model.ScheduleDetail
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityScheduleDetailBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
-import kr.tekit.lion.presentation.ext.setImage
+import kr.tekit.lion.presentation.ext.setImageSmall
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.report.ReportActivity
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_EDIT
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_WRITE
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_SCHEDULE_EDIT
 import kr.tekit.lion.presentation.schedule.adapter.ScheduleImageViewPagerAdapter
 import kr.tekit.lion.presentation.schedule.adapter.ScheduleListAdapter
-import kr.tekit.lion.presentation.schedule.customview.ReviewReportDialog
 import kr.tekit.lion.presentation.schedule.customview.ScheduleManageBottomSheet
 import kr.tekit.lion.presentation.schedule.customview.ScheduleReviewManageBottomSheet
 import kr.tekit.lion.presentation.schedule.vm.ScheduleDetailViewModel
@@ -60,6 +60,14 @@ class ScheduleDetailActivity : AppCompatActivity() {
             }
             RESULT_REVIEW_EDIT -> {
                 binding.root.showSnackbar("리뷰가 수정되었습니다")
+            }
+        }
+    }
+
+    private val reportLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        when(result.resultCode){
+            RESULT_OK -> {
+                binding.root.showSnackbar("신고가 완료되었습니다")
             }
         }
     }
@@ -118,7 +126,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
                         cardViewScheduleReview.visibility = View.VISIBLE
                         cardViewScheduleEmptyReview.visibility = View.GONE
-                        this@ScheduleDetailActivity.setImage(ivProfileImage, scheduleDetail.profileUrl)
+                        this@ScheduleDetailActivity.setImageSmall(ivProfileImage, scheduleDetail.profileUrl)
                         textNickname.text = scheduleDetail.nickname
                         ratingBarScheduleSatisfaction.rating = scheduleDetail.grade?.toFloat() ?: 0F
                         textViewScheduleReviewContent.text = scheduleDetail.content
@@ -127,31 +135,31 @@ class ScheduleDetailActivity : AppCompatActivity() {
                             when (reviewImages.size) {
                                 1 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
                                 }
                                 2 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
                                     scheduleReviewImg2.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
                                 }
                                 3 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
                                     scheduleReviewImg2.visibility = View.VISIBLE
                                     scheduleReviewImg3.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg3, reviewImages[2])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
                                 }
                                 4 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
                                     scheduleReviewImg2.visibility = View.VISIBLE
                                     scheduleReviewImg3.visibility = View.VISIBLE
                                     scheduleReviewImg4.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg3, reviewImages[2])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg4, reviewImages[3])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
                                 }
                                 5 -> {
                                     scheduleReviewImg1.visibility = View.VISIBLE
@@ -159,11 +167,11 @@ class ScheduleDetailActivity : AppCompatActivity() {
                                     scheduleReviewImg3.visibility = View.VISIBLE
                                     scheduleReviewImg4.visibility = View.VISIBLE
                                     scheduleReviewImg5.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg3, reviewImages[2])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg4, reviewImages[3])
-                                    this@ScheduleDetailActivity.setImage(scheduleReviewImg5, reviewImages[4])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
+                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg5, reviewImages[4])
                                 }
                             }
                         }
@@ -342,13 +350,11 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 visibility = View.VISIBLE
                 setOnClickListener {
                     if (isUser) {
-                        val reviewReportDialog = ReviewReportDialog { reasonType ->
-                            // TO DO -> 서버에 신고 내용 접수
-                            // 리뷰 idx : scheduleDetail.reviewIdx. 신고 사유: reasonType (Int/String)
-                            binding.toolbarViewSchedule.showSnackbar(getString(R.string.text_report_submitted))
-                        }
-                        reviewReportDialog.isCancelable = false
-                        reviewReportDialog.show(supportFragmentManager, "ModeSettingDialog")
+                        val newIntent = Intent(
+                            this@ScheduleDetailActivity,
+                            ReportActivity::class.java
+                        )
+                        reportLauncher.launch(newIntent)
                     } else {
                         displayLoginDialog("여행 후기를 신고하고 싶다면\n로그인을 진행해주세요")
                     }

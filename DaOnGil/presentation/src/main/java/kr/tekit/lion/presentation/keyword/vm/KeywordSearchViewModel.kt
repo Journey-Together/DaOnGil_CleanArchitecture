@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.NetworkError
 import kr.tekit.lion.domain.model.search.RecentlySearchKeyword
+import kr.tekit.lion.domain.model.search.RecentlySearchKeywordList
+import kr.tekit.lion.domain.model.search.findKeyword
 import kr.tekit.lion.domain.model.search.toRecentlySearchKeyword
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
@@ -44,7 +46,7 @@ class KeywordSearchViewModel @Inject constructor(
 
     val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
 
-    private val _recentlySearchKeyword = MutableStateFlow<List<RecentlySearchKeyword>>(emptyList())
+    private val _recentlySearchKeyword = MutableStateFlow(RecentlySearchKeywordList(emptyList()))
     val recentlySearchKeyword = _recentlySearchKeyword.asStateFlow()
 
     private val _keyword = MutableStateFlow("")
@@ -90,12 +92,12 @@ class KeywordSearchViewModel @Inject constructor(
     }
 
     fun insertKeyword(keyword: String, onSuccess: () -> Unit) = viewModelScope.launch(Dispatchers.IO) {
-        val existingKeyword = _recentlySearchKeyword.value.firstOrNull { it.keyword == keyword }
+        val existingKeyword = _recentlySearchKeyword.value.findKeyword(keyword)
         if (existingKeyword != null) {
             existingKeyword.id?.let { recentlySearchKeywordRepository.deleteKeyword(it) }
         }
         recentlySearchKeywordRepository.insertKeyword(keyword.toRecentlySearchKeyword())
-        onSuccess.invoke()
+        onSuccess()
     }
 
     fun deleteKeyword(id: Long) = viewModelScope.launch(Dispatchers.IO) {

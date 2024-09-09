@@ -42,6 +42,11 @@ class NetworkErrorDelegate @Inject constructor() {
 
     fun handleNetworkSuccess(){
         _networkState.value = NetworkState.Success
+        _errorMessage.value = null
+    }
+
+    fun handleNetworkLoading(){
+        _networkState.value = NetworkState.Loading
     }
 }
 

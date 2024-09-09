@@ -10,5 +10,5 @@ internal data class PlaceRes(
     val mapX: String,
     val mapY: String,
     val name: String,
-    val placeId: Int
+    val placeId: Long
 )

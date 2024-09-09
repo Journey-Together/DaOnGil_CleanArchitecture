@@ -16,9 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:paddingTop="@dimen/margin_big2"
-        android:paddingEnd="10dp">
+        android:layout_marginStart="@dimen/margin_small1"
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/textView"

@@ -40,9 +40,11 @@ class ReportActivity : AppCompatActivity() {
             buttonReport.setOnClickListener {
                 if (radioGroupReport.checkedRadioButtonId == R.id.radioButtonEtc) {
                     if (isFormValid()) {
+                        setResult(RESULT_OK)
                         finish()
                     }
                 } else {
+                    setResult(RESULT_OK)
                     finish()
                 }
             }
