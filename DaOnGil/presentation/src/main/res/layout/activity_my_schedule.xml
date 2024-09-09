@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".myschedule.MyScheduleActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbarMySchedule"
+        android:id="@+id/toolbar_my_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_color"
         android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/back_icon">
 
         <TextView
@@ -25,12 +28,14 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutMySchedule"
+        android:id="@+id/tab_layout_my_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_basic"
         android:layout_marginTop="@dimen/margin_small1"
         android:backgroundTint="@color/background_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_my_schedule"
         app:tabGravity="start"
         app:tabIndicatorFullWidth="true"
         app:tabSelectedTextColor="@color/text_primary"
@@ -49,24 +54,30 @@
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMyScheduleList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/recycler_view_my_schedule_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingTop="@dimen/margin_big3"
         android:paddingBottom="@dimen/margin_big2"
         android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_layout_my_schedule" />
 
     <LinearLayout
-        android:id="@+id/layoutMyScheduleEmpty"
+        android:id="@+id/layout_my_schedule_empty"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_my_schedule_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_view_my_schedule_list">
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,13 +88,47 @@
             android:textSize="@dimen/font_big2" />
 
         <TextView
-            android:id="@+id/textViewMyScheduleAdd"
+            android:id="@+id/text_my_schedule_Add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="@dimen/margin_small1"
+            android:clickable="true"
+            android:contentDescription="@string/text_add_new_schedule"
+            android:focusable="true"
+            android:paddingHorizontal="@dimen/margin_basic"
+            android:paddingVertical="@dimen/margin_small1"
             android:text="@string/add_schedule"
             android:textColor="@color/text_quaternary"
             android:textSize="@dimen/font_small2" />
     </LinearLayout>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/text_my_schedule_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:gravity="center_horizontal"
+        android:lineSpacingMultiplier="1.5"
+        android:text="@string/result_empty"
+        android:textAlignment="center"
+        android:textSize="@dimen/font_big3"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/onboarding_clover"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_my_schedule" />
+
+    <ProgressBar
+        android:id="@+id/search_view_progressBar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:indeterminateDrawable="@drawable/rotate_progress_bar"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
