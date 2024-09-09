@@ -88,7 +88,7 @@ class ReviewListActivity : AppCompatActivity() {
         viewModel.placeReviewInfo.observe(this@ReviewListActivity) { placeReviewInfo ->
             binding.reviewListTitleTv.text = placeReviewInfo.placeName
             binding.reviewListAddressTv.text = placeReviewInfo.placeAddress
-            binding.reviewListCount2Tv.text = placeReviewInfo.placeReviewList.size.toString()
+            binding.reviewListCount2Tv.text = placeReviewInfo.reviewNum.toString()
 
             Glide.with(binding.reviewListThumbnailIv)
                 .load(placeReviewInfo.placeImg)
@@ -111,7 +111,7 @@ class ReviewListActivity : AppCompatActivity() {
         viewModel.placeReviewInfo.observe(this@ReviewListActivity) { placeReviewInfo ->
             binding.reviewListTitleTv.text = placeReviewInfo.placeName
             binding.reviewListAddressTv.text = placeReviewInfo.placeAddress
-            binding.reviewListCount2Tv.text = placeReviewInfo.placeReviewList.size.toString()
+            binding.reviewListCount2Tv.text = placeReviewInfo.reviewNum.toString()
 
             Glide.with(binding.reviewListThumbnailIv)
                 .load(placeReviewInfo.placeImg)

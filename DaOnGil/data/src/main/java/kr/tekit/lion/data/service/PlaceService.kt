@@ -110,7 +110,7 @@ internal interface PlaceService {
         @Tag authType: AuthType = AuthType.ACCESS_TOKEN
     ): PlaceReviewResponse
 
-    @GET("place/review/{placeId}")
+    @GET("place/review/guest/{placeId}")
     suspend fun getPlaceReviewListGuest(
         @Path("placeId") placeId: Long,
         @Query("size") size: Int,

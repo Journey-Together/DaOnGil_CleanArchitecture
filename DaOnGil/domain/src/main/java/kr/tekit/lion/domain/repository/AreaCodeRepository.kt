@@ -4,7 +4,7 @@ import kr.tekit.lion.domain.model.area.AreaCode
 import kr.tekit.lion.domain.model.area.AreaCodeList
 
 interface AreaCodeRepository {
-    suspend fun getAreaCodeByName(areaName: String): String?
+    fun getAreaCodeByName(areaName: String): String?
     suspend fun getAllAreaCodes(): AreaCodeList
     suspend fun addAreaCodeInfo(areaCodeList: List<AreaCode>)
 }

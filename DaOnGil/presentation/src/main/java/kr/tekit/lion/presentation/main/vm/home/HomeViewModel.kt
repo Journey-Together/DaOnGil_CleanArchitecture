@@ -1,11 +1,11 @@
 package kr.tekit.lion.presentation.main.vm.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,6 +21,8 @@ import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -66,17 +68,26 @@ class HomeViewModel @Inject constructor(
         setAppTheme(AppTheme.HIGH_CONTRAST)
     }
 
-    fun getPlaceMain(area: String, sigungu: String) = viewModelScope.launch {
-        val areaCode = areaCodeRepository.getAreaCodeByName(area)
-        val sigunguCode = sigunguCodeRepository.getSigunguCodeByVillageName(sigungu)
+    fun getPlaceMain(area: String, sigungu: String) = viewModelScope.launch(Dispatchers.IO) {
+
+        val areaCode = getAreaCode(area)
+        val sigunguCode = getSigunguCode(sigungu)
 
         if (areaCode != null && sigunguCode != null) {
             placeRepository.getPlaceMainInfo(areaCode, sigunguCode).onSuccess {
-                _aroundPlaceInfo.value = it.aroundPlaceList
-                _recommendPlaceInfo.value = it.recommendPlaceList
+                _aroundPlaceInfo.postValue(it.aroundPlaceList)
+                _recommendPlaceInfo.postValue(it.recommendPlaceList)
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
         }
+    }
+
+    private suspend fun getAreaCode(area:String) = suspendCoroutine { continutation ->
+        continutation.resume(areaCodeRepository.getAreaCodeByName(area))
+    }
+
+    private suspend fun getSigunguCode(sigungu:String) = suspendCoroutine { continutation ->
+        continutation.resume(sigunguCodeRepository.getSigunguCodeByVillageName(sigungu))
     }
 }
