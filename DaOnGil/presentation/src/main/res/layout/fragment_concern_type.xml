@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,8 +10,11 @@
         android:id="@+id/toolbarConcernType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back_icon"
-        android:minHeight="?attr/actionBarSize" >
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/back_icon">
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,9 +28,13 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
+        android:id="@+id/concernTypeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarConcernType">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -132,18 +139,25 @@
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/concernTypeDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_big2"
-        android:layout_marginBottom="@dimen/margin_big2"
+        android:layout_marginTop="@dimen/margin_big4"
         app:dividerColor="@color/text_tertiary"
-        app:dividerThickness="5dp" />
+        app:dividerThickness="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/concernTypeLayout" />
 
     <LinearLayout
+        android:id="@+id/concernTypeModifyLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_big4"
         android:orientation="vertical"
-        android:padding="@dimen/margin_basic">
+        android:padding="@dimen/margin_basic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/concernTypeDivider">
 
         <TextView
             android:layout_width="match_parent"
@@ -163,5 +177,43 @@
             android:textSize="@dimen/font_big2" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/concernTypeErrorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarConcernType">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/onboarding_clover" />
+
+        <TextView
+            android:id="@+id/concernTypeErrorMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big4"
+            android:lineSpacingMultiplier="1.2"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="@dimen/font_big1" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/concernTypeProgressBar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:indeterminateDrawable="@drawable/rotate_progress_bar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
