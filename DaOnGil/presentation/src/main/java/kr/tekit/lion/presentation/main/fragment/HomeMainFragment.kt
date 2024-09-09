@@ -264,9 +264,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     private fun showSettingDialog() {
         val dialog = ModeSettingDialog.newInstance(
             onNegativeClick = {
-                viewModel.onClickThemeChangeButton(AppTheme.LIGHT){
-                    startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
-                }
+                viewModel.onClickThemeChangeButton(AppTheme.LIGHT){}
             },
             onPositiveClick = {
                 viewModel.onClickThemeChangeButton(AppTheme.HIGH_CONTRAST){
