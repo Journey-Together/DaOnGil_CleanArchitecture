@@ -29,11 +29,21 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
 
         val binding = FragmentMyReviewBinding.bind(view)
 
+        observeIsFromDetail()
+
         settingToolbar(binding)
         settingMyReviewRVAdapter(binding)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             handleBackPress()
+        }
+    }
+
+    private fun observeIsFromDetail() {
+        viewModel.isFromDetail.observe(viewLifecycleOwner) { isFromDetail ->
+            if (!isFromDetail) {
+                viewModel.getMyPlaceReview()
+            }
         }
     }
 

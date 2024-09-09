@@ -3,6 +3,7 @@ package kr.tekit.lion.presentation.myreview.vm
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,8 @@ import kr.tekit.lion.domain.model.MyPlaceReviewInfo
 import kr.tekit.lion.domain.model.UpdateMyPlaceReview
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.home.model.ReviewInfo
+import kr.tekit.lion.presentation.home.model.toMyPlaceReviewInfo
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -53,13 +56,12 @@ class MyReviewViewModel @Inject constructor(
     private val _isReviewDelete = MutableLiveData(false)
     val isReviewDelete: LiveData<Boolean> = _isReviewDelete
 
+    private val _isFromDetail = MutableLiveData(false)
+    val isFromDetail: LiveData<Boolean> = _isFromDetail
+
     private var isRequesting = false
 
-    init {
-        getMyPlaceReview()
-    }
-
-    private fun getMyPlaceReview(size: Int = REVIEW_GET_SIZE, page: Int = INITIAL_PAGE_NO) = viewModelScope.launch {
+    fun getMyPlaceReview(size: Int = REVIEW_GET_SIZE, page: Int = INITIAL_PAGE_NO) = viewModelScope.launch {
         placeRepository.getMyPlaceReview(size, page).onSuccess {
             _myPlaceReview.value = it
 
@@ -157,6 +159,14 @@ class MyReviewViewModel @Inject constructor(
         _visitDate.value = review.date
 
         updateNumOfImages()
+    }
+
+    fun setIsFromDetail(isModifyFromDetail: Boolean) {
+        _isFromDetail.value = isModifyFromDetail
+    }
+
+    fun setDetailReviewData(review: ReviewInfo) {
+        setReviewData(review.toMyPlaceReviewInfo())
     }
 
     fun setVisitDate(startDate: LocalDate) {
