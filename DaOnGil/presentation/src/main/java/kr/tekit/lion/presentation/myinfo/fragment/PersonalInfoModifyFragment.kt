@@ -33,12 +33,11 @@ import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.formatPhoneNumber
 import kr.tekit.lion.presentation.ext.isPhoneNumberValid
 import kr.tekit.lion.presentation.ext.isTallBackEnabled
-import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
-import kr.tekit.lion.presentation.myinfo.model.ModifyState
+import kr.tekit.lion.presentation.myinfo.model.ImgModifyState
 import kr.tekit.lion.presentation.myinfo.vm.MyInfoViewModel
 
 @AndroidEntryPoint
@@ -55,10 +54,6 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
 
         initLauncher(binding)
         initUi(binding)
-
-        repeatOnViewStarted {
-            collectErrorMessage(binding)
-        }
 
         if (requireContext().isTallBackEnabled()) {
             setupAccessibility(binding)
@@ -137,11 +132,11 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                     val currentPhone = tvPhone.text.toString()
 
                     when (state) {
-                        ModifyState.ImgSelected -> {
+                        ImgModifyState.ImgSelected -> {
                             viewModel.onCompleteModifyPersonalWithImg(currentNickname, currentPhone)
                         }
 
-                        ModifyState.ImgUnSelected -> {
+                        ImgModifyState.ImgUnSelected -> {
                             viewModel.onCompleteModifyPersonal(currentNickname, currentPhone)
                         }
                     }
@@ -311,16 +306,6 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             viewLifecycleOwner.lifecycleScope.launch {
                 delay(2500)
                 requireActivity().announceForAccessibility(errorMessage)
-            }
-        }
-    }
-
-    private suspend fun collectErrorMessage(binding: FragmentPersonalInfoModifyBinding) {
-        viewModel.errorMessage.collect {
-            if (it != null) {
-                if (requireContext().isTallBackEnabled()) {
-                    requireActivity().announceForAccessibility(it)
-                }
             }
         }
     }
