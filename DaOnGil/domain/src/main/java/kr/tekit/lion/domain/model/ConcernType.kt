@@ -7,3 +7,7 @@ data class ConcernType(
     val isElderly: Boolean,
     val isChild: Boolean,
 )
+
+fun ConcernType.hasAnyTrue(): Boolean {
+    return listOf(isPhysical, isHear, isVisual, isElderly, isChild).any { it }
+}
