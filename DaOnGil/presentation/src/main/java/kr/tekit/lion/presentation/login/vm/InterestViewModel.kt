@@ -27,8 +27,7 @@ class InterestViewModel @Inject constructor(
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
-    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
-    val networkState: StateFlow<NetworkState?> get() = networkErrorDelegate.networkState
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _concernType = MutableStateFlow(ConcernType(
         isPhysical = false,

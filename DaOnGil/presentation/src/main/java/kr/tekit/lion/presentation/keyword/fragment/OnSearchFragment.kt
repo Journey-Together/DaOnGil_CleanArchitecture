@@ -9,11 +9,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentOnSearchBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.keyword.adapter.SearchSuggestionsAdapter
@@ -49,8 +51,10 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
             }
         }
 
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val keywordLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val keywordLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
 
         with(binding) {
             searchSuggestions.adapter = searchAdapter
@@ -82,15 +86,6 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
                     }
 
                     launch {
-                        viewModel.errorMessage.filter { it != null }.collect {
-                            textMsg.text = it
-                            noSearchResultContainer.visibility = View.VISIBLE
-                            searchRecentSearchesContainer.visibility = View.GONE
-                            searchSuggestions.visibility = View.GONE
-                        }
-                    }
-
-                    launch {
                         viewModel.searchState.collect { state ->
                             when (state) {
                                 KeywordInputState.Initial -> {
@@ -98,12 +93,15 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
                                     searchSuggestions.visibility = View.GONE
                                     noSearchResultContainer.visibility = View.GONE
                                 }
+
                                 KeywordInputState.NotEmpty -> {
                                     searchRecentSearchesContainer.visibility = View.GONE
                                 }
+
                                 KeywordInputState.Empty -> {
                                     viewModel.keywordInputStateChanged(KeywordInputState.Initial)
                                 }
+
                                 KeywordInputState.Erasing -> {
                                     return@collect
                                 }
@@ -121,6 +119,20 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
                                 searchSuggestions.visibility = View.VISIBLE
                                 noSearchResultContainer.visibility = View.GONE
                                 searchAdapter.submitList(suggestKeywords)
+                            }
+                        }
+                    }
+
+                    launch {
+                        viewModel.networkState.collect {
+                            when (it) {
+                                is NetworkState.Loading, NetworkState.Success -> return@collect
+                                is NetworkState.Error -> {
+                                    textMsg.text = it.msg
+                                    noSearchResultContainer.visibility = View.VISIBLE
+                                    searchRecentSearchesContainer.visibility = View.GONE
+                                    searchSuggestions.visibility = View.GONE
+                                }
                             }
                         }
                     }

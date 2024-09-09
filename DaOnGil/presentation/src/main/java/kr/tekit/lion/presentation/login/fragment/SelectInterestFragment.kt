@@ -55,21 +55,20 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
         repeatOnViewStarted {
             supervisorScope {
                 launch {
-                    viewModel.errorMessage.collect {
-                        if (it != null) Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-
-                launch {
                     viewModel.networkState.collect {
-                        if (it == NetworkState.Success) {
-                            Log.d("czxcdsd", "NetworkState Success")
-
-                            viewModel.saveUserActivation{
-                                Log.d("czxcdsd", "startActivity")
-
-                                startActivity(Intent(requireActivity(), MainActivity::class.java))
-                                requireActivity().finish()
+                        when(it) {
+                            is NetworkState.Loading -> return@collect
+                            is NetworkState.Error -> Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
+                            is NetworkState.Success -> {
+                                viewModel.saveUserActivation {
+                                    startActivity(
+                                        Intent(
+                                            requireActivity(),
+                                            MainActivity::class.java
+                                        )
+                                    )
+                                    requireActivity().finish()
+                                }
                             }
                         }
                     }
