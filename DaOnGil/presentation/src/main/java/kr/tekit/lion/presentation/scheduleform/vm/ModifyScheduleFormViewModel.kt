@@ -23,21 +23,29 @@ import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.ext.addDays
 import kr.tekit.lion.presentation.ext.calculateDaysUntilEndDate
+import kr.tekit.lion.presentation.ext.convertStringToDate
 import kr.tekit.lion.presentation.ext.formatDateValue
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat.YYYY_MM_DD
+import kr.tekit.lion.presentation.scheduleform.model.OriginalDailyPlan
+import kr.tekit.lion.presentation.scheduleform.model.OriginalScheduleInfo
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class ScheduleFormViewModel @Inject constructor(
+class ModifyScheduleFormViewModel @Inject constructor(
     private val planRepository: PlanRepository,
     private val bookmarkRepository: BookmarkRepository,
     private val placeRepository: PlaceRepository
 ) : ViewModel() {
+
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
+    // 수정 전 일정 정보
+    private val _originalSchedule = MutableLiveData<OriginalScheduleInfo>()
+
+    // UI에 보여지는 정보 (시작일, 종료일, 여행명, 스케쥴)
     private val _startDate = MutableLiveData<Date?>()
     val startDate: LiveData<Date?> get() = _startDate
 
@@ -50,12 +58,12 @@ class ScheduleFormViewModel @Inject constructor(
     private val _schedule = MutableLiveData<List<DailySchedule>?>()
     val schedule: LiveData<List<DailySchedule>?> get() = _schedule
 
+    // 북마크한 여행지 목록
     private val _bookmarkedPlaces = MutableLiveData<List<BookmarkedPlace>>()
     val bookmarkedPlaces: LiveData<List<BookmarkedPlace>> get() = _bookmarkedPlaces
 
-    // 여행지 검색 화면 - 검색 결과 목록 + pageNo(0~), pageSize(itemSize), totalPages, last (t/f)
+    // 여행지 검색 결과 목록
     private val _placeSearchResult = MutableLiveData<PlaceSearchResult>()
-//    val placeSearchResult : LiveData<PlaceSearchResult> get() = _placeSearchResult
 
     private val _keyword = MutableLiveData<String>()
 
@@ -69,10 +77,15 @@ class ScheduleFormViewModel @Inject constructor(
             value = combinedList
         }
     }
+
     val searchResultsWithNum: LiveData<List<PlaceSearchInfoList>> get() = _searchResultsWithNum
 
     init {
         getBookmarkedPlaceList()
+    }
+
+    fun setTitle(title: String?) {
+        _title.value = title
     }
 
     fun setStartDate(startDate: Date?) {
@@ -83,12 +96,12 @@ class ScheduleFormViewModel @Inject constructor(
         _endDate.value = endDate
     }
 
-    fun setTitle(title: String?) {
-        _title.value = title
+    fun hasStartDate(): Boolean {
+        return startDate.value != null
     }
 
-    fun hasDates(): Boolean {
-        return (startDate.value != null) && (endDate.value != null)
+    fun isLastPage(): Boolean {
+        return _placeSearchResult.value?.last ?: true
     }
 
     fun getScheduleTitle(): String {
@@ -99,29 +112,80 @@ class ScheduleFormViewModel @Inject constructor(
         _keyword.value = keyword
     }
 
-    fun getSchedulePeriod(): String {
-        val startDateString = _startDate.value?.formatDateValue(YYYY_MM_DD)
-        val endDateString = _endDate.value?.formatDateValue(YYYY_MM_DD)
-
-        return "$startDateString - $endDateString"
-    }
-
-    private fun isScheduleEmpty(): Boolean {
-        return schedule.value.isNullOrEmpty()
-    }
-
-    fun initScheduleList() {
-        val startDate = _startDate.value
-        val endDate = _endDate.value
-
-        if (startDate != null && endDate != null) {
-            if (!isScheduleEmpty()) {
-                updateScheduleList(startDate, endDate)
-                return
+    private fun getBookmarkedPlaceList() {
+        viewModelScope.launch {
+            bookmarkRepository.getPlaceBookmarkList().onSuccess {
+                _bookmarkedPlaces.postValue(it)
+            }.onError {
+                networkErrorDelegate.handleNetworkError(it)
             }
+        }
+    }
 
-            val createdSchedule = createScheduleList(startDate, endDate)
-            _schedule.value = createdSchedule.toList()
+    fun initScheduleDetailInfo(schedule: OriginalScheduleInfo) {
+        _originalSchedule.value = schedule
+        initScheduleData()
+    }
+
+    private fun initScheduleData() {
+        _originalSchedule.value?.let {
+            _startDate.value = it.startDate.convertStringToDate()
+            _endDate.value = it.endDate.convertStringToDate()
+            _title.value = it.title
+            _schedule.value = processScheduleInfoData(it.dailyPlans)
+        }
+    }
+
+    private fun processScheduleInfoData(plans: List<OriginalDailyPlan>): List<DailySchedule> {
+        return plans.mapIndexed { index, dailyPlan ->
+            DailySchedule(
+                dailyIdx = index,
+                dailyDate = formatDateValue(
+                    dateString = dailyPlan.dailyPlanDate
+                ),
+                dailyPlaces = dailyPlan.schedulePlaces.map { schedulePlace ->
+                    FormPlace(
+                        placeId = schedulePlace.placeId,
+                        placeName = schedulePlace.name,
+                        placeImage = schedulePlace.imageUrl,
+                        placeCategory = schedulePlace.category
+
+                    )
+                }
+            )
+        }
+    }
+
+    /** String 형태의 날짜를 다른 형태의 String 으로 변환 */
+    private fun formatDateValue(dateString: String): String {
+        // Date 객체로 변환한 뒤, String 으로 다시 변환
+        val date = dateString.convertStringToDate()
+        return date.formatDateValue(FormDateFormat.M_D_E)
+    }
+
+    fun formatPickedDates(pattern: String): String {
+        val startDateFormatted =
+            _startDate.value?.formatDateValue(pattern)
+        val endDateFormatted =
+            _endDate.value?.formatDateValue(pattern)
+        return "$startDateFormatted - $endDateFormatted"
+    }
+
+    fun refreshScheduleIfPeriodChanged() {
+        val originalStart = _originalSchedule.value?.startDate?.convertStringToDate()
+        val currentStart = _startDate.value
+
+        val originalEnd = _originalSchedule.value?.endDate?.convertStringToDate()
+        val currentEnd = _endDate.value
+
+        val isStartDateChanged = originalStart == currentStart
+        val isEndDateChanged = originalEnd == currentEnd
+
+        // 수정되기 전 일정의 여행 기간과, 새로 선택한 날짜가 다른 경우
+        if (!isStartDateChanged || !isEndDateChanged) {
+            if (currentStart != null && currentEnd != null) {
+                updateScheduleList(currentStart, currentEnd)
+            }
         }
     }
 
@@ -138,11 +202,6 @@ class ScheduleFormViewModel @Inject constructor(
     }
 
     private fun updateScheduleList(startDate: Date, endDate: Date) {
-        // 선택한 시작일, 종료일이 변하지 않은 경우
-        if (isSchedulePeriodUnchanged(startDate, endDate)) {
-            return
-        }
-
         val updatedSchedule = createScheduleList(startDate, endDate)
         val currentSchedule = _schedule.value ?: emptyList()
 
@@ -172,17 +231,6 @@ class ScheduleFormViewModel @Inject constructor(
         _schedule.value = updatedSchedule.toList()
     }
 
-    private fun isSchedulePeriodUnchanged(startDate: Date, endDate: Date): Boolean {
-        val startDateStr = startDate.formatDateValue(FormDateFormat.M_D_E)
-        val endDateStr = endDate.formatDateValue(FormDateFormat.M_D_E)
-
-        val scheduleSize = _schedule.value?.size ?: 0
-        val savedStartDate = _schedule.value?.get(0)?.dailyDate
-        val savedEndDate = _schedule.value?.get(scheduleSize - 1)?.dailyDate
-
-        return (startDateStr == savedStartDate) && (endDateStr == savedEndDate)
-    }
-
     fun getPlaceSearchResult(isNewRequest: Boolean) {
         val page = if (isNewRequest) -1 else _placeSearchResult.value?.pageNo ?: -1
 
@@ -205,10 +253,6 @@ class ScheduleFormViewModel @Inject constructor(
                     }
             }
         }
-    }
-
-    fun isLastPage(): Boolean {
-        return _placeSearchResult.value?.last ?: true
     }
 
     private fun addNewPlace(newPlace: FormPlace, dayPosition: Int) {
@@ -298,16 +342,6 @@ class ScheduleFormViewModel @Inject constructor(
         }
     }
 
-    private fun getBookmarkedPlaceList() {
-        viewModelScope.launch {
-            bookmarkRepository.getPlaceBookmarkList().onSuccess {
-                _bookmarkedPlaces.postValue(it)
-            }.onError {
-                networkErrorDelegate.handleNetworkError(it)
-            }
-        }
-    }
-
     private fun getBookmarkedPlaceDetailInfo(
         dayPosition: Int,
         selectedPlacePosition: Int
@@ -327,35 +361,34 @@ class ScheduleFormViewModel @Inject constructor(
         }
     }
 
-    fun submitNewPlan(callback: (Boolean, Boolean) -> Unit) {
+    fun submitRevisedSchedule(callback: (Boolean, Boolean) -> Unit) {
         val title = _title.value
         val startDateString = _startDate.value?.formatDateValue(YYYY_MM_DD)
         val endDateString = _endDate.value?.formatDateValue(YYYY_MM_DD)
         val dailyPlace = getDailyPlaceList()
+        val planId = _originalSchedule.value?.planId ?: -1
 
         if (title != null && startDateString != null && endDateString != null) {
-            val newPlan = NewPlan(title, startDateString, endDateString, dailyPlace)
+            val revisedPlan = NewPlan(title, startDateString, endDateString, dailyPlace)
 
             var requestFlag = false
 
             viewModelScope.launch {
                 val success = try {
-                    planRepository.addNewPlan(newPlan).onSuccess {
+                    planRepository.modifySchedule(planId, revisedPlan).onSuccess {
                         requestFlag = true
                     }.onError {
                         networkErrorDelegate.handleNetworkError(it)
                     }
                     true
                 } catch (e: Exception) {
-                    Log.d("submitNewPlan", "Error: ${e.message}")
+                    Log.d("submitRevisedSchedule", "${e.message}")
                     false
                 }
-                // 작업한 결과가 끝나면 success에 true를 반환해준다.
                 callback(success, requestFlag)
             }
         }
     }
-
 
     private fun getDailyPlaceList(): List<DailyPlace> {
         val dailyPlaceList = mutableListOf<DailyPlace>()

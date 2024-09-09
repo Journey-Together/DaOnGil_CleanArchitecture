@@ -53,6 +53,13 @@ internal interface PlanService {
         @Tag authType: AuthType = AuthType.ACCESS_TOKEN
     )
 
+    // 일정 수정
+    @PATCH("plan/{planId}")
+    suspend fun modifySchedule(
+        @Path("planId") planId: Long,
+        @Body newPlan: RequestBody
+    )
+
     // 내 일정 정보
     @GET("plan/my")
     suspend fun getMyMainSchedule(): MyMainScheduleResponse

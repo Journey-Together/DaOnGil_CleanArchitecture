@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.ext
 
+import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -46,4 +47,17 @@ fun Date.addDays(days: Int, pattern: String): String {
     val addedDateStr = SimpleDateFormat(pattern, Locale.KOREAN).format(calendar.time)
 
     return addedDateStr
+}
+
+
+/**
+ * String 형태("yyyy-MM-dd")의 날짜를 Date 객체로 변환
+ *
+ * @return 변환된 Date 객체
+ */
+fun String.convertStringToDate() : Date {
+    val formatter = SimpleDateFormat(FormDateFormat.YYYY_MM_DD, Locale.KOREA)
+    val date = formatter.parse(this) ?: Date()
+
+    return date
 }
