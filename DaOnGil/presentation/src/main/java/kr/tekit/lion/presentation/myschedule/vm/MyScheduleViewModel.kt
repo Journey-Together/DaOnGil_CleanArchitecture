@@ -54,7 +54,12 @@ class MyScheduleViewModel @Inject constructor(
         viewModelScope.launch {
             planRepository.getMyUpcomingScheduleList(page)
                 .onSuccess {
-                    val newList = _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
+                    val newList = if(page == INITIAL_PAGE_NO){
+                        it.myUpcomingScheduleList
+                    }else{
+                        _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
+                    }
+//                    val newList = _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
                     _upcomingSchedules.value = newList
                     _isLastUpcoming.value = it.last
                 }.onError {
@@ -68,7 +73,12 @@ class MyScheduleViewModel @Inject constructor(
         viewModelScope.launch {
             planRepository.getMyElapsedScheduleList(page)
                 .onSuccess {
-                    val newList = _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
+                    val newList = if(page == INITIAL_PAGE_NO){
+                        it.myElapsedScheduleList
+                    }else{
+                        _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
+                    }
+//                    val newList = _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
                     _elapsedSchedules.value = newList
                     _isLastElapsed.value = it.last
                 }.onError {
@@ -107,5 +117,10 @@ class MyScheduleViewModel @Inject constructor(
         pageNo?.let {
             getMyElapsedScheduleList(it+1)
         }
+    }
+
+    fun refreshScheduleList(){
+        getMyUpcomingScheduleList(INITIAL_PAGE_NO)
+        getMyElapsedScheduleList(INITIAL_PAGE_NO)
     }
 }
