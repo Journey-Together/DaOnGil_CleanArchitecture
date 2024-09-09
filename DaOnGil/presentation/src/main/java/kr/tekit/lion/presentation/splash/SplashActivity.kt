@@ -60,11 +60,13 @@ class SplashActivity : AppCompatActivity() {
 
             repeatOnStarted {
                 viewModel.userActivationState.collect {
-                    delay(2700)
                     if (it) {
-                        startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
-                        finish()
+                        viewModel.whenUserActivationIsFirst {
+                            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
+                            finish()
+                        }
                     } else {
+                        delay(2700)
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                         finish()
                     }
