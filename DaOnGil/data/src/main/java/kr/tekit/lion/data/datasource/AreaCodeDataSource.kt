@@ -11,7 +11,7 @@ internal class AreaCodeDataSource @Inject constructor(
         return areaCodeDao.getAreaCodes()
     }
 
-    suspend fun getAreaCodeInfo(code: String): String? {
+    fun getAreaCodeInfo(code: String): String? {
         return areaCodeDao.getAreaCode(code)
     }
 

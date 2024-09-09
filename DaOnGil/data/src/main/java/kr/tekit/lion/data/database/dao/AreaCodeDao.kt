@@ -12,7 +12,7 @@ internal interface AreaCodeDao {
     suspend fun getAreaCodes(): List<AreaCodeEntity>
 
     @Query("SELECT code FROM area_code_table WHERE name LIKE :areaName || '%'")
-    suspend fun getAreaCode(areaName: String): String?
+    fun getAreaCode(areaName: String): String?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAreaCode(areaCode: List<AreaCodeEntity>)
