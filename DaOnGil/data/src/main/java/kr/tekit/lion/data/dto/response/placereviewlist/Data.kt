@@ -12,5 +12,6 @@ internal data class Data(
     val pageSize: Int?,
     val placeAddress: String,
     val placeName: String,
-    val totalPages: Int?
+    val totalPages: Int?,
+    val reviewNum: Int
 )

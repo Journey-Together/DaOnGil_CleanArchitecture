@@ -29,7 +29,8 @@ internal data class PlaceReviewResponse(
             pageSize = data.pageSize,
             placeAddress = data.placeAddress,
             placeName = data.placeName,
-            totalPages = data.totalPages
+            totalPages = data.totalPages,
+            reviewNum = data.reviewNum
         )
     }
 }
