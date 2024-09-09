@@ -61,22 +61,6 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
         }
 
         repeatOnViewStarted {
-            viewModel.networkState.collectLatest { state ->
-                val progressBar =
-                    requireActivity().findViewById<ProgressBar>(R.id.search_view_progressBar)
-                when (state) {
-                    is NetworkState.Loading -> {
-                        progressBar.visibility = View.VISIBLE
-                    }
-
-                    is NetworkState.Success -> {
-                        progressBar.visibility = View.GONE
-                    }
-                }
-            }
-        }
-
-        repeatOnViewStarted {
             combine(viewModel.networkState, viewModel.place) { networkState, place ->
                 val progressBar = requireActivity().findViewById<ProgressBar>(R.id.search_view_progressBar)
                 when (networkState) {
@@ -94,6 +78,12 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
                             binding.searchResultRv.visibility = View.VISIBLE
                             rvAdapter.submitList(place)
                         }
+                    }
+
+                    is NetworkState.Error -> {
+                        progressBar.visibility = View.GONE
+                        binding.noSearchResultContainer.visibility = View.VISIBLE
+                        binding.textMsg.text = networkState.msg
                     }
                 }
             }.collect { }

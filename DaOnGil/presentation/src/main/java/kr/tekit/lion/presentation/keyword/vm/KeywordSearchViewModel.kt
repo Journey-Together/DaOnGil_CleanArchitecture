@@ -43,8 +43,7 @@ class KeywordSearchViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
-
-    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
+    val networkState get() = networkErrorDelegate.networkState
 
     private val _recentlySearchKeyword = MutableStateFlow(RecentlySearchKeywordList(emptyList()))
     val recentlySearchKeyword = _recentlySearchKeyword.asStateFlow()
@@ -62,6 +61,7 @@ class KeywordSearchViewModel @Inject constructor(
         .filter { it.isNotEmpty() }
         .flatMapLatest { keyword ->
             if (searchState.value != KeywordInputState.Erasing) {
+                networkErrorDelegate.handleNetworkLoading()
                 placeRepository.getAutoCompleteKeyword(keyword)
             } else {
                 flow { }

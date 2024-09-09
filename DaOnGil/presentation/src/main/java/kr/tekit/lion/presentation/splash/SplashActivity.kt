@@ -2,17 +2,17 @@ package kr.tekit.lion.presentation.splash
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivitySplashBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
-import kr.tekit.lion.presentation.login.LoginActivity
+import kr.tekit.lion.presentation.login.OnBoardingActivity
 import kr.tekit.lion.presentation.main.MainActivity
-import kr.tekit.lion.presentation.splash.model.LogInState
 import kr.tekit.lion.presentation.splash.vm.SplashViewModel
 
 @AndroidEntryPoint
@@ -56,23 +56,19 @@ class SplashActivity : AppCompatActivity() {
                 this.layoutParams = layoutParams
 
                 this.start()
-                repeatOnStarted {
-                    viewModel.logInState.collect { state ->
-                        when (state) {
-                            is LogInState.LoggedIn -> {
-                                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                                finish()
-                            }
+            }
 
-                            is LogInState.LoginRequired -> {
-                                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                                finish()
-                            }
-
-                            is LogInState.Checking -> {
-                                return@collect
-                            }
+            repeatOnStarted {
+                viewModel.userActivationState.collect {
+                    if (it) {
+                        viewModel.whenUserActivationIsFirst {
+                            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
+                            finish()
                         }
+                    } else {
+                        delay(2700)
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        finish()
                     }
                 }
             }

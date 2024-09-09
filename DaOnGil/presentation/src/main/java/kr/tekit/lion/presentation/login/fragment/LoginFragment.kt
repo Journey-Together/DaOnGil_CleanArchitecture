@@ -1,11 +1,11 @@
 package kr.tekit.lion.presentation.login.fragment
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -15,15 +15,12 @@ import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentLoginBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.login.model.LoginType
 import kr.tekit.lion.presentation.login.vm.LoginViewModel
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
+import kr.tekit.lion.presentation.main.MainActivity
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -41,22 +38,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
 
             naverLoginButton.setOnClickListener {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    val result = runCatching { naverLogin() }
-                    result.onSuccess { accessToken ->
-                        viewModel.onCompleteLogIn(LoginType.NAVER.toString(), accessToken)
-                    }.onFailure { error ->
-                        error.printStackTrace()
-                    }
-                }
+                naverLogin()
             }
         }
 
         repeatOnViewStarted {
             viewModel.sigInInUiState.collectLatest {
-                if (it) Navigation.findNavController(view).navigate(
-                    R.id.to_selectInterestFragment
-                )
+                if (it) {
+                    if (viewModel.isFirstUser.value) {
+                        Navigation.findNavController(view).navigate(R.id.to_selectInterestFragment)
+                    }else{
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
+                    }
+                }
             }
         }
     }
@@ -90,16 +85,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    private suspend fun naverLogin(): String = suspendCoroutine { continuation->
+    private fun naverLogin(){
 
         NaverIdLoginSDK.authenticate(requireContext(), object : OAuthLoginCallback {
             override fun onSuccess() {
-                // 로그인 성공
+                val naver = LoginType.NAVER.toString()
                 val accessToken = NaverIdLoginSDK.getAccessToken()
                 if (accessToken != null) {
-                    continuation.resume(accessToken)
-                } else {
-                    continuation.resumeWithException(RuntimeException("Can't Receive Naver Access Token"))
+                    viewModel.onCompleteLogIn(naver, accessToken)
                 }
             }
 
@@ -107,18 +100,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 // 로그인 실패
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                continuation.resumeWithException(Exception(
-                    "Naver Login Failed: $errorDescription (Error Code: $errorCode)"
-                ))
+                Toast.makeText(context, "errorCode: ${errorCode}\n" +
+                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(errorCode: Int, message: String) {
                 // 로그인 중 오류 발생
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                // 오류 처리
-                continuation.resumeWithException(Exception(
-                    "Naver Login Failed: $errorDescription (Error Code: $errorCode)"
-                ))
+                onFailure(errorCode, message)
             }
         })
     }

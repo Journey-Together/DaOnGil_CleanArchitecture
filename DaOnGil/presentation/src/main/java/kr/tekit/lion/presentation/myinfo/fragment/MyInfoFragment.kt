@@ -53,7 +53,6 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 launch { collectPersonalInfo(binding) }
                 launch { collectIceInfo(binding) }
                 launch { collectNetworkState(binding) }
-                launch { collectErrorMessage(binding) }
             }
         }
 
@@ -72,7 +71,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
     private fun setupAccessibility(binding: FragmentMyInfoBinding) {
         requireActivity().announceForAccessibility(
             getString(R.string.text_script_guide_for_my_info) +
-                getString(R.string.text_script_read_all_text)
+                    getString(R.string.text_script_read_all_text)
         )
         myInfoAnnounce.append(getString(R.string.text_personal_info))
 
@@ -206,26 +205,27 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
 
     private suspend fun collectNetworkState(binding: FragmentMyInfoBinding) {
         viewModel.networkState.collect {
-            if (it == NetworkState.Success) {
-                stopShimmer(binding)
-                if (requireContext().isTallBackEnabled()) {
-                    buildAccessibilityAnnouncement(binding)
+            when(it){
+                is NetworkState.Loading -> {
+                    startShimmer(binding)
                 }
-            }
-        }
-    }
-
-    private suspend fun collectErrorMessage(binding: FragmentMyInfoBinding) {
-        viewModel.errorMessage.collect {
-            if (it != null) {
-                with(binding) {
-                    mainContainer.visibility = View.GONE
-                    errorContainer.visibility = View.VISIBLE
-                    textMsg.text = it
+                is NetworkState.Success -> {
+                    stopShimmer(binding)
+                    if (requireContext().isTallBackEnabled()) {
+                        buildAccessibilityAnnouncement(binding)
+                    }
                 }
-                stopShimmer(binding)
-                if (requireContext().isTallBackEnabled()) {
-                    requireActivity().announceForAccessibility(it)
+                is NetworkState.Error -> {
+                    stopShimmer(binding)
+                    with(binding) {
+                        mainContainer.visibility = View.GONE
+                        errorContainer.visibility = View.VISIBLE
+                        textMsg.text = it.msg
+                    }
+                    stopShimmer(binding)
+                    if (requireContext().isTallBackEnabled()) {
+                        requireActivity().announceForAccessibility(it.msg)
+                    }
                 }
             }
         }

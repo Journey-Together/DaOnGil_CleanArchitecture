@@ -14,6 +14,7 @@ import java.io.OutputStream
 internal data class AppSettings(
     val accessToken: String = "",
     val refreshToken: String = "",
+    val activation: Boolean = true,
     val appTheme: AppTheme = AppTheme.LIGHT
 )
 
