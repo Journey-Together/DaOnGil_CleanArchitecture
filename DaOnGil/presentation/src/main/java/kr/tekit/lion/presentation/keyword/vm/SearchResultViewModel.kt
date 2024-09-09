@@ -30,7 +30,6 @@ class SearchResultViewModel @Inject constructor(
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
-    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
     val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _query = MutableStateFlow(KeywordSearch(keyword = "", page = 0))

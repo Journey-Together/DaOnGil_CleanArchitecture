@@ -123,7 +123,14 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                                     searchListProgressBar.visibility = View.VISIBLE
                                 }
                                 is NetworkState.Success -> {
+                                    rvSearchResult.visibility = View.VISIBLE
+                                    noSearchResultContainer.visibility = View.GONE
                                     searchListProgressBar.visibility = View.GONE
+                                }
+                                is NetworkState.Error -> {
+                                    rvSearchResult.visibility = View.GONE
+                                    noSearchResultContainer.visibility = View.VISIBLE
+                                    textMsg.text = networkState.msg
                                 }
                             }
                         }
@@ -141,20 +148,6 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                     launch {
                         sharedViewModel.bottomSheetOptionState.collect {
                             viewModel.modifyCategoryModel(it)
-                        }
-                    }
-
-                    launch {
-                        viewModel.errorMessage.collect { msg ->
-                            searchListProgressBar.visibility = View.GONE
-                            if (msg == null) {
-                                rvSearchResult.visibility = View.VISIBLE
-                                noSearchResultContainer.visibility = View.GONE
-                            } else {
-                                rvSearchResult.visibility = View.GONE
-                                noSearchResultContainer.visibility = View.VISIBLE
-                                textMsg.text = msg
-                            }
                         }
                     }
                 }

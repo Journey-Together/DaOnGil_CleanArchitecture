@@ -37,8 +37,7 @@ class MyInfoMainViewModel @Inject constructor(
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
-    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
-    val networkState: StateFlow<NetworkState?> get() = networkErrorDelegate.networkState
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _loginState = MutableStateFlow<LogInState>(LogInState.Checking)
     val loginState = _loginState.asStateFlow()
@@ -63,6 +62,7 @@ class MyInfoMainViewModel @Inject constructor(
             viewModelScope.launch {
                 _myInfo.emit(myInfo)
             }
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }

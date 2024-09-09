@@ -2,6 +2,7 @@ package kr.tekit.lion.presentation.login.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.ConcernType
+import kr.tekit.lion.domain.model.hasAnyTrue
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSelectInterestBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -54,16 +56,14 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
         repeatOnViewStarted {
             supervisorScope {
                 launch {
-                    viewModel.errorMessage.collect {
-                        if (it != null) Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-
-                launch {
                     viewModel.networkState.collect {
-                        if (it == NetworkState.Success) {
-                            startActivity(Intent(requireActivity(), MainActivity::class.java))
-                            requireActivity().finish()
+                        when(it) {
+                            is NetworkState.Loading -> return@collect
+                            is NetworkState.Error -> Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
+                            is NetworkState.Success -> {
+                                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                                requireActivity().finish()
+                            }
                         }
                     }
                 }
@@ -94,8 +94,7 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
             if (concernType.isChild) R.drawable.infant_family_select else R.drawable.infant_family_no_select
         )
 
-        val anySelected = concernType.isPhysical || concernType.isHear || concernType.isVisual ||
-                concernType.isElderly || concernType.isChild
+        val anySelected = concernType.hasAnyTrue()
         binding.selectInterestCompleteButton.isEnabled = anySelected
         if (requireContext().isTallBackEnabled() && !anySelected){
             binding.selectInterestCompleteButton.contentDescription = "관심유형을 한개 이상선택해주세요"

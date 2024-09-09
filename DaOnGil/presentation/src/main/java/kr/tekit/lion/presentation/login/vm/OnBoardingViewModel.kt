@@ -1,11 +1,15 @@
 package kr.tekit.lion.presentation.login.vm
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.tekit.lion.presentation.login.model.FocusOn
+import javax.inject.Inject
 
-class OnBoardingViewModel: ViewModel() {
+@HiltViewModel
+class OnBoardingViewModel @Inject constructor(
+): ViewModel() {
     private val _focusOn = MutableStateFlow(FocusOn.ViewPager)
     val focusOn = _focusOn.asStateFlow()
 

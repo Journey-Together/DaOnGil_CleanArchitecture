@@ -53,6 +53,7 @@ import kr.tekit.lion.presentation.main.adapter.HomeRecommendRVAdapter
 import kr.tekit.lion.presentation.main.adapter.HomeVPAdapter
 import kr.tekit.lion.presentation.main.customview.CustomPageIndicator
 import kr.tekit.lion.presentation.main.customview.ItemOffsetDecoration
+import kr.tekit.lion.presentation.main.dialog.ModeSettingDialog
 import kr.tekit.lion.presentation.main.vm.home.HomeViewModel
 import java.io.IOException
 import java.util.Locale
@@ -68,15 +69,16 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     private val retryDelayMillis = 5000L
     private var snapHelper: SnapHelper? = null
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                initLocationClient(FragmentHomeMainBinding.bind(requireView()))
-            } else {
-                requireContext().showPermissionSnackBar(FragmentHomeMainBinding.bind(requireView()).root)
-                hideLocationRv(FragmentHomeMainBinding.bind(requireView()))
-            }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            initLocationClient(FragmentHomeMainBinding.bind(requireView()))
+        } else {
+            requireContext().showPermissionSnackBar(FragmentHomeMainBinding.bind(requireView()).root)
+            hideLocationRv(FragmentHomeMainBinding.bind(requireView()))
         }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -116,14 +118,16 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             }
         }
 
+        repeatOnViewStarted {
+            viewModel.userActivationState.collect{
+                if (it) showSettingDialog()
+            }
+        }
+
         binding.homeHighcontrastBtn.setOnClickListener {
             viewModel.onClickThemeToggleButton()
             startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
         }
-
-//        if (app.isFirstLogin()) {
-//            settingDialog()
-//        }
 
         checkLocationPermission(binding)
         settingVPAdapter(binding)
@@ -212,8 +216,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 startActivity(intent)
             })
         binding.homeRecommendRv.adapter = homeRecommendRVAdapter
-        binding.homeRecommendRv.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeRecommendRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         val itemCount = recommendPlaceList.size
         val customPageIndicator = CustomPageIndicator(requireActivity(), binding.homeRecommendRvIndicator, itemCount)
@@ -280,11 +283,21 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         binding.homeMyLocationRv.adapter = homeLocationRVAdapter
     }
 
-//    private fun settingDialog() {
-//        val dialog = ModeSettingDialog()
-//        dialog.isCancelable = false
-//        dialog.show(activity?.supportFragmentManager!!, "ModeSettingDialog")
-//    }
+    private fun showSettingDialog() {
+        val dialog = ModeSettingDialog.newInstance(
+            onNegativeClick = {
+                viewModel.onClickThemeChangeButton(AppTheme.LIGHT){}
+            },
+            onPositiveClick = {
+                viewModel.onClickThemeChangeButton(AppTheme.HIGH_CONTRAST){
+                    startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
+                }
+            }
+        )
+
+        dialog.isCancelable = false
+        dialog.show(parentFragmentManager, "ModeSettingDialog")
+    }
 
     private fun checkLocationPermission(binding: FragmentHomeMainBinding) {
         if (ContextCompat.checkSelfPermission(
@@ -344,6 +357,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                    Log.d("dasdascas", "onLocationResult 호출")
 
                     for(i in 1..3) {
                         try {
@@ -351,7 +365,9 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                                 geocoder.getFromLocation(location.latitude, location.longitude, 1)
                             val address = addresses?.get(0)?.getAddressLine(0)
 
-                            val (area, sigungu) = splitAddress(address!!)
+                            //val (area, sigungu) = splitAddress(address!!)
+                            val area = "인천광역시"
+                            val sigungu = "연수구"
                             binding.homeMyLocationTv.text = "$area $sigungu"
 
                             getAroundPlaceInfo(binding, area, sigungu)

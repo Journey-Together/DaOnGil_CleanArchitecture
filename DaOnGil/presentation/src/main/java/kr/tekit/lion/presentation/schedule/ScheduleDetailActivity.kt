@@ -19,6 +19,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityScheduleDetailBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.setImageSmall
+import kr.tekit.lion.presentation.ext.showPhotoDialog
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.login.LoginActivity
@@ -161,22 +162,48 @@ class ScheduleDetailActivity : AppCompatActivity() {
                                     this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
                                     this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
                                 }
-                                5 -> {
-                                    scheduleReviewImg1.visibility = View.VISIBLE
-                                    scheduleReviewImg2.visibility = View.VISIBLE
-                                    scheduleReviewImg3.visibility = View.VISIBLE
-                                    scheduleReviewImg4.visibility = View.VISIBLE
-                                    scheduleReviewImg5.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg5, reviewImages[4])
-                                }
                             }
                         }
 
+                        scheduleReviewImg1.setOnClickListener {
+                            scheduleDetail.reviewImages?.let { reviewImages ->
+                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                    this@ScheduleDetailActivity.supportFragmentManager,
+                                    reviewImages,
+                                    0
+                                )
+                            }
+                        }
 
+                        scheduleReviewImg2.setOnClickListener {
+                            scheduleDetail.reviewImages?.let { reviewImages ->
+                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                    this@ScheduleDetailActivity.supportFragmentManager,
+                                    reviewImages,
+                                    1
+                                )
+                            }
+                        }
+
+                        scheduleReviewImg3.setOnClickListener {
+                            scheduleDetail.reviewImages?.let { reviewImages ->
+                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                    this@ScheduleDetailActivity.supportFragmentManager,
+                                    reviewImages,
+                                    2
+                                )
+                            }
+                        }
+
+                        scheduleReviewImg4.setOnClickListener {
+                            scheduleDetail.reviewImages?.let { reviewImages ->
+                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                    this@ScheduleDetailActivity.supportFragmentManager,
+                                    reviewImages,
+                                    3
+                                )
+                            }
+                        }
                     }
                     // 리뷰가 없을 때
                     else {
