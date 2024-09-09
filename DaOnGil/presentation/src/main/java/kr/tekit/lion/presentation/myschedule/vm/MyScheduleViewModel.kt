@@ -59,7 +59,6 @@ class MyScheduleViewModel @Inject constructor(
                     }else{
                         _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
                     }
-//                    val newList = _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
                     _upcomingSchedules.value = newList
                     _isLastUpcoming.value = it.last
                 }.onError {
@@ -78,7 +77,6 @@ class MyScheduleViewModel @Inject constructor(
                     }else{
                         _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
                     }
-//                    val newList = _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
                     _elapsedSchedules.value = newList
                     _isLastElapsed.value = it.last
                 }.onError {
