@@ -28,29 +28,21 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
         with(binding) {
             repeatOnViewStarted {
-                launch {
-                    viewModel.networkState.collect { networkState ->
-                        when (networkState) {
-                            is NetworkState.Loading -> {
-                                concernTypeProgressBar.visibility = View.VISIBLE
-                            }
-                            is NetworkState.Success -> {
-                                concernTypeProgressBar.visibility = View.GONE
-                            }
+                viewModel.networkState.collect { networkState ->
+                    when (networkState) {
+                        is NetworkState.Loading -> {
+                            concernTypeProgressBar.visibility = View.VISIBLE
                         }
-                    }
-                }
-
-                launch {
-                    viewModel.errorMessage.collect { msg ->
-                        concernTypeProgressBar.visibility = View.GONE
-
-                        if (msg != null) {
+                        is NetworkState.Success -> {
+                            concernTypeProgressBar.visibility = View.GONE
+                        }
+                        is NetworkState.Error -> {
+                            concernTypeProgressBar.visibility = View.GONE
                             concernTypeLayout.visibility = View.GONE
                             concernTypeDivider.visibility = View.GONE
                             concernTypeModifyLayout.visibility = View.GONE
                             concernTypeErrorLayout.visibility = View.VISIBLE
-                            concernTypeErrorMsg.text = msg
+                            concernTypeErrorMsg.text = networkState.msg
                         }
                     }
                 }

@@ -30,7 +30,6 @@ class ConcernTypeViewModel @Inject constructor(
     private val _concernType = MutableLiveData<ConcernType>()
     val concernType: LiveData<ConcernType> = _concernType
 
-    val errorMessage: StateFlow<String?> get() = networkErrorDelegate.errorMessage
     val networkState get() = networkErrorDelegate.networkState
 
     init {
