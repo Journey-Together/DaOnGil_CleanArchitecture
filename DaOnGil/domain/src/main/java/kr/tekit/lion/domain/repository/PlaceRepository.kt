@@ -49,4 +49,6 @@ interface PlaceRepository {
 
     suspend fun getPlaceReviewList(placeId: Long, size: Int, page: Int): Result<PlaceReviewInfo>
 
+    suspend fun getPlaceReviewListGuest(placeId: Long, size: Int, page: Int): Result<PlaceReviewInfo>
+
 }

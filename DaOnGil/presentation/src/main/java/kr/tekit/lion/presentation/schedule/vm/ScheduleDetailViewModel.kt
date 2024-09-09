@@ -19,6 +19,8 @@ import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailGuestUseCase
 import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailUseCase
 import kr.tekit.lion.domain.usecase.plan.UpdateMyPlanPublicUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.scheduleform.model.OriginalScheduleInfo
+import kr.tekit.lion.presentation.scheduleform.model.toOriginalScheduleInfo
 import kr.tekit.lion.presentation.splash.model.LogInState
 import javax.inject.Inject
 
@@ -106,4 +108,9 @@ class ScheduleDetailViewModel @Inject constructor(
             }
         }
 
+    fun selectDataForModification(planId: Long): OriginalScheduleInfo? {
+        val scheduleData = _scheduleDetail.value?.toOriginalScheduleInfo(planId)
+
+        return scheduleData
+    }
 }

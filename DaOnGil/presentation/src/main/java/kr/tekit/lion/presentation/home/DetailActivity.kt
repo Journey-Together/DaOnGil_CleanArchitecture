@@ -113,13 +113,14 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun settingModifyBtn(review: Review) {
+    private fun settingModifyBtn(review: Review, placeName: String) {
 
         binding.detailModifyReviewBtn.setOnClickListener {
-            val intent = Intent(this, MyReviewActivity::class.java)
-            val reviewInfo = review.toReviewInfo()
-            intent.putExtra("reviewInfo", reviewInfo)
-
+            val intent = Intent(this, MyReviewActivity::class.java).apply {
+                val reviewInfo = review.toReviewInfo(placeName)
+                putExtra("reviewInfo", reviewInfo)
+                putExtra("isModifyFromDetail", true)
+            }
             startActivity(intent)
         }
 
@@ -146,7 +147,7 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             val myReview = it.filter { review -> review.myReview }
 
             myReview.forEach { review ->
-                settingModifyBtn(review)
+                settingModifyBtn(review, name)
             }
         }
 

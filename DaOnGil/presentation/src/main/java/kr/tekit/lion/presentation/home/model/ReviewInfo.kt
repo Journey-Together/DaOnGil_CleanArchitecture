@@ -2,6 +2,7 @@ package kr.tekit.lion.presentation.home.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kr.tekit.lion.domain.model.MyPlaceReviewInfo
 import kr.tekit.lion.domain.model.detailplace.Review
 import java.time.LocalDate
 
@@ -14,10 +15,11 @@ data class ReviewInfo (
     val reviewImgs : List<String>?,
     val grade : Float,
     val date : LocalDate,
-    val myReview : Boolean
+    val myReview : Boolean,
+    val placeName: String
 ): Parcelable
 
-fun Review.toReviewInfo(): ReviewInfo {
+fun Review.toReviewInfo(placeName: String): ReviewInfo {
     return ReviewInfo(
         reviewId = this.reviewId,
         nickname = this.nickname,
@@ -26,6 +28,19 @@ fun Review.toReviewInfo(): ReviewInfo {
         reviewImgs = this.reviewImgs,
         grade = this.grade,
         date = this.date,
-        myReview = this.myReview
+        myReview = this.myReview,
+        placeName = placeName
+    )
+}
+
+fun ReviewInfo.toMyPlaceReviewInfo(): MyPlaceReviewInfo {
+    return MyPlaceReviewInfo(
+        reviewId = this.reviewId,
+        placeId = 0,
+        grade = this.grade,
+        name = this.placeName,
+        date = this.date,
+        images = this.reviewImgs ?: emptyList(),
+        content = this.content
     )
 }

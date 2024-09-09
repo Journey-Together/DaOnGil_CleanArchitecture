@@ -22,6 +22,7 @@ import kr.tekit.lion.presentation.main.adapter.SchedulePublicAdapter
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.schedule.ScheduleMainViewModel
 import kr.tekit.lion.presentation.myschedule.MyScheduleActivity
+import kr.tekit.lion.presentation.schedule.PublicScheduleActivity
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
 import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
@@ -166,6 +167,8 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
             }
             textViewPublicScheduleMore.setOnClickListener {
                 // 공개 일정 더보기
+                val intent = Intent(requireActivity(), PublicScheduleActivity::class.java)
+                startActivity(intent)
             }
         }
     }

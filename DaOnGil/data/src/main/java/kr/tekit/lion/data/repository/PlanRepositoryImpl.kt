@@ -38,7 +38,11 @@ internal class PlanRepositoryImpl @Inject constructor(
     override suspend fun addNewPlan(request: NewPlan) : Result<Unit>{
         return planDataSource.addNewPlan(request.toRequestBody())
     }
-    
+
+    override suspend fun modifySchedule(planId: Long, request: NewPlan): Result<Unit> {
+        return planDataSource.modifySchedule(planId, request.toRequestBody())
+    }
+
     override suspend fun getMyMainSchedule(): Result<List<MyMainSchedule?>?> {
         return planDataSource.getMyMainSchedule()
     }

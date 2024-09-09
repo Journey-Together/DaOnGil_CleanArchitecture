@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/modify_schedule_form_graph"
+    app:startDestination="@id/modifyNamePeriodFragment">
+
+    <fragment
+        android:id="@+id/modifyNamePeriodFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifyNamePeriodFragment"
+        android:label="@string/modify_schedule"
+        tools:layout="@layout/fragment_modify_name_period" >
+        <action
+            android:id="@+id/to_modifyScheduleDetailsFragment"
+            app:destination="@id/modifyScheduleDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/modifyScheduleDetailsFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifyScheduleDetailsFragment"
+        android:label="@string/modify_schedule"
+        tools:layout="@layout/fragment_modify_schedule_details" >
+        <action
+            android:id="@+id/to_modifyNamePeriodFragment"
+            app:destination="@id/modifyNamePeriodFragment" />
+        <action
+            android:id="@+id/to_modifySearchFragment"
+            app:destination="@id/modifySearchFragment" />
+        <action
+            android:id="@+id/to_modifyScheduleConfirmFragment"
+            app:destination="@id/modifyScheduleConfirmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/modifySearchFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifySearchFragment"
+        android:label="@string/search_places_to_add"
+        tools:layout="@layout/fragment_form_search" >
+        <action
+            android:id="@+id/to_modifyScheduleDetailsFragment"
+            app:destination="@id/modifyScheduleDetailsFragment" />
+        <argument
+            android:name="schedulePosition"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/modifyScheduleConfirmFragment"
+        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifyScheduleConfirmFragment"
+        android:label="@string/modify_schedule"
+        tools:layout="@layout/fragment_modify_schedule_confirm" >
+        <action
+            android:id="@+id/to_modifyScheduleDetailsFragment"
+            app:destination="@id/modifyScheduleDetailsFragment" />
+    </fragment>
+</navigation>

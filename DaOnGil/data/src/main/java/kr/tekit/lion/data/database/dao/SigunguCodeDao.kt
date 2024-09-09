@@ -10,7 +10,7 @@ import kr.tekit.lion.data.database.entity.SigunguCodeEntity
 internal interface SigunguCodeDao {
 
     @Query("SELECT sigunguCode FROM SIGUNGU_CODE_TABLE WHERE sigunguName LIKE :villageName || '%' ")
-    suspend fun getSigunguCodeByVillageName(villageName: String): String?
+    fun getSigunguCodeByVillageName(villageName: String): String?
 
     @Query("SELECT * FROM SIGUNGU_CODE_TABLE WHERE areaCode = :code")
     suspend fun getSigunguCode(code: String): List<SigunguCodeEntity>
