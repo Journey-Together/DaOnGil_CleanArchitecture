@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -40,6 +42,7 @@ class HomeViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _appTheme = MutableStateFlow(AppTheme.LIGHT)
     val appTheme = _appTheme.asStateFlow()
@@ -77,6 +80,8 @@ class HomeViewModel @Inject constructor(
             placeRepository.getPlaceMainInfo(areaCode, sigunguCode).onSuccess {
                 _aroundPlaceInfo.postValue(it.aroundPlaceList)
                 _recommendPlaceInfo.postValue(it.recommendPlaceList)
+
+                networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
