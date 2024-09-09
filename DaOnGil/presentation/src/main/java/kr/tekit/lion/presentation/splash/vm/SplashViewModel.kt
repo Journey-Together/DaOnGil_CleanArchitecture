@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.repository.ActivationRepository
-import kr.tekit.lion.domain.repository.AreaCodeRepository
-import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.domain.usecase.areacode.InitAreaCodeInfoUseCase
 import kr.tekit.lion.domain.usecase.base.onSuccess
 import javax.inject.Inject
