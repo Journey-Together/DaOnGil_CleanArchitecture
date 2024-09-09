@@ -35,6 +35,7 @@ import com.google.android.gms.location.Priority
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.AppTheme
 import kr.tekit.lion.domain.model.mainplace.AroundPlace
@@ -42,6 +43,7 @@ import kr.tekit.lion.domain.model.mainplace.RecommendPlace
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentHomeMainBinding
 import kr.tekit.lion.presentation.databinding.ItemTouristRecommendBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showPermissionSnackBar
 import kr.tekit.lion.presentation.home.DetailActivity
@@ -80,19 +82,40 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeMainBinding.bind(view)
         repeatOnViewStarted {
-            viewModel.appTheme.collect {
-                when (it) {
-                    AppTheme.LIGHT ->
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            launch {
+                viewModel.appTheme.collect {
+                    when (it) {
+                        AppTheme.LIGHT ->
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-                    AppTheme.HIGH_CONTRAST ->
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        AppTheme.HIGH_CONTRAST ->
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-                    AppTheme.SYSTEM ->
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                        AppTheme.SYSTEM ->
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    }
+                }
+            }
+
+            launch {
+                viewModel.networkState.collectLatest { state ->
+                    val progressBar = binding.homeProgressbar
+
+                    when (state) {
+                        is NetworkState.Loading -> {
+                            progressBar.visibility = View.VISIBLE
+                            binding.homeMainLayout.visibility = View.GONE
+                        }
+
+                        is NetworkState.Success -> {
+                            progressBar.visibility = View.GONE
+                            binding.homeMainLayout.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }
+
         binding.homeHighcontrastBtn.setOnClickListener {
             viewModel.onClickThemeToggleButton()
             startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
