@@ -110,7 +110,6 @@
         android:fontFamily="@font/pretendard_medium"
         android:gravity="center_horizontal"
         android:lineSpacingMultiplier="1.5"
-        android:text="@string/result_empty"
         android:textAlignment="center"
         android:textSize="@dimen/font_big3"
         android:visibility="gone"
@@ -121,7 +120,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_my_schedule" />
 
     <ProgressBar
-        android:id="@+id/search_view_progressBar"
+        android:id="@+id/progressBar_my_schedule"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:indeterminateDrawable="@drawable/rotate_progress_bar"
