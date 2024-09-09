@@ -49,7 +49,7 @@ class MyScheduleViewModel @Inject constructor(
         _elapsedPageNo.value = pageNum
     }
 
-    fun getMyUpcomingScheduleList(page: Int) {
+    private fun getMyUpcomingScheduleList(page: Int) {
         setUpcomingPageNo(page)
         viewModelScope.launch {
             planRepository.getMyUpcomingScheduleList(page)
@@ -67,7 +67,7 @@ class MyScheduleViewModel @Inject constructor(
         }
     }
 
-    fun getMyElapsedScheduleList(page: Int) {
+    private fun getMyElapsedScheduleList(page: Int) {
         setElapsedPageNo(page)
         viewModelScope.launch {
             planRepository.getMyElapsedScheduleList(page)
