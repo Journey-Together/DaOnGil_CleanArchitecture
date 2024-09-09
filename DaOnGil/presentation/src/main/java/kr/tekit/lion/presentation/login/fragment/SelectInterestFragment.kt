@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.ConcernType
+import kr.tekit.lion.domain.model.hasAnyTrue
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSelectInterestBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -61,12 +62,7 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
                             is NetworkState.Error -> Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
                             is NetworkState.Success -> {
                                 viewModel.saveUserActivation {
-                                    startActivity(
-                                        Intent(
-                                            requireActivity(),
-                                            MainActivity::class.java
-                                        )
-                                    )
+                                    startActivity(Intent(requireActivity(), MainActivity::class.java))
                                     requireActivity().finish()
                                 }
                             }
@@ -100,8 +96,7 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
             if (concernType.isChild) R.drawable.infant_family_select else R.drawable.infant_family_no_select
         )
 
-        val anySelected = concernType.isPhysical || concernType.isHear || concernType.isVisual ||
-                concernType.isElderly || concernType.isChild
+        val anySelected = concernType.hasAnyTrue()
         binding.selectInterestCompleteButton.isEnabled = anySelected
         if (requireContext().isTallBackEnabled() && !anySelected){
             binding.selectInterestCompleteButton.contentDescription = "관심유형을 한개 이상선택해주세요"
