@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,6 +24,7 @@ import kr.tekit.lion.domain.repository.ActivationRepository
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -46,6 +48,7 @@ class HomeViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _appTheme = MutableStateFlow(AppTheme.LIGHT)
     val appTheme = _appTheme.asStateFlow()
@@ -92,14 +95,16 @@ class HomeViewModel @Inject constructor(
       val areaCode = getAreaCode(area)
       val sigunguCode = getSigunguCode(sigungu)
 
-      if (areaCode != null && sigunguCode != null) {
-          placeRepository.getPlaceMainInfo(areaCode, sigunguCode).onSuccess {
-              _aroundPlaceInfo.postValue(it.aroundPlaceList)
-              _recommendPlaceInfo.postValue(it.recommendPlaceList)
-          }.onError {
-              networkErrorDelegate.handleNetworkError(it)
-          }
-      }
+        if (areaCode != null && sigunguCode != null) {
+            placeRepository.getPlaceMainInfo(areaCode, sigunguCode).onSuccess {
+                _aroundPlaceInfo.postValue(it.aroundPlaceList)
+                _recommendPlaceInfo.postValue(it.recommendPlaceList)
+
+                networkErrorDelegate.handleNetworkSuccess()
+            }.onError {
+                networkErrorDelegate.handleNetworkError(it)
+            }
+        }
     }
 
     private suspend fun getAreaCode(area:String) = suspendCoroutine { continutation ->
