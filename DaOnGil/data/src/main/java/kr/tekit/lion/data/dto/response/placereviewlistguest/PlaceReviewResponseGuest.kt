@@ -1,9 +1,10 @@
 package kr.tekit.lion.data.dto.response.placereviewlistguest
 
-import kr.tekit.lion.data.dto.response.placereviewlist.Data
+import com.squareup.moshi.JsonClass
 import kr.tekit.lion.domain.model.placereviewlist.PlaceReview
 import kr.tekit.lion.domain.model.placereviewlist.PlaceReviewInfo
 
+@JsonClass(generateAdapter = true)
 internal data class PlaceReviewResponseGuest(
     val code: Int,
     val data: Data,
@@ -28,7 +29,8 @@ internal data class PlaceReviewResponseGuest(
             pageSize = data.pageSize,
             placeAddress = data.placeAddress,
             placeName = data.placeName,
-            totalPages = data.totalPages
+            totalPages = data.totalPages,
+            reviewNum = data.reviewNum
         )
     }
 }
