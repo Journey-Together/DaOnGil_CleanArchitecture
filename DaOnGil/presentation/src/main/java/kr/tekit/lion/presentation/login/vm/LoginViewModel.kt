@@ -10,7 +10,6 @@ import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.hasAnyTrue
 import kr.tekit.lion.domain.repository.AuthRepository
-import kr.tekit.lion.domain.repository.ActivationRepository
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.domain.usecase.areacode.InitAreaCodeInfoUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
@@ -21,7 +20,6 @@ class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val memberRepository: MemberRepository,
     private val initAreaCodeInfoUseCase: InitAreaCodeInfoUseCase,
-    private val activationRepository: ActivationRepository
 ) : ViewModel() {
 
     @Inject
@@ -43,7 +41,6 @@ class LoginViewModel @Inject constructor(
     val isFirstUser = _isFirstUser.asStateFlow()
 
     fun onCompleteLogIn(type: String, token: String) = viewModelScope.launch {
-        activationRepository.saveUserActivation(true)
         authRepository.signIn(type, "Bearer $token")
         _sigInInUiState.value = true
     }

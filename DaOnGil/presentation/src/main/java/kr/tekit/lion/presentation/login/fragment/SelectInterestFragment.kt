@@ -61,10 +61,8 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
                             is NetworkState.Loading -> return@collect
                             is NetworkState.Error -> Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
                             is NetworkState.Success -> {
-                                viewModel.saveUserActivation {
-                                    startActivity(Intent(requireActivity(), MainActivity::class.java))
-                                    requireActivity().finish()
-                                }
+                                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                                requireActivity().finish()
                             }
                         }
                     }

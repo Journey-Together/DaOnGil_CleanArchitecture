@@ -4,23 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityOnBoardingBinding
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnStarted
-import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.login.model.FocusOn
 import kr.tekit.lion.presentation.login.model.OnBoardingPage
 import kr.tekit.lion.presentation.login.vm.OnBoardingViewModel
@@ -123,8 +117,6 @@ class OnBoardingActivity : AppCompatActivity() {
                         textView.text = "로그인/회원가입 진행하기"
 
                         nextButton.setOnClickListener {
-                            viewModel.saveUserActivation()
-
                             val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()

@@ -1,12 +1,13 @@
 package kr.tekit.lion.presentation.main.vm.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ import kr.tekit.lion.domain.repository.AppThemeRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
+import kr.tekit.lion.domain.repository.ActivationRepository
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
@@ -27,12 +29,15 @@ class HomeViewModel @Inject constructor(
     private val appThemeRepository: AppThemeRepository,
     private val placeRepository: PlaceRepository,
     private val areaCodeRepository: AreaCodeRepository,
-    private val sigunguCodeRepository: SigunguCodeRepository
+    private val sigunguCodeRepository: SigunguCodeRepository,
+    private val activationRepository: ActivationRepository
 ): ViewModel() {
 
     init {
         viewModelScope.launch {
-            // _appTheme.value = appThemeRepository.getAppTheme()
+            checkFirstLogIn()
+            val theme = appThemeRepository.getAppTheme()
+            _appTheme.value = theme
         }
     }
 
@@ -48,6 +53,9 @@ class HomeViewModel @Inject constructor(
     private val _recommendPlaceInfo = MutableLiveData<List<RecommendPlace>>()
     val recommendPlaceInfo : LiveData<List<RecommendPlace>> = _recommendPlaceInfo
 
+    private val _userActivationState = MutableSharedFlow<Boolean>()
+    val userActivationState = _userActivationState.asSharedFlow()
+
     private fun setAppTheme(appTheme: AppTheme) {
         viewModelScope.launch {
             appThemeRepository.saveAppTheme(appTheme)
@@ -62,14 +70,15 @@ class HomeViewModel @Inject constructor(
     }
 
     // 테마 설정 다이얼로그 클릭시
-    fun onClickThemeChangeButton() {
-        setAppTheme(AppTheme.HIGH_CONTRAST)
+    fun onClickThemeChangeButton(theme: AppTheme, onSuccess: () -> Unit) = viewModelScope.launch {
+        setAppTheme(theme)
+        activationRepository.saveUserActivation(false)
+        onSuccess()
     }
 
     fun getPlaceMain(area: String, sigungu: String) = viewModelScope.launch {
         val areaCode = areaCodeRepository.getAreaCodeByName(area)
         val sigunguCode = sigunguCodeRepository.getSigunguCodeByVillageName(sigungu)
-
         if (areaCode != null && sigunguCode != null) {
             placeRepository.getPlaceMainInfo(areaCode, sigunguCode).onSuccess {
                 _aroundPlaceInfo.value = it.aroundPlaceList
@@ -77,6 +86,12 @@ class HomeViewModel @Inject constructor(
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
+        }
+    }
+
+    private fun checkFirstLogIn() = viewModelScope.launch {
+        activationRepository.userActivation.collect{
+            _userActivationState.emit(it)
         }
     }
 }

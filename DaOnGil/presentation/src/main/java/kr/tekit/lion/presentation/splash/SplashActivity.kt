@@ -13,7 +13,6 @@ import kr.tekit.lion.presentation.databinding.ActivitySplashBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.login.OnBoardingActivity
 import kr.tekit.lion.presentation.main.MainActivity
-import kr.tekit.lion.presentation.splash.model.LogInState
 import kr.tekit.lion.presentation.splash.vm.SplashViewModel
 
 @AndroidEntryPoint
@@ -63,30 +62,11 @@ class SplashActivity : AppCompatActivity() {
                 viewModel.userActivationState.collect {
                     delay(2700)
                     if (it) {
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
                         finish()
                     } else {
-                        viewModel.checkLoginStatus()
-                    }
-                }
-            }
-
-            repeatOnStarted {
-                viewModel.logInState.collect { state ->
-                    when (state) {
-                        is LogInState.LoggedIn -> {
-                            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                            finish()
-                        }
-
-                        is LogInState.LoginRequired -> {
-                            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
-                            finish()
-                        }
-
-                        is LogInState.Checking -> {
-                            return@collect
-                        }
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        finish()
                     }
                 }
             }
