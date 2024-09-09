@@ -142,7 +142,7 @@
                     android:textSize="@dimen/font_small1" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutEtc"
+                    android:id="@+id/textInputLayoutDetailReason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_big4"
@@ -157,7 +157,7 @@
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textFieldEtc"
+                        android:id="@+id/textFieldDetailReason"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:fontFamily="@font/pretendard_medium"
