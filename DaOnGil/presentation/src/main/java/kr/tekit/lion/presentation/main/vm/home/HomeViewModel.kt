@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            checkFirstLogIn()
+            checkUserActivation()
             val theme = appThemeRepository.getAppTheme()
             _appTheme.value = theme
         }
@@ -58,6 +58,14 @@ class HomeViewModel @Inject constructor(
 
     private val _userActivationState = MutableSharedFlow<Boolean>()
     val userActivationState = _userActivationState.asSharedFlow()
+
+    private fun checkUserActivation() {
+        viewModelScope.launch {
+            activationRepository.userActivation.collect {
+                _userActivationState.emit(it)
+            }
+        }
+    }
 
     private fun setAppTheme(appTheme: AppTheme) {
         viewModelScope.launch {
