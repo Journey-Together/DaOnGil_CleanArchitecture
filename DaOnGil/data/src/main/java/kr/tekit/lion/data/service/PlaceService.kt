@@ -7,6 +7,7 @@ import kr.tekit.lion.data.dto.response.detailplaceguest.DetailPlaceGuestResponse
 import kr.tekit.lion.data.dto.response.mainplace.MainPlaceResponse
 import kr.tekit.lion.data.dto.response.placereview.WritePlaceReviewResponse
 import kr.tekit.lion.data.dto.response.placereviewlist.PlaceReviewResponse
+import kr.tekit.lion.data.dto.response.placereviewlistguest.PlaceReviewResponseGuest
 import kr.tekit.lion.data.dto.response.searchplace.list.SearchPlaceResponse
 import kr.tekit.lion.data.dto.response.searchplace.map.MapSearchResponse
 import okhttp3.MultipartBody
@@ -77,7 +78,8 @@ internal interface PlaceService {
     @GET("place/main")
     suspend fun getPlaceMainInfo(
         @Query("areacode") areacode : String,
-        @Query("sigungucode") sigungucode : String
+        @Query("sigungucode") sigungucode : String,
+        @Tag authType: AuthType = AuthType.NO_AUTH
     ): MainPlaceResponse
 
     @GET("place/{placeId}")
@@ -107,4 +109,12 @@ internal interface PlaceService {
         @Query("page") page: Int,
         @Tag authType: AuthType = AuthType.ACCESS_TOKEN
     ): PlaceReviewResponse
+
+    @GET("place/review/{placeId}")
+    suspend fun getPlaceReviewListGuest(
+        @Path("placeId") placeId: Long,
+        @Query("size") size: Int,
+        @Query("page") page: Int,
+        @Tag authType: AuthType = AuthType.NO_AUTH
+    ): PlaceReviewResponseGuest
 }
