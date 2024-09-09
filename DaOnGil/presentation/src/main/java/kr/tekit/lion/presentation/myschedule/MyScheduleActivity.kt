@@ -30,9 +30,11 @@ class MyScheduleActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if(result.resultCode == RESULT_CANCELED) return@registerForActivityResult
 
+            // 일정 목록 갱신
+            viewModel.refreshScheduleList()
+
             when (result.resultCode) {
                 ResultCode.RESULT_REVIEW_WRITE -> {
-                    viewModel.refreshScheduleList()
                     binding.root.showSnackbar("후기가 저장되었습니다")
                 }
             }
