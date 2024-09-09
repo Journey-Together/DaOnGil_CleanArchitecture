@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.login.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -19,6 +20,7 @@ import kr.tekit.lion.presentation.databinding.FragmentLoginBinding
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.login.model.LoginType
 import kr.tekit.lion.presentation.login.vm.LoginViewModel
+import kr.tekit.lion.presentation.main.MainActivity
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -42,9 +44,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         repeatOnViewStarted {
             viewModel.sigInInUiState.collectLatest {
-                if (it) Navigation.findNavController(view).navigate(
-                    R.id.to_selectInterestFragment
-                )
+                if (it) {
+                    if (viewModel.isFirstUser.value) {
+                        Navigation.findNavController(view).navigate(R.id.to_selectInterestFragment)
+                    }else{
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
+                    }
+                }
             }
         }
     }
