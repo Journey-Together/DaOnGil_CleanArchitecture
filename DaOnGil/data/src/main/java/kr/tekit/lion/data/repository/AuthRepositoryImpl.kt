@@ -22,4 +22,6 @@ internal class AuthRepositoryImpl @Inject constructor(
             it.printStackTrace()
         }
     }
+
+    override suspend fun logout(): Result<Unit> = authDataSource.logout()
 }

@@ -15,9 +15,9 @@ internal interface AuthService {
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): SignInResponse
 
-    @POST("auth/sign-in")
-    suspend fun login(
-        @Query("type") type: String,
+    @POST("auth/sign-out")
+    suspend fun signOut(
+        @Header("Authorization") token: String,
         @Tag authType: AuthType = AuthType.ACCESS_TOKEN
     ): SignInResponse
 
