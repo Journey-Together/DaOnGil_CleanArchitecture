@@ -12,8 +12,7 @@ import kr.tekit.lion.presentation.databinding.ItemDetailReviewBigBinding
 import kr.tekit.lion.presentation.home.DetailActivity
 
 class DetailReviewRVAdapter(
-    private val reviewList: List<Review>,
-    private val activity: DetailActivity
+    private val reviewList: List<Review>
 ) : RecyclerView.Adapter<DetailReviewRVAdapter.DetailReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailReviewViewHolder {
@@ -21,7 +20,7 @@ class DetailReviewRVAdapter(
             LayoutInflater.from(parent.context), parent, false
         )
 
-        return DetailReviewViewHolder(binding, activity)
+        return DetailReviewViewHolder(binding)
     }
 
     override fun getItemCount(): Int = reviewList.size
@@ -31,8 +30,7 @@ class DetailReviewRVAdapter(
     }
 
     class DetailReviewViewHolder(
-        private val binding: ItemDetailReviewBigBinding,
-        private val activity: DetailActivity
+        private val binding: ItemDetailReviewBigBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(reviewData: Review) {
             with(binding) {
@@ -50,7 +48,7 @@ class DetailReviewRVAdapter(
                     itemDetailReviewBigRv.visibility = View.VISIBLE
 
                     val reviewImageRVAdapter =
-                        ReviewImageRVAdapter(reviewData.reviewImgs!!, activity)
+                        ReviewImageRVAdapter(reviewData.reviewImgs!!)
                     binding.itemDetailReviewBigRv.adapter = reviewImageRVAdapter
                     binding.itemDetailReviewBigRv.layoutManager =
                         LinearLayoutManager(

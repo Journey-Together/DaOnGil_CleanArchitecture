@@ -72,7 +72,7 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.detailReviewRv.visibility = View.VISIBLE
             binding.detailNoReviewTv.visibility = View.GONE
 
-            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList, this)
+            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList)
             binding.detailReviewRv.adapter = detailReviewRVAdapter
             binding.detailReviewRv.layoutManager = LinearLayoutManager(applicationContext)
         }

@@ -13,8 +13,7 @@ import kr.tekit.lion.presentation.databinding.ItemDetailReviewBigBinding
 
 class ReviewListRVAdapter(
     private val reviewList: List<PlaceReview>,
-    private val dialogCallback: () -> Unit,
-    private val activity: AppCompatActivity
+    private val dialogCallback: () -> Unit
 ) : RecyclerView.Adapter<ReviewListRVAdapter.ReviewListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewListViewHolder {
@@ -22,7 +21,7 @@ class ReviewListRVAdapter(
             LayoutInflater.from(parent.context), parent, false
         )
 
-        return ReviewListViewHolder(binding, dialogCallback, activity)
+        return ReviewListViewHolder(binding, dialogCallback)
     }
 
     override fun getItemCount(): Int = reviewList.size
@@ -33,8 +32,7 @@ class ReviewListRVAdapter(
 
     class ReviewListViewHolder(
         private val binding: ItemDetailReviewBigBinding,
-        private val dialogCallback: () -> Unit,
-        private val activity: AppCompatActivity
+        private val dialogCallback: () -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(review: PlaceReview) {
             binding.itemDetailReviewBigNickname.text = review.nickname
@@ -50,7 +48,7 @@ class ReviewListRVAdapter(
             if (review.imageList != null) {
                 binding.itemDetailReviewBigRv.visibility = View.VISIBLE
 
-                val reviewImageRVAdapter = ReviewImageRVAdapter(review.imageList, activity)
+                val reviewImageRVAdapter = ReviewImageRVAdapter(review.imageList)
                 binding.itemDetailReviewBigRv.adapter = reviewImageRVAdapter
                 binding.itemDetailReviewBigRv.layoutManager =
                     LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
