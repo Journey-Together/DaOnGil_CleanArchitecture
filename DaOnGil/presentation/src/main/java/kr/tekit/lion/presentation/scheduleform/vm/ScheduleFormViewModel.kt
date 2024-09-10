@@ -353,9 +353,14 @@ class ScheduleFormViewModel @Inject constructor(
             var requestFlag = false
 
             viewModelScope.launch {
+                networkErrorDelegate.handleNetworkLoading()
+
                 val success = try {
                     planRepository.addNewPlan(newPlan).onSuccess {
                         requestFlag = true
+
+                        networkErrorDelegate.handleNetworkSuccess()
+
                     }.onError {
                         networkErrorDelegate.handleNetworkError(it)
                     }
