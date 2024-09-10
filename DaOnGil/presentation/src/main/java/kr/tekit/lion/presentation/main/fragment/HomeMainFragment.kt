@@ -86,6 +86,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeMainBinding.bind(view)
+        val progressBar = binding.homeProgressbar
+      
         viewModel.checkAppTheme()
 
         repeatOnViewStarted {
@@ -107,8 +109,6 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
                 launch {
                     viewModel.networkState.collectLatest { state ->
-                        val progressBar = binding.homeProgressbar
-
                         when (state) {
                             is NetworkState.Loading -> {
                                 progressBar.visibility = View.VISIBLE
@@ -118,9 +118,15 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             is NetworkState.Success -> {
                                 progressBar.visibility = View.GONE
                                 binding.homeMainLayout.visibility = View.VISIBLE
+                                binding.homeErrorLayout.visibility = View.GONE
                             }
 
-                            is NetworkState.Error -> {}
+                            is NetworkState.Error -> {
+                                progressBar.visibility = View.GONE
+                                binding.homeMainLayout.visibility = View.GONE
+                                binding.homeErrorLayout.visibility = View.VISIBLE
+                                binding.homeErrorTv.text = state.msg
+                            }
                         }
                     }
                 }
@@ -131,8 +137,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             if (isDarkTheme(resources.configuration)) showThemeGuideDialog()
                             else showThemeSettingDialog()
                         }
-                    }
-                }
+                 }
             }
         }
 

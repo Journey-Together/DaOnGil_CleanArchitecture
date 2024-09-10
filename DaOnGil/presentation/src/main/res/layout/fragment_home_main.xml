@@ -224,8 +224,8 @@
     <LinearLayout
         android:id="@+id/home_error_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
