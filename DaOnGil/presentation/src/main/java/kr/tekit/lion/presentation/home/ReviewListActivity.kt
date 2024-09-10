@@ -60,18 +60,8 @@ class ReviewListActivity : AppCompatActivity() {
         }
     }
 
-    private fun settingReviewListRVAdapter(reviewList: List<PlaceReview>) {
-        val reviewListRVAdapter = ReviewListRVAdapter(reviewList) {
-            val dialog = ConfirmDialog(
-                "신고하기",
-                "해당 댓글을 신고하시겠습니까?",
-                "신고하기"
-            ) {
-                // 신고하기 api 연결
-            }
-            dialog.isCancelable = false
-            dialog.show(supportFragmentManager, "PlaceReviewListDialog")
-        }
+    private fun settingReviewListRVAdapter(reviewList: List<PlaceReview>, loginState: Boolean) {
+        val reviewListRVAdapter = ReviewListRVAdapter(reviewList, loginState)
 
         binding.reviewListRv.adapter = reviewListRVAdapter
         binding.reviewListRv.layoutManager = LinearLayoutManager(applicationContext)
@@ -96,7 +86,7 @@ class ReviewListActivity : AppCompatActivity() {
                 .error(R.drawable.empty_view)
                 .into(binding.reviewListThumbnailIv)
 
-            settingReviewListRVAdapter(placeReviewInfo.placeReviewList)
+            settingReviewListRVAdapter(placeReviewInfo.placeReviewList, true)
         }
     }
 
@@ -119,7 +109,7 @@ class ReviewListActivity : AppCompatActivity() {
                 .error(R.drawable.empty_view)
                 .into(binding.reviewListThumbnailIv)
 
-            settingReviewListRVAdapter(placeReviewInfo.placeReviewList)
+            settingReviewListRVAdapter(placeReviewInfo.placeReviewList, false)
         }
     }
 }
