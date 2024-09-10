@@ -107,11 +107,20 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                         is NetworkState.Loading -> {
                             progressBar.visibility = View.VISIBLE
                             binding.homeMainLayout.visibility = View.GONE
+                            binding.homeErrorLayout.visibility = View.GONE
                         }
 
                         is NetworkState.Success -> {
                             progressBar.visibility = View.GONE
                             binding.homeMainLayout.visibility = View.VISIBLE
+                            binding.homeErrorLayout.visibility = View.GONE
+                        }
+
+                        is NetworkState.Error -> {
+                            progressBar.visibility = View.GONE
+                            binding.homeMainLayout.visibility = View.GONE
+                            binding.homeErrorLayout.visibility = View.VISIBLE
+                            binding.homeErrorTv.text = state.msg
                         }
                     }
                 }
