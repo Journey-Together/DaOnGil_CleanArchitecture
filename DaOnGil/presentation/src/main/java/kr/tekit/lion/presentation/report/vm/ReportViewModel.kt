@@ -6,7 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -51,7 +50,7 @@ class ReportViewModel @Inject constructor(
         val reviewType = _reviewType.value
 
         val reportReview = ReportReview(
-            _reviewId.value?.toLong() ?: 0L,
+            _reviewId.value ?: 0L,
             _selectedReason.value ?: "도용",
             _detailedReason.value
         )
@@ -62,8 +61,8 @@ class ReportViewModel @Inject constructor(
 
                 result.onSuccess {
                     networkErrorDelegate.handleNetworkSuccess()
-                }.onError { error ->
-                    Log.e("reportViewModel", "Error occurred: ${error.message}")
+                }.onError {
+                    networkErrorDelegate.handleNetworkError(it)
                 }
             }
         }
