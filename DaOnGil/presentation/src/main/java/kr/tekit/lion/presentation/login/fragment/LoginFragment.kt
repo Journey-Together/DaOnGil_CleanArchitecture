@@ -46,10 +46,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewModel.sigInInUiState.collectLatest {
                 if (it) {
                     if (viewModel.isFirstUser.value) {
-                        Navigation.findNavController(view).navigate(R.id.to_selectInterestFragment)
-                    }else{
                         startActivity(Intent(requireContext(), MainActivity::class.java))
                         requireActivity().finish()
+                    }else{
+                        Navigation.findNavController(view).navigate(R.id.to_selectInterestFragment)
                     }
                 }
             }
