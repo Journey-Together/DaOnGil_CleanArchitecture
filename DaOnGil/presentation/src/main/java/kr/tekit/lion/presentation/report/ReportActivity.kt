@@ -83,13 +83,9 @@ class ReportActivity : AppCompatActivity() {
                 if (radioGroupReport.checkedRadioButtonId == R.id.radioButtonEtc) {
                     if (isFormValid()) {
                         viewModel.submitReportReview()
-//                        setResult(RESULT_OK)
-//                        finish()
                     }
                 } else {
                     viewModel.submitReportReview()
-//                    setResult(RESULT_OK)
-//                    finish()
                 }
             }
         }
