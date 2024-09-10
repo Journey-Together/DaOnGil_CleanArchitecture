@@ -2,17 +2,14 @@ package kr.tekit.lion.presentation.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemReviewBigImageBinding
 import kr.tekit.lion.presentation.ext.setImageSmall
 import kr.tekit.lion.presentation.ext.showPhotoDialog
 
 class ReviewImageRVAdapter(
-    private val imageList: List<String>,
-    private val activity: AppCompatActivity
+    private val imageList: List<String>
 ) :
     RecyclerView.Adapter<ReviewImageRVAdapter.ReviewImageViewHolder>() {
 
@@ -21,7 +18,7 @@ class ReviewImageRVAdapter(
             LayoutInflater.from(parent.context), parent, false
         )
 
-        return ReviewImageViewHolder(binding, activity)
+        return ReviewImageViewHolder(binding)
     }
 
     override fun getItemCount(): Int = imageList.size
@@ -31,17 +28,19 @@ class ReviewImageRVAdapter(
     }
 
     class ReviewImageViewHolder(
-        val binding: ItemReviewBigImageBinding,
-        val activity: AppCompatActivity
+        val binding: ItemReviewBigImageBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(image: String, imageList: List<String>, position: Int) {
 
             binding.root.context.setImageSmall(binding.reviewImage, image)
 
             binding.reviewImage.setOnClickListener {
-                activity.baseContext.showPhotoDialog(
-                    activity.supportFragmentManager, imageList, position
-                )
+                val context = binding.root.context
+
+                if (context is FragmentActivity) {
+                    val fragmentManager = context.supportFragmentManager
+                    context.showPhotoDialog(fragmentManager, imageList, position)
+                }
             }
         }
     }
