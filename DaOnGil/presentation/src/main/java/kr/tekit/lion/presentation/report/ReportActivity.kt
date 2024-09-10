@@ -15,6 +15,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityReportBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.report.vm.ReportViewModel
 
@@ -34,11 +35,14 @@ class ReportActivity : AppCompatActivity() {
         repeatOnStarted {
             viewModel.networkState.collect { networkState ->
                 when (networkState) {
+                    is NetworkState.Loading -> {
+                    }
                     is NetworkState.Success -> {
                         setResult(RESULT_OK)
                         finish()
                     }
-                    is NetworkState.Loading -> {
+                    is NetworkState.Error -> {
+                        this@ReportActivity.showSnackbar(binding.root, networkState.msg)
                     }
                 }
             }
