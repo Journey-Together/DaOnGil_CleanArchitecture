@@ -11,7 +11,7 @@ internal class ReportRepositoryImpl @Inject constructor(
     private val reportDataSource: ReportDataSource
 ) : ReportRepository {
 
-    override suspend fun reportReview(reviewType: String, reportReviewReq: ReportReview): Result<Unit> {
-        return reportDataSource.reportReview(reviewType, reportReviewReq.toRequestBody())
+    override suspend fun reportReview(reviewType: String, request: ReportReview): Result<Unit> {
+        return reportDataSource.reportReview(reviewType, request.toRequestBody())
     }
 }
