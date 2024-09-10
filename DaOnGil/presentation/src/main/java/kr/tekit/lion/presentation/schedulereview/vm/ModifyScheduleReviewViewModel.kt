@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -17,6 +18,7 @@ import kr.tekit.lion.domain.usecase.base.onError
 import kr.tekit.lion.domain.usecase.base.onSuccess
 import kr.tekit.lion.domain.usecase.plan.GetScheduleReviewInfoUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import java.net.URI
 import javax.inject.Inject
 
@@ -28,6 +30,8 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     // 이미지 url, uri, path
     private val _imageList = MutableLiveData<List<ReviewImage>>()
@@ -119,9 +123,13 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
             viewModelScope.launch {
                 var requestFlag = false
                 val success = try {
+                    networkErrorDelegate.handleNetworkLoading()
+
                     planRepository.modifyScheduleReview(reviewId, modifiedReview, images)
                         .onSuccess {
                             requestFlag = true
+
+                            networkErrorDelegate.handleNetworkSuccess()
                         }.onError {
                             networkErrorDelegate.handleNetworkError(it)
                         }
