@@ -22,6 +22,7 @@ import kr.tekit.lion.data.service.NaverMapService
 import kr.tekit.lion.data.service.PharmacyService
 import kr.tekit.lion.data.service.PlaceService
 import kr.tekit.lion.data.service.PlanService
+import kr.tekit.lion.data.service.ReportService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -205,5 +206,11 @@ internal object NetworkModule {
     @Singleton
     fun providePlanService(retrofit: Retrofit): PlanService {
         return retrofit.create(PlanService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideReportService(retrofit: Retrofit): ReportService {
+        return retrofit.create(ReportService::class.java)
     }
 }

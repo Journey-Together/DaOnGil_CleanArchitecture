@@ -2,6 +2,7 @@ package kr.tekit.lion.data.service
 
 import kr.tekit.lion.data.dto.response.SignUpResponse
 import kr.tekit.lion.data.dto.response.signin.SignInResponse
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -21,7 +22,7 @@ internal interface AuthService {
         @Tag authType: AuthType = AuthType.ACCESS_TOKEN
     ): SignInResponse
 
-    @POST("auth/reissue")
+    @GET("auth/reissue")
     suspend fun refresh(
         @Header("Authorization") refreshToken: String,
     ): SignUpResponse

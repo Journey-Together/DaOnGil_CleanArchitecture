@@ -37,7 +37,7 @@ internal class AuthDataSource @Inject constructor(
     suspend fun refresh(): Result<SignUpResponse?> = runCatching {
         val refreshToken = data.map { it.refreshToken }.first()
 
-        if (refreshToken.isNotBlank()) authService.refresh(refreshToken) else null
+        if (refreshToken.isNotBlank()) authService.refresh("Bearer $refreshToken") else null
     }
 
     private suspend fun localLogout() {

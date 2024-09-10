@@ -380,7 +380,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
                         val newIntent = Intent(
                             this@ScheduleDetailActivity,
                             ReportActivity::class.java
-                        )
+                        ).apply {
+                            putExtra("reviewType", "PlanReview")
+                            putExtra("reviewId", reviewId)
+                        }
                         reportLauncher.launch(newIntent)
                     } else {
                         displayLoginDialog("여행 후기를 신고하고 싶다면\n로그인을 진행해주세요")
