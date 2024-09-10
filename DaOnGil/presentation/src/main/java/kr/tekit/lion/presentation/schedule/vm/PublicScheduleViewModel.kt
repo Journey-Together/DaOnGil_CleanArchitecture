@@ -30,6 +30,8 @@ class PublicScheduleViewModel @Inject constructor(
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
+    val networkState get() = networkErrorDelegate.networkState
+
     init {
         getOpenPlanList()
     }
@@ -39,6 +41,7 @@ class PublicScheduleViewModel @Inject constructor(
             _openPlanList.value = it.openPlanList
             _isLastPage.value = it.last
             _pageNo.value = it.pageNo + 1
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
@@ -52,6 +55,9 @@ class PublicScheduleViewModel @Inject constructor(
                     _openPlanList.value = currentList + it.openPlanList
                     _isLastPage.value = it.last
                     _pageNo.value = it.pageNo + 1
+                    networkErrorDelegate.handleNetworkSuccess()
+                }.onError {
+                    networkErrorDelegate.handleNetworkError(it)
                 }
             }
         }
