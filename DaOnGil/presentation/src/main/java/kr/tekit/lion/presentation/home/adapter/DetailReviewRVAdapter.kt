@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.home.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.detailplace.Review
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemDetailReviewBigBinding
-import kr.tekit.lion.presentation.home.DetailActivity
+import kr.tekit.lion.presentation.report.ReportActivity
 
 class DetailReviewRVAdapter(
     private val reviewList: List<Review>
@@ -47,10 +48,9 @@ class DetailReviewRVAdapter(
                 if (reviewData.reviewImgs != null) {
                     itemDetailReviewBigRv.visibility = View.VISIBLE
 
-                    val reviewImageRVAdapter =
-                        ReviewImageRVAdapter(reviewData.reviewImgs!!)
-                    binding.itemDetailReviewBigRv.adapter = reviewImageRVAdapter
-                    binding.itemDetailReviewBigRv.layoutManager =
+                    val reviewImageRVAdapter = ReviewImageRVAdapter(reviewData.reviewImgs!!)
+                    itemDetailReviewBigRv.adapter = reviewImageRVAdapter
+                    itemDetailReviewBigRv.layoutManager =
                         LinearLayoutManager(
                             binding.root.context,
                             LinearLayoutManager.HORIZONTAL,
@@ -65,6 +65,17 @@ class DetailReviewRVAdapter(
                 } else {
                     itemDetailReviewBigReportBtn.visibility = View.VISIBLE
                 }
+
+                itemDetailReviewBigReportBtn.setOnClickListener {
+                    val context = binding.root.context
+
+                    val intent = Intent(context, ReportActivity::class.java).apply {
+                        putExtra("reviewType", "PlaceReview")
+                        putExtra("reviewId", reviewData.reviewId)
+                    }
+                    context.startActivity(intent)
+                }
+
             }
         }
     }
