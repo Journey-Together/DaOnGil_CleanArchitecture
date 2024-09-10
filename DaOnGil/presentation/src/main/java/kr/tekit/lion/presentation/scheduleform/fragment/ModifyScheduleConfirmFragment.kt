@@ -40,7 +40,7 @@ class ModifyScheduleConfirmFragment : Fragment(R.layout.fragment_modify_schedule
 
         with(binding) {
             lifecycleScope.launch {
-                viewModel.networkState.collectLatest { state ->
+                viewModel.networkState.collect { state ->
                     when(state){
                         is NetworkState.Loading -> {
                             progressBarModifyConfirm.visibility = View.VISIBLE
@@ -50,7 +50,8 @@ class ModifyScheduleConfirmFragment : Fragment(R.layout.fragment_modify_schedule
                         }
                         is NetworkState.Error -> {
                             progressBarModifyConfirm.visibility = View.GONE
-                            buttonModifyFormSubmit.showSnackbar(state.msg)
+                            val errorMsg = state.msg.replace("\n ".toRegex(), "\n")
+                            buttonModifyFormSubmit.showSnackbar(errorMsg)
                         }
 
                     }
@@ -95,8 +96,6 @@ class ModifyScheduleConfirmFragment : Fragment(R.layout.fragment_modify_schedule
 
                 requireActivity().setResult(ResultCode.RESULT_SCHEDULE_EDIT)
                 requireActivity().finish()
-            } else {
-                view.showSnackbar("다시 시도해 주세요")
             }
         }
     }
