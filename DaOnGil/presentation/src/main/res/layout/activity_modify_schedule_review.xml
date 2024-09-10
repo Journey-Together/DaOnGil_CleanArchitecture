@@ -229,9 +229,9 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:background="@color/navi_background"
+                        android:contentDescription="@string/text_add_schedule_photo"
                         android:paddingBottom="@dimen/margin_basic"
                         android:src="@drawable/review_image_icon"
-                        android:contentDescription="@string/text_add_schedule_photo"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -296,5 +296,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_msr"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:foregroundGravity="center"
+        android:indeterminateDrawable="@drawable/rotate_progress_bar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

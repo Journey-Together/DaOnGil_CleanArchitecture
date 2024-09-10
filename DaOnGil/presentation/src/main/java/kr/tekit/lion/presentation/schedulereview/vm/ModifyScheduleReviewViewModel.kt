@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -17,6 +18,7 @@ import kr.tekit.lion.domain.usecase.base.onError
 import kr.tekit.lion.domain.usecase.base.onSuccess
 import kr.tekit.lion.domain.usecase.plan.GetScheduleReviewInfoUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import java.net.URI
 import javax.inject.Inject
 
@@ -28,6 +30,8 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     // 이미지 url, uri, path
     private val _imageList = MutableLiveData<List<ReviewImage>>()
@@ -41,6 +45,10 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
 
     private val _deleteImgUrls = MutableLiveData<List<String>>()
 
+    fun resetNetworkState() {
+        networkErrorDelegate.handleNetworkSuccess()
+    }
+
     fun addNewReviewImage(newImage: ReviewImage) {
         val currentImageList = _imageList.value?.toMutableList() ?: mutableListOf<ReviewImage>()
         currentImageList.add(newImage)
@@ -51,7 +59,7 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
 
     fun removeReviewImageFromList(position: Int) {
         val imageUrl = _imageList.value?.get(position)?.imageUrl
-        if(imageUrl != null){
+        if (imageUrl != null) {
             addDeletedImageUrl(imageUrl)
         }
 
@@ -119,9 +127,13 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
             viewModelScope.launch {
                 var requestFlag = false
                 val success = try {
+                    networkErrorDelegate.handleNetworkLoading()
+
                     planRepository.modifyScheduleReview(reviewId, modifiedReview, images)
                         .onSuccess {
                             requestFlag = true
+
+                            networkErrorDelegate.handleNetworkSuccess()
                         }.onError {
                             networkErrorDelegate.handleNetworkError(it)
                         }
@@ -135,19 +147,19 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
         }
     }
 
-    private fun isContentSame(newContent: String) : Boolean {
+    private fun isContentSame(newContent: String): Boolean {
         return _originalReview.value?.content?.let {
             it == newContent
         } ?: true
     }
 
-    private fun isGradeSame(newGrade: Float) : Boolean {
+    private fun isGradeSame(newGrade: Float): Boolean {
         return _originalReview.value?.grade?.let {
             it == newGrade
         } ?: true
     }
 
-    private fun getNewImages() : List<ReviewImage> {
+    private fun getNewImages(): List<ReviewImage> {
         val originalImageSize = _originalReview.value?.imageList?.size ?: 0
         val deletedImageSize = _deleteImgUrls.value?.size ?: 0
         val currentImageSize = _imageList.value?.size ?: 0

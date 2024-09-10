@@ -8,16 +8,21 @@ import android.os.Build
 import android.os.Bundle
 import android.os.ext.SdkExtensions
 import android.provider.Settings
+import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.schedule.ReviewImage
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityModifyScheduleReviewBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.setImage
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.toAbsolutePath
@@ -57,7 +62,7 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
             } else {
                 val permissionDialog = ConfirmDialog(
                     "권한 설정", "갤러리 이용을 위해 권한 설정이 필요합니다", "권한 설정"
-                ){
+                ) {
                     // 앱 설정 화면으로 이동
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", packageName, null)
@@ -72,6 +77,7 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
     private val binding: ActivityModifyScheduleReviewBinding by lazy {
         ActivityModifyScheduleReviewBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -79,12 +85,40 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
 
         val planId = intent.getLongExtra("planId", -1)
 
+        settingProgressBarVisibility()
+
         initToolbar()
         loadScheduleReview(planId)
 
         initReviewContentWatcher()
         settingImageRVAdapter()
         settingButtonClickListner()
+    }
+
+    private fun settingProgressBarVisibility() {
+        viewModel.resetNetworkState()
+
+        with(binding) {
+            lifecycleScope.launch {
+                viewModel.networkState.collectLatest { state ->
+                    when (state) {
+                        is NetworkState.Loading -> {
+                            progressBarMsr.visibility = View.VISIBLE
+                        }
+
+                        is NetworkState.Success -> {
+                            progressBarMsr.visibility = View.GONE
+                        }
+
+                        is NetworkState.Error -> {
+                            progressBarMsr.visibility = View.GONE
+                            val errorMsg = state.msg.replace("\n ".toRegex(), "\n")
+                            buttonMsrSubmit.showSnackbar(errorMsg)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun initToolbar() {
