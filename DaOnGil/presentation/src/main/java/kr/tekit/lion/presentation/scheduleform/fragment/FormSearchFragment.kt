@@ -54,8 +54,6 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
 
         val binding = FragmentFormSearchBinding.bind(view)
 
-//        viewModel.getBookmarkedPlaceList()
-
         initProgressBar(binding)
         initBookmarkList()
         initToolbar(binding)
