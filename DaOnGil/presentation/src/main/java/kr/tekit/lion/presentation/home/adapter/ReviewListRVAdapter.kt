@@ -1,15 +1,16 @@
 package kr.tekit.lion.presentation.home.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.placereviewlist.PlaceReview
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemDetailReviewBigBinding
+import kr.tekit.lion.presentation.report.ReportActivity
 
 class ReviewListRVAdapter(
     private val reviewList: List<PlaceReview>,
@@ -66,6 +67,15 @@ class ReviewListRVAdapter(
                 binding.itemDetailReviewBigReportBtn.visibility = View.VISIBLE
             }
 
+            binding.itemDetailReviewBigReportBtn.setOnClickListener {
+                val context = binding.root.context
+
+                val intent = Intent(context, ReportActivity::class.java).apply {
+                    putExtra("reviewType", "PlaceReview")
+                    putExtra("reviewId", review.reviewId.toLong())
+                }
+                context.startActivity(intent)
+            }
         }
     }
 }
