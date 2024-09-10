@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -15,6 +16,7 @@ import kr.tekit.lion.domain.model.schedule.NewScheduleReview
 import kr.tekit.lion.domain.model.schedule.ReviewImg
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +26,8 @@ class WriteScheduleReviewViewModel @Inject constructor (
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _briefSchedule = MutableLiveData<BriefScheduleInfo?>()
     val briefSchedule: LiveData<BriefScheduleInfo?> get() = _briefSchedule
@@ -85,9 +89,13 @@ class WriteScheduleReviewViewModel @Inject constructor (
         viewModelScope.launch {
             var requestFlag = false
             val success = try {
+                networkErrorDelegate.handleNetworkLoading()
+
                 planRepository.addNewScheduleReview(planId, reviewDetail, images)
                     .onSuccess {
                         requestFlag = true
+
+                        networkErrorDelegate.handleNetworkSuccess()
                     }
                     .onError {
                         networkErrorDelegate.handleNetworkError(it)
