@@ -87,7 +87,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeMainBinding.bind(view)
         val progressBar = binding.homeProgressbar
-      
+
         viewModel.checkAppTheme()
 
         repeatOnViewStarted {
@@ -132,33 +132,43 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 }
 
                 launch {
-                    viewModel.userActivationState.collect{
+                    viewModel.userActivationState.collect {
                         if (it) {
                             if (isDarkTheme(resources.configuration)) showThemeGuideDialog()
                             else showThemeSettingDialog()
                         }
-                 }
+                    }
+                }
             }
-        }
 
-        settingAppTheme(binding)
-        checkLocationPermission(binding)
-        settingVPAdapter(binding)
-        getRecommendPlaceInfo(binding)
-        settingSearchBanner(binding)
+            settingAppTheme(binding)
+            checkLocationPermission(binding)
+            settingVPAdapter(binding)
+            getRecommendPlaceInfo(binding)
+            settingSearchBanner(binding)
+        }
     }
 
-    private fun settingAppTheme(binding: FragmentHomeMainBinding){
-        childFragmentManager.setFragmentResultListener("negativeButtonClick", viewLifecycleOwner) { _, _ ->
+    private fun settingAppTheme(binding: FragmentHomeMainBinding) {
+        childFragmentManager.setFragmentResultListener(
+            "negativeButtonClick",
+            viewLifecycleOwner
+        ) { _, _ ->
             viewModel.onClickThemeChangeButton(AppTheme.SYSTEM)
         }
 
-        childFragmentManager.setFragmentResultListener("positiveButtonClick", viewLifecycleOwner) { _, _ ->
+        childFragmentManager.setFragmentResultListener(
+            "positiveButtonClick",
+            viewLifecycleOwner
+        ) { _, _ ->
             viewModel.onClickThemeChangeButton(AppTheme.HIGH_CONTRAST)
             startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
         }
 
-        childFragmentManager.setFragmentResultListener("completeButtonClick", viewLifecycleOwner) { _, _ ->
+        childFragmentManager.setFragmentResultListener(
+            "completeButtonClick",
+            viewLifecycleOwner
+        ) { _, _ ->
             viewModel.onClickThemeChangeButton(AppTheme.SYSTEM)
         }
 
@@ -216,7 +226,11 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             .build()
 
         binding.homeSearchBannerIv.setOnClickListener {
-            findNavController().navigate(R.id.action_homeMainFragment_to_searchPlaceMainFragment, null, navOptions)
+            findNavController().navigate(
+                R.id.action_homeMainFragment_to_searchPlaceMainFragment,
+                null,
+                navOptions
+            )
         }
     }
 
@@ -249,10 +263,12 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 startActivity(intent)
             })
         binding.homeRecommendRv.adapter = homeRecommendRVAdapter
-        binding.homeRecommendRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeRecommendRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         val itemCount = recommendPlaceList.size
-        val customPageIndicator = CustomPageIndicator(requireActivity(), binding.homeRecommendRvIndicator, itemCount)
+        val customPageIndicator =
+            CustomPageIndicator(requireActivity(), binding.homeRecommendRvIndicator, itemCount)
 
         if (snapHelper == null) {
             snapHelper = LinearSnapHelper()
@@ -290,7 +306,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
                     // 좌우 이동 조정 - 중앙에 가까운 아이템이 앞으로 나오는 효과
                     val translationXFactor = 0.25f * distanceFromCenter / centerX
-                    child.translationX = (if (childCenterX < centerX) translationXFactor else -translationXFactor) * child.width
+                    child.translationX =
+                        (if (childCenterX < centerX) translationXFactor else -translationXFactor) * child.width
 
                     if (distanceFromCenter < recyclerView.width / 2) {
                         itemBinding.touristRecommendDark.visibility = View.GONE
@@ -388,7 +405,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
                     Log.d("dasdascas", "onLocationResult 호출")
 
-                    for(i in 1..3) {
+                    for (i in 1..3) {
                         try {
                             val addresses = geocoder.getFromLocation(
                                 location.latitude, location.longitude, 1
