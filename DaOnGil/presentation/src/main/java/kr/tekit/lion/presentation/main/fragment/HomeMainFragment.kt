@@ -108,11 +108,14 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 }
 
                 launch {
+                  val progressBar = binding.homeProgressbar
+                  
                     viewModel.networkState.collectLatest { state ->
                         when (state) {
                             is NetworkState.Loading -> {
                                 progressBar.visibility = View.VISIBLE
                                 binding.homeMainLayout.visibility = View.GONE
+                                binding.homeErrorLayout.visibility = View.GONE
                             }
 
                             is NetworkState.Success -> {
