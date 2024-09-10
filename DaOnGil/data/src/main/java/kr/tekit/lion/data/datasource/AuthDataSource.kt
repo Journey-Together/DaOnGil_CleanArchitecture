@@ -33,4 +33,13 @@ internal class AuthDataSource @Inject constructor(
 
         if (refreshToken.isNotBlank()) authService.refresh(refreshToken) else null
     }
+
+    private suspend fun localLogout() {
+        dataStore.updateData {
+            it.copy(
+                accessToken = "",
+                refreshToken = "",
+            )
+        }
+    }
 }
