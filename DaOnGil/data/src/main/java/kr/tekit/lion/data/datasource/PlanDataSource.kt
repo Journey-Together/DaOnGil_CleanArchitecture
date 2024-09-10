@@ -84,7 +84,7 @@ internal class PlanDataSource @Inject constructor(
     }
 
     suspend fun getDetailScheduleInfoGuest(planId: Long): ScheduleDetailInfo {
-        return planService.getDetailScheduleInfo(planId).toDomainModel()
+        return planService.getDetailScheduleInfoGuest(planId).toDomainModel()
     }
 
     suspend fun getDetailScheduleReview(planId: Long): ScheduleDetailReview {
@@ -92,7 +92,7 @@ internal class PlanDataSource @Inject constructor(
     }
 
     suspend fun getDetailScheduleReviewGuest(planId: Long): ScheduleDetailReview {
-        return planService.getDetailScheduleReview(planId).toDomainModel()
+        return planService.getDetailScheduleReviewGuest(planId).toDomainModel()
     }
 
     suspend fun deleteMyPlanReview(reviewId: Long) {
