@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
@@ -36,7 +37,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.AppTheme
 import kr.tekit.lion.domain.model.mainplace.AroundPlace
 import kr.tekit.lion.domain.model.mainplace.RecommendPlace
@@ -53,7 +56,8 @@ import kr.tekit.lion.presentation.main.adapter.HomeRecommendRVAdapter
 import kr.tekit.lion.presentation.main.adapter.HomeVPAdapter
 import kr.tekit.lion.presentation.main.customview.CustomPageIndicator
 import kr.tekit.lion.presentation.main.customview.ItemOffsetDecoration
-import kr.tekit.lion.presentation.main.dialog.ModeSettingDialog
+import kr.tekit.lion.presentation.main.dialog.ThemeGuideDialog
+import kr.tekit.lion.presentation.main.dialog.ThemeSettingDialog
 import kr.tekit.lion.presentation.main.vm.home.HomeViewModel
 import java.io.IOException
 import java.util.Locale
@@ -83,56 +87,81 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeMainBinding.bind(view)
+        viewModel.checkAppTheme()
+
         repeatOnViewStarted {
-            launch {
-                viewModel.appTheme.collect {
-                    when (it) {
-                        AppTheme.LIGHT ->
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            supervisorScope {
+                launch {
+                    viewModel.appTheme.collect {
+                        when (it) {
+                            AppTheme.LIGHT ->
+                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-                        AppTheme.HIGH_CONTRAST ->
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                            AppTheme.HIGH_CONTRAST ->
+                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-                        AppTheme.SYSTEM ->
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-                    }
-                }
-            }
-
-            launch {
-                viewModel.networkState.collectLatest { state ->
-                    val progressBar = binding.homeProgressbar
-
-                    when (state) {
-                        is NetworkState.Loading -> {
-                            progressBar.visibility = View.VISIBLE
-                            binding.homeMainLayout.visibility = View.GONE
-                        }
-
-                        is NetworkState.Success -> {
-                            progressBar.visibility = View.GONE
-                            binding.homeMainLayout.visibility = View.VISIBLE
+                            AppTheme.SYSTEM ->
+                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                         }
                     }
                 }
+
+                launch {
+                    viewModel.networkState.collectLatest { state ->
+                        val progressBar = binding.homeProgressbar
+
+                        when (state) {
+                            is NetworkState.Loading -> {
+                                progressBar.visibility = View.VISIBLE
+                                binding.homeMainLayout.visibility = View.GONE
+                            }
+
+                            is NetworkState.Success -> {
+                                progressBar.visibility = View.GONE
+                                binding.homeMainLayout.visibility = View.VISIBLE
+                            }
+
+                            is NetworkState.Error -> {}
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.userActivationState.collect{
+                        if (it) {
+                            if (isDarkTheme(resources.configuration)) showThemeGuideDialog()
+                            else showThemeSettingDialog()
+                        }
+                    }
+                }
             }
         }
 
-        repeatOnViewStarted {
-            viewModel.userActivationState.collect{
-                if (it) showSettingDialog()
-            }
-        }
-
-        binding.homeHighcontrastBtn.setOnClickListener {
-            viewModel.onClickThemeToggleButton()
-            startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
-        }
-
+        settingAppTheme(binding)
         checkLocationPermission(binding)
         settingVPAdapter(binding)
         getRecommendPlaceInfo(binding)
         settingSearchBanner(binding)
+    }
+
+    private fun settingAppTheme(binding: FragmentHomeMainBinding){
+        childFragmentManager.setFragmentResultListener("negativeButtonClick", viewLifecycleOwner) { _, _ ->
+            viewModel.onClickThemeChangeButton(AppTheme.SYSTEM)
+        }
+
+        childFragmentManager.setFragmentResultListener("positiveButtonClick", viewLifecycleOwner) { _, _ ->
+            viewModel.onClickThemeChangeButton(AppTheme.HIGH_CONTRAST)
+            startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
+        }
+
+        childFragmentManager.setFragmentResultListener("completeButtonClick", viewLifecycleOwner) { _, _ ->
+            viewModel.onClickThemeChangeButton(AppTheme.SYSTEM)
+        }
+
+        binding.homeHighcontrastBtn.setOnClickListener {
+            viewModel.onClickThemeToggleButton(isDarkTheme(resources.configuration))
+            startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
+        }
     }
 
     private fun settingVPAdapter(binding: FragmentHomeMainBinding) {
@@ -283,20 +312,16 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         binding.homeMyLocationRv.adapter = homeLocationRVAdapter
     }
 
-    private fun showSettingDialog() {
-        val dialog = ModeSettingDialog.newInstance(
-            onNegativeClick = {
-                viewModel.onClickThemeChangeButton(AppTheme.LIGHT){}
-            },
-            onPositiveClick = {
-                viewModel.onClickThemeChangeButton(AppTheme.HIGH_CONTRAST){
-                    startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
-                }
-            }
-        )
-
+    private fun showThemeSettingDialog() {
+        val dialog = ThemeSettingDialog()
         dialog.isCancelable = false
-        dialog.show(parentFragmentManager, "ModeSettingDialog")
+        dialog.show(childFragmentManager, "ThemeSettingDialog")
+    }
+
+    private fun showThemeGuideDialog() {
+        val dialog = ThemeGuideDialog()
+        dialog.isCancelable = false
+        dialog.show(childFragmentManager, "ThemeGuideDialog")
     }
 
     private fun checkLocationPermission(binding: FragmentHomeMainBinding) {
@@ -451,5 +476,9 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 settingRecommendRVAdapter(binding, recommendPlaceList)
             }
         }
+    }
+
+    private fun isDarkTheme(configuration: Configuration): Boolean {
+        return (configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
 }
