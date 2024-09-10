@@ -45,6 +45,10 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
 
     private val _deleteImgUrls = MutableLiveData<List<String>>()
 
+    fun resetNetworkState() {
+        networkErrorDelegate.handleNetworkSuccess()
+    }
+
     fun addNewReviewImage(newImage: ReviewImage) {
         val currentImageList = _imageList.value?.toMutableList() ?: mutableListOf<ReviewImage>()
         currentImageList.add(newImage)

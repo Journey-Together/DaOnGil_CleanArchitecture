@@ -96,6 +96,8 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
     }
 
     private fun settingProgressBarVisibility() {
+        viewModel.resetNetworkState()
+
         with(binding) {
             lifecycleScope.launch {
                 viewModel.networkState.collectLatest { state ->
