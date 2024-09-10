@@ -121,8 +121,12 @@ class ModifyScheduleFormViewModel @Inject constructor(
 
     private fun getBookmarkedPlaceList() {
         viewModelScope.launch {
+            networkErrorDelegate.handleNetworkLoading()
+
             bookmarkRepository.getPlaceBookmarkList().onSuccess {
                 _bookmarkedPlaces.postValue(it)
+
+                networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
