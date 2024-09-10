@@ -9,15 +9,19 @@ import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.detailplace.Review
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemDetailReviewBigBinding
+import kr.tekit.lion.presentation.home.DetailActivity
 
-class DetailReviewRVAdapter(private val reviewList : List<Review>)
-    : RecyclerView.Adapter<DetailReviewRVAdapter.DetailReviewViewHolder>() {
+class DetailReviewRVAdapter(
+    private val reviewList: List<Review>,
+    private val activity: DetailActivity
+) : RecyclerView.Adapter<DetailReviewRVAdapter.DetailReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailReviewViewHolder {
-        val binding : ItemDetailReviewBigBinding = ItemDetailReviewBigBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false)
+        val binding: ItemDetailReviewBigBinding = ItemDetailReviewBigBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
 
-        return DetailReviewViewHolder(binding)
+        return DetailReviewViewHolder(binding, activity)
     }
 
     override fun getItemCount(): Int = reviewList.size
@@ -26,9 +30,11 @@ class DetailReviewRVAdapter(private val reviewList : List<Review>)
         holder.bind(reviewList[position])
     }
 
-    class DetailReviewViewHolder(private val binding : ItemDetailReviewBigBinding)
-        : RecyclerView.ViewHolder(binding.root) {
-        fun bind(reviewData : Review) {
+    class DetailReviewViewHolder(
+        private val binding: ItemDetailReviewBigBinding,
+        private val activity: DetailActivity
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(reviewData: Review) {
             with(binding) {
                 itemDetailReviewBigNickname.text = reviewData.nickname
                 itemDetailReviewBigContent.text = reviewData.content
@@ -43,10 +49,15 @@ class DetailReviewRVAdapter(private val reviewList : List<Review>)
                 if (reviewData.reviewImgs != null) {
                     itemDetailReviewBigRv.visibility = View.VISIBLE
 
-                    val reviewImageRVAdapter = ReviewImageRVAdapter(reviewData.reviewImgs!!)
+                    val reviewImageRVAdapter =
+                        ReviewImageRVAdapter(reviewData.reviewImgs!!, activity)
                     binding.itemDetailReviewBigRv.adapter = reviewImageRVAdapter
                     binding.itemDetailReviewBigRv.layoutManager =
-                        LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
+                        LinearLayoutManager(
+                            binding.root.context,
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
                 } else {
                     itemDetailReviewBigRv.visibility = View.GONE
                 }
