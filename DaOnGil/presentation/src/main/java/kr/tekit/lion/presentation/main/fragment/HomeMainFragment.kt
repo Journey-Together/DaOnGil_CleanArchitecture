@@ -140,13 +140,13 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                     }
                 }
             }
-
-            settingAppTheme(binding)
-            checkLocationPermission(binding)
-            settingVPAdapter(binding)
-            getRecommendPlaceInfo(binding)
-            settingSearchBanner(binding)
         }
+
+        settingAppTheme(binding)
+        checkLocationPermission(binding)
+        settingVPAdapter(binding)
+        getRecommendPlaceInfo(binding)
+        settingSearchBanner(binding)
     }
 
     private fun settingAppTheme(binding: FragmentHomeMainBinding) {
@@ -403,7 +403,6 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                    Log.d("dasdascas", "onLocationResult 호출")
 
                     for (i in 1..3) {
                         try {
