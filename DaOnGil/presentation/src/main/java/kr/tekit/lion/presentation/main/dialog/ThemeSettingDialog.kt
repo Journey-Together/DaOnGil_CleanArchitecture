@@ -4,26 +4,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.DialogModeSettingBinding
 
-class ModeSettingDialog : DialogFragment(R.layout.dialog_mode_setting) {
-
-    private lateinit var onNegativeButtonClick: () -> Unit
-    private lateinit var onPositiveButtonClick: () -> Unit
-
-    companion object {
-        fun newInstance(
-            onNegativeClick: () -> Unit,
-            onPositiveClick: () -> Unit
-        ): ModeSettingDialog {
-            val dialog = ModeSettingDialog()
-            dialog.onNegativeButtonClick = onNegativeClick
-            dialog.onPositiveButtonClick = onPositiveClick
-            return dialog
-        }
-    }
+class ThemeSettingDialog : DialogFragment(R.layout.dialog_mode_setting) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,13 +19,13 @@ class ModeSettingDialog : DialogFragment(R.layout.dialog_mode_setting) {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         binding.dialogModeNegativeBtn.setOnClickListener {
+            setFragmentResult("negativeButtonClick", bundleOf())
             dismiss()
-            onNegativeButtonClick()
         }
 
         binding.dialogModePositiveBtn.setOnClickListener {
+            setFragmentResult("positiveButtonClick", bundleOf())
             dismiss()
-            onPositiveButtonClick()
         }
     }
 }

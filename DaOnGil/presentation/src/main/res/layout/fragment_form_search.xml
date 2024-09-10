@@ -35,6 +35,7 @@
             app:backgroundTint="@color/primary_disabled" />
 
         <TextView
+            android:id="@+id/text_fs_bookmark_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_basic"
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_big3"
             android:paddingHorizontal="@dimen/margin_basic"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/text_fs_bookmark_empty"
@@ -64,6 +65,30 @@
             android:textSize="@dimen/font_big3"
             android:visibility="gone"
             app:drawableTopCompat="@drawable/onboarding_clover" />
+
+        <TextView
+            android:id="@+id/text_fs_bookmark_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center_horizontal"
+            android:lineSpacingMultiplier="1.5"
+            android:textAlignment="center"
+            android:textSize="@dimen/font_big1"
+            android:visibility="gone"
+            app:drawableTopCompat="@drawable/onboarding_clover" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_fs_bookmark"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:foregroundGravity="center"
+            android:indeterminateDrawable="@drawable/rotate_progress_bar"
+            android:visibility="visible" />
 
     </LinearLayout>
 
@@ -96,6 +121,28 @@
             android:textSize="@dimen/font_big3"
             android:visibility="gone"
             app:drawableTopCompat="@drawable/onboarding_clover" />
+
+        <TextView
+            android:id="@+id/text_fs_result_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="100dp"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center_horizontal"
+            android:lineSpacingMultiplier="1.5"
+            android:textAlignment="center"
+            android:textSize="@dimen/font_big1"
+            android:visibility="gone"
+            app:drawableTopCompat="@drawable/onboarding_clover" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_fs_result"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/rotate_progress_bar"
+            android:visibility="gone" />
 
     </com.google.android.material.search.SearchView>
 
