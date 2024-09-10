@@ -59,7 +59,6 @@ class ScheduleFormViewModel @Inject constructor(
 
     // 여행지 검색 화면 - 검색 결과 목록 + pageNo(0~), pageSize(itemSize), totalPages, last (t/f)
     private val _placeSearchResult = MutableLiveData<PlaceSearchResult>()
-//    val placeSearchResult : LiveData<PlaceSearchResult> get() = _placeSearchResult
 
     private val _keyword = MutableLiveData<String>()
 
@@ -339,6 +338,10 @@ class ScheduleFormViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun resetNetworkState(){
+        networkErrorDelegate.handleNetworkSuccess()
     }
 
     fun submitNewPlan(callback: (Boolean, Boolean) -> Unit) {
