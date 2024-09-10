@@ -8,7 +8,7 @@ import javax.inject.Inject
 internal class ReportDataSource @Inject constructor(
     private val reportService: ReportService
 ) {
-    suspend fun reportReview(reviewType: String, reportReviewReq: RequestBody) = execute {
-        reportService.reportReview(reviewType, reportReviewReq)
+    suspend fun reportReview(reviewType: String, requestBody: RequestBody) = execute {
+        reportService.reportReview(reviewType, requestBody)
     }
 }
