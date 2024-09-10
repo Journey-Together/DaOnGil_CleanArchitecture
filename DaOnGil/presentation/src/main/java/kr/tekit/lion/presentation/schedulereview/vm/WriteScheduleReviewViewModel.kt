@@ -41,6 +41,10 @@ class WriteScheduleReviewViewModel @Inject constructor (
     private val _numOfImages = MutableLiveData<Int>(0)
     val numOfImages: LiveData<Int> get() = _numOfImages
 
+    fun resetNetworkState() {
+        networkErrorDelegate.handleNetworkSuccess()
+    }
+
     fun getBriefScheduleInfo(planId: Long){
         viewModelScope.launch {
             planRepository.getBriefScheduleInfo(planId).onSuccess {
