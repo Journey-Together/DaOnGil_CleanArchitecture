@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.report.vm
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
