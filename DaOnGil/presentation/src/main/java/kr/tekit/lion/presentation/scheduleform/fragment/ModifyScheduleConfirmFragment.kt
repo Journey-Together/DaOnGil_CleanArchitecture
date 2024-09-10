@@ -7,7 +7,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
@@ -36,6 +35,9 @@ class ModifyScheduleConfirmFragment : Fragment(R.layout.fragment_modify_schedule
     }
 
     private fun settingProgressBarVisibility(binding: FragmentModifyScheduleConfirmBinding) {
+        // NetworkState의 기본값이 Loading 이기 때문에, ProgressBar가 보이지 않도록 Success로 바꿔준다
+        viewModel.resetNetworkState()
+
         with(binding) {
             lifecycleScope.launch {
                 viewModel.networkState.collectLatest { state ->

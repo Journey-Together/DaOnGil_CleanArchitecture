@@ -112,6 +112,10 @@ class ModifyScheduleFormViewModel @Inject constructor(
         _keyword.value = keyword
     }
 
+    fun resetNetworkState(){
+        networkErrorDelegate.handleNetworkSuccess()
+    }
+
     fun initBookmarkList(){
         val bookmark = _bookmarkedPlaces.value
         if(bookmark == null) {
@@ -249,6 +253,8 @@ class ModifyScheduleFormViewModel @Inject constructor(
 
         if (keyword != null) {
             viewModelScope.launch {
+                networkErrorDelegate.handleNetworkLoading()
+
                 planRepository.getPlaceSearchResult(keyword, page + 1)
                     .onSuccess {
                         if (isNewRequest) {
@@ -259,6 +265,8 @@ class ModifyScheduleFormViewModel @Inject constructor(
                             val updatedResult = it.copy(placeInfoList = newList)
                             _placeSearchResult.value = updatedResult
                         }
+
+                        networkErrorDelegate.handleNetworkSuccess()
                     }.onError {
                         networkErrorDelegate.handleNetworkError(it)
                     }
