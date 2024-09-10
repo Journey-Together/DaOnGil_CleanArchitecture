@@ -17,6 +17,7 @@ import kr.tekit.lion.data.repository.PharmacyRepositoryImpl
 import kr.tekit.lion.data.repository.PlaceRepositoryImpl
 import kr.tekit.lion.data.repository.PlanRepositoryImpl
 import kr.tekit.lion.data.repository.RecentlySearchKeywordRepositoryImpl
+import kr.tekit.lion.data.repository.ReportRepositoryImpl
 import kr.tekit.lion.data.repository.SigunguCodeRepositoryImpl
 import kr.tekit.lion.domain.repository.AedRepository
 import kr.tekit.lion.domain.repository.AppThemeRepository
@@ -31,6 +32,7 @@ import kr.tekit.lion.domain.repository.PharmacyRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
+import kr.tekit.lion.domain.repository.ReportRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 
 @Module
@@ -80,4 +82,6 @@ internal interface RepositoryModule {
     @Binds
     fun bindPlanRepository(planRepositoryImpl: PlanRepositoryImpl): PlanRepository
 
+    @Binds
+    fun bindReportRepository(reportRepositoryImpl: ReportRepositoryImpl): ReportRepository
 }
