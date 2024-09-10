@@ -15,10 +15,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.schedule.NewScheduleReview
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityWriteScheduleReviewBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.setImage
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.toAbsolutePath
@@ -30,7 +34,7 @@ import kr.tekit.lion.presentation.schedulereview.vm.WriteScheduleReviewViewModel
 @AndroidEntryPoint
 class WriteScheduleReviewActivity : AppCompatActivity() {
 
-    private val viewModel : WriteScheduleReviewViewModel by viewModels ()
+    private val viewModel: WriteScheduleReviewViewModel by viewModels()
 
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -60,7 +64,7 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
                     "권한 설정",
                     "갤러리 이용을 위해 권한 설정이 필요합니다",
                     "권한 설정",
-                ){
+                ) {
                     // 앱 설정 화면으로 이동
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", packageName, null)
@@ -72,15 +76,18 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
             }
         }
 
-    private val binding : ActivityWriteScheduleReviewBinding by lazy {
+    private val binding: ActivityWriteScheduleReviewBinding by lazy {
         ActivityWriteScheduleReviewBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
 
         val planId = intent.getLongExtra("planId", -1)
+
+        settingProgressBarVisibility()
 
         initToolbar()
         initView(planId)
@@ -89,12 +96,35 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
         settingButtonClickListener(planId)
     }
 
-    private fun initToolbar(){
+    private fun settingProgressBarVisibility() {
+        with(binding) {
+            lifecycleScope.launch {
+                viewModel.networkState.collectLatest { state ->
+                    when(state) {
+                        is NetworkState.Loading -> {
+                            progressBarWsr.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Success -> {
+                            progressBarWsr.visibility = View.GONE
+                        }
+                        is NetworkState.Error -> {
+                            progressBarWsr.visibility = View.GONE
+                            val errorMsg = state.msg.replace("\n ".toRegex(), "\n")
+                            buttonWsrSubmit.showSnackbar(errorMsg)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initToolbar() {
         binding.toolbarWriteScheduleReview.setNavigationOnClickListener {
             setResult(RESULT_CANCELED)
             finish()
         }
     }
+
     private fun initView(planId: Long) {
         viewModel.getBriefScheduleInfo(planId)
         viewModel.briefSchedule.observe(this@WriteScheduleReviewActivity) { briefSchedule ->
@@ -111,7 +141,7 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
                 )
             }
         }
-        viewModel.numOfImages.observe(this@WriteScheduleReviewActivity){ numOfImgs ->
+        viewModel.numOfImages.observe(this@WriteScheduleReviewActivity) { numOfImgs ->
             binding.apply {
                 textWsrPhotoNum.text = getString(R.string.text_num_of_images, numOfImgs)
             }
@@ -119,18 +149,18 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
     }
 
     private fun settingImageRVAdapter() {
-        viewModel.imageUriList.observe(this){ imageUriList ->
-            val scheduleReviewImageAdapter = WriteReviewImageAdapter(imageUriList){ position ->
+        viewModel.imageUriList.observe(this) { imageUriList ->
+            val scheduleReviewImageAdapter = WriteReviewImageAdapter(imageUriList) { position ->
                 viewModel.removeReviewImageFromList(position)
             }
             binding.recyclerViewWsrPhotos.adapter = scheduleReviewImageAdapter
         }
     }
 
-    private fun settingButtonClickListener(planId: Long){
+    private fun settingButtonClickListener(planId: Long) {
         binding.apply {
             buttonWsrAddPhoto.setOnClickListener {
-                if(!viewModel.isMoreImageAttachable()){
+                if (!viewModel.isMoreImageAttachable()) {
                     it.showSnackbar("사진은 최대 4개까지 첨부할 수 있습니다")
                     return@setOnClickListener
                 }
@@ -166,9 +196,9 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveImageDataAndPath(uri: Uri){
+    private fun saveImageDataAndPath(uri: Uri) {
         val imagePath = toAbsolutePath(uri)
-        if(imagePath!=null){
+        if (imagePath != null) {
             viewModel.addNewReviewImage(uri, imagePath)
         }
     }
@@ -207,7 +237,7 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
     }
 
     private fun isReviewValid(): Boolean {
-        with(binding){
+        with(binding) {
             val isPrivateOrPublic = radioGroupWsrPublicScope.checkedRadioButtonId
             if (isPrivateOrPublic == View.NO_ID) {
                 radioGroupWsrPublicScope.showSnackbar("여행 일정 공개 범주를 선택해주세요")
@@ -215,7 +245,7 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
             }
 
             val reviewContent = editWsrContent.text.toString()
-            if(reviewContent.isBlank()){
+            if (reviewContent.isBlank()) {
                 textInputWsrContent.error = getString(R.string.text_warning_review_content_empty)
                 return false
             }
@@ -224,7 +254,7 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
     }
 
     private fun initReviewContentWatcher() {
-        with(binding){
+        with(binding) {
             editWsrContent.addTextChangedListener {
                 textInputWsrContent.error = null
             }
