@@ -63,7 +63,7 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.detailDisabilityInfoRv.layoutManager = LinearLayoutManager(applicationContext)
     }
 
-    private fun settingReviewRVAdapter(reviewList: List<Review>) {
+    private fun settingReviewRVAdapter(reviewList: List<Review>, loginState: Boolean) {
         if (reviewList.isEmpty()) {
             binding.detailReviewRv.visibility = View.GONE
             binding.detailNoReviewTv.visibility = View.VISIBLE
@@ -72,7 +72,7 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.detailReviewRv.visibility = View.VISIBLE
             binding.detailNoReviewTv.visibility = View.GONE
 
-            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList)
+            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList, loginState)
             binding.detailReviewRv.adapter = detailReviewRVAdapter
             binding.detailReviewRv.layoutManager = LinearLayoutManager(applicationContext)
         }
@@ -139,10 +139,11 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         longitude: Double,
         latitude: Double,
         category: String,
-        subDisability: List<SubDisability>?
+        subDisability: List<SubDisability>?,
+        loginState: Boolean
     ) {
         reviewList?.let {
-            settingReviewRVAdapter(it)
+            settingReviewRVAdapter(it, loginState)
 
             val myReview = it.filter { review -> review.myReview }
 
@@ -214,7 +215,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 detailPlaceInfo.longitude.toDouble(),
                 detailPlaceInfo.latitude.toDouble(),
                 detailPlaceInfo.category,
-                detailPlaceInfo.subDisability
+                detailPlaceInfo.subDisability,
+                true
             )
 
             updateBookmarkState(detailPlaceInfo.isMark)
@@ -264,7 +266,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 detailPlaceInfoGuest.longitude.toDouble(),
                 detailPlaceInfoGuest.latitude.toDouble(),
                 detailPlaceInfoGuest.category,
-                detailPlaceInfoGuest.subDisability
+                detailPlaceInfoGuest.subDisability,
+                false
             )
             binding.detailBookmarkBtn.visibility = View.GONE
             binding.detailWriteReviewBtn.visibility = View.GONE
