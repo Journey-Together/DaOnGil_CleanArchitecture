@@ -28,6 +28,12 @@ internal class AuthDataSource @Inject constructor(
         authService.signIn(type = type, token = token)
     }
 
+    suspend fun logout(): Result<Unit> = runCatching {
+        val accessToken = data.map { it.accessToken }.first()
+        localLogout()
+        authService.signOut("Bearer $accessToken")
+    }
+
     suspend fun refresh(): Result<SignUpResponse?> = runCatching {
         val refreshToken = data.map { it.refreshToken }.first()
 
