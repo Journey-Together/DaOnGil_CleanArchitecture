@@ -37,7 +37,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.AppTheme
@@ -386,13 +385,12 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
                     for(i in 1..3) {
                         try {
-                            val addresses =
-                                geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                            val addresses = geocoder.getFromLocation(
+                                location.latitude, location.longitude, 1
+                            )
                             val address = addresses?.get(0)?.getAddressLine(0)
 
-                            //val (area, sigungu) = splitAddress(address!!)
-                            val area = "인천광역시"
-                            val sigungu = "연수구"
+                            val (area, sigungu) = splitAddress(address!!)
                             binding.homeMyLocationTv.text = "$area $sigungu"
 
                             getAroundPlaceInfo(binding, area, sigungu)
