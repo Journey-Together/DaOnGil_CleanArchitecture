@@ -14,7 +14,9 @@ import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.scheduleform.ScheduleFormActivity
 import kr.tekit.lion.presentation.databinding.FragmentScheduleMainBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.adapter.ScheduleMyAdapter
@@ -87,6 +89,31 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                         isUser = false
                         binding.textViewMyScheduleMore.visibility = View.INVISIBLE
                         showAddSchedulePrompt(binding)
+                    }
+                }
+            }
+        }
+
+        with(binding) {
+            repeatOnViewStarted {
+                viewModel.networkState.collect { networkState ->
+                    when (networkState) {
+                        is NetworkState.Loading -> {
+                            scheduleMainProgressBar.visibility = View.VISIBLE
+                            scheduleMainErrorLayout.visibility = View.GONE
+                            scheduleMainLayout.visibility = View.GONE
+                        }
+                        is NetworkState.Success -> {
+                            scheduleMainProgressBar.visibility = View.GONE
+                            scheduleMainErrorLayout.visibility = View.GONE
+                            scheduleMainLayout.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Error -> {
+                            scheduleMainProgressBar.visibility = View.GONE
+                            scheduleMainErrorLayout.visibility = View.VISIBLE
+                            scheduleMainLayout.visibility = View.GONE
+                            scheduleMainErrorMsg.text = networkState.msg
+                        }
                     }
                 }
             }
