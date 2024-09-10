@@ -6,11 +6,14 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.myschedule.adapter.MyScheduleElapsedAdapter
 import kr.tekit.lion.presentation.myschedule.adapter.MyScheduleUpcomingAdapter
 import kr.tekit.lion.presentation.databinding.ActivityMyScheduleBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.myschedule.vm.MyScheduleViewModel
@@ -73,10 +76,37 @@ class MyScheduleActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        initProgressBarState()
+
         settingToolbar()
         settingMyScheduleTab()
         settingUpcomingScheduleAdapter()
+    }
 
+    private fun initProgressBarState() {
+        with(binding) {
+            lifecycleScope.launch {
+                viewModel.networkState.collect { state ->
+                    when(state){
+                        is NetworkState.Loading -> {
+                            progressBarMySchedule.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Success -> {
+                            progressBarMySchedule.visibility = View.GONE
+                        }
+                        is NetworkState.Error -> {
+                            progressBarMySchedule.visibility = View.GONE
+                            tabLayoutMySchedule.visibility = View.GONE
+                            recyclerViewMyScheduleList.visibility = View.GONE
+                            textMyScheduleError.apply {
+                                text = state.msg
+                                visibility = View.VISIBLE
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun settingToolbar() {

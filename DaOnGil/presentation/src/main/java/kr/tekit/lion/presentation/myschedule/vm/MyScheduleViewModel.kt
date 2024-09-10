@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -12,6 +13,7 @@ import kr.tekit.lion.domain.model.schedule.MyElapsedScheduleInfo
 import kr.tekit.lion.domain.model.schedule.MyUpcomingScheduleInfo
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import javax.inject.Inject
 
 private const val INITIAL_PAGE_NO = 0
@@ -23,6 +25,7 @@ class MyScheduleViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _upcomingSchedules = MutableLiveData<List<MyUpcomingScheduleInfo>?>()
     val upcomingSchedules: LiveData<List<MyUpcomingScheduleInfo>?> get() = _upcomingSchedules
@@ -52,6 +55,10 @@ class MyScheduleViewModel @Inject constructor(
     private fun getMyUpcomingScheduleList(page: Int) {
         setUpcomingPageNo(page)
         viewModelScope.launch {
+
+            // networkState =  Loading
+            networkErrorDelegate.handleNetworkLoading()
+
             planRepository.getMyUpcomingScheduleList(page)
                 .onSuccess {
                     val newList = if(page == INITIAL_PAGE_NO){
@@ -61,6 +68,10 @@ class MyScheduleViewModel @Inject constructor(
                     }
                     _upcomingSchedules.value = newList
                     _isLastUpcoming.value = it.last
+
+                    // networkState = Success
+                    networkErrorDelegate.handleNetworkSuccess()
+
                 }.onError {
                     networkErrorDelegate.handleNetworkError(it)
                 }

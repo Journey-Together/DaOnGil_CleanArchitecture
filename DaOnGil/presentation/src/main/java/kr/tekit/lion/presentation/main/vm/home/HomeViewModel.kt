@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.main.vm.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,8 +42,6 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             checkUserActivation()
-            val theme = appThemeRepository.getAppTheme()
-            _appTheme.value = theme
         }
     }
 
@@ -50,7 +49,7 @@ class HomeViewModel @Inject constructor(
     lateinit var networkErrorDelegate: NetworkErrorDelegate
     val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
-    private val _appTheme = MutableStateFlow(AppTheme.LIGHT)
+    private val _appTheme = MutableStateFlow(AppTheme.SYSTEM)
     val appTheme = _appTheme.asStateFlow()
 
     private val _aroundPlaceInfo = MutableLiveData<List<AroundPlace>>()
@@ -61,6 +60,11 @@ class HomeViewModel @Inject constructor(
 
     private val _userActivationState = MutableSharedFlow<Boolean>()
     val userActivationState = _userActivationState.asSharedFlow()
+
+    fun checkAppTheme() = viewModelScope.launch{
+        val appTheme = appThemeRepository.getAppTheme()
+        _appTheme.value = appTheme
+    }
 
     private fun checkUserActivation() {
         viewModelScope.launch {
@@ -78,16 +82,24 @@ class HomeViewModel @Inject constructor(
     }
 
     // 상단 테마 토글 버튼 클릭시
-    fun onClickThemeToggleButton() {
-        val newAppTheme = if (_appTheme.value == AppTheme.LIGHT) AppTheme.HIGH_CONTRAST else AppTheme.LIGHT
+    fun onClickThemeToggleButton(isDarkTheme: Boolean) {
+
+        val newAppTheme = when(_appTheme.value){
+            AppTheme.LIGHT -> AppTheme.HIGH_CONTRAST
+            AppTheme.HIGH_CONTRAST -> AppTheme.LIGHT
+            AppTheme.SYSTEM -> {
+                if (isDarkTheme) AppTheme.LIGHT else AppTheme.HIGH_CONTRAST
+            }
+        }
+
         setAppTheme(newAppTheme)
     }
 
     // 테마 설정 다이얼로그 클릭시
-    fun onClickThemeChangeButton(theme: AppTheme, onSuccess: () -> Unit) = viewModelScope.launch {
+    fun onClickThemeChangeButton(theme: AppTheme) = viewModelScope.launch {
+        Log.d("idasdw", "theme : $theme")
         setAppTheme(theme)
         activationRepository.saveUserActivation(false)
-        onSuccess()
     }
 
     fun getPlaceMain(area: String, sigungu: String) = viewModelScope.launch(Dispatchers.IO) {
