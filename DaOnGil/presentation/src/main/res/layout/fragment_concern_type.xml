@@ -181,6 +181,7 @@
         android:id="@+id/concernTypeErrorLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -198,9 +199,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_big4"
-            android:lineSpacingMultiplier="1.2"
             android:fontFamily="@font/cafe24_oneprettynight"
             android:gravity="center"
+            android:lineSpacingMultiplier="1.2"
             android:text="TextView"
             android:textSize="@dimen/font_big1" />
     </LinearLayout>
