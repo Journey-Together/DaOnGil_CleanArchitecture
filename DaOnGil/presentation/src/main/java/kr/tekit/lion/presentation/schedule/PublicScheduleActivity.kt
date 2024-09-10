@@ -3,11 +3,16 @@ package kr.tekit.lion.presentation.schedule
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityPublicScheduleBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.gridAddOnScrollEndListener
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.schedule.adapter.PublicScheduleAdapter
 import kr.tekit.lion.presentation.schedule.vm.PublicScheduleViewModel
 
@@ -35,6 +40,31 @@ class PublicScheduleActivity : AppCompatActivity() {
         initToolbar()
         initPublicScheduleRecyclerView()
         scrollPublicSchedule()
+
+        with(binding) {
+            lifecycleScope.launch {
+                viewModel.networkState.collect { networkState ->
+                    when (networkState) {
+                        is NetworkState.Loading -> {
+                            publicScheduleProgressBar.visibility = View.VISIBLE
+                            publicScheduleErrorLayout.visibility = View.GONE
+                            recyclerViewPublicScheduleList.visibility = View.GONE
+                        }
+                        is NetworkState.Success -> {
+                            publicScheduleProgressBar.visibility = View.GONE
+                            publicScheduleErrorLayout.visibility = View.GONE
+                            recyclerViewPublicScheduleList.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Error -> {
+                            publicScheduleProgressBar.visibility = View.GONE
+                            publicScheduleErrorLayout.visibility = View.VISIBLE
+                            recyclerViewPublicScheduleList.visibility = View.GONE
+                            publicScheduleErrorMsg.text = networkState.msg
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun initToolbar() {
