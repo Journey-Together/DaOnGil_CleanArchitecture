@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.flexbox.AlignItems
@@ -13,8 +14,12 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentFormSearchBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
@@ -22,6 +27,7 @@ import kr.tekit.lion.presentation.scheduleform.adapter.FormBookmarkedPlacesAdapt
 import kr.tekit.lion.presentation.scheduleform.adapter.FormSearchResultAdapter
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 
+@AndroidEntryPoint
 class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
     private val args: FormSearchFragmentArgs by navArgs()
     private val viewModel: ScheduleFormViewModel by activityViewModels()
@@ -48,12 +54,72 @@ class FormSearchFragment : Fragment(R.layout.fragment_form_search) {
 
         val binding = FragmentFormSearchBinding.bind(view)
 
+//        viewModel.getBookmarkedPlaceList()
+
+        initProgressBar(binding)
+        initBookmarkList()
         initToolbar(binding)
 
         settingBookmarkedRV(binding, schedulePosition)
         settingSearchResultRV(binding)
         settingPlaceSearchView(binding)
 
+    }
+
+    private fun initBookmarkList(){
+        viewModel.initBookmarkList()
+    }
+
+    private fun initProgressBar(binding: FragmentFormSearchBinding) {
+        with(binding) {
+            lifecycleScope.launch {
+                viewModel.networkState.collectLatest { state ->
+
+                    when(state){
+                        is NetworkState.Loading -> {
+                            // SeachView가 화면에 표시되고 있는 지 확인
+                            val searchViewVisibility = searchViewFsResult.isShowing
+
+                            if(searchViewVisibility){
+                                textFsResultError.visibility = View.GONE
+                                progressBarFsResult.visibility = View.VISIBLE
+                            }else{
+                                progressBarFsBookmark.visibility = View.VISIBLE
+                            }
+                        }
+                        is NetworkState.Success -> {
+                            val searchViewVisibility = searchViewFsResult.isShowing
+                            if(searchViewVisibility){
+                                // 이전에 오류가 난 경우를 대비하여 에러메시지도 숨김처리
+                                textFsResultError.visibility = View.GONE
+                                progressBarFsResult.visibility = View.GONE
+                            }else{
+                                progressBarFsBookmark.visibility = View.GONE
+                                recyclerViewFsBookmark.visibility = View.VISIBLE
+                            }
+                        }
+                        is NetworkState.Error -> {
+                            val searchViewVisibility = searchViewFsResult.isShowing
+                            if(searchViewVisibility){
+                                progressBarFsResult.visibility = View.GONE
+                                recyclerViewFsResult.visibility = View.GONE
+                                textFsResultError.apply {
+                                    text = state.msg
+                                    visibility = View.VISIBLE
+                                }
+                            }else{
+                                progressBarFsBookmark.visibility = View.GONE
+                                recyclerViewFsBookmark.visibility = View.GONE
+                                textFsBookmarkError.apply {
+                                    text = state.msg
+                                    visibility = View.VISIBLE
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun initToolbar(binding: FragmentFormSearchBinding) {
