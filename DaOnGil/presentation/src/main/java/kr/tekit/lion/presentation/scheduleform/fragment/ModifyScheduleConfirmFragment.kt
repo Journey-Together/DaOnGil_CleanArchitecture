@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentModifyScheduleConfirmBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
@@ -25,8 +29,32 @@ class ModifyScheduleConfirmFragment : Fragment(R.layout.fragment_modify_schedule
 
         val binding = FragmentModifyScheduleConfirmBinding.bind(view)
 
+        settingProgressBarVisibility(binding)
+
         initToolbar(binding)
         initView(binding)
+    }
+
+    private fun settingProgressBarVisibility(binding: FragmentModifyScheduleConfirmBinding) {
+        with(binding) {
+            lifecycleScope.launch {
+                viewModel.networkState.collectLatest { state ->
+                    when(state){
+                        is NetworkState.Loading -> {
+                            progressBarModifyConfirm.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Success -> {
+                            progressBarModifyConfirm.visibility = View.GONE
+                        }
+                        is NetworkState.Error -> {
+                            progressBarModifyConfirm.visibility = View.GONE
+                            buttonModifyFormSubmit.showSnackbar(state.msg)
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     private fun initToolbar(binding: FragmentModifyScheduleConfirmBinding) {

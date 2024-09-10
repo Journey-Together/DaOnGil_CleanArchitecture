@@ -385,9 +385,14 @@ class ModifyScheduleFormViewModel @Inject constructor(
             var requestFlag = false
 
             viewModelScope.launch {
+                networkErrorDelegate.handleNetworkLoading()
+
                 val success = try {
                     planRepository.modifySchedule(planId, revisedPlan).onSuccess {
                         requestFlag = true
+
+                        networkErrorDelegate.handleNetworkSuccess()
+
                     }.onError {
                         networkErrorDelegate.handleNetworkError(it)
                     }
