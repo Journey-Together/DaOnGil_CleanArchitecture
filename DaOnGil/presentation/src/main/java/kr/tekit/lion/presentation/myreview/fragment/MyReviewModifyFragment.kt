@@ -133,7 +133,11 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
     private fun settingToolbar(binding: FragmentMyReviewModifyBinding) {
         binding.toolbarMyReviewModify.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            if (viewModel.isFromDetail.value == true) {
+                requireActivity().finish()
+            } else {
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -163,9 +167,13 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
                 viewModel.updateMyPlaceReview(viewModel.reviewData.value?.reviewId ?:0, grade, date!!, content)
 
-                requireContext().showSnackbar(requireView(), "여행지 후기가 수정되었습니다.")
+                if(viewModel.isFromDetail.value == true) {
+                    requireActivity().finish()
+                } else {
+                    requireContext().showSnackbar(requireView(), "여행지 후기가 수정되었습니다.")
 
-                findNavController().popBackStack()
+                    findNavController().popBackStack()
+                }
             }
         }
     }

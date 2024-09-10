@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.exception.onError
@@ -29,6 +30,8 @@ class ConcernTypeViewModel @Inject constructor(
     private val _concernType = MutableLiveData<ConcernType>()
     val concernType: LiveData<ConcernType> = _concernType
 
+    val networkState get() = networkErrorDelegate.networkState
+
     init {
         val userNickName = savedStateHandle.get<String>("nickName") ?: ""
         _nickName.value = userNickName
@@ -39,6 +42,7 @@ class ConcernTypeViewModel @Inject constructor(
     private fun getConcernType() = viewModelScope.launch {
         memberRepository.getConcernType().onSuccess {
             _concernType.value = it
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }

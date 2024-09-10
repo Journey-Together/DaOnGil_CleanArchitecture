@@ -2,6 +2,7 @@ package kr.tekit.lion.presentation.home.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kr.tekit.lion.domain.model.MyPlaceReviewInfo
 import kr.tekit.lion.domain.model.detailplace.Review
 import java.time.LocalDate
 
@@ -29,5 +30,17 @@ fun Review.toReviewInfo(placeName: String): ReviewInfo {
         date = this.date,
         myReview = this.myReview,
         placeName = placeName
+    )
+}
+
+fun ReviewInfo.toMyPlaceReviewInfo(): MyPlaceReviewInfo {
+    return MyPlaceReviewInfo(
+        reviewId = this.reviewId,
+        placeId = 0,
+        grade = this.grade,
+        name = this.placeName,
+        date = this.date,
+        images = this.reviewImgs ?: emptyList(),
+        content = this.content
     )
 }

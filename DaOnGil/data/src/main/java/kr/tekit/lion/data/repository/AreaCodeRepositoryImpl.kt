@@ -14,7 +14,7 @@ internal class AreaCodeRepositoryImpl @Inject constructor(
 ) : AreaCodeRepository {
 
     // 이름으로 지역코드 검색
-    override suspend fun getAreaCodeByName(areaName: String): String? {
+    override fun getAreaCodeByName(areaName: String): String? {
         return areaCodeDataSource.getAreaCodeInfo(areaName)
     }
 

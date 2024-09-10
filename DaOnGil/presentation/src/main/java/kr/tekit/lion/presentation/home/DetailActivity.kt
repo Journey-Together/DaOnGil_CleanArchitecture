@@ -116,10 +116,11 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun settingModifyBtn(review: Review, placeName: String) {
 
         binding.detailModifyReviewBtn.setOnClickListener {
-            val intent = Intent(this, MyReviewActivity::class.java)
-            val reviewInfo = review.toReviewInfo(placeName)
-            intent.putExtra("reviewInfo", reviewInfo)
-
+            val intent = Intent(this, MyReviewActivity::class.java).apply {
+                val reviewInfo = review.toReviewInfo(placeName)
+                putExtra("reviewInfo", reviewInfo)
+                putExtra("isModifyFromDetail", true)
+            }
             startActivity(intent)
         }
 

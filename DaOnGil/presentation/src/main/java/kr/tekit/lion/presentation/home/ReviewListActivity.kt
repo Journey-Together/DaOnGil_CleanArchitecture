@@ -21,8 +21,8 @@ import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
 class ReviewListActivity : AppCompatActivity() {
-    private val viewModel : ReviewListViewModel by viewModels()
-    private val binding : ActivityReviewListBinding by lazy {
+    private val viewModel: ReviewListViewModel by viewModels()
+    private val binding: ActivityReviewListBinding by lazy {
         ActivityReviewListBinding.inflate(layoutInflater)
     }
 
@@ -72,11 +72,12 @@ class ReviewListActivity : AppCompatActivity() {
             dialog.isCancelable = false
             dialog.show(supportFragmentManager, "PlaceReviewListDialog")
         }
+
         binding.reviewListRv.adapter = reviewListRVAdapter
         binding.reviewListRv.layoutManager = LinearLayoutManager(applicationContext)
     }
 
-    private fun getReviewListInfo(placeId : Long) {
+    private fun getReviewListInfo(placeId: Long) {
         viewModel.getPlaceReview(placeId)
 
         binding.reviewListRv.addOnScrollEndListener {
@@ -88,7 +89,7 @@ class ReviewListActivity : AppCompatActivity() {
         viewModel.placeReviewInfo.observe(this@ReviewListActivity) { placeReviewInfo ->
             binding.reviewListTitleTv.text = placeReviewInfo.placeName
             binding.reviewListAddressTv.text = placeReviewInfo.placeAddress
-            binding.reviewListCount2Tv.text = placeReviewInfo.placeReviewList.size.toString()
+            binding.reviewListCount2Tv.text = placeReviewInfo.reviewNum.toString()
 
             Glide.with(binding.reviewListThumbnailIv)
                 .load(placeReviewInfo.placeImg)
@@ -99,7 +100,7 @@ class ReviewListActivity : AppCompatActivity() {
         }
     }
 
-    private fun getReviewListInfoGuest(placeId : Long) {
+    private fun getReviewListInfoGuest(placeId: Long) {
         viewModel.getPlaceReviewGuest(placeId)
 
         binding.reviewListRv.addOnScrollEndListener {
@@ -111,7 +112,7 @@ class ReviewListActivity : AppCompatActivity() {
         viewModel.placeReviewInfo.observe(this@ReviewListActivity) { placeReviewInfo ->
             binding.reviewListTitleTv.text = placeReviewInfo.placeName
             binding.reviewListAddressTv.text = placeReviewInfo.placeAddress
-            binding.reviewListCount2Tv.text = placeReviewInfo.placeReviewList.size.toString()
+            binding.reviewListCount2Tv.text = placeReviewInfo.reviewNum.toString()
 
             Glide.with(binding.reviewListThumbnailIv)
                 .load(placeReviewInfo.placeImg)

@@ -14,7 +14,8 @@ import java.io.OutputStream
 internal data class AppSettings(
     val accessToken: String = "",
     val refreshToken: String = "",
-    val appTheme: AppTheme = AppTheme.LIGHT
+    val activation: Boolean = true,
+    val appTheme: AppTheme = AppTheme.SYSTEM
 )
 
 internal object AppSettingsSerializer: Serializer<AppSettings> {

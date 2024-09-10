@@ -17,9 +17,6 @@ import kr.tekit.lion.domain.exception.UnknownHostError
 import javax.inject.Inject
 
 class NetworkErrorDelegate @Inject constructor() {
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> get() = _errorMessage.asStateFlow()
-
     private val _networkState = MutableStateFlow<NetworkState>(NetworkState.Loading)
     val networkState: StateFlow<NetworkState> get() = _networkState.asStateFlow()
 
@@ -37,12 +34,11 @@ class NetworkErrorDelegate @Inject constructor() {
             }
             is UnknownError -> "${UnknownError.title} \n ${UnknownError.message}"
         }
-        _errorMessage.value = errorState
+        _networkState.value = NetworkState.Error(errorState)
     }
 
     fun handleNetworkSuccess(){
         _networkState.value = NetworkState.Success
-        _errorMessage.value = null
     }
 
     fun handleNetworkLoading(){
@@ -53,4 +49,5 @@ class NetworkErrorDelegate @Inject constructor() {
 sealed class NetworkState{
     data object Loading: NetworkState()
     data object Success: NetworkState()
+    data class Error(val msg: String): NetworkState()
 }

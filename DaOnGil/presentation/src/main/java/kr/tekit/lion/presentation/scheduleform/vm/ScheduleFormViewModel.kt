@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -21,6 +22,7 @@ import kr.tekit.lion.domain.repository.BookmarkRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addDays
 import kr.tekit.lion.presentation.ext.calculateDaysUntilEndDate
 import kr.tekit.lion.presentation.ext.formatDateValue
@@ -37,6 +39,8 @@ class ScheduleFormViewModel @Inject constructor(
 ) : ViewModel() {
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _startDate = MutableLiveData<Date?>()
     val startDate: LiveData<Date?> get() = _startDate
@@ -70,10 +74,6 @@ class ScheduleFormViewModel @Inject constructor(
         }
     }
     val searchResultsWithNum: LiveData<List<PlaceSearchInfoList>> get() = _searchResultsWithNum
-
-    init {
-        getBookmarkedPlaceList()
-    }
 
     fun setStartDate(startDate: Date?) {
         _startDate.value = startDate
@@ -190,6 +190,8 @@ class ScheduleFormViewModel @Inject constructor(
 
         if (keyword != null) {
             viewModelScope.launch {
+                networkErrorDelegate.handleNetworkLoading()
+
                 planRepository.getPlaceSearchResult(keyword, page + 1)
                     .onSuccess {
                         if (isNewRequest) {
@@ -200,6 +202,8 @@ class ScheduleFormViewModel @Inject constructor(
                             val updatedResult = it.copy(placeInfoList = newList)
                             _placeSearchResult.value = updatedResult
                         }
+
+                        networkErrorDelegate.handleNetworkSuccess()
                     }.onError {
                         networkErrorDelegate.handleNetworkError(it)
                     }
@@ -298,10 +302,20 @@ class ScheduleFormViewModel @Inject constructor(
         }
     }
 
+    fun initBookmarkList(){
+        val bookmark = _bookmarkedPlaces.value
+        if(bookmark == null) {
+            getBookmarkedPlaceList()
+        }
+    }
+
     private fun getBookmarkedPlaceList() {
         viewModelScope.launch {
+            networkErrorDelegate.handleNetworkLoading()
             bookmarkRepository.getPlaceBookmarkList().onSuccess {
                 _bookmarkedPlaces.postValue(it)
+
+                networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }

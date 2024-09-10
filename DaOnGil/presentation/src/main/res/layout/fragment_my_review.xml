@@ -75,4 +75,43 @@
             tools:text="작성한 후기가 없습니다. 다녀온 여행지의 후기를 작성해보세요!" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/myReviewErrorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMyReview">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/onboarding_clover" />
+
+        <TextView
+            android:id="@+id/myReviewErrorMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big4"
+            android:fontFamily="@font/cafe24_oneprettynight"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.2"
+            android:text="TextView"
+            android:textSize="@dimen/font_big1" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/myReviewProgressBar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:indeterminateDrawable="@drawable/rotate_progress_bar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,8 @@ class BookmarkViewModel @Inject constructor(
     private val _planBookmarkList = MutableLiveData<List<PlanBookmark>>()
     val planBookmarkList: LiveData<List<PlanBookmark>> = _planBookmarkList
 
+    val networkState get() = networkErrorDelegate.networkState
+
     init {
         getPlaceBookmark()
         getPlanBookmark()
@@ -37,6 +39,7 @@ class BookmarkViewModel @Inject constructor(
     private fun getPlaceBookmark() = viewModelScope.launch {
         bookmarkRepository.getPlaceBookmark().onSuccess {
             _placeBookmarkList.value = it
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
@@ -44,7 +47,8 @@ class BookmarkViewModel @Inject constructor(
 
     private fun getPlanBookmark() = viewModelScope.launch {
         bookmarkRepository.getPlanBookmark().onSuccess {
-                _planBookmarkList.value = it
+            _planBookmarkList.value = it
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }

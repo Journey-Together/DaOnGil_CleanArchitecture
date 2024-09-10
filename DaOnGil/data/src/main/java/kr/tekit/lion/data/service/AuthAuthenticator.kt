@@ -48,7 +48,7 @@ internal class AuthAuthenticator @Inject constructor(
             )
             it.accessToken
         } ?: run {
-            //authDataSource.logout()
+            authDataSource.logout()
             null
         }
     }

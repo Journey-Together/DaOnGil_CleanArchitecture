@@ -36,6 +36,8 @@ class ScheduleMainViewModel @Inject constructor(
     private val _loginState = MutableStateFlow<LogInState>(LogInState.Checking)
     val loginState = _loginState.asStateFlow()
 
+    val networkState get() = networkErrorDelegate.networkState
+
     init {
         viewModelScope.launch {
             checkLoginState()
@@ -46,6 +48,7 @@ class ScheduleMainViewModel @Inject constructor(
         viewModelScope.launch {
             planRepository.getMyMainSchedule().onSuccess {
                 _myMainPlanList.value = it
+                networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
