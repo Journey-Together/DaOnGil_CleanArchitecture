@@ -49,10 +49,16 @@ class ModifySearchFragment : Fragment(R.layout.fragment_form_search) {
 
         val binding = FragmentFormSearchBinding.bind(view)
 
+        initBookmarkList()
+
         initToolbar(binding)
         settingBookmarkRV(binding, schedulePosition)
         settingSearchResultRV(binding)
         settingPlaceSearchView(binding)
+    }
+
+    private fun initBookmarkList(){
+        viewModel.initBookmarkList()
     }
 
     private fun initToolbar(binding: FragmentFormSearchBinding){

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -21,6 +22,7 @@ import kr.tekit.lion.domain.repository.BookmarkRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addDays
 import kr.tekit.lion.presentation.ext.calculateDaysUntilEndDate
 import kr.tekit.lion.presentation.ext.convertStringToDate
@@ -41,6 +43,8 @@ class ModifyScheduleFormViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     // 수정 전 일정 정보
     private val _originalSchedule = MutableLiveData<OriginalScheduleInfo>()
@@ -80,10 +84,6 @@ class ModifyScheduleFormViewModel @Inject constructor(
 
     val searchResultsWithNum: LiveData<List<PlaceSearchInfoList>> get() = _searchResultsWithNum
 
-    init {
-        getBookmarkedPlaceList()
-    }
-
     fun setTitle(title: String?) {
         _title.value = title
     }
@@ -110,6 +110,13 @@ class ModifyScheduleFormViewModel @Inject constructor(
 
     fun setKeyword(keyword: String) {
         _keyword.value = keyword
+    }
+
+    fun initBookmarkList(){
+        val bookmark = _bookmarkedPlaces.value
+        if(bookmark == null) {
+            getBookmarkedPlaceList()
+        }
     }
 
     private fun getBookmarkedPlaceList() {
