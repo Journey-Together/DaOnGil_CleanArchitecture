@@ -7,7 +7,7 @@ import kr.tekit.lion.domain.exception.AuthenticationError
 import kr.tekit.lion.domain.exception.AuthorizationError
 import kr.tekit.lion.domain.exception.BadRequestError
 import kr.tekit.lion.domain.exception.ConnectError
-import kr.tekit.lion.domain.exception.HttpException
+import kr.tekit.lion.domain.exception.HttpError
 import kr.tekit.lion.domain.exception.NetworkError
 import kr.tekit.lion.domain.exception.NotFoundError
 import kr.tekit.lion.domain.exception.ServerError
@@ -25,7 +25,7 @@ class NetworkErrorDelegate @Inject constructor() {
             is ConnectError -> "${ConnectError.title} \n ${ConnectError.message}"
             is TimeoutError -> "${TimeoutError.title} \n ${TimeoutError.message}"
             is UnknownHostError -> "${UnknownError.title} \n ${UnknownHostError.message}"
-            is HttpException -> when (exception) {
+            is HttpError -> when (exception) {
                 is BadRequestError -> "${BadRequestError.title} \n ${BadRequestError.message}"
                 is AuthenticationError -> "${AuthenticationError.title} \n ${AuthenticationError.message}"
                 is AuthorizationError -> "${AuthorizationError.title} \n ${AuthorizationError.message}"
