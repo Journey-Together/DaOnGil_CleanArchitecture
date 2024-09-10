@@ -59,7 +59,7 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
 
     fun removeReviewImageFromList(position: Int) {
         val imageUrl = _imageList.value?.get(position)?.imageUrl
-        if(imageUrl != null){
+        if (imageUrl != null) {
             addDeletedImageUrl(imageUrl)
         }
 
@@ -147,19 +147,19 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
         }
     }
 
-    private fun isContentSame(newContent: String) : Boolean {
+    private fun isContentSame(newContent: String): Boolean {
         return _originalReview.value?.content?.let {
             it == newContent
         } ?: true
     }
 
-    private fun isGradeSame(newGrade: Float) : Boolean {
+    private fun isGradeSame(newGrade: Float): Boolean {
         return _originalReview.value?.grade?.let {
             it == newGrade
         } ?: true
     }
 
-    private fun getNewImages() : List<ReviewImage> {
+    private fun getNewImages(): List<ReviewImage> {
         val originalImageSize = _originalReview.value?.imageList?.size ?: 0
         val deletedImageSize = _deleteImgUrls.value?.size ?: 0
         val currentImageSize = _imageList.value?.size ?: 0
