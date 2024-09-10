@@ -3,6 +3,7 @@ package kr.tekit.lion.presentation.home.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,7 +13,8 @@ import kr.tekit.lion.presentation.databinding.ItemDetailReviewBigBinding
 
 class ReviewListRVAdapter(
     private val reviewList: List<PlaceReview>,
-    private val dialogCallback: () -> Unit
+    private val dialogCallback: () -> Unit,
+    private val activity: AppCompatActivity
 ) : RecyclerView.Adapter<ReviewListRVAdapter.ReviewListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewListViewHolder {
@@ -20,7 +22,7 @@ class ReviewListRVAdapter(
             LayoutInflater.from(parent.context), parent, false
         )
 
-        return ReviewListViewHolder(binding, dialogCallback)
+        return ReviewListViewHolder(binding, dialogCallback, activity)
     }
 
     override fun getItemCount(): Int = reviewList.size
@@ -31,7 +33,8 @@ class ReviewListRVAdapter(
 
     class ReviewListViewHolder(
         private val binding: ItemDetailReviewBigBinding,
-        private val dialogCallback: () -> Unit
+        private val dialogCallback: () -> Unit,
+        private val activity: AppCompatActivity
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(review: PlaceReview) {
             binding.itemDetailReviewBigNickname.text = review.nickname
@@ -47,7 +50,7 @@ class ReviewListRVAdapter(
             if (review.imageList != null) {
                 binding.itemDetailReviewBigRv.visibility = View.VISIBLE
 
-                val reviewImageRVAdapter = ReviewImageRVAdapter(review.imageList)
+                val reviewImageRVAdapter = ReviewImageRVAdapter(review.imageList, activity)
                 binding.itemDetailReviewBigRv.adapter = reviewImageRVAdapter
                 binding.itemDetailReviewBigRv.layoutManager =
                     LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)

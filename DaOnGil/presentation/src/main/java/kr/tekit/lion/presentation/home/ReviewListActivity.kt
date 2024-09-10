@@ -21,8 +21,8 @@ import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
 class ReviewListActivity : AppCompatActivity() {
-    private val viewModel : ReviewListViewModel by viewModels()
-    private val binding : ActivityReviewListBinding by lazy {
+    private val viewModel: ReviewListViewModel by viewModels()
+    private val binding: ActivityReviewListBinding by lazy {
         ActivityReviewListBinding.inflate(layoutInflater)
     }
 
@@ -61,7 +61,7 @@ class ReviewListActivity : AppCompatActivity() {
     }
 
     private fun settingReviewListRVAdapter(reviewList: List<PlaceReview>) {
-        val reviewListRVAdapter = ReviewListRVAdapter(reviewList) {
+        val reviewListRVAdapter = ReviewListRVAdapter(reviewList, {
             val dialog = ConfirmDialog(
                 "신고하기",
                 "해당 댓글을 신고하시겠습니까?",
@@ -71,12 +71,13 @@ class ReviewListActivity : AppCompatActivity() {
             }
             dialog.isCancelable = false
             dialog.show(supportFragmentManager, "PlaceReviewListDialog")
-        }
+        }, this)
+
         binding.reviewListRv.adapter = reviewListRVAdapter
         binding.reviewListRv.layoutManager = LinearLayoutManager(applicationContext)
     }
 
-    private fun getReviewListInfo(placeId : Long) {
+    private fun getReviewListInfo(placeId: Long) {
         viewModel.getPlaceReview(placeId)
 
         binding.reviewListRv.addOnScrollEndListener {
@@ -99,7 +100,7 @@ class ReviewListActivity : AppCompatActivity() {
         }
     }
 
-    private fun getReviewListInfoGuest(placeId : Long) {
+    private fun getReviewListInfoGuest(placeId: Long) {
         viewModel.getPlaceReviewGuest(placeId)
 
         binding.reviewListRv.addOnScrollEndListener {
