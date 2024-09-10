@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentMyReviewBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.ReviewListActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
@@ -28,6 +30,26 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMyReviewBinding.bind(view)
+
+        with(binding) {
+            repeatOnViewStarted {
+                viewModel.networkState.collect { networkState ->
+                    when (networkState) {
+                        is NetworkState.Loading -> {
+                            myReviewProgressBar.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Success -> {
+                            myReviewProgressBar.visibility = View.GONE
+                        }
+                        is NetworkState.Error -> {
+                            myReviewProgressBar.visibility = View.GONE
+                            myReviewErrorLayout.visibility = View.VISIBLE
+                            myReviewErrorMsg.text = networkState.msg
+                        }
+                    }
+                }
+            }
+        }
 
         observeIsFromDetail()
 

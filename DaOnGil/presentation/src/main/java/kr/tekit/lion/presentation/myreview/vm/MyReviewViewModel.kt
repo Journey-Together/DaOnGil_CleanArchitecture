@@ -61,6 +61,8 @@ class MyReviewViewModel @Inject constructor(
 
     private var isRequesting = false
 
+    val networkState get() = networkErrorDelegate.networkState
+
     fun getMyPlaceReview(size: Int = REVIEW_GET_SIZE, page: Int = INITIAL_PAGE_NO) = viewModelScope.launch {
         placeRepository.getMyPlaceReview(size, page).onSuccess {
             _myPlaceReview.value = it
@@ -68,6 +70,8 @@ class MyReviewViewModel @Inject constructor(
             if (it.pageNo == it.totalPages) {
                 _isLastPage.value = true
             }
+
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
@@ -79,6 +83,8 @@ class MyReviewViewModel @Inject constructor(
         if (_isLastPage.value == false && !isRequesting) {
             isRequesting = true
 
+            networkErrorDelegate.handleNetworkLoading()
+
             placeRepository.getMyPlaceReview(size, page + 1).onSuccess { newReviews ->
                 val currentReviews = _myPlaceReview.value?.myPlaceReviewInfoList ?: emptyList()
                 val updatedReviews = currentReviews + newReviews.myPlaceReviewInfoList
@@ -89,6 +95,7 @@ class MyReviewViewModel @Inject constructor(
                     _isLastPage.value = true
                 }
 
+                networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }.also {
