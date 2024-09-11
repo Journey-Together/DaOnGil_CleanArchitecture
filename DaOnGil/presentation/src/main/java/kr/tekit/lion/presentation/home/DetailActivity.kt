@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -21,10 +22,13 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.detailplace.Review
 import kr.tekit.lion.domain.model.detailplace.SubDisability
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityDetailBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.emergency.EmergencyMapActivity
 import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
@@ -47,16 +51,45 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mLocationSource: FusedLocationSource
 
     private val reportLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        when(result.resultCode){
-            RESULT_OK -> {
-                binding.root.showSnackbar("신고가 완료되었습니다")
+            when (result.resultCode) {
+                RESULT_OK -> {
+                    binding.root.showSnackbar("신고가 완료되었습니다")
+                }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        repeatOnStarted {
+            launch {
+                viewModel.networkState.collectLatest { state ->
+                    when (state) {
+                        is NetworkState.Loading -> {
+                            binding.detailErrorLayout.visibility = View.GONE
+                        }
+
+                        is NetworkState.Success -> {
+                            binding.detailErrorLayout.visibility = View.GONE
+                        }
+
+                        is NetworkState.Error -> {
+                            binding.detailToolbarTitleTv.setTextColor(ContextCompat.getColor(applicationContext, R.color.text_primary))
+                            binding.detailToolbar.navigationIcon?.setTint(ContextCompat.getColor(applicationContext, R.color.text_primary))
+                            binding.detailThumbnailIv.visibility = View.GONE
+                            binding.detailThumbnailDark.visibility = View.GONE
+                            binding.detailTitleTv.visibility = View.GONE
+                            binding.detailAddressTv.visibility = View.GONE
+                            binding.detailBookmarkBtn.visibility = View.GONE
+                            binding.detailContentLayout.visibility = View.GONE
+                            binding.detailErrorLayout.visibility = View.VISIBLE
+                            binding.detailErrorTv.text = state.msg
+                        }
+                    }
+                }
+            }
+        }
 
         settingToolbar()
         initMap()
