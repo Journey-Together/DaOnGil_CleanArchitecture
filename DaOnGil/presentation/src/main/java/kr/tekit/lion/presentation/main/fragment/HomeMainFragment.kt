@@ -86,6 +86,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         } else {
             requireContext().showPermissionSnackBar(FragmentHomeMainBinding.bind(requireView()).root)
             hideLocationRv(FragmentHomeMainBinding.bind(requireView()))
+            viewModel.getPlaceMain(DEFAULT_AREA, DEFAULT_SIGUNGU)
         }
     }
 
