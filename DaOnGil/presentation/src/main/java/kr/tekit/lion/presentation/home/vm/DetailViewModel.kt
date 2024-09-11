@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.detailplace.PlaceDetailInfo
@@ -18,6 +19,7 @@ import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.splash.model.LogInState
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
+import kr.tekit.lion.presentation.delegate.NetworkState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +31,7 @@ class DetailViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _loginState = MutableStateFlow<LogInState>(LogInState.Checking)
     val loginState = _loginState.asStateFlow()

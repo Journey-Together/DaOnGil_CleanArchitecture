@@ -108,8 +108,6 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 }
 
                 launch {
-                  val progressBar = binding.homeProgressbar
-                  
                     viewModel.networkState.collectLatest { state ->
                         when (state) {
                             is NetworkState.Loading -> {
@@ -414,7 +412,9 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             )
                             val address = addresses?.get(0)?.getAddressLine(0)
 
-                            val (area, sigungu) = splitAddress(address!!)
+                            // val (area, sigungu) = splitAddress(address!!)
+                            val area = "인천광역시"
+                            val sigungu = "계양구"
                             binding.homeMyLocationTv.text = "$area $sigungu"
 
                             getAroundPlaceInfo(binding, area, sigungu)
