@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityDetailBinding
 import kr.tekit.lion.presentation.emergency.EmergencyMapActivity
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.adapter.DetailDisabilityRVAdapter
 import kr.tekit.lion.presentation.home.adapter.DetailInfoRVAdapter
 import kr.tekit.lion.presentation.home.adapter.DetailReviewRVAdapter
@@ -43,6 +45,14 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocationSource: FusedLocationSource
+
+    private val reportLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        when(result.resultCode){
+            RESULT_OK -> {
+                binding.root.showSnackbar("신고가 완료되었습니다")
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +82,7 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.detailReviewRv.visibility = View.VISIBLE
             binding.detailNoReviewTv.visibility = View.GONE
 
-            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList, loginState)
+            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList, loginState, reportLauncher)
             binding.detailReviewRv.adapter = detailReviewRVAdapter
             binding.detailReviewRv.layoutManager = LinearLayoutManager(applicationContext)
         }
