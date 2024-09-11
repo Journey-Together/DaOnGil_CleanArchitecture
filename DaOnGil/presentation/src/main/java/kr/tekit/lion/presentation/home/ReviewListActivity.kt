@@ -1,7 +1,10 @@
 package kr.tekit.lion.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,6 +17,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityReviewListBinding
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.adapter.ReviewListRVAdapter
 import kr.tekit.lion.presentation.home.vm.ReviewListViewModel
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
@@ -24,6 +28,14 @@ class ReviewListActivity : AppCompatActivity() {
     private val viewModel: ReviewListViewModel by viewModels()
     private val binding: ActivityReviewListBinding by lazy {
         ActivityReviewListBinding.inflate(layoutInflater)
+    }
+
+    private val reportLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        when(result.resultCode){
+            RESULT_OK -> {
+                binding.root.showSnackbar("신고가 완료되었습니다")
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +73,7 @@ class ReviewListActivity : AppCompatActivity() {
     }
 
     private fun settingReviewListRVAdapter(reviewList: List<PlaceReview>, loginState: Boolean) {
-        val reviewListRVAdapter = ReviewListRVAdapter(reviewList, loginState)
+        val reviewListRVAdapter = ReviewListRVAdapter(reviewList, loginState, reportLauncher)
 
         binding.reviewListRv.adapter = reviewListRVAdapter
         binding.reviewListRv.layoutManager = LinearLayoutManager(applicationContext)
