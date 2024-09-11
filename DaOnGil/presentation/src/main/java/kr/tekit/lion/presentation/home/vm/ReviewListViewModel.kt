@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
@@ -14,6 +15,7 @@ import kr.tekit.lion.domain.model.placereviewlist.PlaceReviewInfo
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.splash.model.LogInState
 import javax.inject.Inject
 
@@ -25,6 +27,7 @@ class ReviewListViewModel @Inject constructor(
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
+    val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
     private val _loginState = MutableStateFlow<LogInState>(LogInState.Checking)
     val loginState = _loginState.asStateFlow()
