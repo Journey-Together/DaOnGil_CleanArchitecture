@@ -41,6 +41,7 @@ fun ReviewInfo.toMyPlaceReviewInfo(): MyPlaceReviewInfo {
         name = this.placeName,
         date = this.date,
         images = this.reviewImgs ?: emptyList(),
+        isReport = null,
         content = this.content
     )
 }
