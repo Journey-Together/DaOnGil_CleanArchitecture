@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
 
     companion object {
         const val DEFAULT_AREA = "서울특별시"
-        const val DEFAULT_SIGUNGU = "강남구"
+        const val DEFAULT_SIGUNGU = "중구"
     }
 
     @Inject

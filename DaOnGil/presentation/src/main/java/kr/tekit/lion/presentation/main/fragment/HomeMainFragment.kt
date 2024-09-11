@@ -75,7 +75,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
     companion object {
         const val DEFAULT_AREA = "서울특별시"
-        const val DEFAULT_SIGUNGU = "강남구"
+        const val DEFAULT_SIGUNGU = "중구"
     }
 
     private val requestPermissionLauncher = registerForActivityResult(
