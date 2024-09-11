@@ -22,18 +22,20 @@ import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.main.fragment.MyInfoMainFragment.Companion.MODIFY_RESULT_CODE
 import kr.tekit.lion.presentation.myinfo.vm.MyInfoViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
-
     private val viewModel: MyInfoViewModel by activityViewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
     private val myInfoAnnounce = StringBuilder()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentMyInfoBinding.bind(view)
-
-        startShimmer(binding)
 
         if (requireContext().isTallBackEnabled()) {
             setupAccessibility(binding)
@@ -53,6 +55,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 launch { collectPersonalInfo(binding) }
                 launch { collectIceInfo(binding) }
                 launch { collectNetworkState(binding) }
+                launch { connectivityObserve() }
             }
         }
 
@@ -65,6 +68,16 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             handleBackPress()
+        }
+    }
+
+    private suspend fun connectivityObserve(){
+        connectivityObserver.getFlow().collect {
+            connectivityObserver.getFlow().collect { status ->
+                if (status == ConnectivityObserver.Status.Available) {
+                    viewModel.initUiData()
+                }
+            }
         }
     }
 
@@ -204,27 +217,26 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
     }
 
     private suspend fun collectNetworkState(binding: FragmentMyInfoBinding) {
-        viewModel.networkState.collect {
-            when(it){
-                is NetworkState.Loading -> {
-                    startShimmer(binding)
-                }
-                is NetworkState.Success -> {
-                    stopShimmer(binding)
-                    if (requireContext().isTallBackEnabled()) {
-                        buildAccessibilityAnnouncement(binding)
+        with(binding) {
+            viewModel.networkState.collect {
+                when (it) {
+                    is NetworkState.Loading -> progressBar.visibility = View.VISIBLE
+                    is NetworkState.Success -> {
+                        progressBar.visibility = View.GONE
+                        errorContainer.visibility = View.GONE
+                        mainContainer.visibility = View.VISIBLE
+                        if (requireContext().isTallBackEnabled()) {
+                            buildAccessibilityAnnouncement(binding)
+                        }
                     }
-                }
-                is NetworkState.Error -> {
-                    stopShimmer(binding)
-                    with(binding) {
+                    is NetworkState.Error -> {
+                        progressBar.visibility = View.GONE
                         mainContainer.visibility = View.GONE
                         errorContainer.visibility = View.VISIBLE
                         textMsg.text = it.msg
-                    }
-                    stopShimmer(binding)
-                    if (requireContext().isTallBackEnabled()) {
-                        requireActivity().announceForAccessibility(it.msg)
+                        if (requireContext().isTallBackEnabled()) {
+                            requireActivity().announceForAccessibility(it.msg)
+                        }
                     }
                 }
             }
@@ -245,21 +257,6 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 .append(getString(R.string.text_emergency_contact))
                 .append(tvRelation1.text).append(tvContact1.text.toString().formatPhoneNumber())
                 .append(tvRelation2.text).append(tvContact2.text.toString().formatPhoneNumber())
-        }
-    }
-
-    private fun startShimmer(binding: FragmentMyInfoBinding) {
-        with(binding) {
-            shimmerFrameLayout.startShimmer()
-            shimmerFrameLayout.visibility = View.VISIBLE
-        }
-    }
-
-    private fun stopShimmer(binding: FragmentMyInfoBinding) {
-        with(binding) {
-            shimmerFrameLayout.stopShimmer()
-            shimmerFrameLayout.visibility = View.GONE
-            mainContainer.visibility = View.VISIBLE
         }
     }
 
