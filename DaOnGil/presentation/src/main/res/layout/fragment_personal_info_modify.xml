@@ -72,12 +72,12 @@
                 style="?attr/materialIconButtonFilledTonalStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="47dp"
-                android:layout_marginTop="47dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="60dp"
                 android:backgroundTint="@color/primary"
+                android:contentDescription="@string/text_guide_gallery_button"
                 app:icon="@drawable/camera_icon"
                 app:iconSize="24dp"
-                android:contentDescription="@string/text_guide_gallery_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +98,7 @@
                 android:id="@+id/tv_nickname_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small2"
+                android:layout_marginBottom="@dimen/margin_small1"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/text_nickname"
                 android:textSize="@dimen/font_big2" />
@@ -108,12 +108,16 @@
                 style="?attr/materialAlertDialogBodyTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small1"
-                app:boxBackgroundColor="@color/background_color"
-                app:boxBackgroundMode="filled"
+                android:layout_marginBottom="@dimen/margin_big4"
+                app:boxBackgroundColor="@color/text_field_background"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/text_field_background"
+                app:boxStrokeWidth="0dp"
+                app:cursorColor="@color/text_primary"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
-                app:hintEnabled="false">
+                app:hintEnabled="false"
+                tools:boxBackgroundMode="outline">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tv_nickname"
@@ -122,7 +126,6 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_plz_enter_nickname"
                     android:inputType="text"
-                    android:paddingStart="@dimen/margin_small2"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,7 +133,7 @@
                 android:id="@+id/tv_phone_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small2"
+                android:layout_marginBottom="@dimen/margin_small1"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/text_phone"
                 android:textSize="@dimen/font_big2" />
@@ -140,8 +143,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_big2"
-                app:boxBackgroundColor="@color/background_color"
-                app:boxBackgroundMode="filled"
+                app:boxBackgroundColor="@color/text_field_background"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/text_field_background"
+                app:boxStrokeWidth="0dp"
+                app:cursorColor="@color/text_primary"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
                 app:hintEnabled="false">
@@ -153,7 +159,6 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:hint="@string/text_contact_ex"
                     android:inputType="phone"
-                    android:paddingStart="@dimen/margin_small2"
                     android:textSize="@dimen/font_big3" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
