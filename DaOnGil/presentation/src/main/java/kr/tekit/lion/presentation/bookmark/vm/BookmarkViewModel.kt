@@ -29,6 +29,12 @@ class BookmarkViewModel @Inject constructor(
     private val _planBookmarkList = MutableLiveData<List<PlanBookmark>>()
     val planBookmarkList: LiveData<List<PlanBookmark>> = _planBookmarkList
 
+    private val _isUpdateError = MutableLiveData(false)
+    val isUpdateError: LiveData<Boolean> = _isUpdateError
+
+    private val _snackbarEvent = MutableLiveData<String?>()
+    val snackbarEvent: LiveData<String?> = _snackbarEvent
+
     val networkState get() = networkErrorDelegate.networkState
 
     init {
@@ -62,14 +68,20 @@ class BookmarkViewModel @Inject constructor(
 
         if (itemIndex != -1) {
             currentList.removeAt(itemIndex)
-            _placeBookmarkList.value = currentList
+            _placeBookmarkList.postValue(currentList)
         }
 
-        bookmarkRepository.updatePlaceBookmark(placeId).onError {
+        bookmarkRepository.updatePlaceBookmark(placeId).onSuccess {
+            _snackbarEvent.postValue("북마크가 삭제되었습니다.")
+        }.onError {
+            _isUpdateError.postValue(true)
+
             itemToRestore?.let { placeBookmark ->
                 currentList.add(itemIndex, placeBookmark)
                 _placeBookmarkList.postValue(currentList)
             }
+
+            networkErrorDelegate.handleNetworkError(it)
         }
     }
 
@@ -81,14 +93,23 @@ class BookmarkViewModel @Inject constructor(
 
         if (itemIndex != -1) {
             currentList.removeAt(itemIndex)
-            _planBookmarkList.value = currentList
+            _planBookmarkList.postValue(currentList)
         }
 
-        bookmarkRepository.updatePlanBookmark(planId).onError {
+        bookmarkRepository.updatePlanBookmark(planId).onSuccess {
+            _snackbarEvent.postValue("북마크가 삭제되었습니다.")
+        }.onError {
+            _isUpdateError.postValue(true)
             itemToRestore?.let { planBookmark ->
                 currentList.add(itemIndex, planBookmark)
                 _planBookmarkList.postValue(currentList)
             }
+
+            networkErrorDelegate.handleNetworkError(it)
         }
+    }
+
+    fun resetSnackbarEvent() {
+        _snackbarEvent.value = null
     }
 }
