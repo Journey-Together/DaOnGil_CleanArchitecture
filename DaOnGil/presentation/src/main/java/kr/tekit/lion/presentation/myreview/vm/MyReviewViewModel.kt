@@ -59,6 +59,9 @@ class MyReviewViewModel @Inject constructor(
     private val _isFromDetail = MutableLiveData(false)
     val isFromDetail: LiveData<Boolean> = _isFromDetail
 
+    private val _snackbarEvent = MutableLiveData<String?>()
+    val snackbarEvent: LiveData<String?> = _snackbarEvent
+
     private var isRequesting = false
 
     val networkState get() = networkErrorDelegate.networkState
@@ -117,6 +120,8 @@ class MyReviewViewModel @Inject constructor(
                     _myPlaceReview.value = updatedReviewData
                     if(_isReviewDelete.value == false) _isReviewDelete.value = true
                 }
+
+                _snackbarEvent.postValue("후기가 삭제되었습니다.")
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
@@ -151,7 +156,11 @@ class MyReviewViewModel @Inject constructor(
                         }
                     }
                     _myPlaceReview.value = currentReviewData.copy(myPlaceReviewInfoList = updatedReviews)
+
+                    _snackbarEvent.postValue("후기가 수정되었습니다.")
                 }
+
+                networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
@@ -228,5 +237,9 @@ class MyReviewViewModel @Inject constructor(
     fun isMoreImageAttachable(): Boolean{
         val currentValue = _numOfImages.value ?: 0
         return currentValue in 0..3
+    }
+
+    fun resetSnackbarEvent() {
+        _snackbarEvent.value = null
     }
 }
