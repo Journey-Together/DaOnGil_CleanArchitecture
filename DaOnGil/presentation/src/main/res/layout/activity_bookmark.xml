@@ -86,10 +86,10 @@
             android:lineSpacingMultiplier="1.5"
             android:textAlignment="center"
             android:textSize="@dimen/font_big3"
-            app:tabRippleColor="@color/background_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageVIewLogo"
+            app:tabRippleColor="@color/background_color"
             tools:text="북마크한 장소가 없습니다. 가고 싶은 장소를 추가해보세요!" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -103,7 +103,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMyBookmark">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="match_parent"
