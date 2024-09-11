@@ -419,9 +419,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             )
                             val address = addresses?.get(0)?.getAddressLine(0)
 
-                            // val (area, sigungu) = splitAddress(address!!)
-                            val area = "인천광역시"
-                            val sigungu = "계양구"
+                            val (area, sigungu) = splitAddress(address!!)
                             binding.homeMyLocationTv.text = "$area $sigungu"
 
                             getAroundPlaceInfo(binding, area, sigungu)
@@ -503,7 +501,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     }
 
     private fun getRecommendPlaceInfo(binding: FragmentHomeMainBinding) {
-        viewModel.getPlaceMain("1", "1")
+        viewModel.getPlaceMain(DEFAULT_AREA, DEFAULT_SIGUNGU)
 
         viewModel.recommendPlaceInfo.observe(requireActivity()) { recommendPlaceInfo ->
             if (recommendPlaceInfo.isNotEmpty()) {
