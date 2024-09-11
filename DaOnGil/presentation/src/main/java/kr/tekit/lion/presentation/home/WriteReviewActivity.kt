@@ -21,8 +21,13 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityWriteReviewBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.home.adapter.WriteReviewImageRVAdapter
@@ -110,6 +115,24 @@ class WriteReviewActivity : AppCompatActivity() {
         val placeId = intent.getLongExtra("reviewPlaceId", -1)
         val placeName = intent.getStringExtra("reviewPlaceName") ?: "관광지"
 
+        repeatOnStarted {
+            launch {
+                viewModel.networkState.collectLatest { state ->
+                    when (state) {
+                        is NetworkState.Loading -> {
+                        }
+
+                        is NetworkState.Success -> {
+                            finish()
+                        }
+
+                        is NetworkState.Error -> {
+                            binding.root.showSnackbar(state.msg)
+                        }
+                    }
+                }
+            }
+        }
         settingToolbar()
         settingPlaceData(placeName)
         settingImageRVAdapter()
@@ -154,24 +177,7 @@ class WriteReviewActivity : AppCompatActivity() {
                 val reviewRating = binding.writeReviewRatingbar.rating
                 val reviewText = binding.writeReviewTextWriteEdit.text.toString()
 
-                viewModel.writePlaceReviewData(
-                    placeId,
-                    visitDate!!,
-                    reviewRating,
-                    reviewText
-                ) { _, requestFlag, code ->
-                    if (requestFlag) {
-                        this.setResult(Activity.RESULT_OK)
-                        this.finish()
-                    } else {
-                        if (code == 2006) {
-                            Snackbar.make(binding.root, "이미 작성한 리뷰입니다", Snackbar.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            Snackbar.make(binding.root, "다시 시도해주세요", Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+                viewModel.writePlaceReviewData(placeId, visitDate!!, reviewRating, reviewText)
             }
         }
     }
