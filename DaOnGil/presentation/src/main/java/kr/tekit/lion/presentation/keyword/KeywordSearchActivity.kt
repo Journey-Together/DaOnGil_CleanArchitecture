@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.keyword
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
@@ -12,18 +13,27 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityKeywordSearchBinding
+import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.keyword.fragment.SearchResultFragment
 import kr.tekit.lion.presentation.keyword.model.KeywordInputState
 import kr.tekit.lion.presentation.keyword.vm.KeywordSearchViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class KeywordSearchActivity : AppCompatActivity() {
     private val viewModel: KeywordSearchViewModel by viewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
+    }
+
     private lateinit var backPressedCallback: OnBackPressedCallback
     private val binding: ActivityKeywordSearchBinding by lazy {
         ActivityKeywordSearchBinding.inflate(layoutInflater)
@@ -33,6 +43,37 @@ class KeywordSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        repeatOnStarted {
+            supervisorScope {
+                launch {
+                    connectivityObserver.getFlow().collect { status ->
+                        when (status) {
+                            ConnectivityObserver.Status.Available -> {
+                                viewModel.onChangeNetworkState(ConnectivityObserver.Status.Available)
+                            }
+
+                            ConnectivityObserver.Status.Losing -> {
+                                viewModel.onChangeNetworkState(ConnectivityObserver.Status.Losing)
+                            }
+
+                            ConnectivityObserver.Status.Lost -> {
+                                viewModel.onChangeNetworkState(ConnectivityObserver.Status.Lost)
+                            }
+
+                            ConnectivityObserver.Status.Unavailable -> {
+                                viewModel.onChangeNetworkState(ConnectivityObserver.Status.Unavailable)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        handleBackPress()
+        settingSearchState()
+    }
+
+    private fun handleBackPress(){
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (isSearchResultFragment()) {
@@ -43,7 +84,9 @@ class KeywordSearchActivity : AppCompatActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
 
+    private fun settingSearchState() {
         with(binding) {
             toolbar.setNavigationOnClickListener {
                 if (isSearchResultFragment()){
