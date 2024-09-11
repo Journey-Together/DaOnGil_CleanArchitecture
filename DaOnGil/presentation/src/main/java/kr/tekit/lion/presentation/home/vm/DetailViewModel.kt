@@ -58,6 +58,7 @@ class DetailViewModel @Inject constructor(
     fun getDetailPlace(placeId: Long) = viewModelScope.launch {
         getPlaceDetailInfoRepository.getPlaceDetailInfo(placeId).onSuccess {
             _detailPlaceInfo.value = it
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
@@ -66,6 +67,7 @@ class DetailViewModel @Inject constructor(
     fun getDetailPlaceGuest(placeId: Long) = viewModelScope.launch {
         getPlaceDetailInfoRepository.getPlaceDetailInfoGuest(placeId).onSuccess {
             _detailPlaceInfoGuest.value = it
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
