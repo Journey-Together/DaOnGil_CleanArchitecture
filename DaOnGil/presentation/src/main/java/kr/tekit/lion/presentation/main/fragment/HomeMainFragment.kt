@@ -48,6 +48,7 @@ import kr.tekit.lion.presentation.databinding.ItemTouristRecommendBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showPermissionSnackBar
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.home.model.HomeViewPagerPage
 import kr.tekit.lion.presentation.main.adapter.HomeLocationRVAdapter
@@ -72,6 +73,11 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     private val retryDelayMillis = 5000L
     private var snapHelper: SnapHelper? = null
 
+    companion object {
+        const val DEFAULT_AREA = "서울특별시"
+        const val DEFAULT_SIGUNGU = "중구"
+    }
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -80,6 +86,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         } else {
             requireContext().showPermissionSnackBar(FragmentHomeMainBinding.bind(requireView()).root)
             hideLocationRv(FragmentHomeMainBinding.bind(requireView()))
+            viewModel.getPlaceMain(DEFAULT_AREA, DEFAULT_SIGUNGU)
         }
     }
 
@@ -421,7 +428,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             return
                         } catch (e: IOException) {
                             if (i == 4) {
-                                Log.e("HomeMainFragment", "Geocoder 위치 가져오기 실패", e)
+                                getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
+                                binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
                             }
                         }
                         // 재시도 전 대기 시간
@@ -470,12 +478,19 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         binding.homeMyLocationTv.text = "위치 권한을 허용해주세요"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getAroundPlaceInfo(
         binding: FragmentHomeMainBinding,
         areaCode: String,
         sigunguCode: String
     ) {
         viewModel.getPlaceMain(areaCode, sigunguCode)
+
+        viewModel.locationMessage.observe(viewLifecycleOwner) { message ->
+            binding.root.showSnackbar(message)
+
+            binding.homeMyLocationTv.text = "$DEFAULT_AREA $DEFAULT_SIGUNGU"
+        }
 
         viewModel.aroundPlaceInfo.observe(requireActivity()) { aroundPlaceInfo ->
             if (aroundPlaceInfo.isNotEmpty()) {
