@@ -376,4 +376,6 @@
     </string>
     <string name="text_delete_recently_search_keyword">최근검색어삭제</string>
     <string name="text_plz_enter_2_more">2글자 이상 입력해주세요.</string>
+
+    <string name="concern_type_nickname">%1$s의 관심 유형</string>
 </resources>

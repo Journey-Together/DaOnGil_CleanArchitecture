@@ -36,33 +36,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarConcernType">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/textViewConcernTypeUseNickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_basic"
-            android:layout_marginBottom="@dimen/margin_basic">
-
-            <TextView
-                android:id="@+id/textViewConcernTypeUseNickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_bold"
-                android:textSize="@dimen/font_big2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="다온길" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="님의 관심 유형"
-                android:textSize="@dimen/font_big2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewConcernTypeUseNickname"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginBottom="@dimen/margin_basic"
+            android:fontFamily="@font/pretendard_semibold"
+            android:textSize="@dimen/font_big2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="다온길님의 관심 유형" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card"
