@@ -428,7 +428,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             return
                         } catch (e: IOException) {
                             if (i == 4) {
-                                Log.e("HomeMainFragment", "Geocoder 위치 가져오기 실패", e)
+                                getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
+                                binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
                             }
                         }
                         // 재시도 전 대기 시간
