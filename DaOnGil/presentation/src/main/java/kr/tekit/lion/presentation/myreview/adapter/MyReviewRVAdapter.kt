@@ -1,6 +1,7 @@
 package kr.tekit.lion.presentation.myreview.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.MyPlaceReview
@@ -59,25 +60,39 @@ class MyReviewRVAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(myPlaceReview: MyPlaceReviewInfo) {
-            binding.textViewMyReviewLocationName.text = myPlaceReview.name
-            binding.ratingbarItemMyReview.rating = myPlaceReview.grade
-            binding.textViewMyReviewDate.text = myPlaceReview.date.toString()
-            binding.textViewMyReviewContent.text = myPlaceReview.content
+            if (myPlaceReview.isReport == true) {
+                binding.reviewLayout.visibility = View.GONE
+                binding.reportLayout.visibility = View.VISIBLE
 
-            binding.layoutLocationName.setOnClickListener {
-                onMoveReviewListClick(myPlaceReview.placeId)
+                binding.textViewMyReviewLocationName.text = myPlaceReview.name
+
+                binding.layoutLocationName.setOnClickListener {
+                    onMoveReviewListClick(myPlaceReview.placeId)
+                }
+            } else {
+                binding.reviewLayout.visibility = View.VISIBLE
+                binding.reportLayout.visibility = View.GONE
+
+                binding.textViewMyReviewLocationName.text = myPlaceReview.name
+                binding.ratingbarItemMyReview.rating = myPlaceReview.grade
+                binding.textViewMyReviewDate.text = myPlaceReview.date.toString()
+                binding.textViewMyReviewContent.text = myPlaceReview.content
+
+                binding.layoutLocationName.setOnClickListener {
+                    onMoveReviewListClick(myPlaceReview.placeId)
+                }
+
+                binding.myReviewModifyBtn.setOnClickListener {
+                    onModifyClick(myPlaceReview)
+                }
+
+                binding.myReviewDeleteBtn.setOnClickListener {
+                    onDeleteClick(myPlaceReview.reviewId)
+                }
+
+                val myReviewImageRVAdapter = MyReviewImageRVAdapter(myPlaceReview.images)
+                binding.recyclerViewMyReivew.adapter = myReviewImageRVAdapter
             }
-
-            binding.myReviewModifyBtn.setOnClickListener {
-                onModifyClick(myPlaceReview)
-            }
-
-            binding.myReviewDeleteBtn.setOnClickListener {
-                onDeleteClick(myPlaceReview.reviewId)
-            }
-
-            val myReviewImageRVAdapter = MyReviewImageRVAdapter(myPlaceReview.images)
-            binding.recyclerViewMyReivew.adapter = myReviewImageRVAdapter
         }
     }
 
