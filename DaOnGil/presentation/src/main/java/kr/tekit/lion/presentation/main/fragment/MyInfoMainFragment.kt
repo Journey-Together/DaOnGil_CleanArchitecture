@@ -29,12 +29,16 @@ import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.myinfo.MyInfoMainViewModel
 import kr.tekit.lion.presentation.myinfo.MyInfoActivity
 import kr.tekit.lion.presentation.myreview.MyReviewActivity
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
 class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private val viewModel: MyInfoMainViewModel by viewModels()
-
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -70,6 +74,19 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             supervisorScope {
                 launch { handleLoginState(binding, isTalkbackEnabled, textToAnnounce) }
                 launch { handleNetworkState(binding) }
+                launch { collectNetworkState() }
+            }
+        }
+    }
+
+    private suspend fun collectNetworkState() {
+        connectivityObserver.getFlow().collect {
+            connectivityObserver.getFlow().collect { status ->
+                if (status == ConnectivityObserver.Status.Available) {
+                    if (viewModel.loginState.value == LogInState.LoggedIn) {
+                        viewModel.onStateLoggedIn()
+                    }
+                }
             }
         }
     }
@@ -86,7 +103,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                     setUiLoggedInState(binding)
                     collectMyInfo(binding, isTalkbackEnabled, talkbackText)
                 }
-
                 is LogInState.LoginRequired -> {
                     setUiLoginRequiredState(binding)
                     if (isTalkbackEnabled) {
@@ -144,47 +160,29 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private suspend fun handleNetworkState(binding: FragmentMyInfoMainBinding) {
-        viewModel.networkState.collect {
-            when(it){
-                NetworkState.Loading -> startShimmer(binding)
-                NetworkState.Success -> {
-                    stopShimmer(binding)
-                    binding.errorContainer.visibility = View.GONE
-                    binding.progressBar.visibility = View.GONE
-                }
-                is NetworkState.Error -> {
-                    stopShimmer(binding)
-                    binding.progressBar.visibility = View.GONE
-                    showErrorPage(binding, it.msg)
+        with(binding) {
+            viewModel.networkState.collect {
+                when (it) {
+                    NetworkState.Loading -> progressBar.visibility = View.VISIBLE
+                    NetworkState.Success -> {
+                        mainContainer.visibility = View.VISIBLE
+                        progressBar.visibility = View.GONE
+                        errorContainer.visibility = View.GONE
+                    }
+                    is NetworkState.Error -> {
+                        mainContainer.visibility = View.GONE
+                        binding.progressBar.visibility = View.GONE
+                        showErrorPage(binding, it.msg)
+                    }
                 }
             }
         }
     }
 
-    private fun startShimmer(binding: FragmentMyInfoMainBinding) {
-        with(binding) {
-            shimmerFrameLayout.startShimmer()
-            shimmerFrameLayout.visibility = View.VISIBLE
-        }
-    }
-
-    private fun stopShimmer(binding: FragmentMyInfoMainBinding) {
-        with(binding) {
-            shimmerFrameLayout.stopShimmer()
-            shimmerFrameLayout.visibility = View.GONE
-            mainContainer.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showErrorPage(
-        binding: FragmentMyInfoMainBinding,
-        msg: String,
-    ) {
+    private fun showErrorPage(binding: FragmentMyInfoMainBinding, msg: String) {
         with(binding) {
             errorContainer.visibility = View.VISIBLE
             mainContainer.visibility = View.GONE
-            shimmerFrameLayout.visibility = View.GONE
-            shimmerFrameLayout.stopShimmer()
             progressBar.visibility = View.GONE
             textMsg.text = msg
 
@@ -195,7 +193,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private fun setUiLoggedInState(binding: FragmentMyInfoMainBinding) {
-        binding.mainContainer.visibility = View.VISIBLE
         navigateToMyInfo(binding)
         logoutDialog(binding)
         navigateToConcernType(binding)
@@ -205,7 +202,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private fun setUiLoginRequiredState(binding: FragmentMyInfoMainBinding) {
-        binding.mainContainer.visibility = View.VISIBLE
         with(binding) {
             userContainer.visibility = View.GONE
             tvReviewCnt.visibility = View.GONE
@@ -272,8 +268,13 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private fun logout() {
-        viewModel.logout{
-            startActivity(Intent(requireActivity(), LoginActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        viewModel.logout {
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    LoginActivity::class.java
+                ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
             requireActivity().finish()
         }
     }
@@ -284,8 +285,8 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
 
     override fun onResume() {
         super.onResume()
-        if (viewModel.networkState.value is NetworkState.Error){
-            if(viewModel.loginState.value is LogInState.LoggedIn) {
+        if (viewModel.networkState.value is NetworkState.Error) {
+            if (viewModel.loginState.value is LogInState.LoggedIn) {
                 repeatOnViewStarted {
                     viewModel.onStateLoggedIn()
                 }

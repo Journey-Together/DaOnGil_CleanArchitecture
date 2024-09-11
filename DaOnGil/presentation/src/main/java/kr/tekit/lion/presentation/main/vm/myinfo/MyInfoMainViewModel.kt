@@ -43,15 +43,15 @@ class MyInfoMainViewModel @Inject constructor(
     private val _myInfo = MutableSharedFlow<MyDefaultInfo>()
     val myInfo = _myInfo.asSharedFlow()
 
-    private suspend fun checkLoginState(){
+    suspend fun checkLoginState(){
         authRepository.loggedIn.collect{ isLoggedIn ->
             if (isLoggedIn){
                 _loginState.update { LogInState.LoggedIn }
             }
             else{
                 _loginState.update { LogInState.LoginRequired }
+                networkErrorDelegate.handleNetworkSuccess()
             }
-            networkErrorDelegate.handleNetworkSuccess()
         }
     }
 
