@@ -101,62 +101,101 @@
                 </com.google.android.material.appbar.MaterialToolbar>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/review_list_count1_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_basic"
-                android:layout_marginTop="@dimen/margin_basic"
-                android:fontFamily="@font/pretendard_semibold"
-                android:text="최근 리뷰 "
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_big1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/review_list_thumbnail_layout" />
-
-            <TextView
-                android:id="@+id/review_list_count2_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_semibold"
-                android:text="n"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_big1"
-                app:layout_constraintStart_toEndOf="@+id/review_list_count1_tv"
-                app:layout_constraintTop_toTopOf="@+id/review_list_count1_tv" />
-
-            <TextView
-                android:id="@+id/review_list_count3_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_semibold"
-                android:text="개"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_big1"
-                app:layout_constraintStart_toEndOf="@+id/review_list_count2_tv"
-                app:layout_constraintTop_toTopOf="@+id/review_list_count1_tv" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/review_list_divider"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/review_list_content_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:dividerColor="@color/detail_divider"
-                app:dividerThickness="1dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/review_list_count1_tv" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/review_list_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/review_list_divider" />
+                app:layout_constraintTop_toBottomOf="@+id/review_list_thumbnail_layout">
 
+                <TextView
+                    android:id="@+id/review_list_count1_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="최근 리뷰 "
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/review_list_count2_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="n"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big1"
+                    app:layout_constraintStart_toEndOf="@+id/review_list_count1_tv"
+                    app:layout_constraintTop_toTopOf="@+id/review_list_count1_tv" />
+
+                <TextView
+                    android:id="@+id/review_list_count3_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="개"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big1"
+                    app:layout_constraintStart_toEndOf="@+id/review_list_count2_tv"
+                    app:layout_constraintTop_toTopOf="@+id/review_list_count1_tv" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/review_list_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:dividerColor="@color/detail_divider"
+                    app:dividerThickness="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/review_list_count1_tv" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/review_list_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/review_list_divider" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/review_list_error_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="300dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/onboarding_clover" />
+
+                <TextView
+                    android:id="@+id/review_list_error_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big4"
+                    android:fontFamily="@font/cafe24_oneprettynight"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="TextView"
+                    android:textSize="@dimen/font_big1" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
