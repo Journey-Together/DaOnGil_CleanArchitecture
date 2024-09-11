@@ -35,92 +35,130 @@
             app:tint="@color/text_primary" />
     </LinearLayout>
 
-    <com.willy.ratingbar.BaseRatingBar
-        android:id="@+id/ratingbarItemMyReview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reviewLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_big4"
-        app:layout_constraintStart_toStartOf="@+id/layoutLocationName"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/layoutLocationName"
-        app:srb_drawableEmpty="@drawable/star_icon"
-        app:srb_drawableFilled="@drawable/star_filled_icon"
-        app:srb_isIndicator="true"
-        app:srb_minimumStars="0"
-        app:srb_numStars="5"
-        app:srb_rating="3.5"
-        app:srb_starHeight="15dp"
-        app:srb_starPadding="2dp"
-        app:srb_starWidth="15dp"
-        app:srb_stepSize="0.5" />
+        tools:layout_editor_absoluteX="24dp">
 
-    <TextView
-        android:id="@+id/textViewMyReviewDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small1"
-        android:layout_marginTop="1dp"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/text_tertiary"
-        android:textSize="@dimen/font_small2"
-        app:layout_constraintStart_toEndOf="@+id/ratingbarItemMyReview"
-        app:layout_constraintTop_toTopOf="@+id/ratingbarItemMyReview"
-        tools:text="2024.06.31" />
+        <com.willy.ratingbar.BaseRatingBar
+            android:id="@+id/ratingbarItemMyReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srb_drawableEmpty="@drawable/star_icon"
+            app:srb_drawableFilled="@drawable/star_filled_icon"
+            app:srb_isIndicator="true"
+            app:srb_minimumStars="0"
+            app:srb_numStars="5"
+            app:srb_rating="3.5"
+            app:srb_starHeight="15dp"
+            app:srb_starPadding="2dp"
+            app:srb_starWidth="15dp"
+            app:srb_stepSize="0.5" />
 
-    <TextView
-        android:id="@+id/myReviewModifyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_big4"
-        android:layout_marginBottom="@dimen/margin_big4"
-        android:background="@drawable/background_radius_50"
-        android:backgroundTint="@color/primary_disabled"
-        android:fontFamily="@font/pretendard_medium"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="@dimen/margin_small2"
-        android:text="@string/text_my_review_modify_btn"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/font_small2"
-        app:layout_constraintBottom_toTopOf="@+id/textViewMyReviewContent"
-        app:layout_constraintEnd_toStartOf="@+id/myReviewDeleteBtn" />
+        <TextView
+            android:id="@+id/textViewMyReviewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small1"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/text_tertiary"
+            android:textSize="@dimen/font_small2"
+            app:layout_constraintStart_toEndOf="@+id/ratingbarItemMyReview"
+            app:layout_constraintTop_toTopOf="@+id/ratingbarItemMyReview"
+            tools:text="2024.06.31" />
 
-    <TextView
-        android:id="@+id/myReviewDeleteBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_radius_50"
-        android:backgroundTint="@color/primary_disabled"
-        android:fontFamily="@font/pretendard_medium"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="@dimen/margin_small2"
-        android:text="@string/text_my_review_delete_btn"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/font_small2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/myReviewModifyBtn" />
+        <TextView
+            android:id="@+id/myReviewModifyBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_big4"
+            android:layout_marginBottom="@dimen/margin_big4"
+            android:background="@drawable/background_radius_50"
+            android:backgroundTint="@color/primary_disabled"
+            android:fontFamily="@font/pretendard_medium"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="@dimen/margin_small2"
+            android:text="@string/text_my_review_modify_btn"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_small2"
+            app:layout_constraintBottom_toTopOf="@+id/textViewMyReviewContent"
+            app:layout_constraintEnd_toStartOf="@+id/myReviewDeleteBtn"
+            app:layout_constraintTop_toTopOf="@+id/textViewMyReviewDate" />
 
-    <TextView
-        android:id="@+id/textViewMyReviewContent"
+        <TextView
+            android:id="@+id/myReviewDeleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_radius_50"
+            android:backgroundTint="@color/primary_disabled"
+            android:fontFamily="@font/pretendard_medium"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="@dimen/margin_small2"
+            android:text="@string/text_my_review_delete_btn"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_small2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/myReviewModifyBtn" />
+
+        <TextView
+            android:id="@+id/textViewMyReviewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big3"
+            android:fontFamily="@font/pretendard_medium"
+            android:lineSpacingMultiplier="1.1"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_small1"
+            app:layout_constraintStart_toStartOf="@+id/ratingbarItemMyReview"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbarItemMyReview"
+            tools:text="역시 풍경도 너무 예쁘고 좋았습니다! 휠체어가 다니기에도 너무 편하고, 오랜만에 걱정 없이 즐긴 거 같아요😊 다음에도 또 방문하고 싶네요" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMyReivew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/font_small2"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewMyReviewContent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyReviewContent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reportLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_big3"
-        android:fontFamily="@font/pretendard_medium"
-        android:lineSpacingMultiplier="1.1"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/font_small1"
-        app:layout_constraintStart_toStartOf="@+id/ratingbarItemMyReview"
-        app:layout_constraintTop_toBottomOf="@+id/ratingbarItemMyReview"
-        tools:text="역시 풍경도 너무 예쁘고 좋았습니다! 휠체어가 다니기에도 너무 편하고, 오랜만에 걱정 없이 즐긴 거 같아요😊 다음에도 또 방문하고 싶네요" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:background="@drawable/background_radius_5"
+        android:backgroundTint="@color/text_field_background"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLocationName"
+        tools:layout_editor_absoluteX="24dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMyReivew"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/font_small2"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textViewMyReviewContent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMyReviewContent" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_big1"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@string/text_my_review_report"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_big3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

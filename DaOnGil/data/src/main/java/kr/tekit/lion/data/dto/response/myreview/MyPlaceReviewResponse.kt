@@ -18,6 +18,7 @@ internal data class MyPlaceReviewResponse(
                     date = it.date,
                     grade = it.grade,
                     images = it.images,
+                    isReport = it.isReport,
                     name = it.name,
                     placeId = it.placeId,
                     reviewId = it.reviewId
