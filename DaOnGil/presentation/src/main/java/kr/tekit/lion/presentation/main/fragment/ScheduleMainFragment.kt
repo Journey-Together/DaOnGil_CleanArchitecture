@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.scheduleform.ScheduleFormActivity
@@ -38,16 +39,14 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
 
     private val scheduleReviewLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == ResultCode.RESULT_REVIEW_WRITE) {
-            viewModel.getMyMainPlanList()
-            viewModel.getOpenPlanList()
+            viewModel.getScheduleMainLists()
             view?.showSnackbar("후기가 저장되었습니다", Snackbar.LENGTH_LONG)
         }
     }
 
     private val scheduleFormLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            viewModel.getMyMainPlanList()
-            viewModel.getOpenPlanList()
+            viewModel.getScheduleMainLists()
             view?.showSnackbar("일정이 저장되었습니다", Snackbar.LENGTH_LONG)
         }
     }
@@ -55,11 +54,9 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
     private val scheduleDetailLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             view?.showSnackbar("일정이 삭제되었습니다", Snackbar.LENGTH_LONG)
-            viewModel.getMyMainPlanList()
-            viewModel.getOpenPlanList()
+            viewModel.getScheduleMainLists()
         } else {
-            viewModel.getMyMainPlanList()
-            viewModel.getOpenPlanList()
+            viewModel.getScheduleMainLists()
         }
     }
 
@@ -71,49 +68,51 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
         settingRecyclerView(binding)
         initButtonClickListener(binding)
 
-        viewModel.getOpenPlanList()
+        repeatOnViewStarted {
+            viewModel.networkState.combine(viewModel.loginState) { networkState, loginState ->
+                networkState to loginState
+            }.collect { (networkState, loginState) ->
 
-        repeatOnStarted {
-            viewModel.loginState.collect { uiState ->
-                when (uiState) {
+                when (networkState) {
+                    is NetworkState.Loading -> {
+                        binding.scheduleMainProgressBar.visibility = View.VISIBLE
+                        binding.scheduleMainErrorLayout.visibility = View.GONE
+                        binding.scheduleMainLayout.visibility = View.GONE
+                    }
+                    is NetworkState.Success -> {
+                        binding.scheduleMainProgressBar.visibility = View.GONE
+                        binding.scheduleMainErrorLayout.visibility = View.GONE
+                        binding.scheduleMainLayout.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Error -> {
+                        binding.scheduleMainProgressBar.visibility = View.GONE
+                        binding.scheduleMainErrorLayout.visibility = View.VISIBLE
+                        binding.scheduleMainLayout.visibility = View.GONE
+                        binding.scheduleMainErrorMsg.text = networkState.msg
+                    }
+                }
+
+
+                when (loginState) {
                     is LogInState.Checking -> {
+                        // 로그인 상태를 아직 확인 중일 때 처리
                         return@collect
                     }
 
                     is LogInState.LoggedIn -> {
                         isUser = true
-                        viewModel.getMyMainPlanList()
+                        viewModel.getScheduleMainLists()
+                        binding.textViewMyScheduleMore.visibility = View.VISIBLE
+                        binding.recyclerViewMySchedule.visibility = View.VISIBLE
+                        binding.cardViewEmptySchedule.visibility = View.GONE
                     }
 
                     is LogInState.LoginRequired -> {
                         isUser = false
+                        viewModel.getOpenPlanList()
                         binding.textViewMyScheduleMore.visibility = View.INVISIBLE
-                        showAddSchedulePrompt(binding)
-                    }
-                }
-            }
-        }
-
-        with(binding) {
-            repeatOnViewStarted {
-                viewModel.networkState.collect { networkState ->
-                    when (networkState) {
-                        is NetworkState.Loading -> {
-                            scheduleMainProgressBar.visibility = View.VISIBLE
-                            scheduleMainErrorLayout.visibility = View.GONE
-                            scheduleMainLayout.visibility = View.GONE
-                        }
-                        is NetworkState.Success -> {
-                            scheduleMainProgressBar.visibility = View.GONE
-                            scheduleMainErrorLayout.visibility = View.GONE
-                            scheduleMainLayout.visibility = View.VISIBLE
-                        }
-                        is NetworkState.Error -> {
-                            scheduleMainProgressBar.visibility = View.GONE
-                            scheduleMainErrorLayout.visibility = View.VISIBLE
-                            scheduleMainLayout.visibility = View.GONE
-                            scheduleMainErrorMsg.text = networkState.msg
-                        }
+                        binding.recyclerViewMySchedule.visibility = View.GONE
+                        binding.cardViewEmptySchedule.visibility = View.VISIBLE
                     }
                 }
             }
@@ -125,7 +124,8 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
         with(binding) {
             viewModel.myMainPlanList.observe(viewLifecycleOwner) {
                 if (it.isNullOrEmpty()) {
-                    showAddSchedulePrompt(binding)
+                    binding.recyclerViewMySchedule.visibility = View.GONE
+                    binding.cardViewEmptySchedule.visibility = View.VISIBLE
                     return@observe
                 }
 
@@ -172,12 +172,6 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                 }
             }
         }
-    }
-
-    private fun showAddSchedulePrompt(binding: FragmentScheduleMainBinding) {
-        // 등록된 스케쥴이 없는 경우 -> '내 일정' 리사이클러뷰를 숨겨주고, 일정 추가 권유하는 cardView를 보여준다.
-        binding.recyclerViewMySchedule.visibility = View.GONE
-        binding.cardViewEmptySchedule.visibility = View.VISIBLE
     }
 
     private fun initButtonClickListener(binding: FragmentScheduleMainBinding) {
