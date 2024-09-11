@@ -82,9 +82,9 @@ class MyInfoViewModel @Inject constructor(
         }
     }
 
-    fun onCompleteModifyPersonal(nickname: String, phone: String) {
+    fun onCompleteModifyPersonal(nickname: String, phone: String) = viewModelScope.launch{
         _myPersonalInfo.update { it.copy(nickname = nickname, phone = phone) }
-
+        _personalModifyState.emit(NetworkState.Loading)
         viewModelScope.launch {
             memberRepository.modifyMyPersonalInfo(PersonalInfo(nickname, phone))
                 .onSuccess {
@@ -100,25 +100,27 @@ class MyInfoViewModel @Inject constructor(
         }
     }
 
-    fun onCompleteModifyPersonalWithImg(nickname: String, phone: String) {
-        viewModelScope.launch {
-            onCompleteModifyPersonal(nickname, phone)
-            memberRepository.modifyMyProfileImg(profileImg.value.toDomainModel())
-                .onSuccess {
-                    _isPersonalInfoModified.update { true }
-                    viewModelScope.launch {
-                        _personalModifyState.emit(NetworkState.Success)
-                    }
-                }.onError { e ->
-                    networkErrorDelegate.handleNetworkError(e)
-                    viewModelScope.launch {
-                        _personalModifyState.emit(NetworkState.Error("${e.title} \n ${e.message}"))
-                    }
+    fun onCompleteModifyPersonalWithImg(nickname: String, phone: String)= viewModelScope.launch {
+        _personalModifyState.emit(NetworkState.Loading)
+
+        onCompleteModifyPersonal(nickname, phone)
+
+        memberRepository.modifyMyProfileImg(profileImg.value.toDomainModel())
+            .onSuccess {
+                _isPersonalInfoModified.update { true }
+                viewModelScope.launch {
+                    _personalModifyState.emit(NetworkState.Success)
                 }
-        }
+            }.onError { e ->
+                networkErrorDelegate.handleNetworkError(e)
+                viewModelScope.launch {
+                    _personalModifyState.emit(NetworkState.Error("${e.title} \n ${e.message}"))
+                }
+            }
     }
 
-    fun onCompleteModifyIce(newIceInfo: IceInfo) {
+    fun onCompleteModifyIce(newIceInfo: IceInfo) = viewModelScope.launch{
+        _iceModifyState.emit(NetworkState.Loading)
         _iceInfo.update {
             it.copy(
                 birth = newIceInfo.birth,

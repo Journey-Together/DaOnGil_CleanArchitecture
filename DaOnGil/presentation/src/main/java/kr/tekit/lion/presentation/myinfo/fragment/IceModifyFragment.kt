@@ -18,9 +18,11 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.IceInfo
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentIceModifyBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.formatBirthday
 import kr.tekit.lion.presentation.ext.formatPhoneNumber
@@ -54,7 +56,10 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
         else binding.toolbarIceModify.menu.clear()
 
         repeatOnViewStarted {
-            connectivityObserve(binding)
+            supervisorScope {
+                launch { observeConnectivity(binding) }
+                launch { collectNetworkState(binding) }
+            }
         }
 
         with(binding) {
@@ -64,7 +69,28 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
         }
     }
 
-    private suspend fun connectivityObserve(binding: FragmentIceModifyBinding) {
+    private suspend fun collectNetworkState(binding: FragmentIceModifyBinding){
+        with(binding) {
+            viewModel.iceModifyState.collect {
+                when (it) {
+                    is NetworkState.Loading -> {
+                        progressBar.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Success -> {
+                        progressBar.visibility = View.GONE
+                        showSnackbar(this@with, "나의 응급 정보가 수정 되었습니다.")
+                        findNavController().popBackStack()
+                    }
+                    is NetworkState.Error -> {
+                        progressBar.visibility = View.GONE
+                        showSnackbar(binding, it.msg)
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(binding: FragmentIceModifyBinding) {
         with(binding) {
             connectivityObserver.getFlow().collect {
                 when (it) {
@@ -73,7 +99,6 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
 
                         buttonIceSubmit.setOnClickListener {
                             if (isFormValid(this@with)) {
-                                showSnackbar(this@with, "나의 응급 정보가 수정 되었습니다.")
                                 viewModel.onCompleteModifyIce(
                                     IceInfo(
                                         birth = tvBirth.text.toString(),
@@ -87,7 +112,6 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                                         part2Phone = tvContact2.text.toString()
                                     )
                                 )
-                                findNavController().popBackStack()
                             }
                         }
                     }
@@ -96,10 +120,9 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                     ConnectivityObserver.Status.Losing,
                     ConnectivityObserver.Status.Lost -> {
                         binding.buttonIceSubmit.isEnabled = false
-                        requireContext().showInfinitySnackBar(
-                            buttonIceSubmit,
-                            "서버에 연결할 수 없습니다.\n인터넷 연결을 확인해주세요.",
-                        )
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        requireContext().showInfinitySnackBar(buttonIceSubmit, msg)
                     }
                 }
             }
@@ -107,18 +130,15 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
     }
 
     private fun initTextField(binding: FragmentIceModifyBinding) {
-        val bloodType =
-            resources.getStringArray(R.array.blood_type).map { it.pronounceEachCharacter() }
-        val arrayAdapter =
-            ArrayAdapter(requireContext(), R.layout.dropdown_item_blood_type, bloodType)
+        val bloodType = resources.getStringArray(R.array.blood_type).map { it.pronounceEachCharacter() }
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item_blood_type, bloodType)
 
         with(binding.tvBloodType) {
             setDropDownBackgroundResource(R.color.background_color)
             setAdapter(arrayAdapter)
 
             setOnClickListener {
-                val imm =
-                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(it.windowToken, 0)
                 showDropDown()
             }

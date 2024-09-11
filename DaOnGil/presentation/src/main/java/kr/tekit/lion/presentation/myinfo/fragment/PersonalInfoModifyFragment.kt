@@ -3,7 +3,6 @@ package kr.tekit.lion.presentation.myinfo.fragment
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -72,7 +71,7 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
 
         repeatOnViewStarted {
             supervisorScope {
-                launch { connectivityObserve(binding) }
+                launch { observeConnectivity(binding) }
                 launch { collectPersonalModifyState(binding) }
             }
         }
@@ -81,8 +80,12 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
     private suspend fun collectPersonalModifyState(binding: FragmentPersonalInfoModifyBinding) {
         viewModel.personalModifyState.collect {
             when (it) {
-                is NetworkState.Loading -> return@collect
+                is NetworkState.Loading ->{
+                    binding.progressBar.visibility = View.VISIBLE
+                }
                 is NetworkState.Success -> {
+                    binding.progressBar.visibility = View.GONE
+
                     Snackbar.make(binding.root, "개인 정보가 수정 되었습니다.", Snackbar.LENGTH_LONG)
                         .setBackgroundTint(
                             ContextCompat.getColor(
@@ -95,13 +98,14 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                 }
 
                 is NetworkState.Error -> {
+                    binding.progressBar.visibility = View.GONE
                     requireContext().showSnackbar(binding.root, it.msg)
                 }
             }
         }
     }
 
-    private suspend fun connectivityObserve(binding: FragmentPersonalInfoModifyBinding) {
+    private suspend fun observeConnectivity(binding: FragmentPersonalInfoModifyBinding) {
         with(binding) {
             connectivityObserver.getFlow().collect {
                 when (it) {
@@ -135,10 +139,9 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                     ConnectivityObserver.Status.Losing,
                     ConnectivityObserver.Status.Lost -> {
                         binding.btnSubmit.isEnabled = false
-                        requireContext().showInfinitySnackBar(
-                            btnSubmit,
-                            "서버에 연결할 수 없습니다.\n인터넷 연결을 확인해주세요.",
-                        )
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        requireContext().showInfinitySnackBar(btnSubmit, msg)
                     }
                 }
             }

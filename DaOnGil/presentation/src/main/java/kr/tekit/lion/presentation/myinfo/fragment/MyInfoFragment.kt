@@ -55,7 +55,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
                 launch { collectPersonalInfo(binding) }
                 launch { collectIceInfo(binding) }
                 launch { collectNetworkState(binding) }
-                launch { connectivityObserve() }
+                launch { observeConnectivity() }
             }
         }
 
@@ -71,7 +71,7 @@ class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
         }
     }
 
-    private suspend fun connectivityObserve(){
+    private suspend fun observeConnectivity(){
         connectivityObserver.getFlow().collect {
             connectivityObserver.getFlow().collect { status ->
                 if (status == ConnectivityObserver.Status.Available) {
