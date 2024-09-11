@@ -5,20 +5,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.bookmark.adapter.PlaceBookmarkRVAdapter
 import kr.tekit.lion.presentation.bookmark.adapter.PlanBookmarkRVAdapter
 import kr.tekit.lion.presentation.bookmark.vm.BookmarkViewModel
 import kr.tekit.lion.presentation.databinding.ActivityBookmarkBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
-import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
@@ -36,17 +32,19 @@ class BookmarkActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding) {
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.networkState.collect { networkState ->
-                        when (networkState) {
-                            is NetworkState.Loading -> {
-                                bookmarkProgressBar.visibility = View.VISIBLE
-                            }
-                            is NetworkState.Success -> {
-                                bookmarkProgressBar.visibility = View.GONE
-                            }
-                            is NetworkState.Error -> {
+            repeatOnStarted {
+                viewModel.networkState.collect { networkState ->
+                    when (networkState) {
+                        is NetworkState.Loading -> {
+                            bookmarkProgressBar.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Success -> {
+                            bookmarkProgressBar.visibility = View.GONE
+                        }
+                        is NetworkState.Error -> {
+                            if(viewModel.isUpdateError.value == true) {
+                                this@BookmarkActivity.showSnackbar(binding.root, networkState.msg)
+                            } else {
                                 bookmarkProgressBar.visibility = View.GONE
                                 tabLayoutBookmark.visibility = View.GONE
                                 bookmarkErrorLayout.visibility = View.VISIBLE
@@ -55,6 +53,13 @@ class BookmarkActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+        }
+
+        viewModel.snackbarEvent.observe(this) { message ->
+            message?.let {
+                this@BookmarkActivity.showSnackbar(binding.root, it)
+                viewModel.resetSnackbarEvent()
             }
         }
 
@@ -104,7 +109,6 @@ class BookmarkActivity : AppCompatActivity() {
                     },
                     onBookmarkClick = { placeId ->
                         viewModel.updatePlaceBookmark(placeId)
-                        this.showSnackbar(binding.root, "북마크가 삭제되었습니다.")
                     }
                 )
                 val rvState = binding.recyclerViewBookmark.layoutManager?.onSaveInstanceState()
@@ -136,7 +140,6 @@ class BookmarkActivity : AppCompatActivity() {
                     },
                     onBookmarkClick = { planId ->
                         viewModel.updatePlanBookmark(planId)
-                        this.showSnackbar(binding.root, "북마크가 삭제되었습니다.")
                     }
                 )
                 val rvState = binding.recyclerViewBookmark.layoutManager?.onSaveInstanceState()
