@@ -1,19 +1,23 @@
 package kr.tekit.lion.presentation.home.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.placereviewlist.PlaceReview
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemDetailReviewBigBinding
+import kr.tekit.lion.presentation.login.LoginActivity
+import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.report.ReportActivity
 
 class ReviewListRVAdapter(
     private val reviewList: List<PlaceReview>,
-    private val dialogCallback: () -> Unit
+    private val loginState: Boolean
 ) : RecyclerView.Adapter<ReviewListRVAdapter.ReviewListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewListViewHolder {
@@ -21,7 +25,7 @@ class ReviewListRVAdapter(
             LayoutInflater.from(parent.context), parent, false
         )
 
-        return ReviewListViewHolder(binding, dialogCallback)
+        return ReviewListViewHolder(binding, loginState)
     }
 
     override fun getItemCount(): Int = reviewList.size
@@ -32,7 +36,7 @@ class ReviewListRVAdapter(
 
     class ReviewListViewHolder(
         private val binding: ItemDetailReviewBigBinding,
-        private val dialogCallback: () -> Unit
+        private val loginState: Boolean
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(review: PlaceReview) {
             binding.itemDetailReviewBigNickname.text = review.nickname
@@ -56,16 +60,42 @@ class ReviewListRVAdapter(
                 binding.itemDetailReviewBigRv.visibility = View.GONE
             }
 
-            binding.itemDetailReviewBigReportBtn.setOnClickListener {
-                dialogCallback()
-            }
-
             if (review.myReview) {
                 binding.itemDetailReviewBigReportBtn.visibility = View.GONE
             } else {
                 binding.itemDetailReviewBigReportBtn.visibility = View.VISIBLE
             }
 
+            binding.itemDetailReviewBigReportBtn.setOnClickListener {
+                if (loginState) {
+                    val context = binding.root.context
+
+                    val intent = Intent(context, ReportActivity::class.java).apply {
+                        putExtra("reviewType", "PlaceReview")
+                        putExtra("reviewId", review.reviewId.toLong())
+                    }
+                    context.startActivity(intent)
+                } else {
+                    displayLoginDialog("후기를 신고하고 싶다면\n 로그인을 진행해주세요", binding)
+                }
+            }
+        }
+
+        private fun displayLoginDialog(subtitle: String, binding: ItemDetailReviewBigBinding) {
+            val context = binding.root.context
+            val dialog = ConfirmDialog(
+                "로그인이 필요해요!",
+                subtitle,
+                "로그인하기",
+            ) {
+                val intent = Intent(context, LoginActivity::class.java)
+                context.startActivity(intent)
+            }
+
+            if (context is FragmentActivity) {
+                dialog.isCancelable = true
+                dialog.show(context.supportFragmentManager, "ScheduleLoginDialog")
+            }
         }
     }
 }
