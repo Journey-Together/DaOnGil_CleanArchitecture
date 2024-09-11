@@ -150,6 +150,8 @@ class HomeViewModel @Inject constructor(
         naverMapRepository.getReverseGeoCode(coords).onSuccess {
             if(it.code == 0){
                 _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
+            } else {
+                _area.value = "${DEFAULT_AREA} ${DEFAULT_SIGUNGU}"
             }
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
