@@ -40,6 +40,7 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
                         }
                         is NetworkState.Success -> {
                             myReviewProgressBar.visibility = View.GONE
+                            recyclerViewMyReview.visibility = View.VISIBLE
                         }
                         is NetworkState.Error -> {
                             myReviewProgressBar.visibility = View.GONE
@@ -73,8 +74,7 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
     private fun settingMyReviewRVAdapter(binding: FragmentMyReviewBinding) {
         viewModel.myPlaceReview.observe(viewLifecycleOwner) { myPlaceReview ->
             if(myPlaceReview.myPlaceReviewInfoList.isNotEmpty()) {
-                binding.notExistReviewLayout.visibility = View.INVISIBLE
-                binding.recyclerViewMyReview.visibility = View.VISIBLE
+                binding.notExistReviewLayout.visibility = View.GONE
 
                 val myReviewRVAdapter = MyReviewRVAdapter(
                     myPlaceReview,
@@ -121,7 +121,7 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
                     }
                 }
             } else {
-                binding.recyclerViewMyReview.visibility = View.INVISIBLE
+                binding.recyclerViewMyReview.visibility = View.GONE
                 binding.notExistReviewLayout.visibility = View.VISIBLE
                 binding.textViewNotExistReview.text = getString(R.string.text_my_review)
             }
