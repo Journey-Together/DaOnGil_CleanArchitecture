@@ -2,15 +2,13 @@ package kr.tekit.lion.presentation.keyword.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
@@ -23,6 +21,7 @@ import kr.tekit.lion.presentation.keyword.model.KeywordInputState
 import kr.tekit.lion.presentation.keyword.vm.KeywordSearchViewModel
 import kr.tekit.lion.presentation.main.adapter.RecentlyKeywordAdapter
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
 
 @AndroidEntryPoint
 class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
@@ -31,6 +30,7 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentOnSearchBinding.bind(view)
+
         val recentlyKeywordAdapter = RecentlyKeywordAdapter(
             onClick = {
                 findNavController().navigate(
@@ -51,10 +51,8 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
             }
         }
 
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val keywordLayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val keywordLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
 
         with(binding) {
             searchSuggestions.adapter = searchAdapter
@@ -95,6 +93,12 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
                                 }
 
                                 KeywordInputState.NotEmpty -> {
+                                    if (viewModel.networkStatus.value != ConnectivityObserver.Status.Available){
+                                        textMsg.text = "서버에 연결할 수 없어요 \n 인터넷 연결을 확인해주세요."
+                                        noSearchResultContainer.visibility = View.VISIBLE
+                                        searchRecentSearchesContainer.visibility = View.GONE
+                                        searchSuggestions.visibility = View.GONE
+                                    }
                                     searchRecentSearchesContainer.visibility = View.GONE
                                 }
 
@@ -124,9 +128,11 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
                     }
 
                     launch {
-                        viewModel.networkState.collect {
+                        viewModel.errorState.collect {
                             when (it) {
-                                is NetworkState.Loading, NetworkState.Success -> return@collect
+                                is NetworkState.Loading, NetworkState.Success -> {
+                                    searchSuggestions.visibility = View.VISIBLE
+                                }
                                 is NetworkState.Error -> {
                                     textMsg.text = it.msg
                                     noSearchResultContainer.visibility = View.VISIBLE
