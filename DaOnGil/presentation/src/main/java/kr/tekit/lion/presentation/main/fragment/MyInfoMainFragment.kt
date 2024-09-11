@@ -119,9 +119,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         isTalkbackEnabled: Boolean,
         talkbackText: StringBuilder
     ) {
-        repeatOnViewStarted {
-            viewModel.onStateLoggedIn()
-        }
         viewModel.myInfo.collect { myInfo ->
             with(binding) {
                 val name = "${myInfo.name}님"
