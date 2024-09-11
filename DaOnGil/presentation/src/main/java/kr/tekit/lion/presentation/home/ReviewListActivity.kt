@@ -1,14 +1,9 @@
 package kr.tekit.lion.presentation.home
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +15,6 @@ import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.adapter.ReviewListRVAdapter
 import kr.tekit.lion.presentation.home.vm.ReviewListViewModel
-import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
