@@ -63,7 +63,7 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
     private fun observeNickname(binding: FragmentConcernTypeBinding) {
         viewModel.nickName.observe(viewLifecycleOwner) { nickName ->
-            binding.textViewConcernTypeUseNickname.text = nickName
+            binding.textViewConcernTypeUseNickname.text = getString(R.string.concern_type_nickname, nickName)
         }
     }
 
