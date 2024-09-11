@@ -3,6 +3,7 @@ package kr.tekit.lion.presentation.main.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -56,7 +57,12 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
             view?.showSnackbar("일정이 삭제되었습니다", Snackbar.LENGTH_LONG)
             viewModel.getScheduleMainLists()
         } else {
-            viewModel.getScheduleMainLists()
+            if(isUser){
+                viewModel.getScheduleMainLists()
+            } else {
+                viewModel.getOpenPlanList()
+            }
+
         }
     }
 
