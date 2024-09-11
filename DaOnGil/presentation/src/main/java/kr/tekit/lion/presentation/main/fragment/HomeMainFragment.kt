@@ -48,6 +48,7 @@ import kr.tekit.lion.presentation.databinding.ItemTouristRecommendBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showPermissionSnackBar
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.home.model.HomeViewPagerPage
 import kr.tekit.lion.presentation.main.adapter.HomeLocationRVAdapter
@@ -71,6 +72,11 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     private lateinit var locationCallback: LocationCallback
     private val retryDelayMillis = 5000L
     private var snapHelper: SnapHelper? = null
+
+    companion object {
+        const val DEFAULT_AREA = "서울특별시"
+        const val DEFAULT_SIGUNGU = "강남구"
+    }
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -470,12 +476,19 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         binding.homeMyLocationTv.text = "위치 권한을 허용해주세요"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getAroundPlaceInfo(
         binding: FragmentHomeMainBinding,
         areaCode: String,
         sigunguCode: String
     ) {
         viewModel.getPlaceMain(areaCode, sigunguCode)
+
+        viewModel.locationMessage.observe(viewLifecycleOwner) { message ->
+            binding.root.showSnackbar(message)
+
+            binding.homeMyLocationTv.text = "$DEFAULT_AREA $DEFAULT_SIGUNGU"
+        }
 
         viewModel.aroundPlaceInfo.observe(requireActivity()) { aroundPlaceInfo ->
             if (aroundPlaceInfo.isNotEmpty()) {
