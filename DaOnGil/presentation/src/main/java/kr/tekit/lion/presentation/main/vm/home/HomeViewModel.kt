@@ -45,6 +45,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    companion object {
+        const val DEFAULT_AREA = "서울특별시"
+        const val DEFAULT_SIGUNGU = "강남구"
+    }
+
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
     val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
@@ -60,6 +65,9 @@ class HomeViewModel @Inject constructor(
 
     private val _userActivationState = MutableSharedFlow<Boolean>()
     val userActivationState = _userActivationState.asSharedFlow()
+
+    private val _locationMessage = MutableLiveData<String>()
+    val locationMessage: LiveData<String> get() = _locationMessage
 
     fun checkAppTheme() = viewModelScope.launch{
         val appTheme = appThemeRepository.getAppTheme()
@@ -104,8 +112,14 @@ class HomeViewModel @Inject constructor(
 
     fun getPlaceMain(area: String, sigungu: String) = viewModelScope.launch(Dispatchers.IO) {
 
-      val areaCode = getAreaCode(area)
-      val sigunguCode = getSigunguCode(sigungu)
+        var areaCode = getAreaCode(area)
+        var sigunguCode = getSigunguCode(sigungu)
+
+        if (areaCode == null || sigunguCode == null) {
+            _locationMessage.postValue("위치를 찾을 수 없어 기본값($DEFAULT_AREA, $DEFAULT_SIGUNGU)으로 설정합니다.")
+            areaCode = getAreaCode(DEFAULT_AREA)
+            sigunguCode = getSigunguCode(DEFAULT_SIGUNGU)
+        }
 
         if (areaCode != null && sigunguCode != null) {
             placeRepository.getPlaceMainInfo(areaCode, sigunguCode).onSuccess {
