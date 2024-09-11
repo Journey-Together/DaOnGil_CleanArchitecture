@@ -3,6 +3,7 @@ package kr.tekit.lion.presentation.myinfo.fragment
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -27,22 +28,33 @@ import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.announceForAccessibility
 import kr.tekit.lion.presentation.ext.formatPhoneNumber
 import kr.tekit.lion.presentation.ext.isPhoneNumberValid
 import kr.tekit.lion.presentation.ext.isTallBackEnabled
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.myinfo.model.ImgModifyState
 import kr.tekit.lion.presentation.myinfo.vm.MyInfoViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
+
 
 @AndroidEntryPoint
 class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modify) {
     private val viewModel: MyInfoViewModel by activityViewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var albumLauncher: ActivityResultLauncher<Intent>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
@@ -55,14 +67,85 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         initLauncher(binding)
         initUi(binding)
 
-        if (requireContext().isTallBackEnabled()) {
-            setupAccessibility(binding)
-        } else {
-            binding.toolbar.menu.clear()
+        if (requireContext().isTallBackEnabled()) setupAccessibility(binding)
+        else binding.toolbar.menu.clear()
+
+        repeatOnViewStarted {
+            supervisorScope {
+                launch { connectivityObserve(binding) }
+                launch { collectPersonalModifyState(binding) }
+            }
         }
     }
 
-    private fun initUi(binding: FragmentPersonalInfoModifyBinding){
+    private suspend fun collectPersonalModifyState(binding: FragmentPersonalInfoModifyBinding) {
+        viewModel.personalModifyState.collect {
+            when (it) {
+                is NetworkState.Loading -> return@collect
+                is NetworkState.Success -> {
+                    Snackbar.make(binding.root, "개인 정보가 수정 되었습니다.", Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.text_secondary
+                            )
+                        )
+                        .show()
+                    findNavController().popBackStack()
+                }
+
+                is NetworkState.Error -> {
+                    requireContext().showSnackbar(binding.root, it.msg)
+                }
+            }
+        }
+    }
+
+    private suspend fun connectivityObserve(binding: FragmentPersonalInfoModifyBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect {
+                when (it) {
+                    ConnectivityObserver.Status.Available -> {
+                        btnSubmit.isEnabled = true
+                        btnSubmit.setOnClickListener {
+                            if (isFormValid(binding)) {
+                                val state = viewModel.imgSelectedState.value
+                                val currentNickname = tvNickname.text.toString()
+                                val currentPhone = tvPhone.text.toString()
+
+                                when (state) {
+                                    ImgModifyState.ImgSelected -> {
+                                        viewModel.onCompleteModifyPersonalWithImg(
+                                            currentNickname,
+                                            currentPhone
+                                        )
+                                    }
+
+                                    ImgModifyState.ImgUnSelected -> {
+                                        viewModel.onCompleteModifyPersonal(
+                                            currentNickname,
+                                            currentPhone
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        binding.btnSubmit.isEnabled = false
+                        requireContext().showInfinitySnackBar(
+                            btnSubmit,
+                            "서버에 연결할 수 없습니다.\n인터넷 연결을 확인해주세요.",
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initUi(binding: FragmentPersonalInfoModifyBinding) {
         val myInfo = viewModel.myPersonalInfo.value
         with(binding) {
             val nickname = myInfo.nickname
@@ -126,43 +209,19 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             }
 
             btnSubmit.setOnClickListener {
-                if (isFormValid(binding)) {
-                    val state = viewModel.modifyState.value
-                    val currentNickname = tvNickname.text.toString()
-                    val currentPhone = tvPhone.text.toString()
 
-                    when (state) {
-                        ImgModifyState.ImgSelected -> {
-                            viewModel.onCompleteModifyPersonalWithImg(currentNickname, currentPhone)
-                        }
-
-                        ImgModifyState.ImgUnSelected -> {
-                            viewModel.onCompleteModifyPersonal(currentNickname, currentPhone)
-                        }
-                    }
-
-                    Snackbar.make(binding.root, "개인 정보가 수정 되었습니다.", Snackbar.LENGTH_LONG)
-                        .setBackgroundTint(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.text_secondary
-                            )
-                        )
-                        .show()
-                    findNavController().popBackStack()
-                }
             }
         }
     }
 
-    private fun initLauncher(binding: FragmentPersonalInfoModifyBinding){
+    private fun initLauncher(binding: FragmentPersonalInfoModifyBinding) {
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri == null && requireContext().isTallBackEnabled()){
+            if (uri == null && requireContext().isTallBackEnabled()) {
                 requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
             }
             uri?.let {
                 drawImage(binding.imgProfile, it)
-                if (requireContext().isTallBackEnabled()){
+                if (requireContext().isTallBackEnabled()) {
                     requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
                 }
             }
@@ -173,12 +232,12 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data
-                if (uri == null && requireContext().isTallBackEnabled()){
+                if (uri == null && requireContext().isTallBackEnabled()) {
                     requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
                 }
                 uri?.let {
                     drawImage(binding.imgProfile, uri)
-                    if (requireContext().isTallBackEnabled()){
+                    if (requireContext().isTallBackEnabled()) {
                         requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
                     }
                 }
@@ -224,10 +283,12 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                     requireActivity().announceForAccessibility(getString(R.string.text_script_my_info_modify))
                     true
                 }
+
                 R.id.read_info -> {
                     requireActivity().announceForAccessibility(myInfoAnnounce.toString())
                     true
                 }
+
                 else -> false
             }
         }
@@ -278,19 +339,28 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
     private fun isFormValid(binding: FragmentPersonalInfoModifyBinding): Boolean {
         with(binding) {
             if (tvNickname.text.isNullOrBlank()) {
-                showErrorAndAnnounce(textInputLayoutUserNickname, tvNickname, getString(R.string.text_plz_enter_nickname))
+                showErrorAndAnnounce(
+                    textInputLayoutUserNickname,
+                    tvNickname,
+                    getString(R.string.text_plz_enter_nickname)
+                )
                 return false
             }
 
             val phoneNumber = tvPhone.text.toString()
             if (phoneNumber.isNotBlank() && !phoneNumber.isPhoneNumberValid()) {
-                val errorMessage = getString(R.string.text_plz_enter_collect_phone_type) + "\n" + getString(R.string.text_contact_ex)
+                val errorMessage =
+                    getString(R.string.text_plz_enter_collect_phone_type) + "\n" + getString(R.string.text_contact_ex)
                 showErrorAndAnnounce(textInputLayoutUserPhoneNumber, tvPhone, errorMessage)
                 return false
             }
 
             if (phoneNumber.isEmpty()) {
-                showErrorAndAnnounce(textInputLayoutUserPhoneNumber, tvPhone, getString(R.string.text_plz_enter_phone))
+                showErrorAndAnnounce(
+                    textInputLayoutUserPhoneNumber,
+                    tvPhone,
+                    getString(R.string.text_plz_enter_phone)
+                )
                 return false
             }
 
@@ -298,7 +368,11 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         }
     }
 
-    private fun showErrorAndAnnounce(textInputLayout: TextInputLayout, textView: TextView, errorMessage: String) {
+    private fun showErrorAndAnnounce(
+        textInputLayout: TextInputLayout,
+        textView: TextView,
+        errorMessage: String
+    ) {
         textInputLayout.error = errorMessage
         textView.requestFocus()
         context?.showSoftInput(textView)

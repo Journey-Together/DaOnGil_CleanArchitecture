@@ -28,66 +28,97 @@ import kr.tekit.lion.presentation.ext.isBirthdayValid
 import kr.tekit.lion.presentation.ext.isPhoneNumberValid
 import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.pronounceEachCharacter
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.myinfo.vm.MyInfoViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
 
 @AndroidEntryPoint
 class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
 
     private val viewModel: MyInfoViewModel by activityViewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
     private val myInfoAnnounce = StringBuilder()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentIceModifyBinding.bind(view)
 
-        initMyInfo(binding)
-
         if (requireContext().isTallBackEnabled()) setupAccessibility(binding)
         else binding.toolbarIceModify.menu.clear()
 
+        repeatOnViewStarted {
+            connectivityObserve(binding)
+        }
+
         with(binding) {
-            backButton.setOnClickListener {
-                findNavController().popBackStack()
-            }
-
-            buttonIceSubmit.setOnClickListener {
-                if (isFormValid(this@with)) {
-                    showSnackbar(this@with, "나의 응급 정보가 수정 되었습니다.")
-                    viewModel.onCompleteModifyIce(
-                        IceInfo(
-                            birth = tvBirth.text.toString(),
-                            bloodType = tvBloodType.text.toString(),
-                            disease = tvDisease.text.toString(),
-                            allergy = tvAllergy.text.toString(),
-                            medication = tvMedicine.text.toString(),
-                            part1Rel = tvRelation1.text.toString(),
-                            part1Phone = tvContact1.text.toString(),
-                            part2Rel = tvRelation2.text.toString(),
-                            part2Phone = tvContact2.text.toString()
-                        )
-                    )
-                    findNavController().popBackStack()
-                }
-            }
-
+            initMyInfo(this@with)
             initTextField(this@with)
             handleTextFieldEditorActions(this@with)
         }
     }
 
+    private suspend fun connectivityObserve(binding: FragmentIceModifyBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect {
+                when (it) {
+                    ConnectivityObserver.Status.Available -> {
+                        binding.buttonIceSubmit.isEnabled = true
+
+                        buttonIceSubmit.setOnClickListener {
+                            if (isFormValid(this@with)) {
+                                showSnackbar(this@with, "나의 응급 정보가 수정 되었습니다.")
+                                viewModel.onCompleteModifyIce(
+                                    IceInfo(
+                                        birth = tvBirth.text.toString(),
+                                        bloodType = tvBloodType.text.toString(),
+                                        disease = tvDisease.text.toString(),
+                                        allergy = tvAllergy.text.toString(),
+                                        medication = tvMedicine.text.toString(),
+                                        part1Rel = tvRelation1.text.toString(),
+                                        part1Phone = tvContact1.text.toString(),
+                                        part2Rel = tvRelation2.text.toString(),
+                                        part2Phone = tvContact2.text.toString()
+                                    )
+                                )
+                                findNavController().popBackStack()
+                            }
+                        }
+                    }
+
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        binding.buttonIceSubmit.isEnabled = false
+                        requireContext().showInfinitySnackBar(
+                            buttonIceSubmit,
+                            "서버에 연결할 수 없습니다.\n인터넷 연결을 확인해주세요.",
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     private fun initTextField(binding: FragmentIceModifyBinding) {
-        val bloodType = resources.getStringArray(R.array.blood_type).map { it.pronounceEachCharacter() }
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item_blood_type, bloodType)
+        val bloodType =
+            resources.getStringArray(R.array.blood_type).map { it.pronounceEachCharacter() }
+        val arrayAdapter =
+            ArrayAdapter(requireContext(), R.layout.dropdown_item_blood_type, bloodType)
 
         with(binding.tvBloodType) {
             setDropDownBackgroundResource(R.color.background_color)
             setAdapter(arrayAdapter)
 
             setOnClickListener {
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(it.windowToken, 0)
                 showDropDown()
             }
@@ -146,6 +177,10 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
 
     private fun initMyInfo(binding: FragmentIceModifyBinding) {
         with(binding) {
+            backButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             val currentMyInfo = viewModel.myIceInfo.value
             val birthDay = currentMyInfo.birth
             val bloodType = currentMyInfo.bloodType

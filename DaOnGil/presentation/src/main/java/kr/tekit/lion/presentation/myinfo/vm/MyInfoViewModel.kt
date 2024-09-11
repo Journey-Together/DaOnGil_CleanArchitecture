@@ -3,15 +3,17 @@ package kr.tekit.lion.presentation.myinfo.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.tekit.lion.domain.model.IceInfo
-import kr.tekit.lion.domain.model.PersonalInfo
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
+import kr.tekit.lion.domain.model.IceInfo
+import kr.tekit.lion.domain.model.PersonalInfo
 import kr.tekit.lion.domain.repository.MemberRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -29,8 +31,14 @@ class MyInfoViewModel @Inject constructor(
 
     val networkState: StateFlow<NetworkState> get() = networkErrorDelegate.networkState
 
-    private val _modifyState = MutableStateFlow(ImgModifyState.ImgUnSelected)
-    val modifyState = _modifyState.asStateFlow()
+    private val _personalModifyState = MutableSharedFlow<NetworkState>()
+    val personalModifyState get() = _personalModifyState.asSharedFlow()
+
+    private val _iceModifyState = MutableSharedFlow<NetworkState>()
+    val iceModifyState get() = _iceModifyState.asSharedFlow()
+
+    private val _imgSelectedState = MutableStateFlow(ImgModifyState.ImgUnSelected)
+    val imgSelectedState = _imgSelectedState.asStateFlow()
 
     private val _myPersonalInfo = MutableStateFlow(PersonalInfo())
     val myPersonalInfo = _myPersonalInfo.asStateFlow()
@@ -47,11 +55,7 @@ class MyInfoViewModel @Inject constructor(
     private val _isPersonalInfoModified = MutableStateFlow(false)
     val isPersonalInfoModified = _isPersonalInfoModified.asStateFlow()
 
-    init {
-        initUiData()
-    }
-
-    private fun initUiData() = viewModelScope.launch {
+    fun initUiData() = viewModelScope.launch {
         memberRepository.getMyIfo().onSuccess { myInfo ->
             _name.update { myInfo.name ?: "" }
 
@@ -85,8 +89,13 @@ class MyInfoViewModel @Inject constructor(
             memberRepository.modifyMyPersonalInfo(PersonalInfo(nickname, phone))
                 .onSuccess {
                     _isPersonalInfoModified.update { true }
-                }.onError {
-                    networkErrorDelegate.handleNetworkError(it)
+                    viewModelScope.launch {
+                        _personalModifyState.emit(NetworkState.Success)
+                    }
+                }.onError { e ->
+                    viewModelScope.launch {
+                        _personalModifyState.emit(NetworkState.Error("${e.title} \n ${e.message}"))
+                    }
                 }
         }
     }
@@ -97,8 +106,14 @@ class MyInfoViewModel @Inject constructor(
             memberRepository.modifyMyProfileImg(profileImg.value.toDomainModel())
                 .onSuccess {
                     _isPersonalInfoModified.update { true }
-                }.onError {
-                    networkErrorDelegate.handleNetworkError(it)
+                    viewModelScope.launch {
+                        _personalModifyState.emit(NetworkState.Success)
+                    }
+                }.onError { e ->
+                    networkErrorDelegate.handleNetworkError(e)
+                    viewModelScope.launch {
+                        _personalModifyState.emit(NetworkState.Error("${e.title} \n ${e.message}"))
+                    }
                 }
         }
     }
@@ -118,8 +133,15 @@ class MyInfoViewModel @Inject constructor(
             )
         }
         viewModelScope.launch {
-            memberRepository.modifyMyIceInfo(myIceInfo.value).onError {
-                networkErrorDelegate.handleNetworkError(it)
+            memberRepository.modifyMyIceInfo(myIceInfo.value)
+                .onSuccess {
+                    viewModelScope.launch {
+                        _iceModifyState.emit(NetworkState.Success)
+                    }
+                }.onError { e ->
+                    viewModelScope.launch {
+                        _iceModifyState.emit(NetworkState.Error("${e.title} \n ${e.message}"))
+                    }
             }
         }
     }
@@ -129,6 +151,6 @@ class MyInfoViewModel @Inject constructor(
     }
 
     fun modifyStateChange() {
-        _modifyState.value = ImgModifyState.ImgSelected
+        _imgSelectedState.value = ImgModifyState.ImgSelected
     }
 }
