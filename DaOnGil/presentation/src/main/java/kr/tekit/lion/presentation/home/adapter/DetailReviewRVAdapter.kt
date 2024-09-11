@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,8 @@ import kr.tekit.lion.presentation.report.ReportActivity
 
 class DetailReviewRVAdapter(
     private val reviewList: List<Review>,
-    private val loginState: Boolean
+    private val loginState: Boolean,
+    private val reportLauncher: ActivityResultLauncher<Intent>
 ) : RecyclerView.Adapter<DetailReviewRVAdapter.DetailReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailReviewViewHolder {
@@ -25,7 +27,7 @@ class DetailReviewRVAdapter(
             LayoutInflater.from(parent.context), parent, false
         )
 
-        return DetailReviewViewHolder(binding, loginState)
+        return DetailReviewViewHolder(binding, loginState, reportLauncher)
     }
 
     override fun getItemCount(): Int = reviewList.size
@@ -36,7 +38,8 @@ class DetailReviewRVAdapter(
 
     class DetailReviewViewHolder(
         private val binding: ItemDetailReviewBigBinding,
-        private val loginState: Boolean
+        private val loginState: Boolean,
+        private val reportLauncher: ActivityResultLauncher<Intent>
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(reviewData: Review) {
             with(binding) {
@@ -79,7 +82,7 @@ class DetailReviewRVAdapter(
                             putExtra("reviewType", "PlaceReview")
                             putExtra("reviewId", reviewData.reviewId)
                         }
-                        context.startActivity(intent)
+                        reportLauncher.launch(intent)
                     } else {
                         displayLoginDialog("후기를 신고하고 싶다면\n 로그인을 진행해주세요", binding)
                     }
