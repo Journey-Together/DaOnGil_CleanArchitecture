@@ -27,6 +27,7 @@ import kr.tekit.lion.presentation.ext.setImage
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_WRITE
 import kr.tekit.lion.presentation.schedulereview.adapter.WriteReviewImageAdapter
 import kr.tekit.lion.presentation.schedulereview.vm.WriteScheduleReviewViewModel
@@ -122,7 +123,7 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         binding.toolbarWriteScheduleReview.setNavigationOnClickListener {
-            setResult(RESULT_CANCELED)
+            setResult(ResultCode.RESULT_SCHEDULE_REVIEW_CANCELED)
             finish()
         }
     }
