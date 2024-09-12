@@ -151,7 +151,7 @@ class HomeViewModel @Inject constructor(
             if(it.code == 0){
                 _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
             } else {
-                _area.value = "${DEFAULT_AREA} ${DEFAULT_SIGUNGU}"
+                _area.value = "결과없음"
             }
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
