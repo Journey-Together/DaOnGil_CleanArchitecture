@@ -46,7 +46,7 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
     }
 
     private val scheduleFormLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == ResultCode.RESULT_SCHEDULE_EDIT) {
             viewModel.getScheduleMainLists()
             view?.showSnackbar("일정이 저장되었습니다", Snackbar.LENGTH_LONG)
         }
@@ -74,55 +74,58 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
         settingRecyclerView(binding)
         initButtonClickListener(binding)
 
-        repeatOnViewStarted {
-            viewModel.networkState.combine(viewModel.loginState) { networkState, loginState ->
-                networkState to loginState
-            }.collect { (networkState, loginState) ->
+        with(binding){
+            repeatOnViewStarted {
+                viewModel.networkState.combine(viewModel.loginState) { networkState, loginState ->
+                    networkState to loginState
+                }.collect { (networkState, loginState) ->
 
-                when (networkState) {
-                    is NetworkState.Loading -> {
-                        binding.scheduleMainProgressBar.visibility = View.VISIBLE
-                        binding.scheduleMainErrorLayout.visibility = View.GONE
-                        binding.scheduleMainLayout.visibility = View.GONE
-                    }
-                    is NetworkState.Success -> {
-                        binding.scheduleMainProgressBar.visibility = View.GONE
-                        binding.scheduleMainErrorLayout.visibility = View.GONE
-                        binding.scheduleMainLayout.visibility = View.VISIBLE
-                    }
-                    is NetworkState.Error -> {
-                        binding.scheduleMainProgressBar.visibility = View.GONE
-                        binding.scheduleMainErrorLayout.visibility = View.VISIBLE
-                        binding.scheduleMainLayout.visibility = View.GONE
-                        binding.scheduleMainErrorMsg.text = networkState.msg
-                    }
-                }
-
-
-                when (loginState) {
-                    is LogInState.Checking -> {
-                        // 로그인 상태를 아직 확인 중일 때 처리
-                        return@collect
+                    when (networkState) {
+                        is NetworkState.Loading -> {
+                            scheduleMainProgressBar.visibility = View.VISIBLE
+                            scheduleMainErrorLayout.visibility = View.GONE
+                            scheduleMainLayout.visibility = View.GONE
+                        }
+                        is NetworkState.Success -> {
+                            scheduleMainProgressBar.visibility = View.GONE
+                            scheduleMainErrorLayout.visibility = View.GONE
+                            scheduleMainLayout.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Error -> {
+                            scheduleMainProgressBar.visibility = View.GONE
+                            scheduleMainErrorLayout.visibility = View.VISIBLE
+                            scheduleMainLayout.visibility = View.GONE
+                            scheduleMainErrorMsg.text = networkState.msg
+                        }
                     }
 
-                    is LogInState.LoggedIn -> {
-                        isUser = true
-                        viewModel.getScheduleMainLists()
-                        binding.textViewMyScheduleMore.visibility = View.VISIBLE
-                        binding.recyclerViewMySchedule.visibility = View.VISIBLE
-                        binding.cardViewEmptySchedule.visibility = View.GONE
-                    }
 
-                    is LogInState.LoginRequired -> {
-                        isUser = false
-                        viewModel.getOpenPlanList()
-                        binding.textViewMyScheduleMore.visibility = View.INVISIBLE
-                        binding.recyclerViewMySchedule.visibility = View.GONE
-                        binding.cardViewEmptySchedule.visibility = View.VISIBLE
+                    when (loginState) {
+                        is LogInState.Checking -> {
+                            // 로그인 상태를 아직 확인 중일 때 처리
+                            return@collect
+                        }
+
+                        is LogInState.LoggedIn -> {
+                            isUser = true
+                            viewModel.getScheduleMainLists()
+                            binding.textViewMyScheduleMore.visibility = View.VISIBLE
+                            binding.recyclerViewMySchedule.visibility = View.VISIBLE
+                            binding.cardViewEmptySchedule.visibility = View.GONE
+                        }
+
+                        is LogInState.LoginRequired -> {
+                            isUser = false
+                            viewModel.getOpenPlanList()
+                            binding.textViewMyScheduleMore.visibility = View.INVISIBLE
+                            binding.recyclerViewMySchedule.visibility = View.GONE
+                            binding.cardViewEmptySchedule.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
         }
+
     }
 
     private fun settingRecyclerView(binding: FragmentScheduleMainBinding) {
