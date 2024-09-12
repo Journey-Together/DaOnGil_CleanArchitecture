@@ -30,16 +30,19 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchMapBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.Permissions.LOCATION_PERMISSION_REQUEST_CODE
 import kr.tekit.lion.presentation.ext.Permissions.REQUEST_LOCATION_PERMISSIONS
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setClickEvent
 import kr.tekit.lion.presentation.ext.showPermissionSnackBar
+import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.main.bottomsheet.CategoryBottomSheet
 import kr.tekit.lion.presentation.main.bottomsheet.PlaceBottomSheet
 import kr.tekit.lion.presentation.main.model.Category
@@ -74,28 +77,34 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
         subscribeOptionStates(binding)
 
         repeatOnViewStarted {
-            viewModel.searchState.collect {
-                if (it.not()){
-                    Snackbar.make(
-                        binding.root, "검색결과가 없습니다. 지도의 위치를 변경해보세요",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+            supervisorScope {
+                launch{
+                    viewModel.searchState.collect {
+                        if (it.not()){
+                            Snackbar.make(
+                                binding.root, "검색결과가 없습니다. 지도의 위치를 변경해보세요",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    }
                 }
-            }
-        }
 
-        repeatOnViewStarted {
-            sharedViewModel.sharedOptionState.filter { value ->
-                value.detailFilter.isNotEmpty()
-            }.collect {
-                viewModel.onChangeMapState(it)
-            }
-        }
+                launch {
+                    sharedViewModel.sharedOptionState.filter { value ->
+                        value.detailFilter.isNotEmpty()
+                    }.collect {
+                        viewModel.onChangeMapState(it)
+                    }
+                }
 
-        repeatOnViewStarted {
-            sharedViewModel.tabState.collect {
-                clearMarker()
-                viewModel.onSelectedTab(it)
+                launch {
+                    sharedViewModel.tabState.collect {
+                        clearMarker()
+                        viewModel.onSelectedTab(it)
+                    }
+                }
+
+                launch { collectNetworkState(binding) }
             }
         }
 
@@ -123,6 +132,21 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
                             permissionDeniedMapUiSetting()
                             requireContext().showPermissionSnackBar(binding.root)
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun collectNetworkState(binding: FragmentSearchMapBinding) {
+        with(binding){
+            viewModel.networkState.collect{ networkState ->
+                when(networkState){
+                    is NetworkState.Loading -> progressBar.visibility = View.VISIBLE
+                    is NetworkState.Success -> progressBar.visibility = View.GONE
+                    is NetworkState.Error -> {
+                        progressBar.visibility = View.GONE
+                        requireContext().showSnackbar(binding.root, networkState.msg)
                     }
                 }
             }

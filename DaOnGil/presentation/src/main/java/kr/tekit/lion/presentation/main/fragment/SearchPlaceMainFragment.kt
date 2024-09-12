@@ -116,7 +116,9 @@ class SearchPlaceMainFragment : Fragment(R.layout.fragment_search_place_main) {
 
     private fun showFragment(fragment: Fragment) {
         if (fragment is SearchListFragment) {
-            fragment.mapChanged(true)
+            if (viewModel.firstScreen.value > 0) {
+                fragment.mapChanged(true)
+            }
         }
         childFragmentManager.beginTransaction().apply {
             show(fragment)
