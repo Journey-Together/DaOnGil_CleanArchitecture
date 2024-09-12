@@ -75,16 +75,20 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
 
                         is NetworkState.Error -> {
-                            binding.detailToolbarTitleTv.setTextColor(ContextCompat.getColor(applicationContext, R.color.text_primary))
-                            binding.detailToolbar.navigationIcon?.setTint(ContextCompat.getColor(applicationContext, R.color.text_primary))
-                            binding.detailThumbnailIv.visibility = View.GONE
-                            binding.detailThumbnailDark.visibility = View.GONE
-                            binding.detailTitleTv.visibility = View.GONE
-                            binding.detailAddressTv.visibility = View.GONE
-                            binding.detailBookmarkBtn.visibility = View.GONE
-                            binding.detailContentLayout.visibility = View.GONE
-                            binding.detailErrorLayout.visibility = View.VISIBLE
-                            binding.detailErrorTv.text = state.msg
+                            if (viewModel.isBookmarkError.value == true) {
+                                binding.root.showSnackbar(state.msg)
+                            } else {
+                                binding.detailToolbarTitleTv.setTextColor(ContextCompat.getColor(applicationContext, R.color.text_primary))
+                                binding.detailToolbar.navigationIcon?.setTint(ContextCompat.getColor(applicationContext, R.color.text_primary))
+                                binding.detailThumbnailIv.visibility = View.GONE
+                                binding.detailThumbnailDark.visibility = View.GONE
+                                binding.detailTitleTv.visibility = View.GONE
+                                binding.detailAddressTv.visibility = View.GONE
+                                binding.detailBookmarkBtn.visibility = View.GONE
+                                binding.detailContentLayout.visibility = View.GONE
+                                binding.detailErrorLayout.visibility = View.VISIBLE
+                                binding.detailErrorTv.text = state.msg
+                            }
                         }
                     }
                 }
@@ -265,17 +269,18 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             updateBookmarkState(detailPlaceInfo.isMark)
 
             binding.detailBookmarkBtn.setOnClickListener {
-                val newMarkState = !detailPlaceInfo.isMark
+                val originalMarkState = detailPlaceInfo.isMark
+                val newMarkState = !originalMarkState
 
-                detailPlaceInfo.isMark = newMarkState
                 viewModel.updateDetailPlaceBookmark(placeId)
-                updateBookmarkState(newMarkState)
 
-                // 북마크 상태에 따라 bookmarkNum 업데이트
-                if (newMarkState) {
-                    detailPlaceInfo.bookmarkNum++
-                } else {
-                    detailPlaceInfo.bookmarkNum--
+                viewModel.isBookmarkSuccess.observe(this) { isSuccess ->
+                    if (isSuccess) {
+                        detailPlaceInfo.isMark = newMarkState
+                        updateBookmarkState(newMarkState)
+                    } else {
+                        updateBookmarkState(originalMarkState)
+                    }
                 }
             }
 
