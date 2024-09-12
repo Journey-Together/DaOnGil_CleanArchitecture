@@ -170,7 +170,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             viewLifecycleOwner
         ) { _, _ ->
             viewModel.onClickThemeChangeButton(AppTheme.HIGH_CONTRAST)
-            startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
+            requireActivity().recreate()
         }
 
         childFragmentManager.setFragmentResultListener(
@@ -182,7 +182,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
         binding.homeHighcontrastBtn.setOnClickListener {
             viewModel.onClickThemeToggleButton(isDarkTheme(resources.configuration))
-            startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
+            requireActivity().recreate()
         }
     }
 
