@@ -55,10 +55,6 @@ internal class PlanRepositoryImpl @Inject constructor(
         return planDataSource.getBriefScheduleInfo(planId)
     }
 
-    override suspend fun getBriefScheduleInfoForModification(planId: Long): BriefScheduleInfo {
-        return planDataSource.getBriefScheduleInfoForModification(planId)
-    }
-
     override suspend fun addNewScheduleReview(
         planId: Long,
         scheduleReview: NewScheduleReview,
