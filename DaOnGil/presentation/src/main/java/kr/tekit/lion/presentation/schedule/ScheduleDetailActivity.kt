@@ -14,9 +14,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 import kr.tekit.lion.domain.model.ScheduleDetail
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityScheduleDetailBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.setImageSmall
 import kr.tekit.lion.presentation.ext.showPhotoDialog
@@ -78,10 +80,9 @@ class ScheduleDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
-
-        checkLogin()
-
-
+        checkState()
+        setSnackBar()
+        observeDeleteMyPlan()
     }
 
     private fun initView(isUser: Boolean, planId: Long) {
@@ -253,28 +254,84 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.toolbarError.setNavigationOnClickListener {
+            finish()
+        }
     }
 
-    private fun checkLogin(){
+    private fun checkState(){
         val planId = intent.getLongExtra("planId", -1)
+        with(binding){
+            repeatOnStarted {
 
-        repeatOnStarted {
-            viewModel.loginState.collect { uiState ->
-                when (uiState) {
-                    is LogInState.Checking -> {
-                        return@collect
+                viewModel.networkState.combine(viewModel.loginState) { networkState, loginState ->
+                    networkState to loginState
+                }.collect { (networkState, loginState) ->
+
+                    when (networkState) {
+                        is NetworkState.Loading -> {
+                            scheduleDetailProgressBar.visibility = View.VISIBLE
+                            scheduleDetailErrorLayout.visibility = View.GONE
+                            scheduleDetailLayout.visibility = View.GONE
+                        }
+                        is NetworkState.Success -> {
+                            scheduleDetailProgressBar.visibility = View.GONE
+                            scheduleDetailErrorLayout.visibility = View.GONE
+                            scheduleDetailLayout.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Error -> {
+                            if(viewModel.deletePlanSuccess.value == false){
+                                binding.root.showSnackbar(networkState.msg)
+                            } else if(viewModel.deleteReviewSuccess.value == false){
+                                binding.root.showSnackbar(networkState.msg)
+                            } else if(viewModel.updatePublicSuccess.value == false) {
+                                binding.root.showSnackbar(networkState.msg)
+                            } else if(viewModel.updateBookmarkSuccess.value == false){
+                                binding.root.showSnackbar(networkState.msg)
+                            } else {
+                                scheduleDetailProgressBar.visibility = View.GONE
+                                scheduleDetailErrorLayout.visibility = View.VISIBLE
+                                scheduleDetailLayout.visibility = View.GONE
+                                scheduleDetailErrorMsg.text = networkState.msg
+                            }
+                        }
                     }
 
-                    is LogInState.LoggedIn -> {
-                        viewModel.getScheduleDetailInfo(planId)
-                        initView(true, planId)
-                    }
 
-                    is LogInState.LoginRequired -> {
-                        viewModel.getScheduleDetailInfoGuest(planId)
-                        initView(false, planId)
+                    when (loginState) {
+                        is LogInState.Checking -> {
+                            return@collect
+                        }
+
+                        is LogInState.LoggedIn -> {
+                            viewModel.getScheduleDetailInfo(planId)
+                            initView(true, planId)
+                        }
+
+                        is LogInState.LoginRequired -> {
+                            viewModel.getScheduleDetailInfoGuest(planId)
+                            initView(false, planId)
+                        }
                     }
                 }
+            }
+        }
+    }
+
+    private fun setSnackBar() {
+        viewModel.snackbarSuccessMessage.observe(this) { message ->
+            message?.let {
+                binding.root.showSnackbar(it)
+            }
+        }
+    }
+
+    private fun observeDeleteMyPlan() {
+        viewModel.deletePlanSuccess.observe(this) { isSuccess ->
+            if (isSuccess) {
+                setResult(RESULT_OK)
+                finish()
             }
         }
     }
@@ -316,7 +373,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
     private fun initToolbarMenu(isUser: Boolean, isWriter: Boolean, isPublic: Boolean, isBookmark: Boolean, planId: Long) {
 
-        binding.toolbarViewSchedule.apply {
+        with(binding.toolbarViewSchedule){
             menu.clear()
             setNavigationOnClickListener {
                 setResult(Activity.RESULT_CANCELED)
@@ -339,11 +396,11 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 setOnMenuItemClickListener {
                     if (isUser) { // 로그인한 사용자
                         viewModel.updateScheduleDetailBookmark(planId)
-                        if(isBookmark){
+                        /*if(isBookmark){
                             showSnackbar("북마크가 취소되었습니다")
                         } else {
                             showSnackbar("북마크 되었습니다")
-                        }
+                        }*/
                     } else {
                         displayLoginDialog("여행 일정을 북마크하고 싶다면\n로그인을 진행해주세요")
                     }
@@ -426,18 +483,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 // 공개 -> 비공개
 
                 viewModel.updateMyPlanPublic(planId)
-                if (isPublic) {
-                    binding.cardViewScheduleReview.showSnackbar(getString(R.string.text_schedule_changed_to_private))
-                }
-                // 비공개 -> 공개
-                else {
-                    binding.cardViewScheduleReview.showSnackbar(getString(R.string.text_schedule_changed_to_public))
-                }
             },
             onScheduleDeleteClickListener = {
                 viewModel.deleteMyPlanSchedule(planId)
-                setResult(RESULT_OK)
-                finish()
+
             },
             onScheduleEditClickListener = {
                 // 일정 수정할 때 필요한 정보만 분리 (ViewModel에서 데이터 처리)
@@ -457,7 +506,6 @@ class ScheduleDetailActivity : AppCompatActivity() {
                     reviewId = reviewId,
                     planId = planId
                 )
-                binding.imageButtonScheduleManageReview.showSnackbar(getString(R.string.text_schedule_review_deleted))
             },
             onReviewEditClickListener = {
                 val reviewInfo = viewModel.selectReviewDataForModification()
