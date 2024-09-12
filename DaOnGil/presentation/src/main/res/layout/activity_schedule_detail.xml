@@ -9,330 +9,383 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/scheduleDetailErrorLayout"
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPagerScheduleImages"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:background="@color/black" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbarViewSchedule"
+                    android:id="@+id/toolbarError"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:navigationIcon="@drawable/back_icon"
-                    app:navigationIconTint="@color/white">
-
-                    <TextView
-                        android:id="@+id/textViewScheduleType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:textColor="@color/white"
-                        android:textSize="18dp"
-                        tools:text="@string/text_my_schedule" />
-
+                    app:navigationIconTint="@color/text_primary">
 
                 </com.google.android.material.appbar.MaterialToolbar>
 
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginBottom="@dimen/margin_big3"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewScheduleName"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/schedulePublic"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
-                        android:background="@drawable/background_radius_50"
-                        android:backgroundTint="@color/schedule_detail_public"
-                        android:fontFamily="@font/pretendard_semibold"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/font_small2"
-                        android:visibility="gone"
-                        tools:text="공개" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/scheduleDday"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="@dimen/margin_small1"
-                        android:background="@drawable/background_radius_50"
-                        android:backgroundTint="@color/total_cnt"
-                        android:fontFamily="@font/pretendard_semibold"
-                        android:textColor="@color/text_primary_reverse"
-                        android:textSize="@dimen/font_small2"
-                        android:visibility="gone"
-                        tools:text="D-10" />
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textViewScheduleName"
+                <ImageView
+                    android:id="@+id/errorImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginEnd="@dimen/margin_basic"
-                    android:layout_marginBottom="@dimen/margin_small1"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/pretendard_semibold"
-                    android:maxLines="1"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/margin_basic"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewSchedulePeriod"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:text="앱스쿨 수료 기념 경주 여행(일정명)" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/onboarding_clover" />
 
                 <TextView
-                    android:id="@+id/textViewSchedulePeriod"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/scheduleDetailErrorMsg"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginBottom="@dimen/margin_basic"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:textColor="@color/schedule_detail_period"
-                    android:textSize="@dimen/font_small1"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="@dimen/margin_big4"
+                    android:fontFamily="@font/cafe24_oneprettynight"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="TextView"
+                    android:textSize="@dimen/font_big1"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:text="2024.06.01-2024.06.03" />
-
+                    app:layout_constraintTop_toBottomOf="@+id/errorImage" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textViewScheduleWeather"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_basic"
-                android:layout_marginTop="@dimen/margin_big3"
-                android:text="@string/text_schedule_weather"
-                android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvScheduleWeather"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/margin_big3"
-                android:layout_marginBottom="@dimen/margin_big2"
-                android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvScheduleFullList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/scheduleDayDivider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="@color/schedule_detail_divider"
-                app:dividerThickness="4dp"
+            <ProgressBar
+                android:id="@+id/scheduleDetailProgressBar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:visibility="gone"
+                android:indeterminateDrawable="@drawable/rotate_progress_bar"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textViewReview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_basic"
-                android:layout_marginTop="@dimen/margin_basic"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@string/text_schedule_detail_review"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_big2"
-                android:visibility="gone" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardViewScheduleReview"
+            <LinearLayout
+                android:id="@+id/scheduleDetailLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_basic"
-                android:visibility="gone">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/profileImg"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="50dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="280dp">
 
-                    <ImageView
-                        android:id="@+id/iv_profile_image"
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPagerScheduleImages"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY"/>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:background="@color/black" />
 
-                </androidx.cardview.widget.CardView>
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/toolbarViewSchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:navigationIcon="@drawable/back_icon"
+                        app:navigationIconTint="@color/white">
 
-                <TextView
-                    android:id="@+id/textNickname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_small1"
-                    android:layout_marginBottom="@dimen/margin_big4"
-                    android:fontFamily="@font/pretendard_semibold"
-                    android:textSize="@dimen/font_big2"
-                    app:layout_constraintBottom_toTopOf="@+id/ratingBarScheduleSatisfaction"
-                    app:layout_constraintStart_toEndOf="@+id/profileImg"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="다온길" />
+                        <TextView
+                            android:id="@+id/textViewScheduleType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:textColor="@color/white"
+                            android:textSize="18dp"
+                            tools:text="@string/text_my_schedule" />
 
-                <ImageView
-                    android:id="@+id/buttonScheduleReportReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_big4"
-                    android:src="@drawable/report_button"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/ratingBarScheduleSatisfaction"
-                    app:layout_constraintEnd_toStartOf="@+id/imageButtonScheduleManageReview"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/imageButtonScheduleManageReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_big4"
-                    android:background="@null"
-                    android:contentDescription="@string/text_manage_review"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/ratingBarScheduleSatisfaction"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/more_vert_icon"
-                    app:tint="?attr/colorControlNormal" />
+                    </com.google.android.material.appbar.MaterialToolbar>
 
-                <com.willy.ratingbar.BaseRatingBar
-                    android:id="@+id/ratingBarScheduleSatisfaction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_big4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profileImg"
-                    app:srb_drawableEmpty="@drawable/star_icon"
-                    app:srb_drawableFilled="@drawable/star_filled_icon"
-                    app:srb_isIndicator="true"
-                    app:srb_minimumStars="0"
-                    app:srb_numStars="5"
-                    app:srb_rating="3.5"
-                    app:srb_starHeight="15dp"
-                    app:srb_starPadding="2dp"
-                    app:srb_starWidth="15dp"
-                    app:srb_stepSize="0.5" />
-
-                <TextView
-                    android:id="@+id/textViewScheduleReviewContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small1"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_small1"
-                    app:layout_constraintTop_toBottomOf="@id/ratingBarScheduleSatisfaction"
-                    tools:text="휠체어를 대여해주셔서 편하게 여행할 수 있었던 것 같습니다! 주차도 편하고 좋았어요! 아쉬운 점은 장애인 화장실 시설이 아쉬웠습니다 그래도 여행은 즐거웠어요." />
-
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_big4"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewScheduleReviewContent">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_basic"
+                        android:layout_marginBottom="@dimen/margin_big3"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@+id/textViewScheduleName"
+                        app:layout_constraintStart_toStartOf="parent">
 
-                        <ImageView
-                            android:id="@+id/scheduleReviewImg1"
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:scaleType="fitXY"
-                            android:visibility="gone" />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/schedulePublic"
+                            android:layout_width="50dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/background_radius_50"
+                            android:backgroundTint="@color/schedule_detail_public"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/font_small2"
+                            android:visibility="gone"
+                            tools:text="공개" />
 
-                        <ImageView
-                            android:id="@+id/scheduleReviewImg2"
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:layout_marginStart="@dimen/margin_small1"
-                            android:scaleType="fitXY"
-                            android:visibility="gone"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/scheduleDday"
+                            android:layout_width="50dp"
+                            android:layout_height="25dp"
+                            android:layout_marginLeft="@dimen/margin_small1"
+                            android:background="@drawable/background_radius_50"
+                            android:backgroundTint="@color/total_cnt"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:textColor="@color/text_primary_reverse"
+                            android:textSize="@dimen/font_small2"
+                            android:visibility="gone"
+                            tools:text="D-10" />
 
-                        <ImageView
-                            android:id="@+id/scheduleReviewImg3"
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:layout_marginStart="@dimen/margin_small1"
-                            android:scaleType="fitXY"
-                            android:visibility="gone"/>
 
-                        <ImageView
-                            android:id="@+id/scheduleReviewImg4"
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:layout_marginStart="@dimen/margin_small1"
-                            android:scaleType="fitXY"
-                            android:visibility="gone"/>
                     </LinearLayout>
-                </HorizontalScrollView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/textViewScheduleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_basic"
+                        android:layout_marginEnd="@dimen/margin_basic"
+                        android:layout_marginBottom="@dimen/margin_small1"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:maxLines="1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/margin_basic"
+                        app:layout_constraintBottom_toTopOf="@+id/textViewSchedulePeriod"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="앱스쿨 수료 기념 경주 여행(일정명)" />
 
-            <LinearLayout
-                android:id="@+id/cardViewScheduleEmptyReview"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                    <TextView
+                        android:id="@+id/textViewSchedulePeriod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_basic"
+                        android:layout_marginBottom="@dimen/margin_basic"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textColor="@color/schedule_detail_period"
+                        android:textSize="@dimen/font_small1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="2024.06.01-2024.06.03" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvScheduleFullList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/scheduleDayDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dividerColor="@color/schedule_detail_divider"
+                    app:dividerThickness="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/scheduleEmptyReviewTitle"
+                    android:id="@+id/textViewReview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/text_quaternary"
-                    android:textSize="@dimen/font_big2" />
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/text_schedule_detail_review"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/font_big2"
+                    android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/scheduleEmptyReviewContent"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cardViewScheduleReview"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/margin_small1"
-                    android:textColor="@color/text_quaternary"
-                    android:textSize="@dimen/font_small2" />
+                    android:layout_margin="@dimen/margin_basic"
+                    android:visibility="gone">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/profileImg"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="50dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/iv_profile_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textNickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small1"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:fontFamily="@font/pretendard_semibold"
+                        android:textSize="@dimen/font_big2"
+                        app:layout_constraintBottom_toTopOf="@+id/ratingBarScheduleSatisfaction"
+                        app:layout_constraintStart_toEndOf="@+id/profileImg"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="다온길" />
+
+                    <ImageView
+                        android:id="@+id/buttonScheduleReportReview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:src="@drawable/report_button"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/ratingBarScheduleSatisfaction"
+                        app:layout_constraintEnd_toStartOf="@+id/imageButtonScheduleManageReview"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/imageButtonScheduleManageReview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_big4"
+                        android:background="@null"
+                        android:contentDescription="@string/text_manage_review"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/ratingBarScheduleSatisfaction"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/more_vert_icon"
+                        app:tint="?attr/colorControlNormal" />
+
+                    <com.willy.ratingbar.BaseRatingBar
+                        android:id="@+id/ratingBarScheduleSatisfaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_big4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profileImg"
+                        app:srb_drawableEmpty="@drawable/star_icon"
+                        app:srb_drawableFilled="@drawable/star_filled_icon"
+                        app:srb_isIndicator="true"
+                        app:srb_minimumStars="0"
+                        app:srb_numStars="5"
+                        app:srb_rating="3.5"
+                        app:srb_starHeight="15dp"
+                        app:srb_starPadding="2dp"
+                        app:srb_starWidth="15dp"
+                        app:srb_stepSize="0.5" />
+
+                    <TextView
+                        android:id="@+id/textViewScheduleReviewContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/font_small1"
+                        app:layout_constraintTop_toBottomOf="@id/ratingBarScheduleSatisfaction"
+                        tools:text="휠체어를 대여해주셔서 편하게 여행할 수 있었던 것 같습니다! 주차도 편하고 좋았어요! 아쉬운 점은 장애인 화장실 시설이 아쉬웠습니다 그래도 여행은 즐거웠어요." />
+
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_big4"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleReviewContent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/scheduleReviewImg1"
+                                android:layout_width="130dp"
+                                android:layout_height="130dp"
+                                android:scaleType="fitXY"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:id="@+id/scheduleReviewImg2"
+                                android:layout_width="130dp"
+                                android:layout_height="130dp"
+                                android:layout_marginStart="@dimen/margin_small1"
+                                android:scaleType="fitXY"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:id="@+id/scheduleReviewImg3"
+                                android:layout_width="130dp"
+                                android:layout_height="130dp"
+                                android:layout_marginStart="@dimen/margin_small1"
+                                android:scaleType="fitXY"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:id="@+id/scheduleReviewImg4"
+                                android:layout_width="130dp"
+                                android:layout_height="130dp"
+                                android:layout_marginStart="@dimen/margin_small1"
+                                android:scaleType="fitXY"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/cardViewScheduleEmptyReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/scheduleEmptyReviewTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/text_quaternary"
+                        android:textSize="@dimen/font_big2" />
+
+                    <TextView
+                        android:id="@+id/scheduleEmptyReviewContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/margin_small1"
+                        android:textColor="@color/text_quaternary"
+                        android:textSize="@dimen/font_small2" />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
