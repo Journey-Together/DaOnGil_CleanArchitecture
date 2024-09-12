@@ -460,9 +460,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 binding.imageButtonScheduleManageReview.showSnackbar(getString(R.string.text_schedule_review_deleted))
             },
             onReviewEditClickListener = {
+                val reviewInfo = viewModel.selectReviewDataForModification()
                 val newIntent =
                     Intent(this@ScheduleDetailActivity, ModifyScheduleReviewActivity::class.java)
-                newIntent.putExtra("planId", planId)
+                newIntent.putExtra("reviewInfo", reviewInfo)
                 scheduleReviewLauncher.launch(newIntent)
             }).show(supportFragmentManager, "ScheduleReviewManageBottomSheet")
     }
