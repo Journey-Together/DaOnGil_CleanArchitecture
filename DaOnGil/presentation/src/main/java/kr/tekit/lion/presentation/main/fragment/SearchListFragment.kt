@@ -123,11 +123,13 @@ class SearchListFragment : Fragment(R.layout.fragment_search_list) {
                                     searchListProgressBar.visibility = View.VISIBLE
                                 }
                                 is NetworkState.Success -> {
+                                    searchListProgressBar.visibility = View.GONE
                                     rvSearchResult.visibility = View.VISIBLE
                                     noSearchResultContainer.visibility = View.GONE
                                     searchListProgressBar.visibility = View.GONE
                                 }
                                 is NetworkState.Error -> {
+                                    searchListProgressBar.visibility = View.GONE
                                     rvSearchResult.visibility = View.GONE
                                     noSearchResultContainer.visibility = View.VISIBLE
                                     textMsg.text = networkState.msg
