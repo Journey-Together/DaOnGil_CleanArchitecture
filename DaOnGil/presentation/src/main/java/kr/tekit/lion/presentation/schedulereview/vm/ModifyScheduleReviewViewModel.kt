@@ -12,20 +12,16 @@ import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.schedule.ModifiedScheduleReview
 import kr.tekit.lion.domain.model.schedule.ReviewImage
-import kr.tekit.lion.domain.model.schedule.ScheduleReviewInfo
 import kr.tekit.lion.domain.repository.PlanRepository
-import kr.tekit.lion.domain.usecase.base.onError
-import kr.tekit.lion.domain.usecase.base.onSuccess
-import kr.tekit.lion.domain.usecase.plan.GetScheduleReviewInfoUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.schedulereview.model.OriginalScheduleReviewInfo
 import java.net.URI
 import javax.inject.Inject
 
 @HiltViewModel
 data class ModifyScheduleReviewViewModel @Inject constructor(
-    private val planRepository: PlanRepository,
-    private val getScheduleReviewUseCase: GetScheduleReviewInfoUseCase,
+    private val planRepository: PlanRepository
 ) : ViewModel() {
 
     @Inject
@@ -40,8 +36,8 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
     private val _numOfImages = MutableLiveData<Int>(0)
     val numOfImages: LiveData<Int> get() = _numOfImages
 
-    private val _originalReview = MutableLiveData<ScheduleReviewInfo>()
-    val originalReview: LiveData<ScheduleReviewInfo> get() = _originalReview
+    private val _originalReview = MutableLiveData<OriginalScheduleReviewInfo>()
+    val originalReview: LiveData<OriginalScheduleReviewInfo> get() = _originalReview
 
     private val _deleteImgUrls = MutableLiveData<List<String>>()
 
@@ -85,14 +81,9 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
         return currentValue in 0..3
     }
 
-    fun getScheduleReviewInfo(planId: Long) = viewModelScope.launch {
-        getScheduleReviewUseCase(planId)
-            .onSuccess {
-                _originalReview.value = it
-                initReviewImages()
-            }.onError {
-
-            }
+    fun initOriginalScheduleReviewInto(originalReviewInfo: OriginalScheduleReviewInfo){
+        _originalReview.value = originalReviewInfo
+        initReviewImages()
     }
 
     private fun initReviewImages() {
