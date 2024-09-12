@@ -11,8 +11,8 @@ internal class SigunguCodeDatasource @Inject constructor(
         sigunguCodeDao.setVillageCode(villageCodes)
     }
 
-    fun getSigunguCodeByVillageName(villageName: String): String?{
-        return sigunguCodeDao.getSigunguCodeByVillageName(villageName)
+    fun getSigunguCodeByVillageName(villageName: String, areaCode: String): String?{
+        return sigunguCodeDao.getSigunguCodeByVillageName(villageName, areaCode)
     }
 
     suspend fun getAllSigunguInfoList(code: String): List<SigunguCodeEntity> {

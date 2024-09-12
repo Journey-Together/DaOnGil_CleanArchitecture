@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.main.vm.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -110,7 +109,6 @@ class HomeViewModel @Inject constructor(
 
     // 테마 설정 다이얼로그 클릭시
     fun onClickThemeChangeButton(theme: AppTheme) = viewModelScope.launch {
-        Log.d("idasdw", "theme : $theme")
         setAppTheme(theme)
         activationRepository.saveUserActivation(false)
     }
@@ -118,12 +116,12 @@ class HomeViewModel @Inject constructor(
     fun getPlaceMain(area: String, sigungu: String) = viewModelScope.launch(Dispatchers.IO) {
 
         var areaCode = getAreaCode(area)
-        var sigunguCode = getSigunguCode(sigungu)
+        var sigunguCode = areaCode?.let { getSigunguCode(sigungu, it) }
 
         if (areaCode == null || sigunguCode == null) {
             _locationMessage.postValue("위치를 찾을 수 없어 기본값($DEFAULT_AREA, $DEFAULT_SIGUNGU)으로 설정합니다.")
             areaCode = getAreaCode(DEFAULT_AREA)
-            sigunguCode = getSigunguCode(DEFAULT_SIGUNGU)
+            sigunguCode = areaCode?.let { getSigunguCode(DEFAULT_SIGUNGU, it) }
         }
 
         if (areaCode != null && sigunguCode != null) {
@@ -142,8 +140,8 @@ class HomeViewModel @Inject constructor(
         continutation.resume(areaCodeRepository.getAreaCodeByName(area))
     }
 
-    private suspend fun getSigunguCode(sigungu:String) = suspendCoroutine { continutation ->
-        continutation.resume(sigunguCodeRepository.getSigunguCodeByVillageName(sigungu))
+    private suspend fun getSigunguCode(sigungu:String, areaCode: String) = suspendCoroutine { continutation ->
+        continutation.resume(sigunguCodeRepository.getSigunguCodeByVillageName(sigungu, areaCode))
     }
 
     fun getUserLocationRegion(coords: String) = viewModelScope.launch {
@@ -157,4 +155,5 @@ class HomeViewModel @Inject constructor(
             networkErrorDelegate.handleNetworkError(it)
         }
     }
+
 }
