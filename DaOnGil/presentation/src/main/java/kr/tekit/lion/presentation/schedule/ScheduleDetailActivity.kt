@@ -473,18 +473,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 // 공개 -> 비공개
 
                 viewModel.updateMyPlanPublic(planId)
-                /*if (isPublic) {
-                    binding.cardViewScheduleReview.showSnackbar(getString(R.string.text_schedule_changed_to_private))
-                }
-                // 비공개 -> 공개
-                else {
-                    binding.cardViewScheduleReview.showSnackbar(getString(R.string.text_schedule_changed_to_public))
-                }*/
             },
             onScheduleDeleteClickListener = {
                 viewModel.deleteMyPlanSchedule(planId)
-                /*setResult(RESULT_OK)
-                finish()*/
+
             },
             onScheduleEditClickListener = {
                 // 일정 수정할 때 필요한 정보만 분리 (ViewModel에서 데이터 처리)
@@ -504,7 +496,6 @@ class ScheduleDetailActivity : AppCompatActivity() {
                     reviewId = reviewId,
                     planId = planId
                 )
-                // binding.imageButtonScheduleManageReview.showSnackbar(getString(R.string.text_schedule_review_deleted))
             },
             onReviewEditClickListener = {
                 val newIntent =
