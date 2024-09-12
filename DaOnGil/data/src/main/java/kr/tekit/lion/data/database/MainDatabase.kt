@@ -13,7 +13,7 @@ import kr.tekit.lion.data.database.entity.RecentlySearchKeywordEntity
 @TypeConverters(ListConverter::class)
 @Database(
     entities = [AreaCodeEntity::class, SigunguCodeEntity::class, RecentlySearchKeywordEntity::class],
-    version = 3
+    version = 4
 )
 internal abstract class MainDatabase: RoomDatabase()  {
     abstract fun areaCodeDao(): AreaCodeDao

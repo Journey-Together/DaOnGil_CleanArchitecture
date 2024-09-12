@@ -4,6 +4,8 @@ import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.provider.DocumentsContract
 import android.provider.MediaStore
@@ -31,11 +33,8 @@ fun Context.hideSoftInput(view: View) {
 }
 
 fun Context.showPermissionSnackBar(view: View) {
-    Snackbar.make(
-        view, "권한이 거부 되었습니다. 설정(앱 정보)에서 권한을 확인해 주세요.",
-        Snackbar.LENGTH_SHORT
-    ).setAction("확인") {
-        //설정 화면으로 이동
+    Snackbar.make(view, "권한이 거부 되었습니다. 설정(앱 정보)에서 권한을 확인해 주세요.", Snackbar.LENGTH_SHORT)
+        .setAction("확인") {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         val packageName = this.packageName
         val uri = Uri.fromParts("package", packageName, null)
@@ -150,6 +149,22 @@ fun Context.showSnackbar(view: View, message: String, duration: Int = Snackbar.L
     Snackbar.make(view, message, duration)
         .setBackgroundTint(ContextCompat.getColor(this, R.color.text_secondary))
         .show()
+}
+
+fun Context.showInfinitySnackBar(view: View, message: String) {
+    Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE).apply {
+        setBackgroundTint(ContextCompat.getColor(this@showInfinitySnackBar, R.color.text_secondary))
+        setAction("닫기") { this.dismiss() }
+        show()
+    }
+}
+
+fun Context.isNetworkConnected(): Boolean {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = connectivityManager.activeNetwork
+    val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+
+    return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 }
 
 fun Context.showPhotoDialog(
