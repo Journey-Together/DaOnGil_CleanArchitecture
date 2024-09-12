@@ -281,10 +281,20 @@ class ScheduleDetailActivity : AppCompatActivity() {
                             scheduleDetailLayout.visibility = View.VISIBLE
                         }
                         is NetworkState.Error -> {
-                            scheduleDetailProgressBar.visibility = View.GONE
-                            scheduleDetailErrorLayout.visibility = View.VISIBLE
-                            scheduleDetailLayout.visibility = View.GONE
-                            scheduleDetailErrorMsg.text = networkState.msg
+                            if(viewModel.deletePlanSuccess.value == false){
+                                binding.root.showSnackbar(networkState.msg)
+                            } else if(viewModel.deleteReviewSuccess.value == false){
+                                binding.root.showSnackbar(networkState.msg)
+                            } else if(viewModel.updatePublicSuccess.value == false) {
+                                binding.root.showSnackbar(networkState.msg)
+                            } else if(viewModel.updateBookmarkSuccess.value == false){
+                                binding.root.showSnackbar(networkState.msg)
+                            } else {
+                                scheduleDetailProgressBar.visibility = View.GONE
+                                scheduleDetailErrorLayout.visibility = View.VISIBLE
+                                scheduleDetailLayout.visibility = View.GONE
+                                scheduleDetailErrorMsg.text = networkState.msg
+                            }
                         }
                     }
 
@@ -310,7 +320,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
     }
 
     private fun setSnackBar() {
-        viewModel.snackbarMessage.observe(this) { message ->
+        viewModel.snackbarSuccessMessage.observe(this) { message ->
             message?.let {
                 binding.root.showSnackbar(it)
             }
@@ -318,7 +328,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
     }
 
     private fun observeDeleteMyPlan() {
-        viewModel.deleteSuccess.observe(this) { isSuccess ->
+        viewModel.deletePlanSuccess.observe(this) { isSuccess ->
             if (isSuccess) {
                 setResult(RESULT_OK)
                 finish()

@@ -8,16 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kr.tekit.lion.domain.exception.AuthenticationError
-import kr.tekit.lion.domain.exception.AuthorizationError
-import kr.tekit.lion.domain.exception.BadRequestError
-import kr.tekit.lion.domain.exception.ConnectError
-import kr.tekit.lion.domain.exception.NetworkError
-import kr.tekit.lion.domain.exception.NotFoundError
-import kr.tekit.lion.domain.exception.ServerError
-import kr.tekit.lion.domain.exception.TimeoutError
-import kr.tekit.lion.domain.exception.UnknownError
-import kr.tekit.lion.domain.exception.UnknownHostError
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.ScheduleDetail
@@ -31,14 +21,9 @@ import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailGuestUseCase
 import kr.tekit.lion.domain.usecase.plan.GetScheduleDetailUseCase
 import kr.tekit.lion.domain.usecase.plan.UpdateMyPlanPublicUseCase
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
-import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.scheduleform.model.OriginalScheduleInfo
 import kr.tekit.lion.presentation.scheduleform.model.toOriginalScheduleInfo
 import kr.tekit.lion.presentation.splash.model.LogInState
-import retrofit2.HttpException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,11 +46,20 @@ class ScheduleDetailViewModel @Inject constructor(
     private val _loginState = MutableStateFlow<LogInState>(LogInState.Checking)
     val loginState = _loginState.asStateFlow()
 
-    private val _snackbarMessage = MutableLiveData<String>()
-    val snackbarMessage: LiveData<String> = _snackbarMessage
+    private val _snackbarSuccessMessage = MutableLiveData<String>()
+    val snackbarSuccessMessage: LiveData<String> = _snackbarSuccessMessage
 
-    private val _deleteSuccess = MutableLiveData<Boolean>()
-    val deleteSuccess: LiveData<Boolean> = _deleteSuccess
+    private val _deletePlanSuccess = MutableLiveData<Boolean>()
+    val deletePlanSuccess: LiveData<Boolean> = _deletePlanSuccess
+
+    private val _deleteReviewSuccess = MutableLiveData<Boolean>()
+    val deleteReviewSuccess: LiveData<Boolean> = _deleteReviewSuccess
+
+    private val _updatePublicSuccess = MutableLiveData<Boolean>()
+    val updatePublicSuccess: LiveData<Boolean> = _updatePublicSuccess
+
+    private val _updateBookmarkSuccess = MutableLiveData<Boolean>()
+    val updateBookmarkSuccess: LiveData<Boolean> = _updateBookmarkSuccess
 
     val networkState get() = networkErrorDelegate.networkState
 
@@ -103,10 +97,11 @@ class ScheduleDetailViewModel @Inject constructor(
                     reviewImages = it.imageList,
                     hasReview = it.hasReview
                 )
-                _snackbarMessage.value = "여행 일정 후기가 삭제되었습니다"
+                _snackbarSuccessMessage.value = "여행 일정 후기가 삭제되었습니다"
+                _deletePlanSuccess.value = true
                 networkErrorDelegate.handleNetworkSuccess()
             }.onError {
-                _snackbarMessage.value = "여행 일정 후기가 삭제 처리되지 않았습니다"
+                _deleteReviewSuccess.value = false
                 networkErrorDelegate.handleNetworkError(networkErrorDelegate.handleUsecaseNetworkError(it))
             }
         }
@@ -117,14 +112,15 @@ class ScheduleDetailViewModel @Inject constructor(
                 _scheduleDetail.value = _scheduleDetail.value?.copy(
                     isPublic = it.isPublic
                 )
-                _snackbarMessage.value = if (it.isPublic) {
+                _snackbarSuccessMessage.value = if (it.isPublic) {
                     "여행 일정이 공개되었습니다"
                 } else {
                     "여행 일정이 비공개되었습니다"
                 }
+                _updatePublicSuccess.value = true
                 networkErrorDelegate.handleNetworkSuccess()
             }.onError {
-                _snackbarMessage.value = "여행 일정 공개/비공개가 처리되지 않았습니다"
+                _updatePublicSuccess.value = false
                 networkErrorDelegate.handleNetworkError(networkErrorDelegate.handleUsecaseNetworkError(it))
             }
         }
@@ -132,11 +128,10 @@ class ScheduleDetailViewModel @Inject constructor(
     fun deleteMyPlanSchedule(planId: Long) =
         viewModelScope.launch {
             planRepository.deleteMyPlanSchedule(planId).onSuccess {
-                _deleteSuccess.value = true
+                _deletePlanSuccess.value = true
                 networkErrorDelegate.handleNetworkSuccess()
             }.onError {
-                _deleteSuccess.value = false
-                _snackbarMessage.value = "여행 일정 삭제가 처리되지 않았습니다"
+                _deletePlanSuccess.value = false
                 networkErrorDelegate.handleNetworkError(it)
             }
         }
@@ -147,14 +142,15 @@ class ScheduleDetailViewModel @Inject constructor(
                 _scheduleDetail.value = _scheduleDetail.value?.copy(
                     isBookmark = it.state
                 )
-                _snackbarMessage.value = if (it.state) {
+                _snackbarSuccessMessage.value = if (it.state) {
                     "북마크 되었습니다"
                 } else {
                     "북마크가 취소되었습니다"
                 }
+                _updateBookmarkSuccess.value = true
                 networkErrorDelegate.handleNetworkSuccess()
             }.onError {
-                _snackbarMessage.value = "북마크가 처리되지 않았습니다"
+                _updateBookmarkSuccess.value = false
                 networkErrorDelegate.handleNetworkError(networkErrorDelegate.handleUsecaseNetworkError(it))
             }
         }
