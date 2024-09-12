@@ -24,6 +24,8 @@ import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentMyReviewModifyBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
@@ -106,6 +108,23 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
         val binding = FragmentMyReviewModifyBinding.bind(view)
 
+        repeatOnViewStarted {
+            viewModel.networkState.collect { networkState ->
+                when (networkState) {
+                    is NetworkState.Loading -> {
+                    }
+                    is NetworkState.Success -> {
+                        if(viewModel.isFromDetail.value == true) {
+                            requireActivity().finish()
+                        }
+                    }
+                    is NetworkState.Error -> {
+                        requireActivity().showSnackbar(binding.root, networkState.msg)
+                    }
+                }
+            }
+        }
+
         settingToolbar(binding)
         settingReviewData(binding)
         settingImageRVAdapter(binding)
@@ -167,12 +186,12 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
                 viewModel.updateMyPlaceReview(viewModel.reviewData.value?.reviewId ?:0, grade, date!!, content)
 
-                if(viewModel.isFromDetail.value == true) {
-                    requireActivity().finish()
-                } else {
-                    requireContext().showSnackbar(requireView(), "여행지 후기가 수정되었습니다.")
-
-                    findNavController().popBackStack()
+                viewModel.snackbarEvent.observe(viewLifecycleOwner) { message ->
+                    message?.let {
+                        requireContext().showSnackbar(requireView(), message)
+                        viewModel.resetSnackbarEvent()
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }
