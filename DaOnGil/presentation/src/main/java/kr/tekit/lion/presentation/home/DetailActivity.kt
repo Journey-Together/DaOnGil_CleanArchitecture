@@ -67,17 +67,21 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 viewModel.networkState.collectLatest { state ->
                     when (state) {
                         is NetworkState.Loading -> {
+                            binding.detailProgressbar.visibility = View.VISIBLE
                             binding.detailErrorLayout.visibility = View.GONE
                         }
 
                         is NetworkState.Success -> {
+                            binding.detailProgressbar.visibility = View.GONE
                             binding.detailErrorLayout.visibility = View.GONE
                         }
 
                         is NetworkState.Error -> {
                             if (viewModel.isBookmarkError.value == true) {
+                                binding.detailProgressbar.visibility = View.GONE
                                 binding.root.showSnackbar(state.msg)
                             } else {
+                                binding.detailProgressbar.visibility = View.GONE
                                 binding.detailToolbarTitleTv.setTextColor(ContextCompat.getColor(applicationContext, R.color.text_primary))
                                 binding.detailToolbar.navigationIcon?.setTint(ContextCompat.getColor(applicationContext, R.color.text_primary))
                                 binding.detailThumbnailIv.visibility = View.GONE
