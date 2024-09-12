@@ -69,15 +69,17 @@
 
     <LinearLayout
         android:id="@+id/layout_my_schedule_empty"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_my_schedule_list"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recycler_view_my_schedule_list">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_my_schedule"
+        tools:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,7 +87,7 @@
             android:layout_gravity="center"
             android:text="@string/text_no_schedule"
             android:textColor="@color/text_quaternary"
-            android:textSize="@dimen/font_big2" />
+            android:textSize="@dimen/font_big1" />
 
         <TextView
             android:id="@+id/text_my_schedule_Add"
@@ -99,7 +101,7 @@
             android:paddingVertical="@dimen/margin_small1"
             android:text="@string/add_schedule"
             android:textColor="@color/text_quaternary"
-            android:textSize="@dimen/font_small2" />
+            android:textSize="@dimen/font_big3" />
     </LinearLayout>
 
     <TextView

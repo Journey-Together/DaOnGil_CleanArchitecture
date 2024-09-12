@@ -88,7 +88,7 @@ class ScheduleConfirmFormFragment : Fragment(R.layout.fragment_schedule_confirm_
         binding.buttonScheduleFormSubmit.setOnClickListener { view ->
             viewModel.submitNewPlan{ _, requestFlag ->
                 if(requestFlag){
-                    requireActivity().setResult(ResultCode.RESULT_SCHEDULE_EDIT)
+                    requireActivity().setResult(ResultCode.RESULT_SCHEDULE_WRITE)
                     requireActivity().finish()
                 }
             }
