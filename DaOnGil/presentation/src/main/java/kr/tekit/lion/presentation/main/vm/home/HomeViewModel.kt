@@ -81,7 +81,8 @@ class HomeViewModel @Inject constructor(
     private fun checkUserActivation() {
         viewModelScope.launch {
             activationRepository.userActivation.collect {
-                _userActivationState.emit(it)
+                val isUserActivated = it
+                _userActivationState.emit(isUserActivated)
             }
         }
     }
