@@ -254,6 +254,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.toolbarError.setNavigationOnClickListener {
+            finish()
+        }
     }
 
     private fun checkState(){
@@ -393,10 +397,6 @@ class ScheduleDetailActivity : AppCompatActivity() {
                     true
                 }
             }
-        }
-
-        binding.toolbarError.setNavigationOnClickListener {
-            finish()
         }
     }
 
