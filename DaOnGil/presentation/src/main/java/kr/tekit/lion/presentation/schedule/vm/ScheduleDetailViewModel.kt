@@ -98,7 +98,7 @@ class ScheduleDetailViewModel @Inject constructor(
                     hasReview = it.hasReview
                 )
                 _snackbarSuccessMessage.value = "여행 일정 후기가 삭제되었습니다"
-                _deletePlanSuccess.value = true
+                _deleteReviewSuccess.value = true
                 networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 _deleteReviewSuccess.value = false
