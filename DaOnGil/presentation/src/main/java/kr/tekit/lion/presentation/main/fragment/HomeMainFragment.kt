@@ -410,19 +410,35 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             @SuppressLint("SetTextI18n")
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
-                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
 
                     for (i in 1..3) {
                         try {
-                            val addresses = geocoder.getFromLocation(
-                                location.latitude, location.longitude, 1
-                            )
-                            val address = addresses?.get(0)?.getAddressLine(0)
 
-                            val (area, sigungu) = splitAddress(address!!)
-                            binding.homeMyLocationTv.text = "$area $sigungu"
+                            val coords = "${location.longitude},${location.latitude}"
+                            viewModel.getUserLocationRegion(coords)
 
-                            getAroundPlaceInfo(binding, area, sigungu)
+                            viewModel.area.observe(viewLifecycleOwner){
+                                it.split(" ").let{ parts ->
+                                    when {
+                                        parts.size > 2 -> {
+                                            val (STAGE1, STAGE2, STAGE3) = parts
+                                            binding.homeMyLocationTv.text = "$STAGE1 $STAGE2"
+                                            getAroundPlaceInfo(binding, STAGE1, STAGE2)
+                                        }
+                                        parts.size == 2 -> {
+                                            val (STAGE1, STAGE2) = parts
+                                            binding.homeMyLocationTv.text = "$STAGE1 $STAGE2"
+                                            getAroundPlaceInfo(binding, STAGE1, STAGE2)
+                                        }
+                                        else -> {
+                                            getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
+                                            binding.homeMyLocationTv.text = "$DEFAULT_AREA $DEFAULT_SIGUNGU"
+                                            binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
+                                        }
+                                    }
+                                }
+                            }
+
                             return
                         } catch (e: IOException) {
                             if (i == 4) {
@@ -456,18 +472,6 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         // locationCallback이 초기화되었는지 확인 후 초기화 된 경우에만 removeLocationUpdates()를 호출
         if (::locationCallback.isInitialized) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-        }
-    }
-
-    private fun splitAddress(address: String): Pair<String, String> {
-        val parts = address.split(" ")
-
-        if (parts.size >= 2) {
-            val city = parts[1]
-            val district = parts[2]
-            return Pair(city, district)
-        } else {
-            throw IllegalArgumentException("주소 형식이 잘못되었습니다")
         }
     }
 

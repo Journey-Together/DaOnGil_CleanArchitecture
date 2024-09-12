@@ -22,6 +22,7 @@ import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.ActivationRepository
 import kr.tekit.lion.domain.repository.AreaCodeRepository
+import kr.tekit.lion.domain.repository.NaverMapRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -35,7 +36,8 @@ class HomeViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
     private val areaCodeRepository: AreaCodeRepository,
     private val sigunguCodeRepository: SigunguCodeRepository,
-    private val activationRepository: ActivationRepository
+    private val activationRepository: ActivationRepository,
+    private val naverMapRepository: NaverMapRepository
 ): ViewModel() {
 
     init {
@@ -64,6 +66,9 @@ class HomeViewModel @Inject constructor(
 
     private val _userActivationState = MutableSharedFlow<Boolean>()
     val userActivationState = _userActivationState.asSharedFlow()
+
+    private val _area = MutableLiveData<String>()
+    val area : LiveData<String> = _area
 
     private val _locationMessage = MutableLiveData<String>()
     val locationMessage: LiveData<String> get() = _locationMessage
@@ -137,6 +142,18 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun getSigunguCode(sigungu:String, areaCode: String) = suspendCoroutine { continutation ->
         continutation.resume(sigunguCodeRepository.getSigunguCodeByVillageName(sigungu, areaCode))
+    }
+
+    fun getUserLocationRegion(coords: String) = viewModelScope.launch {
+        naverMapRepository.getReverseGeoCode(coords).onSuccess {
+            if(it.code == 0){
+                _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
+            } else {
+                _area.value = "결과없음"
+            }
+        }.onError {
+            networkErrorDelegate.handleNetworkError(it)
+        }
     }
 
 }
