@@ -32,6 +32,8 @@ interface PlanRepository {
 
     suspend fun getBriefScheduleInfo(planId: Long): Result<BriefScheduleInfo>
 
+    suspend fun getBriefScheduleInfoForModification(planId: Long): BriefScheduleInfo
+
     suspend fun addNewScheduleReview(
         planId: Long,
         scheduleReview: NewScheduleReview,

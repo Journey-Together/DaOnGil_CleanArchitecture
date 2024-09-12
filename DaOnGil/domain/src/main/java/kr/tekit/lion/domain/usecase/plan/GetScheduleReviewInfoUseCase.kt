@@ -10,14 +10,14 @@ class GetScheduleReviewInfoUseCase @Inject constructor(
     private val planRepository: PlanRepository
 ) : BaseUseCase() {
     suspend operator fun invoke(planId: Long): Result<ScheduleReviewInfo> = execute {
-        val scheduleInfo = planRepository.getDetailScheduleInfo(planId)
+        val scheduleInfo = planRepository.getBriefScheduleInfoForModification(planId)
         val detailReview = planRepository.getDetailScheduleReview(planId)
 
         ScheduleReviewInfo(
-            title = scheduleInfo.title,
-            startDate = scheduleInfo.startDate,
-            endDate = scheduleInfo.endDate,
-            imageUrl = scheduleInfo.images?.get(0) ?: "",
+            title = scheduleInfo.title ?: "",
+            startDate = scheduleInfo.startDate ?: "",
+            endDate = scheduleInfo.endDate ?: "",
+            imageUrl = scheduleInfo.imageUrl ?: "",
             reviewId = detailReview.reviewId ?: -1,
             content = detailReview.content ?: "",
             grade = detailReview.grade?.toFloat() ?: 0.0F,

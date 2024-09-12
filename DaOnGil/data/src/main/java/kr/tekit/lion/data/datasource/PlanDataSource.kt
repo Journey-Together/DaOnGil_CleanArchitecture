@@ -55,6 +55,10 @@ internal class PlanDataSource @Inject constructor(
         planService.getBriefScheduleInfo(planId).toDomainModel()
     }
 
+    suspend fun getBriefScheduleInfoForModification(planId: Long): BriefScheduleInfo {
+        return planService.getBriefScheduleInfo(planId).toDomainModel()
+    }
+
     suspend fun addNewScheduleReview(
         planId: Long,
         scheduleReview: RequestBody,
