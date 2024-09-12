@@ -31,6 +31,7 @@ import kr.tekit.lion.presentation.myinfo.MyInfoActivity
 import kr.tekit.lion.presentation.myreview.MyReviewActivity
 import kr.tekit.lion.presentation.observer.ConnectivityObserver
 import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
+import kr.tekit.lion.presentation.setting.PolicyActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -217,6 +218,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         navigateBookmark(binding)
         navigateMyReview(binding)
         navigateDeleteUser(binding)
+        navigateToPolicy(binding)
     }
 
     private fun setUiLoginRequiredState(
@@ -276,6 +278,13 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private fun navigateDeleteUser(binding: FragmentMyInfoMainBinding) {
         binding.layoutDelete.setOnClickListener {
             val intent = Intent(requireActivity(), DeleteUserActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun navigateToPolicy(binding: FragmentMyInfoMainBinding){
+        binding.layoutPolicy.setOnClickListener {
+            val intent = Intent(requireActivity(), PolicyActivity::class.java)
             startActivity(intent)
         }
     }
