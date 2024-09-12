@@ -12,8 +12,8 @@ internal class SigunguCodeRepositoryImpl @Inject constructor(
     private val sigunguCodeDatasource: SigunguCodeDatasource
 ) : SigunguCodeRepository {
 
-    override fun getSigunguCodeByVillageName(villageName: String): String? {
-        return sigunguCodeDatasource.getSigunguCodeByVillageName(villageName)
+    override fun getSigunguCodeByVillageName(villageName: String, areaCode: String): String? {
+        return sigunguCodeDatasource.getSigunguCodeByVillageName(villageName, areaCode)
     }
 
     override suspend fun getAllSigunguCode(code: String): SigunguCodeList {
