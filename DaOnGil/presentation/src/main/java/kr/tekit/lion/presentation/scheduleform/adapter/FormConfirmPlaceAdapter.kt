@@ -5,24 +5,56 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.scheduleform.FormPlace
+import kr.tekit.lion.presentation.databinding.ItemFormEmptyBinding
 import kr.tekit.lion.presentation.databinding.ItemFormPlaceBinding
 import kr.tekit.lion.presentation.ext.setImageSmall
 
 class FormConfirmPlaceAdapter(private val places: List<FormPlace>) :
-    RecyclerView.Adapter<FormConfirmPlaceAdapter.FormConfirmPlaceViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val VIEW_TYPE_PLACE = 0
+    private val VIEW_TYPE_EMPTY = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FormConfirmPlaceViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return FormConfirmPlaceViewHolder(
-            ItemFormPlaceBinding.inflate(inflater, parent, false)
-        )
+
+        when (viewType) {
+            VIEW_TYPE_PLACE -> {
+                return FormConfirmPlaceViewHolder(
+                    ItemFormPlaceBinding.inflate(
+                        inflater, parent, false
+                    )
+                )
+            }
+            // VIEW_TYPE_EMPTY
+            else -> {
+                return FormConfirmEmptyViewHolder(
+                    ItemFormEmptyBinding.inflate(
+                        inflater, parent, false
+                    )
+                )
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: FormConfirmPlaceViewHolder, position: Int) {
-        holder.bind(places[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is FormConfirmPlaceViewHolder -> {
+                places[position]?.let {
+                    holder.bind(it)
+                }
+            }
+
+            is FormConfirmEmptyViewHolder -> {}
+        }
     }
 
-    override fun getItemCount(): Int = places.size
+    override fun getItemCount(): Int {
+        return if (places.isEmpty()) 1 else places.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (places.isNotEmpty()) VIEW_TYPE_PLACE else VIEW_TYPE_EMPTY
+    }
 
     class FormConfirmPlaceViewHolder(private val binding: ItemFormPlaceBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -41,4 +73,8 @@ class FormConfirmPlaceAdapter(private val places: List<FormPlace>) :
             }
         }
     }
+
+    class FormConfirmEmptyViewHolder(private val binding: ItemFormEmptyBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
 }
