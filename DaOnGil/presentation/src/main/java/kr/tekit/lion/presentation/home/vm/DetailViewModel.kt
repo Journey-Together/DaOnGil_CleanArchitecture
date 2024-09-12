@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.home.vm
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,6 +41,12 @@ class DetailViewModel @Inject constructor(
     private val _detailPlaceInfoGuest = MutableLiveData<PlaceDetailInfoGuest>()
     val detailPlaceInfoGuest : LiveData<PlaceDetailInfoGuest> = _detailPlaceInfoGuest
 
+    private val _isBookmarkSuccess = MutableLiveData<Boolean>()
+    val isBookmarkSuccess: LiveData<Boolean> = _isBookmarkSuccess
+
+    private val _isBookmarkError = MutableLiveData<Boolean>()
+    val isBookmarkError: LiveData<Boolean> = _isBookmarkError
+
     init {
         viewModelScope.launch {
             checkLoginState()
@@ -75,8 +80,12 @@ class DetailViewModel @Inject constructor(
 
     fun updateDetailPlaceBookmark(placeId: Long) = viewModelScope.launch {
         updateBookmarkRepository.updatePlaceBookmark(placeId).onSuccess {
-            Log.d("updateDetailPlaceBookmark", it.toString())
+            _isBookmarkSuccess.value = true
+            _isBookmarkError.value = false
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
+            _isBookmarkSuccess.value = false
+            _isBookmarkError.value = true
             networkErrorDelegate.handleNetworkError(it)
         }
     }

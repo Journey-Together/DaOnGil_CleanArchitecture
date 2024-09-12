@@ -40,9 +40,11 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
                         }
                         is NetworkState.Success -> {
                             myReviewProgressBar.visibility = View.GONE
+                            recyclerViewMyReview.visibility = View.VISIBLE
                         }
                         is NetworkState.Error -> {
                             myReviewProgressBar.visibility = View.GONE
+                            recyclerViewMyReview.visibility = View.GONE
                             myReviewErrorLayout.visibility = View.VISIBLE
                             myReviewErrorMsg.text = networkState.msg
                         }
@@ -51,21 +53,15 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
             }
         }
 
-        observeIsFromDetail()
+        if (viewModel.isFromDetail.value == false) {
+            viewModel.getMyPlaceReview()
+        }
 
         settingToolbar(binding)
         settingMyReviewRVAdapter(binding)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             handleBackPress()
-        }
-    }
-
-    private fun observeIsFromDetail() {
-        viewModel.isFromDetail.observe(viewLifecycleOwner) { isFromDetail ->
-            if (!isFromDetail) {
-                viewModel.getMyPlaceReview()
-            }
         }
     }
 
@@ -78,8 +74,7 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
     private fun settingMyReviewRVAdapter(binding: FragmentMyReviewBinding) {
         viewModel.myPlaceReview.observe(viewLifecycleOwner) { myPlaceReview ->
             if(myPlaceReview.myPlaceReviewInfoList.isNotEmpty()) {
-                binding.notExistReviewLayout.visibility = View.INVISIBLE
-                binding.recyclerViewMyReview.visibility = View.VISIBLE
+                binding.notExistReviewLayout.visibility = View.GONE
 
                 val myReviewRVAdapter = MyReviewRVAdapter(
                     myPlaceReview,
@@ -100,7 +95,13 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
                             "삭제하기"
                         ) {
                             viewModel.deleteMyPlaceReview(reviewId)
-                            requireContext().showSnackbar(binding.root, "여행지 후기가 삭제되었습니다.")
+
+                            viewModel.snackbarEvent.observe(viewLifecycleOwner) { message ->
+                                message?.let {
+                                    requireContext().showSnackbar(requireView(), message)
+                                    viewModel.resetSnackbarEvent()
+                                }
+                            }
                         }
                         deleteDialog.isCancelable = false
                         deleteDialog.show(requireActivity().supportFragmentManager, "ConfirmDialogTag")
@@ -120,7 +121,7 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
                     }
                 }
             } else {
-                binding.recyclerViewMyReview.visibility = View.INVISIBLE
+                binding.recyclerViewMyReview.visibility = View.GONE
                 binding.notExistReviewLayout.visibility = View.VISIBLE
                 binding.textViewNotExistReview.text = getString(R.string.text_my_review)
             }

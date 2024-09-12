@@ -2,7 +2,6 @@ package kr.tekit.lion.presentation.main.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -21,6 +20,7 @@ import kr.tekit.lion.presentation.bookmark.BookmarkActivity
 import kr.tekit.lion.presentation.databinding.FragmentMyInfoMainBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.announceForAccessibility
+import kr.tekit.lion.presentation.ext.isNetworkConnected
 import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setAccessibilityText
@@ -29,12 +29,16 @@ import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.myinfo.MyInfoMainViewModel
 import kr.tekit.lion.presentation.myinfo.MyInfoActivity
 import kr.tekit.lion.presentation.myreview.MyReviewActivity
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
 class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private val viewModel: MyInfoMainViewModel by viewModels()
-
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -70,6 +74,45 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             supervisorScope {
                 launch { handleLoginState(binding, isTalkbackEnabled, textToAnnounce) }
                 launch { handleNetworkState(binding) }
+                launch { observeConnectivity(binding, isTalkbackEnabled, textToAnnounce) }
+                launch { collectMyInfo(binding, isTalkbackEnabled, textToAnnounce) }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(
+        binding: FragmentMyInfoMainBinding,
+        isTalkbackEnabled: Boolean,
+        textToAnnounce: StringBuilder
+    ) {
+        with(binding) {
+            connectivityObserver.getFlow().collect { status ->
+                val loginState = viewModel.loginState.value
+                when (status) {
+                    ConnectivityObserver.Status.Available -> {
+                        if (loginState == LogInState.LoggedIn) {
+                            viewModel.onStateLoggedIn()
+
+                            mainContainer.visibility = View.VISIBLE
+                            errorContainer.visibility = View.GONE
+                        }
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        if (loginState == LogInState.LoginRequired){
+                            setUiLoginRequiredState(binding, isTalkbackEnabled, textToAnnounce)
+                        }else{
+                            errorContainer.visibility = View.VISIBLE
+                            mainContainer.visibility = View.GONE
+                            progressBar.visibility = View.GONE
+
+                            val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                    "${getString(R.string.text_plz_check_network)} "
+                            textMsg.text = msg
+                        }
+                    }
+                }
             }
         }
     }
@@ -79,20 +122,14 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         isTalkbackEnabled: Boolean,
         talkbackText: StringBuilder
     ) {
-        viewModel.loginState.collect { uiState ->
-            when (uiState) {
+        viewModel.loginState.collect { loginState ->
+            when (loginState) {
                 is LogInState.Checking -> return@collect
                 is LogInState.LoggedIn -> {
                     setUiLoggedInState(binding)
-                    collectMyInfo(binding, isTalkbackEnabled, talkbackText)
                 }
-
                 is LogInState.LoginRequired -> {
-                    setUiLoginRequiredState(binding)
-                    if (isTalkbackEnabled) {
-                        talkbackText.append(getString(R.string.text_script_for_no_login_user))
-                        requireContext().announceForAccessibility(talkbackText.toString())
-                    }
+                    setUiLoginRequiredState(binding, isTalkbackEnabled, talkbackText)
                 }
             }
         }
@@ -103,9 +140,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         isTalkbackEnabled: Boolean,
         talkbackText: StringBuilder
     ) {
-        repeatOnViewStarted {
-            viewModel.onStateLoggedIn()
-        }
         viewModel.myInfo.collect { myInfo ->
             with(binding) {
                 val name = "${myInfo.name}님"
@@ -144,47 +178,29 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private suspend fun handleNetworkState(binding: FragmentMyInfoMainBinding) {
-        viewModel.networkState.collect {
-            when(it){
-                NetworkState.Loading -> startShimmer(binding)
-                NetworkState.Success -> {
-                    stopShimmer(binding)
-                    binding.errorContainer.visibility = View.GONE
-                    binding.progressBar.visibility = View.GONE
-                }
-                is NetworkState.Error -> {
-                    stopShimmer(binding)
-                    binding.progressBar.visibility = View.GONE
-                    showErrorPage(binding, it.msg)
+        with(binding) {
+            viewModel.networkState.collect {
+                when (it) {
+                    NetworkState.Loading -> progressBar.visibility = View.VISIBLE
+                    NetworkState.Success -> {
+                        mainContainer.visibility = View.VISIBLE
+                        progressBar.visibility = View.GONE
+                        errorContainer.visibility = View.GONE
+                    }
+                    is NetworkState.Error -> {
+                        mainContainer.visibility = View.GONE
+                        binding.progressBar.visibility = View.GONE
+                        showErrorPage(binding, it.msg)
+                    }
                 }
             }
         }
     }
 
-    private fun startShimmer(binding: FragmentMyInfoMainBinding) {
-        with(binding) {
-            shimmerFrameLayout.startShimmer()
-            shimmerFrameLayout.visibility = View.VISIBLE
-        }
-    }
-
-    private fun stopShimmer(binding: FragmentMyInfoMainBinding) {
-        with(binding) {
-            shimmerFrameLayout.stopShimmer()
-            shimmerFrameLayout.visibility = View.GONE
-            mainContainer.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showErrorPage(
-        binding: FragmentMyInfoMainBinding,
-        msg: String,
-    ) {
+    private fun showErrorPage(binding: FragmentMyInfoMainBinding, msg: String) {
         with(binding) {
             errorContainer.visibility = View.VISIBLE
             mainContainer.visibility = View.GONE
-            shimmerFrameLayout.visibility = View.GONE
-            shimmerFrameLayout.stopShimmer()
             progressBar.visibility = View.GONE
             textMsg.text = msg
 
@@ -195,7 +211,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private fun setUiLoggedInState(binding: FragmentMyInfoMainBinding) {
-        binding.mainContainer.visibility = View.VISIBLE
         navigateToMyInfo(binding)
         logoutDialog(binding)
         navigateToConcernType(binding)
@@ -204,8 +219,11 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         navigateDeleteUser(binding)
     }
 
-    private fun setUiLoginRequiredState(binding: FragmentMyInfoMainBinding) {
-        binding.mainContainer.visibility = View.VISIBLE
+    private fun setUiLoginRequiredState(
+        binding: FragmentMyInfoMainBinding,
+        isTalkbackEnabled: Boolean,
+        talkbackText: StringBuilder
+    ) {
         with(binding) {
             userContainer.visibility = View.GONE
             tvReviewCnt.visibility = View.GONE
@@ -219,6 +237,11 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                 val intent = Intent(requireActivity(), LoginActivity::class.java)
                 startActivity(intent)
             }
+        }
+
+        if (isTalkbackEnabled) {
+            talkbackText.append(getString(R.string.text_script_for_no_login_user))
+            requireContext().announceForAccessibility(talkbackText.toString())
         }
     }
 
@@ -272,24 +295,25 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     }
 
     private fun logout() {
-        viewModel.logout{
+        viewModel.logout {
             startActivity(Intent(requireActivity(), LoginActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             requireActivity().finish()
         }
     }
 
-    companion object {
-        const val MODIFY_RESULT_CODE = 10001
-    }
-
     override fun onResume() {
         super.onResume()
-        if (viewModel.networkState.value is NetworkState.Error){
-            if(viewModel.loginState.value is LogInState.LoggedIn) {
-                repeatOnViewStarted {
-                    viewModel.onStateLoggedIn()
-                }
+        if (requireContext().isNetworkConnected()
+            && viewModel.networkState.value is NetworkState.Error
+            && viewModel.loginState.value is LogInState.LoggedIn
+        ) {
+            repeatOnViewStarted {
+                viewModel.onStateLoggedIn()
             }
         }
+    }
+
+    companion object {
+        const val MODIFY_RESULT_CODE = 10001
     }
 }

@@ -18,7 +18,9 @@ import kr.tekit.lion.presentation.ext.addOnScrollEndListener
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.myschedule.vm.MyScheduleViewModel
 import kr.tekit.lion.presentation.schedule.ResultCode
+import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_SCHEDULE_REVIEW_CANCELED
 import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
+import kr.tekit.lion.presentation.scheduleform.ScheduleFormActivity
 import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
 
 @AndroidEntryPoint
@@ -31,14 +33,19 @@ class MyScheduleActivity : AppCompatActivity() {
 
     private val scheduleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if(result.resultCode == RESULT_CANCELED) return@registerForActivityResult
+            if(result.resultCode == RESULT_SCHEDULE_REVIEW_CANCELED) return@registerForActivityResult
 
             // 일정 목록 갱신
             viewModel.refreshScheduleList()
-
             when (result.resultCode) {
                 ResultCode.RESULT_REVIEW_WRITE -> {
                     binding.root.showSnackbar("후기가 저장되었습니다")
+                }
+                ResultCode.RESULT_SCHEDULE_WRITE -> {
+                    binding.root.showSnackbar("일정이 저장되었습니다")
+                }
+                RESULT_OK -> {
+                    binding.root.showSnackbar("일정이 삭제되었습니다")
                 }
             }
         }
@@ -79,6 +86,7 @@ class MyScheduleActivity : AppCompatActivity() {
         initProgressBarState()
 
         settingToolbar()
+        settingButtonClickListener()
         settingMyScheduleTab()
         settingUpcomingScheduleAdapter()
     }
@@ -112,6 +120,13 @@ class MyScheduleActivity : AppCompatActivity() {
     private fun settingToolbar() {
         binding.toolbarMySchedule.setNavigationOnClickListener {
             finish()
+        }
+    }
+
+    private fun settingButtonClickListener() {
+        binding.textMyScheduleAdd.setOnClickListener {
+            val intent = Intent(this, ScheduleFormActivity::class.java)
+            scheduleLauncher.launch(intent)
         }
     }
 

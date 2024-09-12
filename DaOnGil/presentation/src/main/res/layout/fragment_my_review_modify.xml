@@ -20,7 +20,9 @@
             style="@style/Theme.Toolbar.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="후기 수정" />
+            android:text="후기 수정하기"
+            tools:layout_editor_absoluteX="173dp"
+            tools:layout_editor_absoluteY="19dp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 

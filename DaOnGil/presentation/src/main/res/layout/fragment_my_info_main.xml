@@ -17,251 +17,10 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerFrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background_color"
-            android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="270dp"
-                android:background="@drawable/mypage_profile_background"
-                android:contentDescription="빈 영역입니다.">
-
-                <View
-                    android:id="@+id/shimmer_materialCardView"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginBottom="@dimen/margin_basic"
-                    android:background="@drawable/shimmer_placeholder_circle"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <View
-                    android:id="@+id/shimmer_tvNameOrLogin"
-                    android:layout_width="100dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="@dimen/margin_big3"
-                    android:layout_marginBottom="32dp"
-                    android:background="@drawable/shimmer_placeholder_rect"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/shimmer_materialCardView"
-                    app:layout_constraintTop_toTopOf="@+id/shimmer_materialCardView" />
-
-                <View
-                    android:id="@+id/shimmer_tvUserNameTitle"
-                    android:layout_width="30dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="@dimen/margin_small2"
-                    app:layout_constraintBottom_toBottomOf="@+id/shimmer_tvNameOrLogin"
-                    app:layout_constraintStart_toEndOf="@+id/shimmer_tvNameOrLogin" />
-
-                <View
-                    android:id="@+id/shimmer_tvReview"
-                    android:layout_width="50dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="@dimen/margin_big3"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shimmer_placeholder_rect"
-                    app:layout_constraintStart_toEndOf="@+id/shimmer_materialCardView"
-                    app:layout_constraintTop_toBottomOf="@+id/shimmer_tvNameOrLogin" />
-
-                <View
-                    android:id="@+id/shimmer_tvReviewCnt"
-                    android:layout_width="10dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="@dimen/margin_small2"
-                    app:layout_constraintStart_toEndOf="@+id/shimmer_tvReview"
-                    app:layout_constraintTop_toTopOf="@+id/shimmer_tvReview" />
-
-                <View
-                    android:id="@+id/shimmer_textViewMyInfoMainRegister"
-                    android:layout_width="50dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="@dimen/margin_big4"
-                    android:background="@drawable/shimmer_placeholder_rect"
-                    app:layout_constraintStart_toEndOf="@+id/shimmer_tvReviewCnt"
-                    app:layout_constraintTop_toTopOf="@+id/shimmer_tvReviewCnt" />
-
-                <View
-                    android:id="@+id/shimmer_tv_registered_data"
-                    android:layout_width="60dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="@dimen/margin_small2"
-                    app:layout_constraintStart_toEndOf="@+id/shimmer_textViewMyInfoMainRegister"
-                    app:layout_constraintTop_toTopOf="@+id/shimmer_textViewMyInfoMainRegister" />
-
-                <View
-                    android:id="@+id/shimmer_btnLoginOrUpdate"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="@dimen/margin_big4"
-                    android:background="@drawable/shimmer_placeholder_rect"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/shimmer_tv_registered_data"
-                    app:layout_constraintTop_toTopOf="@+id/shimmer_tvUserNameTitle" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="@color/background_color"
-                app:dividerThickness="@dimen/margin_small1" />
-
-            <LinearLayout
-                android:id="@+id/shimmer_userContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/shimmer_layoutConcernType"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/margin_basic">
-
-                    <View
-                        android:layout_width="100dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/shimmer_layoutBookmark"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/margin_basic">
-
-                    <View
-                        android:layout_width="80dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/shimmer_layoutMyReview"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/margin_basic">
-
-                    <View
-                        android:layout_width="120dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-                </LinearLayout>
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:dividerColor="@color/background_color"
-                    app:dividerThickness="@dimen/margin_small1" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/margin_basic">
-
-                    <View
-                        android:layout_width="80dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/navi_background"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/margin_basic">
-
-                    <View
-                        android:layout_width="80dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
     <LinearLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -552,6 +311,38 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center_vertical"
                     android:text="@string/text_sign_out"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="@dimen/font_big3" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/margin_basic"
+                    android:contentDescription="@string/text_modify_sign_out"
+                    android:src="@drawable/ic_chevron_right_24px"
+                    app:tint="@color/text_tertiary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutSetting"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/navi_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_basic"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_policy"
                     android:textColor="@color/text_tertiary"
                     android:textSize="@dimen/font_big3" />
 

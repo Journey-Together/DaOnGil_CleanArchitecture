@@ -378,4 +378,7 @@
     <string name="text_plz_enter_2_more">2글자 이상 입력해주세요.</string>
 
     <string name="concern_type_nickname">%1$s의 관심 유형</string>
+    <string name="text_network_is_unavailable">서버에 연결할 수 없습니다.</string>
+    <string name="text_plz_check_network">인터넷 연결을 확인해주세요.</string>
+    <string name="text_policy">약관 및 정책</string>
 </resources>

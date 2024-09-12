@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_read_my_info_script"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:minHeight="?attr/actionBarSize">
 
         <ImageButton
@@ -33,195 +37,25 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerFrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <View
-                android:id="@+id/tv_personal_info"
-                android:layout_width="120dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="@dimen/margin_basic"
-                android:layout_marginTop="@dimen/margin_big1"
-                android:background="@drawable/shimmer_placeholder_rect"
-                android:fontFamily="@font/pretendard_semibold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/margin_big2"
-                android:layout_marginEnd="@dimen/margin_basic"
-                android:background="@drawable/shimmer_placeholder_round_rect"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/top_info_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_big2"
-                android:layout_marginTop="@dimen/margin_big1"
-                android:layout_marginEnd="@dimen/margin_big2"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_personal_info">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="40dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="@dimen/margin_big4"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="70dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="@dimen/margin_big4"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="60dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="@dimen/margin_big4"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="60dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="@dimen/margin_big4"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="200dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="@dimen/margin_big4"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-
-                    <View
-                        android:layout_width="180dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="@dimen/margin_big4"
-                        android:background="@drawable/shimmer_placeholder_rect" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@drawable/shimmer_placeholder_rect"
-                app:layout_constraintTop_toBottomOf="@+id/top_info_container" />
-
-            <LinearLayout
-                android:id="@+id/bottom_info_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/margin_basic"
-                android:paddingTop="@dimen/margin_big2"
-                android:paddingRight="@dimen/margin_small1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider">
-
-                <View
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="@dimen/margin_small1"
-                    android:background="@drawable/shimmer_placeholder_rect" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1" />
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="@dimen/margin_small1"
-                    android:background="@drawable/shimmer_placeholder_round_rect" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/bottom_info_container">
-
-                <View
-                    android:layout_width="110dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginTop="@dimen/margin_basic"
-                    android:background="@drawable/shimmer_placeholder_rect" />
-
-                <View
-                    android:layout_width="160dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginTop="@dimen/margin_small1"
-                    android:background="@drawable/shimmer_placeholder_rect" />
-
-                <View
-                    android:layout_width="110dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginTop="@dimen/margin_basic"
-                    android:background="@drawable/shimmer_placeholder_rect" />
-
-                <View
-                    android:layout_width="160dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginTop="@dimen/margin_small1"
-                    android:background="@drawable/shimmer_placeholder_rect" />
-
-                <View
-                    android:layout_width="110dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginTop="@dimen/margin_basic"
-                    android:background="@drawable/shimmer_placeholder_rect" />
-
-                <View
-                    android:layout_width="160dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="@dimen/margin_basic"
-                    android:layout_marginTop="@dimen/margin_small1"
-                    android:background="@drawable/shimmer_placeholder_rect" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:indeterminateDrawable="@drawable/rotate_progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbarMyInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -258,8 +92,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_radius_50"
-                        android:fontFamily="@font/pretendard_semibold"
                         android:contentDescription="@string/text_script_move_to_profile_modify_page"
+                        android:fontFamily="@font/pretendard_semibold"
                         android:text="수정하기"
                         android:textColor="@color/text_primary"
                         android:textSize="@dimen/font_big3"
@@ -389,8 +223,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_radius_50"
-                        android:fontFamily="@font/pretendard_semibold"
                         android:contentDescription="@string/text_script_move_to_ice_modify_page"
+                        android:fontFamily="@font/pretendard_semibold"
                         android:text="수정하기"
                         android:textColor="@color/text_primary"
                         android:textSize="@dimen/font_big3"
@@ -415,8 +249,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textColor="@color/text_secondary"
                     android:hint="@string/text_plz_enter_birth"
+                    android:textColor="@color/text_secondary"
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
@@ -435,8 +269,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textColor="@color/text_secondary"
                     android:hint="@string/text_plz_enter_blood_type"
+                    android:textColor="@color/text_secondary"
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
@@ -455,8 +289,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textColor="@color/text_secondary"
                     android:hint="@string/text_plz_enter_disease"
+                    android:textColor="@color/text_secondary"
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
@@ -475,8 +309,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textColor="@color/text_secondary"
                     android:hint="@string/text_plz_enter_allergy"
+                    android:textColor="@color/text_secondary"
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
@@ -495,8 +329,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_basic"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textColor="@color/text_secondary"
                     android:hint="@string/text_plz_enter_medicine"
+                    android:textColor="@color/text_secondary"
                     android:textSize="@dimen/font_big3" />
 
                 <TextView
@@ -521,8 +355,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:fontFamily="@font/pretendard_medium"
-                        android:textColor="@color/text_secondary"
                         android:hint="@string/text_relation"
+                        android:textColor="@color/text_secondary"
                         android:textSize="@dimen/font_big3" />
 
                     <TextView
@@ -531,8 +365,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/pretendard_medium"
-                        android:textColor="@color/text_secondary"
                         android:hint="@string/text_plz_enter_emergency_contact"
+                        android:textColor="@color/text_secondary"
                         android:textSize="@dimen/font_small1" />
 
                 </LinearLayout>
@@ -549,8 +383,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:fontFamily="@font/pretendard_medium"
-                        android:textColor="@color/text_secondary"
                         android:hint="@string/text_relation"
+                        android:textColor="@color/text_secondary"
                         android:textSize="@dimen/font_big3" />
 
                     <TextView
@@ -559,8 +393,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/pretendard_medium"
-                        android:textColor="@color/text_secondary"
                         android:hint="@string/text_plz_enter_emergency_contact"
+                        android:textColor="@color/text_secondary"
                         android:textSize="@dimen/font_small1" />
                 </LinearLayout>
             </LinearLayout>
@@ -573,6 +407,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbarMyInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical">
 
         <ImageView
@@ -599,4 +436,4 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

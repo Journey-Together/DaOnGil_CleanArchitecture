@@ -508,9 +508,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 )
             },
             onReviewEditClickListener = {
+                val reviewInfo = viewModel.selectReviewDataForModification()
                 val newIntent =
                     Intent(this@ScheduleDetailActivity, ModifyScheduleReviewActivity::class.java)
-                newIntent.putExtra("planId", planId)
+                newIntent.putExtra("reviewInfo", reviewInfo)
                 scheduleReviewLauncher.launch(newIntent)
             }).show(supportFragmentManager, "ScheduleReviewManageBottomSheet")
     }

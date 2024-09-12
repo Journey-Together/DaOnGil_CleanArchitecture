@@ -6,7 +6,8 @@ import kr.tekit.lion.domain.model.area.SigunguCode
 
 @Entity(tableName = "sigungu_code_table")
 internal data class SigunguCodeEntity (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val sigunguName: String,
     val sigunguCode: String,
     val areaCode: String
