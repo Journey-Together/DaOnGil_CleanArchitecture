@@ -29,6 +29,7 @@ import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedulereview.adapter.ModifyReviewImageAdapter
+import kr.tekit.lion.presentation.schedulereview.model.OriginalScheduleReviewInfo
 import kr.tekit.lion.presentation.schedulereview.vm.ModifyScheduleReviewViewModel
 import java.net.URI
 
@@ -83,12 +84,10 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val planId = intent.getLongExtra("planId", -1)
-
         settingProgressBarVisibility()
 
         initToolbar()
-        loadScheduleReview(planId)
+        setScheduleReviewInfo()
 
         initReviewContentWatcher()
         settingImageRVAdapter()
@@ -128,8 +127,20 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadScheduleReview(planId: Long) {
-        viewModel.getScheduleReviewInfo(planId)
+    @Suppress("DEPRECATION")
+    private fun setScheduleReviewInfo() {
+        val originalReviewInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(
+                "reviewInfo",
+                OriginalScheduleReviewInfo::class.java
+            )
+        } else {
+            intent.getParcelableExtra("reviewInfo") as? OriginalScheduleReviewInfo
+        }
+
+        if(originalReviewInfo != null){
+            viewModel.initOriginalScheduleReviewInto(originalReviewInfo)
+        }
 
         initView()
     }
