@@ -126,9 +126,6 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             when (loginState) {
                 is LogInState.Checking -> return@collect
                 is LogInState.LoggedIn -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.mainContainer.visibility = View.VISIBLE
-                    binding.errorContainer.visibility = View.GONE
                     setUiLoggedInState(binding)
                 }
                 is LogInState.LoginRequired -> {
