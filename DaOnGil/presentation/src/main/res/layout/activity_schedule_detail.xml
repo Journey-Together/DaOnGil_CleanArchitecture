@@ -17,13 +17,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/scheduleDetailErrorLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -81,11 +82,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -197,7 +199,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvScheduleFullList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -310,6 +312,7 @@
                         android:layout_marginTop="@dimen/margin_small1"
                         android:textColor="@color/text_secondary"
                         android:textSize="@dimen/font_small1"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ratingBarScheduleSatisfaction"
                         tools:text="휠체어를 대여해주셔서 편하게 여행할 수 있었던 것 같습니다! 주차도 편하고 좋았어요! 아쉬운 점은 장애인 화장실 시설이 아쉬웠습니다 그래도 여행은 즐거웠어요." />
 
@@ -317,6 +320,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_big4"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewScheduleReviewContent">
 
                         <LinearLayout
@@ -328,7 +332,7 @@
                                 android:layout_width="130dp"
                                 android:layout_height="130dp"
                                 android:scaleType="fitXY"
-                                android:visibility="gone" />
+                                android:visibility="gone"/>
 
                             <ImageView
                                 android:id="@+id/scheduleReviewImg2"
