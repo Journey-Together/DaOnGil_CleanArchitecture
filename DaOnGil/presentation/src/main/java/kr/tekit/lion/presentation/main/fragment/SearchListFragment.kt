@@ -30,7 +30,7 @@ import kr.tekit.lion.presentation.main.vm.search.SharedViewModel
 @AndroidEntryPoint
 class SearchListFragment : Fragment(R.layout.fragment_search_list) {
     private val sharedViewModel: SharedViewModel by viewModels(ownerProducer = { requireParentFragment() })
-    private val viewModel: SearchListViewModel by activityViewModels()
+    private val viewModel: SearchListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
