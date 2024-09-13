@@ -25,8 +25,9 @@ android {
     defaultConfig {
         applicationId = "kr.tekit.lion.daongil_cleanarchitecture"
         minSdk = 26
-        targetSdk = 33
-        versionCode = 1
+        //noinspection OldTargetApi,EditedTargetSdkVersion
+        targetSdk = 34
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
