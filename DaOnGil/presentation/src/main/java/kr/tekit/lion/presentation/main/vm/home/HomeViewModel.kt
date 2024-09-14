@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.main.vm.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -148,7 +149,11 @@ class HomeViewModel @Inject constructor(
     fun getUserLocationRegion(coords: String) = viewModelScope.launch {
         naverMapRepository.getReverseGeoCode(coords).onSuccess {
             if(it.code == 0){
-                _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
+                if(it.results[0].areaDetail.isNullOrEmpty()){
+                    _area.value = it.results[0].area.toString()
+                } else {
+                    _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
+                }
             } else {
                 _area.value = "결과없음"
             }
