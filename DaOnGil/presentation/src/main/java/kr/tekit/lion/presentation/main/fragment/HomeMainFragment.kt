@@ -430,6 +430,10 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                                             binding.homeMyLocationTv.text = "$STAGE1 $STAGE2"
                                             getAroundPlaceInfo(binding, STAGE1, STAGE2)
                                         }
+                                        parts.size == 1 -> {
+                                            getAroundPlaceInfo(binding, it, it)
+                                            binding.homeMyLocationTv.text = it
+                                        }
                                         else -> {
                                             getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
                                             binding.homeMyLocationTv.text = "$DEFAULT_AREA $DEFAULT_SIGUNGU"
@@ -438,7 +442,6 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                                     }
                                 }
                             }
-
                             return
                         } catch (e: IOException) {
                             if (i == 4) {
