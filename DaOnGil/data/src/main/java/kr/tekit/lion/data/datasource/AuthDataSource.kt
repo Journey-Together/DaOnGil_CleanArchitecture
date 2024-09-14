@@ -25,7 +25,7 @@ internal class AuthDataSource @Inject constructor(
         get() = data.map { it.accessToken.isNotBlank() }
 
     suspend fun signIn(type: String, token: String) = runCatching {
-        authService.signIn(type = type, token = token)
+        authService.signIn(type = type, token = "Bearer $token")
     }
 
     suspend fun logout(): Result<Unit> = runCatching {

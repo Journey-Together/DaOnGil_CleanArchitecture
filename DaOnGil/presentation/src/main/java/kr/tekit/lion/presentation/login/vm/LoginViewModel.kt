@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
     val isFirstUser = _isFirstUser.asStateFlow()
 
     fun onCompleteLogIn(type: String, token: String) = viewModelScope.launch {
-        authRepository.signIn(type, "Bearer $token")
+        authRepository.signIn(type, token)
         checkIsFirstUser()
         _sigInInUiState.value = true
     }
