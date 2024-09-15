@@ -25,4 +25,18 @@ data class ListOptionState(
             arrange = arrange
         )
     }
+
+    companion object {
+        fun create(): ListOptionState {
+            return ListOptionState(
+                category = Category.PLACE,
+                page = 0,
+                disabilityType = TreeSet(),
+                detailFilter = TreeSet(),
+                areaCode = null,
+                sigunguCode = null,
+                arrange = SortByLatest.sortCode
+            )
+        }
+    }
 }

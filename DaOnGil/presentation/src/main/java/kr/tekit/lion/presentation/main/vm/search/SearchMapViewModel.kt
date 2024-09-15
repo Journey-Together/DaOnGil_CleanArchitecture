@@ -50,7 +50,7 @@ class SearchMapViewModel @Inject constructor(
 
     val networkState get() = networkErrorDelegate.networkState
 
-    private val _mapOptionState = MutableStateFlow(initMapOption())
+    private val _mapOptionState = MutableStateFlow(MapOptionState.create())
     val mapOptionState get() = _mapOptionState.asStateFlow()
 
     private val _searchState = MutableSharedFlow<Boolean>()
@@ -149,21 +149,6 @@ class SearchMapViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private fun initMapOption(): MapOptionState {
-        return MapOptionState(
-            category = Category.PLACE,
-            location = Locate(
-                minLatitude = 0.0,
-                maxLatitude = 0.0,
-                minLongitude = 0.0,
-                maxLongitude = 0.0,
-            ),
-            disabilityType = DisabilityType.createDisabilityTypeCodes(),
-            detailFilter = DisabilityType.createFilterCodes(),
-            arrange = SortByLatest.sortCode
-        )
     }
 
     fun onClickRestButton(){
