@@ -14,7 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.concerntype.ConcernTypeActivity
-import kr.tekit.lion.presentation.DeleteUserActivity
+import kr.tekit.lion.presentation.myinfo.DeleteUserActivity
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.bookmark.BookmarkActivity
 import kr.tekit.lion.presentation.databinding.FragmentMyInfoMainBinding
