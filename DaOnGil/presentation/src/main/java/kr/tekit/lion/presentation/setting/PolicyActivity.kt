@@ -15,7 +15,7 @@ class PolicyActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding){
-            toolbar.setNavigationOnClickListener {
+            backButton.setOnClickListener {
                 finish()
             }
 

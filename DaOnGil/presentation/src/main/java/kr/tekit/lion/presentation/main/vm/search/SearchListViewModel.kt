@@ -78,13 +78,13 @@ class SearchListViewModel @Inject constructor(
     private val _isLastPage = MutableStateFlow(false)
     val isLastPage get() = _isLastPage.asStateFlow()
 
-    private val listOptionState = MutableStateFlow(initListOption())
+    private val listOptionState = MutableStateFlow(ListOptionState.create())
 
     private val areaCode = MutableStateFlow(AreaCodeList(emptyList()))
 
     private val sigunguCode = MutableStateFlow(SigunguCodeList(emptyList()))
 
-    private val mapChanged = MutableSharedFlow<Boolean>()
+    private val mapChanged get() = MutableSharedFlow<Boolean>()
 
     fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) = viewModelScope.launch(Dispatchers.IO) {
         clearPlace()
@@ -359,17 +359,5 @@ class SearchListViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private fun initListOption(): ListOptionState {
-        return ListOptionState(
-            category = Category.PLACE,
-            page = 0,
-            disabilityType = TreeSet(),
-            detailFilter = TreeSet(),
-            areaCode = null,
-            sigunguCode = null,
-            arrange = SortByLatest.sortCode
-        )
     }
 }

@@ -1,11 +1,8 @@
-package kr.tekit.lion.presentation
+package kr.tekit.lion.presentation.myinfo
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.kakao.sdk.user.UserApiClient
 import kr.tekit.lion.presentation.databinding.ActivityDeleteUserBinding
 import kr.tekit.lion.presentation.login.LoginActivity

@@ -9,7 +9,7 @@ data class MapOptionState (
     val disabilityType: TreeSet<Long>?,
     val detailFilter: TreeSet<Long>?,
     val arrange: String
-){
+) {
     fun toDomainModel(): MapSearchOption {
         return MapSearchOption(
             category = category.name,
@@ -21,6 +21,23 @@ data class MapOptionState (
             detailFilter = detailFilter?.toList() ?: emptyList(),
             arrange = arrange
         )
+    }
+
+    companion object{
+        fun create(): MapOptionState {
+            return MapOptionState(
+                category = Category.PLACE,
+                location = Locate(
+                    minLatitude = 0.0,
+                    maxLatitude = 0.0,
+                    minLongitude = 0.0,
+                    maxLongitude = 0.0,
+                ),
+                disabilityType = DisabilityType.createDisabilityTypeCodes(),
+                detailFilter = DisabilityType.createFilterCodes(),
+                arrange = SortByLatest.sortCode
+            )
+        }
     }
 }
 
