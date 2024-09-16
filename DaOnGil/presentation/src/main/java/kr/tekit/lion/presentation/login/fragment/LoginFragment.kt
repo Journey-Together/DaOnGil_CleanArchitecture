@@ -34,11 +34,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         with(binding) {
 
             kakaoLoginButton.setOnClickListener {
-                kakaoLogin()
+                kakaoLogin(binding)
             }
 
             naverLoginButton.setOnClickListener {
-                naverLogin()
+                naverLogin(binding)
+            }
+
+            btnBack.setOnClickListener {
+                requireActivity().finish()
             }
         }
 
@@ -56,7 +60,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    private fun kakaoLogin(){
+    private fun kakaoLogin(binding: FragmentLoginBinding) {
+        binding.progressbar.visibility = View.VISIBLE
+
         val kakao = LoginType.KAKAO.toString()
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (token != null) {
@@ -67,10 +73,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
                 if (error != null) {
-
                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
                     // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                        binding.progressbar.visibility = View.GONE
                         return@loginWithKakaoTalk
                     }
 
@@ -85,10 +91,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    private fun naverLogin(){
-
+    private fun naverLogin(binding: FragmentLoginBinding) {
+        binding.progressbar.visibility = View.VISIBLE
         NaverIdLoginSDK.authenticate(requireContext(), object : OAuthLoginCallback {
             override fun onSuccess() {
+                binding.progressbar.visibility = View.GONE
+
                 val naver = LoginType.NAVER.toString()
                 val accessToken = NaverIdLoginSDK.getAccessToken()
                 if (accessToken != null) {
@@ -98,6 +106,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             override fun onFailure(httpStatus: Int, message: String) {
                 // 로그인 실패
+                binding.progressbar.visibility = View.GONE
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
                 Toast.makeText(context, "errorCode: ${errorCode}\n" +
@@ -106,6 +115,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             override fun onError(errorCode: Int, message: String) {
                 // 로그인 중 오류 발생
+                binding.progressbar.visibility = View.GONE
                 onFailure(errorCode, message)
             }
         })
