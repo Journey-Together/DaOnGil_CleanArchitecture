@@ -2,15 +2,11 @@ package kr.tekit.lion.presentation.login.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -50,6 +46,7 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
         }
 
         binding.selectInterestCompleteButton.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
             viewModel.onClickSubmitButton()
         }
 
@@ -59,8 +56,12 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
                     viewModel.networkState.collect {
                         when(it) {
                             is NetworkState.Loading -> return@collect
-                            is NetworkState.Error -> Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
+                            is NetworkState.Error -> {
+                                binding.progressBar.visibility = View.GONE
+                                Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
+                            }
                             is NetworkState.Success -> {
+                                binding.progressBar.visibility = View.GONE
                                 startActivity(Intent(requireActivity(), MainActivity::class.java))
                                 requireActivity().finish()
                             }

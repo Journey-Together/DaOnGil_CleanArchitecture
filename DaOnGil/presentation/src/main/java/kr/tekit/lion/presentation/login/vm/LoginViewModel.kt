@@ -40,6 +40,7 @@ class LoginViewModel @Inject constructor(
     private suspend fun checkIsFirstUser(){
         memberRepository.getConcernType().onSuccess { ConcernType ->
             _isFirstUser.value = ConcernType.hasAnyTrue()
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
