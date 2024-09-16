@@ -8,40 +8,43 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/selectInterestTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_semibold"
-        android:text="관심 유형을 선택해주세요!"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/margin_basic"
-        android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/selectInterestTextView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small1"
-        android:text="나중에 변경할 수 있어요."
-        android:fontFamily="@font/pretendard_regular"
-        app:layout_constraintTop_toBottomOf="@id/selectInterestTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="@dimen/font_big1"/>
-
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/selectInterestCompleteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selectInterestTextView2">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/selectInterestTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_big4"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text="관심 유형을 선택해주세요!"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/margin_basic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selectInterestTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_big4"
+            android:layout_marginTop="@dimen/margin_small1"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="나중에 변경할 수 있어요."
+            android:textSize="@dimen/font_big1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectInterestTextView" />
 
         <LinearLayout
             android:id="@+id/linearLayout3"
@@ -120,13 +123,13 @@
         android:id="@+id/selectInterestCompleteButton"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginTop="@dimen/margin_big4"
+        android:layout_marginBottom="@dimen/margin_big4"
         android:fontFamily="@font/pretendard_bold"
         android:text="완료"
         android:textSize="@dimen/font_big1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
