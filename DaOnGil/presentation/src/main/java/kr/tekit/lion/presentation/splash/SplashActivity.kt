@@ -72,6 +72,17 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            repeatOnStarted {
+                viewModel.err.collect{
+                    if (it) {
+                        viewModel.whenUserActivationIsFirst {
+                            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
+                            finish()
+                        }
+                    }
+                }
+            }
         }
     }
 }
