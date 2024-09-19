@@ -1,58 +1,98 @@
 package kr.tekit.lion.presentation.concerntype.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.concerntype.vm.ConcernTypeViewModel
 import kr.tekit.lion.presentation.databinding.FragmentConcernTypeBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
     private val viewModel: ConcernTypeViewModel by activityViewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentConcernTypeBinding.bind(view)
 
-        with(binding) {
-            repeatOnViewStarted {
-                viewModel.networkState.collect { networkState ->
-                    when (networkState) {
-                        is NetworkState.Loading -> {
-                            concernTypeProgressBar.visibility = View.VISIBLE
-                        }
-                        is NetworkState.Success -> {
-                            concernTypeProgressBar.visibility = View.GONE
-                        }
-                        is NetworkState.Error -> {
-                            concernTypeProgressBar.visibility = View.GONE
-                            concernTypeLayout.visibility = View.GONE
-                            concernTypeDivider.visibility = View.GONE
-                            concernTypeModifyLayout.visibility = View.GONE
-                            concernTypeErrorLayout.visibility = View.VISIBLE
-                            concernTypeErrorMsg.text = networkState.msg
-                        }
-                    }
-                }
-            }
-        }
-
         settingToolbar(binding)
         observeNickname(binding)
         observeSelection(binding)
         moveConcernTypeModify(binding)
+
+        repeatOnViewStarted {
+            supervisorScope {
+                launch { collectConcernTypeState(binding) }
+                launch { observeConnectivity(binding) }
+            }
+        }
+    }
+
+    private suspend fun collectConcernTypeState(binding: FragmentConcernTypeBinding) {
+        with(binding) {
+            viewModel.networkState.collect { networkState ->
+                when (networkState) {
+                    is NetworkState.Loading -> {
+                        concernTypeProgressBar.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Success -> {
+                        concernTypeProgressBar.visibility = View.GONE
+                    }
+                    is NetworkState.Error -> {
+                        concernTypeProgressBar.visibility = View.GONE
+                        concernTypeLayout.visibility = View.GONE
+                        concernTypeDivider.visibility = View.GONE
+                        concernTypeModifyLayout.visibility = View.GONE
+                        concernTypeErrorLayout.visibility = View.VISIBLE
+                        concernTypeErrorMsg.text = networkState.msg
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(binding: FragmentConcernTypeBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when (connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        concernTypeLayout.visibility = View.VISIBLE
+                        concernTypeDivider.visibility = View.VISIBLE
+                        concernTypeModifyLayout.visibility = View.VISIBLE
+                        concernTypeErrorLayout.visibility = View.GONE
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        concernTypeLayout.visibility = View.GONE
+                        concernTypeDivider.visibility = View.GONE
+                        concernTypeModifyLayout.visibility = View.GONE
+                        concernTypeErrorLayout.visibility = View.VISIBLE
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        concernTypeErrorMsg.text = msg
+                    }
+                }
+            }
+        }
     }
 
     private fun settingToolbar(binding: FragmentConcernTypeBinding) {

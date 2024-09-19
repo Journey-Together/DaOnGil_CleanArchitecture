@@ -187,8 +187,8 @@
             android:fontFamily="@font/cafe24_oneprettynight"
             android:gravity="center"
             android:lineSpacingMultiplier="1.2"
-            android:text="TextView"
-            android:textSize="@dimen/font_big1" />
+            android:textSize="@dimen/font_big1"
+            tools:text="에러 문구" />
     </LinearLayout>
 
     <ProgressBar
