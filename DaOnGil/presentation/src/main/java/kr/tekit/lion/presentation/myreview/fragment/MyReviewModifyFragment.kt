@@ -22,16 +22,21 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentMyReviewModifyBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.myreview.adapter.MyReviewModifyImageRVAdapter
 import kr.tekit.lion.presentation.myreview.vm.MyReviewViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -42,9 +47,10 @@ import java.util.Locale
 class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
     private val viewModel: MyReviewViewModel by activityViewModels()
-
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
     private val selectedImages: ArrayList<Uri> = ArrayList()
-
     private val imageRVAdapter: MyReviewModifyImageRVAdapter by lazy {
         MyReviewModifyImageRVAdapter(selectedImages) { position ->
             viewModel.deleteImage(position)
@@ -108,28 +114,54 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
         val binding = FragmentMyReviewModifyBinding.bind(view)
 
-        repeatOnViewStarted {
-            viewModel.networkState.collect { networkState ->
-                when (networkState) {
-                    is NetworkState.Loading -> {
-                    }
-                    is NetworkState.Success -> {
-                        if(viewModel.isFromDetail.value == true) {
-                            requireActivity().finish()
-                        }
-                    }
-                    is NetworkState.Error -> {
-                        requireActivity().showSnackbar(binding.root, networkState.msg)
-                    }
-                }
-            }
-        }
-
         settingToolbar(binding)
         settingReviewData(binding)
         settingImageRVAdapter(binding)
         settingButton(binding)
         settingErrorHandling(binding)
+
+        repeatOnViewStarted {
+            supervisorScope {
+                launch { collectMyReviewModifyState(binding) }
+                launch { observeConnectivity(binding) }
+            }
+        }
+    }
+
+    private suspend fun collectMyReviewModifyState(binding: FragmentMyReviewModifyBinding) {
+        viewModel.networkState.collect { networkState ->
+            when (networkState) {
+                is NetworkState.Loading -> {}
+                is NetworkState.Success -> {
+                    if(viewModel.isFromDetail.value == true) {
+                        requireActivity().finish()
+                    }
+                }
+                is NetworkState.Error -> {
+                    requireActivity().showInfinitySnackBar(binding.root, networkState.msg)
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(binding: FragmentMyReviewModifyBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when (connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        buttonMyReviewModify.isEnabled = true
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        buttonMyReviewModify.isEnabled = false
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        requireContext().showInfinitySnackBar(buttonMyReviewModify, msg)
+                    }
+                }
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
