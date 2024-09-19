@@ -17,6 +17,7 @@ import kr.tekit.lion.presentation.bookmark.vm.BookmarkViewModel
 import kr.tekit.lion.presentation.databinding.ActivityBookmarkBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.observer.ConnectivityObserver
@@ -62,7 +63,7 @@ class BookmarkActivity : AppCompatActivity() {
                     }
                     is NetworkState.Error -> {
                         if(viewModel.isUpdateError.value == true) {
-                            this@BookmarkActivity.showSnackbar(binding.root, networkState.msg)
+                            this@BookmarkActivity.showInfinitySnackBar(binding.root, networkState.msg)
                         } else {
                             bookmarkProgressBar.visibility = View.GONE
                             tabLayoutBookmark.visibility = View.GONE
