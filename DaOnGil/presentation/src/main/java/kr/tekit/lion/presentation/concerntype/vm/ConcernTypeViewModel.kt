@@ -6,7 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.exception.onError
@@ -30,6 +29,9 @@ class ConcernTypeViewModel @Inject constructor(
     private val _concernType = MutableLiveData<ConcernType>()
     val concernType: LiveData<ConcernType> = _concernType
 
+    private val _snackbarEvent = MutableLiveData<String?>()
+    val snackbarEvent: LiveData<String?> = _snackbarEvent
+
     val networkState get() = networkErrorDelegate.networkState
 
     init {
@@ -50,10 +52,11 @@ class ConcernTypeViewModel @Inject constructor(
 
     fun updateConcernType(requestBody: ConcernType) {
         viewModelScope.launch {
-            memberRepository.updateConcernType(requestBody)
-                .onError {
-                    networkErrorDelegate.handleNetworkError(it)
-                }
+            memberRepository.updateConcernType(requestBody).onSuccess {
+                _snackbarEvent.postValue("관심 유형이 수정되었습니다.")
+            }.onError {
+                networkErrorDelegate.handleNetworkError(it)
+            }
         }
 
         _concernType.value = _concernType.value?.copy(
@@ -63,5 +66,9 @@ class ConcernTypeViewModel @Inject constructor(
             isChild = requestBody.isChild,
             isElderly = requestBody.isElderly
         )
+    }
+
+    fun resetSnackbarEvent() {
+        _snackbarEvent.value = null
     }
 }
