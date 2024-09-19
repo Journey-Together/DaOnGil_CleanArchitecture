@@ -42,7 +42,7 @@ class BookmarkViewModel @Inject constructor(
         getPlanBookmark()
     }
 
-    private fun getPlaceBookmark() = viewModelScope.launch {
+    fun getPlaceBookmark() = viewModelScope.launch {
         bookmarkRepository.getPlaceBookmark().onSuccess {
             _placeBookmarkList.value = it
             networkErrorDelegate.handleNetworkSuccess()
@@ -51,7 +51,7 @@ class BookmarkViewModel @Inject constructor(
         }
     }
 
-    private fun getPlanBookmark() = viewModelScope.launch {
+    fun getPlanBookmark() = viewModelScope.launch {
         bookmarkRepository.getPlanBookmark().onSuccess {
             _planBookmarkList.value = it
             networkErrorDelegate.handleNetworkSuccess()
