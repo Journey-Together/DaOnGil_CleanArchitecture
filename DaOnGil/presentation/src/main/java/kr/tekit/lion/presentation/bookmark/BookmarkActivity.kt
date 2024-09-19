@@ -84,6 +84,11 @@ class BookmarkActivity : AppCompatActivity() {
                         tabLayoutBookmark.visibility = View.VISIBLE
                         recyclerViewBookmark.visibility = View.VISIBLE
                         bookmarkErrorLayout.visibility = View.GONE
+
+                        if (viewModel.networkState.value is NetworkState.Error) {
+                            viewModel.getPlaceBookmark()
+                            viewModel.getPlanBookmark()
+                        }
                     }
                     ConnectivityObserver.Status.Unavailable,
                     ConnectivityObserver.Status.Losing,
