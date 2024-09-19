@@ -72,7 +72,6 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
     private suspend fun observeConnectivity(binding: FragmentConcernTypeBinding) {
         with(binding) {
             connectivityObserver.getFlow().collect { connectivity ->
-                Log.d("ConcernTypeFragment", "Connectivity status: $connectivity")
                 when (connectivity) {
                     ConnectivityObserver.Status.Available -> {
                         concernTypeLayout.visibility = View.VISIBLE
