@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.bookmark.adapter.PlaceBookmarkRVAdapter
 import kr.tekit.lion.presentation.bookmark.adapter.PlanBookmarkRVAdapter
@@ -15,8 +17,11 @@ import kr.tekit.lion.presentation.bookmark.vm.BookmarkViewModel
 import kr.tekit.lion.presentation.databinding.ActivityBookmarkBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
 
 @AndroidEntryPoint
@@ -24,48 +29,89 @@ class BookmarkActivity : AppCompatActivity() {
     private val binding: ActivityBookmarkBinding by lazy {
         ActivityBookmarkBinding.inflate(layoutInflater)
     }
-
     private val viewModel: BookmarkViewModel by viewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        settingToolbar()
+        settingTabLayout()
+        settingPlaceBookmarkRVAdapter()
+        observeSnackbarMsg()
+
+        repeatOnStarted {
+            supervisorScope {
+                launch { collectBookmarkState() }
+                launch { observeConnectivity() }
+            }
+        }
+    }
+
+    private suspend fun collectBookmarkState() {
         with(binding) {
-            repeatOnStarted {
-                viewModel.networkState.collect { networkState ->
-                    when (networkState) {
-                        is NetworkState.Loading -> {
-                            bookmarkProgressBar.visibility = View.VISIBLE
-                        }
-                        is NetworkState.Success -> {
+            viewModel.networkState.collect { networkState ->
+                when (networkState) {
+                    is NetworkState.Loading -> {
+                        bookmarkProgressBar.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Success -> {
+                        bookmarkProgressBar.visibility = View.GONE
+                    }
+                    is NetworkState.Error -> {
+                        if(viewModel.isUpdateError.value == true) {
+                            this@BookmarkActivity.showInfinitySnackBar(binding.root, networkState.msg)
+                        } else {
                             bookmarkProgressBar.visibility = View.GONE
-                        }
-                        is NetworkState.Error -> {
-                            if(viewModel.isUpdateError.value == true) {
-                                this@BookmarkActivity.showSnackbar(binding.root, networkState.msg)
-                            } else {
-                                bookmarkProgressBar.visibility = View.GONE
-                                tabLayoutBookmark.visibility = View.GONE
-                                bookmarkErrorLayout.visibility = View.VISIBLE
-                                bookmarkErrorMsg.text = networkState.msg
-                            }
+                            tabLayoutBookmark.visibility = View.GONE
+                            bookmarkErrorLayout.visibility = View.VISIBLE
+                            bookmarkErrorMsg.text = networkState.msg
                         }
                     }
                 }
             }
         }
+    }
 
+    private suspend fun observeConnectivity() {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when(connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        tabLayoutBookmark.visibility = View.VISIBLE
+                        recyclerViewBookmark.visibility = View.VISIBLE
+                        bookmarkErrorLayout.visibility = View.GONE
+
+                        if (viewModel.networkState.value is NetworkState.Error) {
+                            viewModel.getPlaceBookmark()
+                            viewModel.getPlanBookmark()
+                        }
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        tabLayoutBookmark.visibility = View.GONE
+                        recyclerViewBookmark.visibility = View.GONE
+                        bookmarkErrorLayout.visibility = View.VISIBLE
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        bookmarkErrorMsg.text = msg
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeSnackbarMsg() {
         viewModel.snackbarEvent.observe(this) { message ->
             message?.let {
                 this@BookmarkActivity.showSnackbar(binding.root, it)
                 viewModel.resetSnackbarEvent()
             }
         }
-
-        settingToolbar()
-        settingTabLayout()
-        settingPlaceBookmarkRVAdapter()
     }
 
     private fun settingToolbar() {
