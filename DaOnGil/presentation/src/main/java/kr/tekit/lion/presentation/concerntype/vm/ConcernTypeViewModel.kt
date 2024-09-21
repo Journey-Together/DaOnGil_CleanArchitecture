@@ -41,7 +41,7 @@ class ConcernTypeViewModel @Inject constructor(
         getConcernType()
     }
 
-    private fun getConcernType() = viewModelScope.launch {
+    fun getConcernType() = viewModelScope.launch {
         memberRepository.getConcernType().onSuccess {
             _concernType.value = it
             networkErrorDelegate.handleNetworkSuccess()

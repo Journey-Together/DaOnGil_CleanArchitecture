@@ -78,6 +78,10 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
                         concernTypeDivider.visibility = View.VISIBLE
                         concernTypeModifyLayout.visibility = View.VISIBLE
                         concernTypeErrorLayout.visibility = View.GONE
+
+                        if(viewModel.networkState.value is NetworkState.Error) {
+                            viewModel.getConcernType()
+                        }
                     }
                     ConnectivityObserver.Status.Unavailable,
                     ConnectivityObserver.Status.Losing,
