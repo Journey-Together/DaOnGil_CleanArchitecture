@@ -31,8 +31,8 @@ class LoginViewModel @Inject constructor(
     private val _isFirstUser = MutableStateFlow(false)
     val isFirstUser = _isFirstUser.asStateFlow()
 
-    fun onCompleteLogIn(type: String, token: String) = viewModelScope.launch {
-        authRepository.signIn(type, token)
+    fun onCompleteLogIn(type: String, accessToken: String, refreshToken: String) = viewModelScope.launch {
+        authRepository.signIn(type, accessToken, refreshToken)
         checkIsFirstUser()
         _sigInInUiState.value = true
     }
