@@ -76,8 +76,6 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.core.jvm)
 
-    implementation (libs.shimmer)
-
     implementation(libs.photoview)
 
     implementation (libs.flexbox)

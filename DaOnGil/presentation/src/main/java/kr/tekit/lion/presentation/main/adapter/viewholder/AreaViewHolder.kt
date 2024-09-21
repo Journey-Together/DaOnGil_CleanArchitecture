@@ -1,7 +1,5 @@
 package kr.tekit.lion.presentation.main.adapter.viewholder
 
-import android.annotation.SuppressLint
-import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged

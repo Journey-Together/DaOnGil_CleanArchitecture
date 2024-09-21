@@ -1,7 +1,5 @@
 package kr.tekit.lion.presentation.main.adapter.viewholder
 
-import android.view.View
-import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
