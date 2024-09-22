@@ -2,6 +2,7 @@ package kr.tekit.lion.presentation.login.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -111,8 +112,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 binding.progressbar.visibility = View.GONE
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Toast.makeText(context, "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+                Log.d("NaverLoginFailed", "$errorCode : $errorDescription" )
             }
 
             override fun onError(errorCode: Int, message: String) {
