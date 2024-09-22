@@ -2,6 +2,7 @@ package kr.tekit.lion.presentation.login.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -66,7 +67,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val kakao = LoginType.KAKAO.toString()
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (token != null) {
-                viewModel.onCompleteLogIn(kakao, token.accessToken)
+                viewModel.onCompleteLogIn(kakao, token.accessToken, token.refreshToken)
             }
         }
         // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
@@ -83,7 +84,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
                 } else if (token != null) {
-                    viewModel.onCompleteLogIn(kakao, token.accessToken)
+                    viewModel.onCompleteLogIn(kakao, token.accessToken, token.refreshToken)
                 }
             }
         } else {
@@ -99,8 +100,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                 val naver = LoginType.NAVER.toString()
                 val accessToken = NaverIdLoginSDK.getAccessToken()
-                if (accessToken != null) {
-                    viewModel.onCompleteLogIn(naver, accessToken)
+                val refreshToken = NaverIdLoginSDK.getRefreshToken()
+
+                if (accessToken != null && refreshToken != null) {
+                    viewModel.onCompleteLogIn(naver, accessToken, refreshToken)
                 }
             }
 
@@ -109,8 +112,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 binding.progressbar.visibility = View.GONE
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Toast.makeText(context, "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+                Log.d("NaverLoginFailed", "$errorCode : $errorDescription" )
             }
 
             override fun onError(errorCode: Int, message: String) {

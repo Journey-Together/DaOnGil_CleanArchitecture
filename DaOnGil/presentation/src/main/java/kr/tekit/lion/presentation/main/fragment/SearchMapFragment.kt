@@ -37,8 +37,6 @@ import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentSearchMapBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
-import kr.tekit.lion.presentation.ext.Permissions.LOCATION_PERMISSION_REQUEST_CODE
-import kr.tekit.lion.presentation.ext.Permissions.REQUEST_LOCATION_PERMISSIONS
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.setClickEvent
 import kr.tekit.lion.presentation.ext.showPermissionSnackBar
@@ -445,5 +443,16 @@ class SearchMapFragment : Fragment(R.layout.fragment_search_map), OnMapReadyCall
     private fun clearMarker() {
         markers.map { m -> m.map = null }
         markers.clear()
+    }
+
+    companion object{
+        val REQUEST_LOCATION_PERMISSIONS by lazy {
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            )
+        }
+
+        val LOCATION_PERMISSION_REQUEST_CODE by lazy { 100 }
     }
 }

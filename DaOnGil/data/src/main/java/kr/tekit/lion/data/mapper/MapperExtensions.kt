@@ -1,5 +1,12 @@
 package kr.tekit.lion.data.mapper
 
+import kr.tekit.lion.data.dto.request.ConcernTypeRequest
+import kr.tekit.lion.data.dto.request.util.AdapterProvider.Companion.JsonAdapter
+import kr.tekit.lion.domain.model.ConcernType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+
 internal fun String.toFullAreaName(): String{
     return when(this){
         "서울" -> "서울특별시"
@@ -12,4 +19,8 @@ internal fun String.toFullAreaName(): String{
         "제주도" -> "제주특별자치도"
         else -> this
     }
+}
+
+internal fun String.toRequestBody(): RequestBody{
+    return this.toRequestBody("text/plain".toMediaTypeOrNull())
 }
