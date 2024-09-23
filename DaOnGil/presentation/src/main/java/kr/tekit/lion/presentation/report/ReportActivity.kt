@@ -1,17 +1,14 @@
 package kr.tekit.lion.presentation.report
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityReportBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -44,8 +41,10 @@ class ReportActivity : AppCompatActivity() {
         settingErrorHandling()
 
         repeatOnStarted {
-            launch { collectReportState() }
-            launch { observeConnectivity() }
+            supervisorScope {
+                launch { collectReportState() }
+                launch { observeConnectivity() }
+            }
         }
     }
 
