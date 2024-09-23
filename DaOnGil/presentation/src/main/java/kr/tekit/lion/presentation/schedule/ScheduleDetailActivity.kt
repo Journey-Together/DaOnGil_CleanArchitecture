@@ -117,95 +117,102 @@ class ScheduleDetailActivity : AppCompatActivity() {
                     // 지나간 일정
                     scheduleDday.visibility = View.GONE
 
-                    // 리뷰가 있을때
+                    // 리뷰가 있을때,
                     if(scheduleDetail.hasReview){
-                        val planId = intent.getLongExtra("planId", -1)
-                        scheduleDetail.reviewId?.let {
-                            initReviewMenu(scheduleDetail.isWriter, isUser, planId,
-                                it
-                            )
-                        }
+                        // 신고 O
+                        if(scheduleDetail.isReport == true){
+                            cardViewScheduleReview.visibility = View.GONE
+                            cardViewScheduleEmptyReview.visibility = View.GONE
+                            cardViewReportReview.visibility = View.VISIBLE
+                        } else {
+                            // 신고 O
+                            val planId = intent.getLongExtra("planId", -1)
+                            scheduleDetail.reviewId?.let {
+                                initReviewMenu(scheduleDetail.isWriter, isUser, planId, it)
+                            }
 
-                        cardViewScheduleReview.visibility = View.VISIBLE
-                        cardViewScheduleEmptyReview.visibility = View.GONE
-                        this@ScheduleDetailActivity.setImageSmall(ivProfileImage, scheduleDetail.profileUrl)
-                        textNickname.text = scheduleDetail.nickname
-                        ratingBarScheduleSatisfaction.rating = scheduleDetail.grade?.toFloat() ?: 0F
-                        textViewScheduleReviewContent.text = scheduleDetail.content
+                            cardViewScheduleReview.visibility = View.VISIBLE
+                            cardViewScheduleEmptyReview.visibility = View.GONE
+                            this@ScheduleDetailActivity.setImageSmall(ivProfileImage, scheduleDetail.profileUrl)
+                            textNickname.text = scheduleDetail.nickname
+                            ratingBarScheduleSatisfaction.rating = scheduleDetail.grade?.toFloat() ?: 0F
+                            textViewScheduleReviewContent.text = scheduleDetail.content
 
-                        scheduleDetail.reviewImages?.let { reviewImages ->
-                            when (reviewImages.size) {
-                                1 -> {
-                                    scheduleReviewImg1.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
-                                }
-                                2 -> {
-                                    scheduleReviewImg1.visibility = View.VISIBLE
-                                    scheduleReviewImg2.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
-                                }
-                                3 -> {
-                                    scheduleReviewImg1.visibility = View.VISIBLE
-                                    scheduleReviewImg2.visibility = View.VISIBLE
-                                    scheduleReviewImg3.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
-                                }
-                                4 -> {
-                                    scheduleReviewImg1.visibility = View.VISIBLE
-                                    scheduleReviewImg2.visibility = View.VISIBLE
-                                    scheduleReviewImg3.visibility = View.VISIBLE
-                                    scheduleReviewImg4.visibility = View.VISIBLE
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
-                                    this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
+                            scheduleDetail.reviewImages?.let { reviewImages ->
+                                when (reviewImages.size) {
+                                    1 -> {
+                                        scheduleReviewImg1.visibility = View.VISIBLE
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                    }
+                                    2 -> {
+                                        scheduleReviewImg1.visibility = View.VISIBLE
+                                        scheduleReviewImg2.visibility = View.VISIBLE
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                    }
+                                    3 -> {
+                                        scheduleReviewImg1.visibility = View.VISIBLE
+                                        scheduleReviewImg2.visibility = View.VISIBLE
+                                        scheduleReviewImg3.visibility = View.VISIBLE
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
+                                    }
+                                    4 -> {
+                                        scheduleReviewImg1.visibility = View.VISIBLE
+                                        scheduleReviewImg2.visibility = View.VISIBLE
+                                        scheduleReviewImg3.visibility = View.VISIBLE
+                                        scheduleReviewImg4.visibility = View.VISIBLE
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg1, reviewImages[0])
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg2, reviewImages[1])
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg3, reviewImages[2])
+                                        this@ScheduleDetailActivity.setImageSmall(scheduleReviewImg4, reviewImages[3])
+                                    }
                                 }
                             }
-                        }
 
-                        scheduleReviewImg1.setOnClickListener {
-                            scheduleDetail.reviewImages?.let { reviewImages ->
-                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
-                                    this@ScheduleDetailActivity.supportFragmentManager,
-                                    reviewImages,
-                                    0
-                                )
+                            scheduleReviewImg1.setOnClickListener {
+                                scheduleDetail.reviewImages?.let { reviewImages ->
+                                    this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                        this@ScheduleDetailActivity.supportFragmentManager,
+                                        reviewImages,
+                                        0
+                                    )
+                                }
                             }
-                        }
 
-                        scheduleReviewImg2.setOnClickListener {
-                            scheduleDetail.reviewImages?.let { reviewImages ->
-                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
-                                    this@ScheduleDetailActivity.supportFragmentManager,
-                                    reviewImages,
-                                    1
-                                )
+                            scheduleReviewImg2.setOnClickListener {
+                                scheduleDetail.reviewImages?.let { reviewImages ->
+                                    this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                        this@ScheduleDetailActivity.supportFragmentManager,
+                                        reviewImages,
+                                        1
+                                    )
+                                }
                             }
-                        }
 
-                        scheduleReviewImg3.setOnClickListener {
-                            scheduleDetail.reviewImages?.let { reviewImages ->
-                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
-                                    this@ScheduleDetailActivity.supportFragmentManager,
-                                    reviewImages,
-                                    2
-                                )
+                            scheduleReviewImg3.setOnClickListener {
+                                scheduleDetail.reviewImages?.let { reviewImages ->
+                                    this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                        this@ScheduleDetailActivity.supportFragmentManager,
+                                        reviewImages,
+                                        2
+                                    )
+                                }
                             }
-                        }
 
-                        scheduleReviewImg4.setOnClickListener {
-                            scheduleDetail.reviewImages?.let { reviewImages ->
-                                this@ScheduleDetailActivity.baseContext.showPhotoDialog(
-                                    this@ScheduleDetailActivity.supportFragmentManager,
-                                    reviewImages,
-                                    3
-                                )
+                            scheduleReviewImg4.setOnClickListener {
+                                scheduleDetail.reviewImages?.let { reviewImages ->
+                                    this@ScheduleDetailActivity.baseContext.showPhotoDialog(
+                                        this@ScheduleDetailActivity.supportFragmentManager,
+                                        reviewImages,
+                                        3
+                                    )
+                                }
                             }
                         }
                     }
+
                     // 리뷰가 없을 때
                     else {
                         if (scheduleDetail.isWriter) {
