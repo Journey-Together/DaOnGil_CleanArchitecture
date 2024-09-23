@@ -7,5 +7,6 @@ data class MyMainSchedule(
     val planId: Long?,
     val remainDate: String?,
     val startDate: String?,
-    val title: String?
+    val title: String?,
+    val isReport: Boolean?
 )
