@@ -7,5 +7,6 @@ internal data class Data(
     val imageList: List<String>?,
     val isWriter: Boolean,
     val hasReview: Boolean,
-    val profileUrl: String
+    val profileUrl: String,
+    val isReport: Boolean?
 )
