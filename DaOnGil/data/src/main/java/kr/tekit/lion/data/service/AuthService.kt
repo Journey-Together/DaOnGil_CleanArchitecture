@@ -15,7 +15,7 @@ internal interface AuthService {
     suspend fun signIn(
         @Query("type") type: String,
         @Header("Authorization") token: String,
-        @Body refreshToken: RequestBody,
+        @Body requestBody: RequestBody,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): SignInResponse
 
