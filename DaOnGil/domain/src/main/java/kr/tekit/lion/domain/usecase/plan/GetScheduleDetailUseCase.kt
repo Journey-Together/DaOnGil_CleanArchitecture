@@ -46,6 +46,7 @@ private fun combineScheduleDetail(
         reviewImages = review.imageList,
         hasReview = review.hasReview,
         profileUrl = review.profileUrl,
-        isBookmark = bookmark
+        isBookmark = bookmark,
+        isReport = review.isReport
     )
 }
