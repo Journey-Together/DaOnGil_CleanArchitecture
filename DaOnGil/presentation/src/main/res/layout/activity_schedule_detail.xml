@@ -37,9 +37,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:navigationIcon="@drawable/back_icon"
-                    app:navigationIconTint="@color/text_primary">
-
-                </com.google.android.material.appbar.MaterialToolbar>
+                    app:navigationIconTint="@color/text_primary" />
 
                 <ImageView
                     android:id="@+id/errorImage"
@@ -80,14 +78,13 @@
             <LinearLayout
                 android:id="@+id/scheduleDetailLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:visibility="gone">
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -122,10 +119,7 @@
                             android:textColor="@color/white"
                             android:textSize="18dp"
                             tools:text="@string/text_my_schedule" />
-
-
                     </com.google.android.material.appbar.MaterialToolbar>
-
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -160,8 +154,6 @@
                             android:textSize="@dimen/font_small2"
                             android:visibility="gone"
                             tools:text="D-10" />
-
-
                     </LinearLayout>
 
                     <TextView
@@ -193,7 +185,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:text="2024.06.01-2024.06.03" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -246,7 +237,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="fitXY" />
-
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -332,7 +322,7 @@
                                 android:layout_width="130dp"
                                 android:layout_height="130dp"
                                 android:scaleType="fitXY"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
                             <ImageView
                                 android:id="@+id/scheduleReviewImg2"
@@ -359,7 +349,6 @@
                                 android:visibility="gone" />
                         </LinearLayout>
                     </HorizontalScrollView>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -388,8 +377,28 @@
                         android:textSize="@dimen/font_small2" />
                 </LinearLayout>
 
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/cardViewReportReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@drawable/background_radius_5"
+                    android:backgroundTint="@color/text_field_background"
+                    android:layout_margin="@dimen/margin_basic"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/margin_big1"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:gravity="center"
+                        android:text="@string/text_my_review_report"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/font_big3" />
+                </LinearLayout>
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
