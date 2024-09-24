@@ -141,4 +141,10 @@
         <item name="android:textColor">@color/primary</item>
         <item name="android:text">@string/toolbar_app_name</item>
     </style>
+
+    <style name="BookmarkTabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/font_big2</item>
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+    </style>
+
 </resources>
