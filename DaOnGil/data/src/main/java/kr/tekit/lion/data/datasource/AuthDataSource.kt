@@ -41,6 +41,10 @@ internal class AuthDataSource @Inject constructor(
         if (refreshToken.isNotBlank()) authService.refresh("Bearer $refreshToken") else null
     }
 
+    suspend fun withdraw() = runCatching {
+        authService.withdraw()
+    }
+
     private suspend fun localLogout() {
         dataStore.updateData {
             it.copy(

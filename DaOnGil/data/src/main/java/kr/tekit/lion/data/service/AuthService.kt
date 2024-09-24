@@ -29,4 +29,9 @@ internal interface AuthService {
     suspend fun refresh(
         @Header("Authorization") refreshToken: String,
     ): SignUpResponse
+
+    @GET("auth/withdrawal")
+    suspend fun withdraw(
+        @Tag authType: AuthType = AuthType.ACCESS_TOKEN
+    )
 }

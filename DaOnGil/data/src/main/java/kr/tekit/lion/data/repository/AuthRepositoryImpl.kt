@@ -26,4 +26,12 @@ internal class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout(): Result<Unit> = authDataSource.logout()
+
+    override suspend fun withdraw() = exc {
+        authDataSource.withdraw().onSuccess {
+            Result.success(Unit)
+        }.onFailure {
+            it.printStackTrace()
+        }
+    }
 }
