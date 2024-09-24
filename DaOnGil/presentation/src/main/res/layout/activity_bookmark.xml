@@ -41,7 +41,8 @@
         app:tabRippleColor="@android:color/transparent"
         app:tabSelectedTextColor="@color/search_view_main"
         app:tabTextColor="@color/text_primary"
-        app:tabIndicatorColor="@color/search_view_main"/>
+        app:tabIndicatorColor="@color/search_view_main"
+        app:tabTextAppearance="@style/BookmarkTabTextStyle"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBookmark"
@@ -72,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
+            android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -109,6 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:contentDescription="@null"
             app:srcCompat="@drawable/onboarding_clover" />
 
         <TextView
@@ -119,8 +122,8 @@
             android:fontFamily="@font/cafe24_oneprettynight"
             android:gravity="center"
             android:lineSpacingMultiplier="1.2"
-            android:text="TextView"
-            android:textSize="@dimen/font_big1" />
+            android:textSize="@dimen/font_big1"
+            tools:text="TextView" />
     </LinearLayout>
 
     <ProgressBar
