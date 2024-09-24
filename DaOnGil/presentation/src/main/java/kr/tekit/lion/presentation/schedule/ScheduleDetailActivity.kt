@@ -90,7 +90,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
             viewModel.scheduleDetail.observe(this@ScheduleDetailActivity){ scheduleDetail ->
 
-                initToolbarMenu(isUser, scheduleDetail.isWriter, scheduleDetail.isPublic, scheduleDetail.isBookmark, planId)
+                initToolbarMenu(isUser, scheduleDetail.isWriter, scheduleDetail.isPublic, scheduleDetail.isBookmark, scheduleDetail.isReport, planId)
 
                 settingScheduleAdapter(scheduleDetail)
                 schedulePublic.visibility = View.VISIBLE
@@ -243,10 +243,14 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
                 }
 
-                if (scheduleDetail.isPublic) {
-                    schedulePublic.text = getString(R.string.text_schedule_public)
-                } else {
+                if(scheduleDetail.isReport == true){
                     schedulePublic.text = getString(R.string.text_schedule_private)
+                } else {
+                    if (scheduleDetail.isPublic) {
+                        schedulePublic.text = getString(R.string.text_schedule_public)
+                    } else {
+                        schedulePublic.text = getString(R.string.text_schedule_private)
+                    }
                 }
 
                 textViewScheduleName.text = scheduleDetail.title
@@ -378,7 +382,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun initToolbarMenu(isUser: Boolean, isWriter: Boolean, isPublic: Boolean, isBookmark: Boolean, planId: Long) {
+    private fun initToolbarMenu(isUser: Boolean, isWriter: Boolean, isPublic: Boolean, isBookmark: Boolean, isReport: Boolean?, planId: Long) {
 
         with(binding.toolbarViewSchedule){
             menu.clear()
@@ -390,7 +394,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 inflateMenu(R.menu.menu_schedule_private)
                 binding.textViewScheduleType.text = getString(R.string.text_my_schedule)
                 setOnMenuItemClickListener {
-                    showScheduleManageBottomSheet(isPublic)
+                    showScheduleManageBottomSheet(isPublic, isReport)
                     true
                 }
 
@@ -403,11 +407,6 @@ class ScheduleDetailActivity : AppCompatActivity() {
                 setOnMenuItemClickListener {
                     if (isUser) { // 로그인한 사용자
                         viewModel.updateScheduleDetailBookmark(planId)
-                        /*if(isBookmark){
-                            showSnackbar("북마크가 취소되었습니다")
-                        } else {
-                            showSnackbar("북마크 되었습니다")
-                        }*/
                     } else {
                         displayLoginDialog("여행 일정을 북마크하고 싶다면\n로그인을 진행해주세요")
                     }
@@ -479,16 +478,16 @@ class ScheduleDetailActivity : AppCompatActivity() {
             })
     }
 
-    private fun showScheduleManageBottomSheet(isPublic: Boolean) {
+    private fun showScheduleManageBottomSheet(isPublic: Boolean, isReport: Boolean?) {
 
         val planId = intent.getLongExtra("planId", -1)
 
         ScheduleManageBottomSheet(
             isPublic = isPublic,
+            isReport = isReport,
             onScheduleStateToggleListener = {
                 // 공개/비공개 상태 Toggle Listener
                 // 공개 -> 비공개
-
                 viewModel.updateMyPlanPublic(planId)
             },
             onScheduleDeleteClickListener = {
@@ -498,7 +497,6 @@ class ScheduleDetailActivity : AppCompatActivity() {
             onScheduleEditClickListener = {
                 // 일정 수정할 때 필요한 정보만 분리 (ViewModel에서 데이터 처리)
                 val scheduleInfo = viewModel.selectDataForModification(planId)
-
                 val newIntent =
                     Intent(this@ScheduleDetailActivity, ModifyScheduleFormActivity::class.java)
                 newIntent.putExtra("scheduleInfo", scheduleInfo)
