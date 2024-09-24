@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.main.vm.myinfo
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
@@ -44,7 +42,7 @@ class MyInfoMainViewModel @Inject constructor(
     private val _myInfo = MutableSharedFlow<MyDefaultInfo>()
     val myInfo = _myInfo.asSharedFlow()
 
-    suspend fun checkLoginState(){
+    private suspend fun checkLoginState(){
         authRepository.loggedIn.collect{ isLoggedIn ->
             if (isLoggedIn){
                 _loginState.value = LogInState.LoggedIn
@@ -57,10 +55,8 @@ class MyInfoMainViewModel @Inject constructor(
     }
 
     suspend fun onStateLoggedIn(){
-        Log.d("dsadasa", "onStateLoggedIn")
         memberRepository.getMyDefaultInfo().onSuccess { myInfo ->
             viewModelScope.launch {
-                Log.d("dsadasa", "myInfo: $myInfo")
                 _myInfo.emit(myInfo)
             }
             networkErrorDelegate.handleNetworkSuccess()

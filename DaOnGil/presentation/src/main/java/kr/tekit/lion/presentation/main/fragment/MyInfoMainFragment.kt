@@ -14,7 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.concerntype.ConcernTypeActivity
-import kr.tekit.lion.presentation.DeleteUserActivity
+import kr.tekit.lion.presentation.myinfo.DeleteUserActivity
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.bookmark.BookmarkActivity
 import kr.tekit.lion.presentation.databinding.FragmentMyInfoMainBinding
@@ -37,9 +37,7 @@ import kr.tekit.lion.presentation.splash.model.LogInState
 @AndroidEntryPoint
 class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private val viewModel: MyInfoMainViewModel by viewModels()
-    private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
-    }
+
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -75,45 +73,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             supervisorScope {
                 launch { handleLoginState(binding, isTalkbackEnabled, textToAnnounce) }
                 launch { handleNetworkState(binding) }
-                launch { observeConnectivity(binding, isTalkbackEnabled, textToAnnounce) }
                 launch { collectMyInfo(binding, isTalkbackEnabled, textToAnnounce) }
-            }
-        }
-    }
-
-    private suspend fun observeConnectivity(
-        binding: FragmentMyInfoMainBinding,
-        isTalkbackEnabled: Boolean,
-        textToAnnounce: StringBuilder
-    ) {
-        with(binding) {
-            connectivityObserver.getFlow().collect { status ->
-                val loginState = viewModel.loginState.value
-                when (status) {
-                    ConnectivityObserver.Status.Available -> {
-                        if (loginState == LogInState.LoggedIn) {
-                            viewModel.onStateLoggedIn()
-
-                            mainContainer.visibility = View.VISIBLE
-                            errorContainer.visibility = View.GONE
-                        }
-                    }
-                    ConnectivityObserver.Status.Unavailable,
-                    ConnectivityObserver.Status.Losing,
-                    ConnectivityObserver.Status.Lost -> {
-                        if (loginState == LogInState.LoginRequired){
-                            setUiLoginRequiredState(binding, isTalkbackEnabled, textToAnnounce)
-                        }else{
-                            errorContainer.visibility = View.VISIBLE
-                            mainContainer.visibility = View.GONE
-                            progressBar.visibility = View.GONE
-
-                            val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
-                                    "${getString(R.string.text_plz_check_network)} "
-                            textMsg.text = msg
-                        }
-                    }
-                }
             }
         }
     }
@@ -127,6 +87,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             when (loginState) {
                 is LogInState.Checking -> return@collect
                 is LogInState.LoggedIn -> {
+                    viewModel.onStateLoggedIn()
                     setUiLoggedInState(binding)
                 }
                 is LogInState.LoginRequired -> {

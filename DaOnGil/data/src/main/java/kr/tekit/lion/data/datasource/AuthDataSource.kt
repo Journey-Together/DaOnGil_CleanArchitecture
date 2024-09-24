@@ -9,6 +9,7 @@ import kr.tekit.lion.data.database.AppSettings
 import kr.tekit.lion.data.database.dataStore
 import kr.tekit.lion.data.dto.response.SignUpResponse
 import kr.tekit.lion.data.service.AuthService
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 internal class AuthDataSource @Inject constructor(
@@ -24,8 +25,8 @@ internal class AuthDataSource @Inject constructor(
     val loggedIn: Flow<Boolean>
         get() = data.map { it.accessToken.isNotBlank() }
 
-    suspend fun signIn(type: String, token: String) = runCatching {
-        authService.signIn(type = type, token = token)
+    suspend fun signIn(type: String, accessToken: String, refreshToken: RequestBody) = runCatching {
+        authService.signIn(type = type, token = "Bearer $accessToken", requestBody = refreshToken)
     }
 
     suspend fun logout(): Result<Unit> = runCatching {

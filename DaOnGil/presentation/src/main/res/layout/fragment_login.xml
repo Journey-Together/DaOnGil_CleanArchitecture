@@ -1,68 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/loginTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/background_color"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="@dimen/margin_big1"
+        android:fontFamily="@font/cafe24_oneprettynight"
+        android:text="@string/text_hello_plz_login"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.371"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/kakaoLoginButton"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/text_kakao_login"
+        android:src="@drawable/kakao_login"
+        android:layout_marginBottom="@dimen/margin_big3"
+        app:layout_constraintBottom_toTopOf="@+id/naverLoginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/loginTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="90dp"
-            android:layout_marginStart="@dimen/margin_basic"
-            android:fontFamily="@font/cafe24_oneprettynight"
-            android:textStyle="bold"
-            android:textSize="28dp"
-            android:text="@string/text_hello_plz_login" />
+    <ImageView
+        android:id="@+id/naverLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/text_naver_login"
+        android:fontFamily="@font/pretendard_semibold"
+        android:src="@drawable/naver_login"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_big2"
+        app:layout_constraintBottom_toTopOf="@+id/btn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/kakaoLoginButton"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="55dp"
-            android:layout_marginTop="300dp"
-            android:contentDescription="@string/text_kakao_login"
-            android:src="@drawable/kakao_login" />
+    <TextView
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="돌아가기"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="28dp"
+        android:paddingBottom="28dp"
+        android:textAlignment="center"
+        android:textColor="@color/text_tertiary"
+        android:textSize="@dimen/font_big3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/naverLoginButton"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="55dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="@dimen/margin_basic"
-            android:layout_marginEnd="@dimen/margin_basic"
-            android:src="@drawable/naver_login"
-            android:fontFamily="@font/pretendard_semibold"
-            android:textSize="@dimen/font_big2"
-            android:contentDescription="@string/text_naver_login"
-            android:textColor="@color/white"/>
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:indeterminateDrawable="@drawable/rotate_progress_bar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/loginTextView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/pretendard_medium"
-            android:text="로그인에 문제가 있나요?"
-            android:textAlignment="center"
-            android:textSize="@dimen/font_big3"
-            android:textColor="@color/text_tertiary"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

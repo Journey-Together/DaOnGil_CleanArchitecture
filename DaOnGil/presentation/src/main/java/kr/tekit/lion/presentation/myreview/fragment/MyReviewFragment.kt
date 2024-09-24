@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentMyReviewBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -20,53 +22,101 @@ import kr.tekit.lion.presentation.home.ReviewListActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.myreview.adapter.MyReviewRVAdapter
 import kr.tekit.lion.presentation.myreview.vm.MyReviewViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
 
     private val viewModel: MyReviewViewModel by activityViewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMyReviewBinding.bind(view)
 
-        with(binding) {
-            repeatOnViewStarted {
-                viewModel.networkState.collect { networkState ->
-                    when (networkState) {
-                        is NetworkState.Loading -> {
-                            myReviewProgressBar.visibility = View.VISIBLE
-                        }
-                        is NetworkState.Success -> {
-                            myReviewProgressBar.visibility = View.GONE
-                            recyclerViewMyReview.visibility = View.VISIBLE
-                        }
-                        is NetworkState.Error -> {
-                            myReviewProgressBar.visibility = View.GONE
-                            recyclerViewMyReview.visibility = View.GONE
-                            myReviewErrorLayout.visibility = View.VISIBLE
-                            myReviewErrorMsg.text = networkState.msg
-                        }
-                    }
-                }
-            }
-        }
-
         if (viewModel.isFromDetail.value == false) {
             viewModel.getMyPlaceReview()
         }
 
         settingToolbar(binding)
+        settingBackPressedDispatcher()
         settingMyReviewRVAdapter(binding)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            handleBackPress()
+        repeatOnViewStarted {
+            supervisorScope {
+                launch { collectMyReviewState(binding) }
+                launch { observeConnectivity(binding) }
+            }
+        }
+    }
+
+    private suspend fun collectMyReviewState(binding: FragmentMyReviewBinding) {
+        with(binding) {
+            viewModel.networkState.collect { networkState ->
+                when (networkState) {
+                    is NetworkState.Loading -> {
+                        myReviewProgressBar.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Success -> {
+                        myReviewProgressBar.visibility = View.GONE
+                        recyclerViewMyReview.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Error -> {
+                        myReviewProgressBar.visibility = View.GONE
+                        recyclerViewMyReview.visibility = View.GONE
+                        myReviewErrorLayout.visibility = View.VISIBLE
+                        myReviewErrorMsg.text = networkState.msg
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(binding: FragmentMyReviewBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when(connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        recyclerViewMyReview.visibility = View.VISIBLE
+                        myReviewErrorLayout.visibility = View.GONE
+                        if (viewModel.networkState.value is NetworkState.Error) {
+                            viewModel.getMyPlaceReview()
+                        }
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        recyclerViewMyReview.visibility = View.GONE
+                        myReviewErrorLayout.visibility = View.VISIBLE
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        myReviewErrorMsg.text = msg
+
+                        val fragmentManager = requireActivity().supportFragmentManager
+                        val deleteDialog = fragmentManager.findFragmentByTag("ConfirmDialogTag") as? ConfirmDialog
+                        deleteDialog?.let { dialog ->
+                            if (dialog.isVisible) {
+                                dialog.dismiss()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     private fun settingToolbar(binding: FragmentMyReviewBinding) {
         binding.toolbarMyReview.setNavigationOnClickListener {
+            handleBackPress()
+        }
+    }
+
+    private fun settingBackPressedDispatcher() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             handleBackPress()
         }
     }

@@ -63,7 +63,7 @@
             android:name=".myreview.MyReviewActivity"
             android:exported="false" />
         <activity
-            android:name=".DeleteUserActivity"
+            android:name=".myinfo.DeleteUserActivity"
             android:exported="false" />
         <activity
             android:name=".myinfo.MyInfoActivity"

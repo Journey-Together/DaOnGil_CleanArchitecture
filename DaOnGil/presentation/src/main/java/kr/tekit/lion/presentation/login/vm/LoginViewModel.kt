@@ -31,8 +31,8 @@ class LoginViewModel @Inject constructor(
     private val _isFirstUser = MutableStateFlow(false)
     val isFirstUser = _isFirstUser.asStateFlow()
 
-    fun onCompleteLogIn(type: String, token: String) = viewModelScope.launch {
-        authRepository.signIn(type, "Bearer $token")
+    fun onCompleteLogIn(type: String, accessToken: String, refreshToken: String) = viewModelScope.launch {
+        authRepository.signIn(type, accessToken, refreshToken)
         checkIsFirstUser()
         _sigInInUiState.value = true
     }
@@ -40,6 +40,7 @@ class LoginViewModel @Inject constructor(
     private suspend fun checkIsFirstUser(){
         memberRepository.getConcernType().onSuccess { ConcernType ->
             _isFirstUser.value = ConcernType.hasAnyTrue()
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }

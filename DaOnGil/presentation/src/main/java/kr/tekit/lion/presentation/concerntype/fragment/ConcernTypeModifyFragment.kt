@@ -4,19 +4,27 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.concerntype.vm.ConcernTypeViewModel
 import kr.tekit.lion.presentation.databinding.FragmentConcernTypeModifyBinding
+import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.repeatOnViewStarted
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
+import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
 class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify) {
 
     private val viewModel: ConcernTypeViewModel by activityViewModels()
-
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
     private val selectedConcernType = mutableSetOf<Int>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,7 +35,47 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
         initView(binding)
         observeSelection(binding)
         concernTypeModify(binding)
+
+        repeatOnViewStarted {
+            supervisorScope {
+                launch { collectConcernTypeModifyState() }
+                launch { observeConnectivity(binding) }
+            }
+        }
     }
+
+    private suspend fun collectConcernTypeModifyState() {
+        viewModel.networkState.collect { networkState ->
+            when (networkState) {
+                is NetworkState.Loading -> {}
+                is NetworkState.Success -> {}
+                is NetworkState.Error -> {
+                    requireContext().showSnackbar(requireView(), networkState.msg)
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(binding: FragmentConcernTypeModifyBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when (connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        buttonConcernTypeModify.isEnabled = true
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        buttonConcernTypeModify.isEnabled = false
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        requireContext().showInfinitySnackBar(buttonConcernTypeModify, msg)
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun initView(binding: FragmentConcernTypeModifyBinding) {
         with(binding) {
@@ -115,14 +163,14 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
             val isChild = binding.imageViewConcernTypeModifyInfant.tag.toString().toBoolean()
 
             viewModel.updateConcernType(ConcernType(isPhysical, isHear, isVisual, isElderly, isChild))
-            showSnackbar(binding, "관심 유형이 수정되었습니다.")
-            findNavController().popBackStack()
-        }
-    }
 
-    private fun showSnackbar(binding: FragmentConcernTypeModifyBinding, message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.text_secondary))
-            .show()
+            viewModel.snackbarEvent.observe(viewLifecycleOwner) { message ->
+                message?.let {
+                    requireContext().showSnackbar(requireView(), message)
+                    viewModel.resetSnackbarEvent()
+                    findNavController().popBackStack()
+                }
+            }
+        }
     }
 }

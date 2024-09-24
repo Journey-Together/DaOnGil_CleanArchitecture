@@ -97,6 +97,7 @@ _**Comming Soon...**_
 | 07 | [안드로이드 리사이클러뷰 성능 개선 일지 3편](https://chanho-study.tistory.com/140) |
 | 08 | [안드로이드 리사이클러뷰 성능 개선 일지 4편](https://chanho-study.tistory.com/141) |
 | 09 | [안드로이드 접근성 개선기](https://chanho-study.tistory.com/143) |
+| 10 | [안드로이드에서 실시간으로 네트워크 상태를 대응해보자](https://chanho-study.tistory.com/144) |
 
 <br/>
 

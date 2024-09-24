@@ -2,6 +2,8 @@ package kr.tekit.lion.data.service
 
 import kr.tekit.lion.data.dto.response.SignUpResponse
 import kr.tekit.lion.data.dto.response.signin.SignInResponse
+import okhttp3.RequestBody
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -13,6 +15,7 @@ internal interface AuthService {
     suspend fun signIn(
         @Query("type") type: String,
         @Header("Authorization") token: String,
+        @Body requestBody: RequestBody,
         @Tag authType: AuthType = AuthType.NO_AUTH
     ): SignInResponse
 
