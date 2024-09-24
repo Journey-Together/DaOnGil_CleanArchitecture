@@ -8,5 +8,4 @@ data class MyMainSchedule(
     val remainDate: String?,
     val startDate: String?,
     val title: String?,
-    val isReport: Boolean?
 )

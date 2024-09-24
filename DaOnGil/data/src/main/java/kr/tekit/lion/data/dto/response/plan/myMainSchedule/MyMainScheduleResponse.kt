@@ -19,7 +19,6 @@ internal data class MyMainScheduleResponse(
                 remainDate = it?.remainDate,
                 startDate = it?.startDate,
                 title = it?.title,
-                isReport = it?.isReport
             )
         }
     }

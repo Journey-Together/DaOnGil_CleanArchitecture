@@ -10,6 +10,5 @@ internal data class Data(
     val planId: Long,
     val remainDate: String?,
     val startDate: String?,
-    val title: String?,
-    val isReport: Boolean?
+    val title: String?
 )
