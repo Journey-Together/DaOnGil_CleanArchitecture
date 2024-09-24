@@ -118,6 +118,8 @@ class BookmarkActivity : AppCompatActivity() {
         binding.toolbarMyBookmark.setNavigationOnClickListener {
             finish()
         }
+
+        binding.toolbarMyBookmark.setNavigationContentDescription(R.string.text_back_button)
     }
 
     private fun settingTabLayout() {
