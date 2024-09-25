@@ -79,10 +79,10 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
 
     private fun initView(binding: FragmentConcernTypeModifyBinding) {
         with(binding) {
-            toolbarConcernTypeModify.setNavigationIcon(R.drawable.back_icon)
             toolbarConcernTypeModify.setNavigationOnClickListener {
                 findNavController().popBackStack()
             }
+            toolbarConcernTypeModify.setNavigationContentDescription(R.string.text_back_button)
 
             imageViewConcernTypeModifyPhysical.setOnClickListener {
                 toggleSelection(it as ImageView, R.drawable.physical_no_select, R.drawable.physical_select, binding)
