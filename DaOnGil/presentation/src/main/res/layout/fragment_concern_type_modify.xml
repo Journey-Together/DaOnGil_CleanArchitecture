@@ -8,14 +8,15 @@
         android:id="@+id/toolbarConcernTypeModify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize">
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/back_icon">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/pretendard_medium"
-            android:text="관심 유형"
+            android:text="@string/text_interest_type"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/font_big2" />
 
@@ -28,7 +29,7 @@
         android:layout_marginHorizontal="@dimen/margin_basic"
         android:layout_marginTop="@dimen/margin_big2"
         android:fontFamily="@font/pretendard_medium"
-        android:text="관심 유형을 선택해주세요"
+        android:text="@string/text_concern_type_choose"
         android:textSize="@dimen/font_big2" />
 
     <ScrollView
@@ -51,6 +52,7 @@
                     android:id="@+id/imageViewConcernTypeModifyPhysical"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/text_physical_disability"
                     android:src="@drawable/physical_no_select"
                     android:tag="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -66,6 +68,7 @@
                     android:id="@+id/imageViewConcernTypeModifyVisual"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/text_visual_impairment"
                     android:src="@drawable/visual_no_select"
                     android:tag="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -87,6 +90,7 @@
                     android:id="@+id/imageViewConcernTypeModifyHearing"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/text_hearing_impairment"
                     android:src="@drawable/hearing_no_select"
                     android:tag="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -101,6 +105,7 @@
                     android:id="@+id/imageViewConcernTypeModifyInfant"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/text_infant_family"
                     android:src="@drawable/infant_family_no_select"
                     android:tag="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -121,6 +126,7 @@
                     android:id="@+id/imageViewConcernTypeModifyElderly"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/text_elderly_person"
                     android:src="@drawable/elderly_people_no_select"
                     android:tag="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -135,6 +141,7 @@
                     android:id="@+id/imageViewEtc"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@null"
                     android:src="@drawable/infant_family_no_select"
                     android:tag="false"
                     android:visibility="invisible"
@@ -159,8 +166,8 @@
         android:layout_marginHorizontal="@dimen/margin_basic"
         android:layout_marginBottom="@dimen/margin_big2"
         android:background="@drawable/background_radius_10"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="수정하기"
+        android:fontFamily="@font/pretendard_extrabold"
+        android:text="@string/text_concern_type_modify"
         android:textSize="@dimen/font_big2" />
 
 </LinearLayout>
