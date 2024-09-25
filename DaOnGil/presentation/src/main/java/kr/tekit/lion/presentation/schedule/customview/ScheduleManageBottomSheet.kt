@@ -9,6 +9,7 @@ import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 
 class ScheduleManageBottomSheet(
     private val isPublic: Boolean,
+    private val isReport: Boolean?,
     private val onScheduleStateToggleListener: () -> Unit,
     private val onScheduleDeleteClickListener: () -> Unit,
     private val onScheduleEditClickListener: () -> Unit
@@ -23,7 +24,7 @@ class ScheduleManageBottomSheet(
     }
 
     private fun initView(binding: BottomSheetScheduleManageBinding, isPublic: Boolean) {
-        binding.apply {
+        with(binding){
             when (isPublic) {
                 true -> {
                     iconScheduleManagePublicToggle.setImageResource(R.drawable.icon_lock)
@@ -38,6 +39,10 @@ class ScheduleManageBottomSheet(
                 }
             }
 
+            if(isReport == true){
+                layoutScheduleManagePublicToggle.visibility = View.GONE
+            }
+
             layoutScheduleManageEdit.setOnClickListener {
                 onScheduleEditClickListener()
             }
@@ -49,7 +54,6 @@ class ScheduleManageBottomSheet(
                 onScheduleStateToggleListener()
                 dismiss()
             }
-
         }
     }
 

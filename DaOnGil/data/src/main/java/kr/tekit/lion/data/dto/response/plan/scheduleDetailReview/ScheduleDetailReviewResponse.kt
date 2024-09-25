@@ -15,7 +15,8 @@ internal data class ScheduleDetailReviewResponse(
             imageList = data.imageList,
             isWriter = data.isWriter,
             hasReview = data.hasReview,
-            profileUrl = data.profileUrl
+            profileUrl = data.profileUrl,
+            isReport = data.isReport
         )
     }
 }

@@ -18,7 +18,7 @@ internal data class MyMainScheduleResponse(
                 planId = it?.planId,
                 remainDate = it?.remainDate,
                 startDate = it?.startDate,
-                title = it?.title
+                title = it?.title,
             )
         }
     }
