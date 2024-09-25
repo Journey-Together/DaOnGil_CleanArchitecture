@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small2">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/locationBookmarkCard"
@@ -28,6 +29,7 @@
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/empty_view_long"
+                android:contentDescription="@string/text_bookmark_img"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +38,7 @@
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@null"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_place_high_background"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -50,16 +53,20 @@
                 android:layout_marginStart="@dimen/margin_big4"
                 android:layout_marginBottom="@dimen/margin_big4"
                 android:orientation="horizontal"
+                android:contentDescription="@string/text_interest_type"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/locationBookmarkBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="@dimen/margin_big4"
-                android:layout_marginRight="@dimen/margin_big4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_small3"
+                android:layout_marginEnd="@dimen/margin_small3"
+                android:contentDescription="@string/text_update_bookmark"
+                android:padding="14dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/bookmark_fill_icon" />

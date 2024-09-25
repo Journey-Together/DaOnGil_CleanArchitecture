@@ -381,4 +381,8 @@
     <string name="text_network_is_unavailable">서버에 연결할 수 없습니다.</string>
     <string name="text_plz_check_network">인터넷 연결을 확인해주세요.</string>
     <string name="text_policy">약관 및 정책</string>
+
+    <string name="text_update_bookmark">북마크 취소하기</string>
+    <string name="text_bookmark_img">여행지 이미지</string>
+    <string name="text_bookmark_profile_img">프로필 이미지</string>
 </resources>
