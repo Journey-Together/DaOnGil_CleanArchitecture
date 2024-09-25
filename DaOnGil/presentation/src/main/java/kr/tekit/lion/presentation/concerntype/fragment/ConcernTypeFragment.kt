@@ -103,6 +103,8 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
         binding.toolbarConcernType.setNavigationOnClickListener {
             requireActivity().finish()
         }
+
+        binding.toolbarConcernType.setNavigationContentDescription(R.string.text_back_button)
     }
 
     private fun observeNickname(binding: FragmentConcernTypeBinding) {
