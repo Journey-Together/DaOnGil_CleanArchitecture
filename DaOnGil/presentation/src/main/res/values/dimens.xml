@@ -19,6 +19,7 @@
     <dimen name="font_small2">12dp</dimen>
     <dimen name="font_small3">10dp</dimen>
 
+    <dimen name="font_big0">24dp</dimen>
     <dimen name="font_big1">20dp</dimen>
     <dimen name="font_big2">18dp</dimen>
     <dimen name="font_big3">16dp</dimen>
