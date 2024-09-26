@@ -40,8 +40,7 @@ class MyScheduleViewModel @Inject constructor(
     private val _isLastElapsed = MutableLiveData<Boolean>()
 
     init {
-        getMyUpcomingScheduleList(INITIAL_PAGE_NO)
-        getMyElapsedScheduleList(INITIAL_PAGE_NO)
+        refreshScheduleList()
     }
 
     private fun setUpcomingPageNo(pageNum: Int) {
@@ -57,13 +56,15 @@ class MyScheduleViewModel @Inject constructor(
         viewModelScope.launch {
 
             // networkState =  Loading
-            networkErrorDelegate.handleNetworkLoading()
+            if (page != INITIAL_PAGE_NO) {
+                networkErrorDelegate.handleNetworkLoading()
+            }
 
             planRepository.getMyUpcomingScheduleList(page)
                 .onSuccess {
-                    val newList = if(page == INITIAL_PAGE_NO){
+                    val newList = if (page == INITIAL_PAGE_NO) {
                         it.myUpcomingScheduleList
-                    }else{
+                    } else {
                         _upcomingSchedules.value.orEmpty() + it.myUpcomingScheduleList
                     }
                     _upcomingSchedules.value = newList
@@ -80,16 +81,25 @@ class MyScheduleViewModel @Inject constructor(
 
     private fun getMyElapsedScheduleList(page: Int) {
         setElapsedPageNo(page)
+
+        // networkState =  Loading
+        if (page != INITIAL_PAGE_NO) {
+            networkErrorDelegate.handleNetworkLoading()
+        }
+
         viewModelScope.launch {
             planRepository.getMyElapsedScheduleList(page)
                 .onSuccess {
-                    val newList = if(page == INITIAL_PAGE_NO){
+                    val newList = if (page == INITIAL_PAGE_NO) {
                         it.myElapsedScheduleList
-                    }else{
+                    } else {
                         _elapsedSchedules.value.orEmpty() + it.myElapsedScheduleList
                     }
                     _elapsedSchedules.value = newList
                     _isLastElapsed.value = it.last
+
+                    // networkState = Success
+                    networkErrorDelegate.handleNetworkSuccess()
                 }.onError {
                     networkErrorDelegate.handleNetworkError(it)
                 }
@@ -116,7 +126,9 @@ class MyScheduleViewModel @Inject constructor(
         val pageNo = _upcomingPageNo.value
 
         pageNo?.let {
-            getMyUpcomingScheduleList(it+1)
+            getMyUpcomingScheduleList(it + 1)
+        } ?: run {
+            getMyUpcomingScheduleList(INITIAL_PAGE_NO)
         }
     }
 
@@ -124,12 +136,22 @@ class MyScheduleViewModel @Inject constructor(
         val pageNo = _elapsedPageNo.value
 
         pageNo?.let {
-            getMyElapsedScheduleList(it+1)
+            getMyElapsedScheduleList(it + 1)
+        } ?: run {
+            getMyElapsedScheduleList(INITIAL_PAGE_NO)
         }
     }
 
-    fun refreshScheduleList(){
+    fun refreshScheduleList() {
         getMyUpcomingScheduleList(INITIAL_PAGE_NO)
         getMyElapsedScheduleList(INITIAL_PAGE_NO)
+    }
+
+    fun isUpcomingScheduleListEmpty(): Boolean {
+        return _upcomingSchedules.value?.isEmpty() ?: false
+    }
+
+    fun isElapsedScheduleListEmpty(): Boolean {
+        return _elapsedSchedules.value?.isEmpty() ?: false
     }
 }

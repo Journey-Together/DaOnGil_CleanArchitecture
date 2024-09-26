@@ -6,17 +6,21 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
+import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.myschedule.adapter.MyScheduleElapsedAdapter
 import kr.tekit.lion.presentation.myschedule.adapter.MyScheduleUpcomingAdapter
 import kr.tekit.lion.presentation.databinding.ActivityMyScheduleBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addOnScrollEndListener
+import kr.tekit.lion.presentation.ext.repeatOnStarted
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.myschedule.vm.MyScheduleViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_SCHEDULE_REVIEW_CANCELED
 import kr.tekit.lion.presentation.schedule.ScheduleDetailActivity
@@ -31,9 +35,13 @@ class MyScheduleActivity : AppCompatActivity() {
         ActivityMyScheduleBinding.inflate(layoutInflater)
     }
 
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
+    }
+
     private val scheduleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if(result.resultCode == RESULT_SCHEDULE_REVIEW_CANCELED) return@registerForActivityResult
+            if (result.resultCode == RESULT_SCHEDULE_REVIEW_CANCELED) return@registerForActivityResult
 
             // 일정 목록 갱신
             viewModel.refreshScheduleList()
@@ -41,9 +49,11 @@ class MyScheduleActivity : AppCompatActivity() {
                 ResultCode.RESULT_REVIEW_WRITE -> {
                     binding.root.showSnackbar("후기가 저장되었습니다")
                 }
+
                 ResultCode.RESULT_SCHEDULE_WRITE -> {
                     binding.root.showSnackbar("일정이 저장되었습니다")
                 }
+
                 RESULT_OK -> {
                     binding.root.showSnackbar("일정이 삭제되었습니다")
                 }
@@ -78,38 +88,98 @@ class MyScheduleActivity : AppCompatActivity() {
         )
     }
 
+    private val TAB_UPCOMING = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
 
-        initProgressBarState()
+        repeatOnStarted {
+            supervisorScope {
+                launch { observeConnectivity() }
+                launch { initProgressBarState() }
+            }
+        }
 
         settingToolbar()
         settingButtonClickListener()
         settingMyScheduleTab()
         settingUpcomingScheduleAdapter()
+
     }
 
-    private fun initProgressBarState() {
+    private suspend fun initProgressBarState() {
         with(binding) {
-            lifecycleScope.launch {
-                viewModel.networkState.collect { state ->
-                    when(state){
-                        is NetworkState.Loading -> {
-                            progressBarMySchedule.visibility = View.VISIBLE
+            viewModel.networkState.collect { state ->
+                when (state) {
+                    is NetworkState.Loading -> {
+                        progressBarMySchedule.visibility = View.VISIBLE
+                    }
+
+                    is NetworkState.Success -> {
+                        progressBarMySchedule.visibility = View.GONE
+                    }
+
+                    is NetworkState.Error -> {
+                        progressBarMySchedule.visibility = View.GONE
+                        tabLayoutMySchedule.visibility = View.GONE
+                        recyclerViewMyScheduleList.visibility = View.GONE
+                        textMyScheduleError.apply {
+                            text = state.msg
+                            visibility = View.VISIBLE
                         }
-                        is NetworkState.Success -> {
-                            progressBarMySchedule.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity() {
+        with(binding) {
+            connectivityObserver.getFlow().collect {
+                when (it) {
+                    ConnectivityObserver.Status.Available -> {
+                        textMyScheduleError.visibility = View.GONE
+                        tabLayoutMySchedule.visibility = View.VISIBLE
+
+                        // 일정 목록을 받아오는 도중 오류가 난 경우 -> 목록을 다시 받아온다
+                        if (viewModel.networkState.value is NetworkState.Error) {
+                            viewModel.fetchNextUpcomingSchedules()
+                            viewModel.fetchNextElapsedSchedules()
                         }
-                        is NetworkState.Error -> {
-                            progressBarMySchedule.visibility = View.GONE
-                            tabLayoutMySchedule.visibility = View.GONE
-                            recyclerViewMyScheduleList.visibility = View.GONE
-                            textMyScheduleError.apply {
-                                text = state.msg
-                                visibility = View.VISIBLE
+                        // 기존에 받아온 목록이 남아있는 경우 -> 선택된 Tab에 맞게 View 보여준다
+                        else {
+                            // 다가오는 일정 목록이 선택된 경우
+                            if (tabLayoutMySchedule.selectedTabPosition == TAB_UPCOMING) {
+                                if (viewModel.isUpcomingScheduleListEmpty()) {
+                                    showScheduleEmptyPrompt()
+                                } else {
+                                    hideScheduleEmptyPrompt()
+                                }
                             }
+                            // 다녀온 일정 목록이 선택된 경우
+                            else {
+                                if (viewModel.isElapsedScheduleListEmpty()) {
+                                    showScheduleEmptyPrompt()
+                                } else {
+                                    hideScheduleEmptyPrompt()
+                                }
+                            }
+                        }
+                    }
+                    // Unavailable, Losing, Lost
+                    else -> {
+                        progressBarMySchedule.visibility = View.GONE
+                        tabLayoutMySchedule.visibility = View.GONE
+                        recyclerViewMyScheduleList.visibility = View.GONE
+                        layoutMyScheduleEmpty.visibility = View.GONE
+
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        textMyScheduleError.apply {
+                            text = msg
+                            visibility = View.VISIBLE
                         }
                     }
                 }
@@ -134,7 +204,7 @@ class MyScheduleActivity : AppCompatActivity() {
         binding.tabLayoutMySchedule.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) { // TO DO - List 없을 때 처리할 것
+                when (tab.position) {
                     0 -> settingUpcomingScheduleAdapter()
                     1 -> settingElapsedScheduleAdapter()
                 }
@@ -191,12 +261,12 @@ class MyScheduleActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideScheduleEmptyPrompt(){
+    private fun hideScheduleEmptyPrompt() {
         binding.layoutMyScheduleEmpty.visibility = View.GONE
         binding.recyclerViewMyScheduleList.visibility = View.VISIBLE
     }
 
-    private fun showScheduleEmptyPrompt(){
+    private fun showScheduleEmptyPrompt() {
         binding.layoutMyScheduleEmpty.visibility = View.VISIBLE
         binding.recyclerViewMyScheduleList.visibility = View.GONE
     }

@@ -17,6 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationContentDescription="@string/text_back_button"
         app:navigationIcon="@drawable/back_icon">
 
         <TextView
@@ -86,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/text_no_schedule"
-            android:textColor="@color/text_quaternary"
+            android:textColor="@color/text_tertiary"
             android:textSize="@dimen/font_big1" />
 
         <TextView
@@ -98,9 +99,9 @@
             android:contentDescription="@string/text_add_new_schedule"
             android:focusable="true"
             android:paddingHorizontal="@dimen/margin_basic"
-            android:paddingVertical="@dimen/margin_small1"
+            android:paddingVertical="@dimen/margin_big4"
             android:text="@string/add_schedule"
-            android:textColor="@color/text_quaternary"
+            android:textColor="@color/text_tertiary"
             android:textSize="@dimen/font_big3" />
     </LinearLayout>
 
