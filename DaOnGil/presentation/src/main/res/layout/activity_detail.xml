@@ -57,7 +57,7 @@
                     android:fontFamily="@font/pretendard_bold"
                     android:text="관광지명"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_big1"
+                    android:textSize="@dimen/font_big0"
                     app:layout_constraintBottom_toTopOf="@+id/detail_address_tv"
                     app:layout_constraintEnd_toEndOf="@+id/detail_address_tv"
                     app:layout_constraintStart_toStartOf="@+id/detail_address_tv" />
@@ -71,7 +71,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="주소"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_big3"
+                    android:textSize="@dimen/font_big2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -132,7 +132,7 @@
                     android:fontFamily="@font/pretendard_regular"
                     android:text="홈 > 무장애 관광정보 > "
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_big3"
+                    android:textSize="@dimen/font_big1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -143,7 +143,7 @@
                     android:fontFamily="@font/pretendard_regular"
                     android:text="관광지"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_big3"
+                    android:textSize="@dimen/font_big1"
                     app:layout_constraintBottom_toBottomOf="@+id/detail_route_tv"
                     app:layout_constraintStart_toEndOf="@+id/detail_route_tv"
                     app:layout_constraintTop_toTopOf="@id/detail_route_tv" />
@@ -168,7 +168,7 @@
                     android:fontFamily="@font/pretendard_semibold"
                     android:text="기본 정보"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_big2"
+                    android:textSize="@dimen/font_big0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/detail_basic_divider" />
 
@@ -199,7 +199,7 @@
                     android:lineSpacingMultiplier="1.2"
                     android:text="기본 정보 내용"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_small1"
+                    android:textSize="@dimen/font_big2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_map_layout" />
@@ -221,7 +221,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="주소"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/font_big3"
+                    android:textSize="@dimen/font_big1"
                     app:layout_constraintBottom_toBottomOf="@+id/detail_address_iv"
                     app:layout_constraintStart_toEndOf="@+id/detail_address_iv"
                     app:layout_constraintTop_toTopOf="@+id/detail_address_iv" />
@@ -236,7 +236,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="주소입니다"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_small1"
+                    android:textSize="@dimen/font_big2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/detail_basic_address_tv"
                     app:layout_constraintTop_toTopOf="@+id/detail_basic_address_tv" />
@@ -258,7 +258,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="문의"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/font_big3"
+                    android:textSize="@dimen/font_big1"
                     app:layout_constraintStart_toEndOf="@+id/detail_call_iv"
                     app:layout_constraintTop_toTopOf="@+id/detail_call_content_tv" />
 
@@ -271,7 +271,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="010-1111-1111"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_small1"
+                    android:textSize="@dimen/font_big2"
                     app:layout_constraintEnd_toEndOf="@+id/detail_basic_address_content_tv"
                     app:layout_constraintStart_toStartOf="@+id/detail_basic_address_content_tv"
                     app:layout_constraintTop_toBottomOf="@+id/detail_basic_address_content_tv" />
@@ -293,7 +293,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="링크"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/font_big3"
+                    android:textSize="@dimen/font_big1"
                     app:layout_constraintStart_toEndOf="@+id/detail_link_iv"
                     app:layout_constraintTop_toTopOf="@+id/detail_homepage_content_tv" />
 
@@ -306,7 +306,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="링크 url"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_small1"
+                    android:textSize="@dimen/font_big2"
                     app:layout_constraintEnd_toEndOf="@+id/detail_call_content_tv"
                     app:layout_constraintStart_toStartOf="@+id/detail_call_content_tv"
                     app:layout_constraintTop_toBottomOf="@+id/detail_call_content_tv" />
@@ -319,7 +319,7 @@
                     android:fontFamily="@font/pretendard_semibold"
                     android:text="무장애 편의정보"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_big2"
+                    android:textSize="@dimen/font_big0"
                     app:layout_constraintStart_toStartOf="@id/detail_link_iv"
                     app:layout_constraintTop_toBottomOf="@id/detail_homepage_content_tv" />
 
@@ -351,7 +351,7 @@
                     android:fontFamily="@font/pretendard_semibold"
                     android:text="후기"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_big2"
+                    android:textSize="@dimen/font_big0"
                     app:layout_constraintStart_toStartOf="@+id/detail_disability_info_rv"
                     app:layout_constraintTop_toBottomOf="@+id/detail_disability_info_rv" />
 
@@ -398,7 +398,7 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:text="현재 작성된 리뷰가 없습니다"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/font_small1"
+                    android:textSize="@dimen/font_big2"
                     android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@id/detail_more_review_btn"
                     app:layout_constraintEnd_toEndOf="parent"
