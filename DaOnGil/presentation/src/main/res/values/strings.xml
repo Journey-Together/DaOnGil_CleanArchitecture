@@ -385,4 +385,9 @@
     <string name="text_update_bookmark">북마크 취소하기</string>
     <string name="text_bookmark_img">여행지 이미지</string>
     <string name="text_bookmark_profile_img">프로필 이미지</string>
+
+    <string name="text_concern_type_subtitle">관심 유형을 변경하고 싶으신가요?</string>
+    <string name="text_concern_type_modify_move">관심 유형 수정하기</string>
+    <string name="text_concern_type_choose">관심 유형을 선택해주세요.</string>
+    <string name="text_concern_type_modify">수정하기</string>
 </resources>

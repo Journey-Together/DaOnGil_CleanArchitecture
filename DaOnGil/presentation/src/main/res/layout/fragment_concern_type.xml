@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/pretendard_medium"
-            android:text="관심 유형"
+            android:text="@string/text_interest_type"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/font_big2" />
 
@@ -62,62 +62,77 @@
             app:strokeColor="#a3a3a4"
             app:strokeWidth="0.5dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/margin_basic"
-                android:paddingBottom="@dimen/margin_basic">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_small1"
+                android:padding="@dimen/margin_big4">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/imageViewConcernTypePhysical"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/margin_big2">
+                    android:layout_marginStart="@dimen/margin_big4"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:contentDescription="@string/text_physical_disability"
+                    android:src="@drawable/cc_unselected_physical_disability_icon"
+                    app:layout_constraintEnd_toStartOf="@id/imageViewConcernTypeVisual"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageViewConcernTypePhysical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/cc_unselected_physical_disability_icon" />
-
-                    <ImageView
-                        android:id="@+id/imageViewConcernTypeVisual"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/cc_unselected_visual_impairment_icon" />
-
-                    <ImageView
-                        android:id="@+id/imageViewConcernTypeHearing"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/cc_unselected_hearing_impairment_icon" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/imageViewConcernTypeVisual"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_margin="@dimen/margin_small1"
+                    android:contentDescription="@string/text_visual_impairment"
+                    android:src="@drawable/cc_unselected_visual_impairment_icon"
+                    app:layout_constraintEnd_toStartOf="@id/imageViewConcernTypeHearing"
+                    app:layout_constraintStart_toEndOf="@id/imageViewConcernTypePhysical"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageViewConcernTypeInfant"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_basic"
-                        android:src="@drawable/cc_unselected_infant_family_icon" />
+                <ImageView
+                    android:id="@+id/imageViewConcernTypeHearing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small1"
+                    android:layout_marginEnd="@dimen/margin_big4"
+                    android:contentDescription="@string/text_hearing_impairment"
+                    android:src="@drawable/cc_unselected_hearing_impairment_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imageViewConcernTypeVisual"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageViewConcernTypeElderly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/cc_unselected_elderly_people_icon" />
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageViewConcernTypeInfant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_small1"
+                    android:layout_marginStart="@dimen/margin_big1"
+                    android:paddingTop="@dimen/margin_small1"
+                    android:contentDescription="@string/text_infant_family"
+                    android:src="@drawable/cc_unselected_infant_family_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/imageViewConcernTypeElderly"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageViewConcernTypePhysical" />
 
-            </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageViewConcernTypeElderly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_small1"
+                    android:layout_marginEnd="@dimen/margin_big1"
+                    android:paddingTop="@dimen/margin_small1"
+                    android:contentDescription="@string/text_elderly_person"
+                    android:src="@drawable/cc_unselected_elderly_people_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imageViewConcernTypeInfant"
+                    app:layout_constraintTop_toBottomOf="@id/imageViewConcernTypeVisual" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -149,7 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_basic"
             android:fontFamily="@font/pretendard_medium"
-            android:text="관심 유형을 변경하고 싶으신가요?"
+            android:text="@string/text_concern_type_subtitle"
             android:textSize="@dimen/font_big2" />
 
         <Button
@@ -157,8 +172,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_radius_10"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="관심 유형 수정하기"
+            android:fontFamily="@font/pretendard_extrabold"
+            android:text="@string/text_concern_type_modify_move"
             android:textSize="@dimen/font_big2" />
     </LinearLayout>
 
@@ -177,6 +192,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@null"
             app:srcCompat="@drawable/onboarding_clover" />
 
         <TextView
