@@ -190,6 +190,8 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
                 findNavController().popBackStack()
             }
         }
+
+        binding.toolbarMyReviewModify.setNavigationContentDescription(R.string.text_back_button)
     }
 
     private fun settingButton(binding: FragmentMyReviewModifyBinding) {
