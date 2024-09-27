@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/item_detail_info_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small1"
         android:fontFamily="@font/pretendard_semibold"
@@ -24,6 +24,7 @@
         android:textColor="@color/text_primary"
         android:textSize="@dimen/font_big2"
         app:layout_constraintBottom_toBottomOf="@id/item_detail_info_iv"
+        app:layout_constraintEnd_toStartOf="@+id/item_detail_info_guideline"
         app:layout_constraintStart_toEndOf="@+id/item_detail_info_iv"
         app:layout_constraintTop_toTopOf="@+id/item_detail_info_iv" />
 
@@ -31,13 +32,20 @@
         android:id="@+id/item_detail_info_content_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="@dimen/margin_small1"
         android:fontFamily="@font/pretendard_medium"
         android:text="시설 정보"
         android:textColor="@color/text_secondary"
         android:textSize="@dimen/font_big2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/item_detail_info_guideline"
         app:layout_constraintTop_toTopOf="@id/item_detail_info_title_tv" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/item_detail_info_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
