@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.MyPlaceReview
 import kr.tekit.lion.domain.model.MyPlaceReviewInfo
+import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemMyReviewBinding
 import kr.tekit.lion.presentation.databinding.ItemMyReviewHeaderBinding
 
@@ -46,7 +47,8 @@ class MyReviewRVAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MyReviewHeaderViewHolder) {
-            holder.bind(myReviewList)
+            val headerText = holder.itemView.context.getString(R.string.text_my_review_header, myReviewList.reviewNum)
+            holder.bind(headerText)
         } else if (holder is MyReviewViewHolder) {
             holder.bind(myReviewListInfo[position - 1])
         }
@@ -100,8 +102,8 @@ class MyReviewRVAdapter(
         private val binding: ItemMyReviewHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(myPlaceReview: MyPlaceReview) {
-            binding.textViewMyReivewTotal.text = myPlaceReview.reviewNum.toString()
+        fun bind(headerText: String) {
+            binding.textViewMyReivewHeader.text = headerText
         }
     }
 }
