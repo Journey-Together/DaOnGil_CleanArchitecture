@@ -162,6 +162,7 @@
 
     <string name="text_modify_schedule_review">여행 후기 수정하기</string>
     <string name="text_write_schedule_review">여행 후기 남기기</string>
+    <string name="text_write_schedule_review_description">일정 %s의 여행 후기 남기기</string>
     <string name="text_schedule_review_photo">여행 사진</string>
     <string name="text_save_schedule_review">저장하기</string>
 
