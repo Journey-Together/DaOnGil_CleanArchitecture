@@ -53,6 +53,10 @@ class ScheduleMyAdapter(
                     viewRowScheduleElapsedDeco.visibility = View.VISIBLE
                     textViewRowScheduleDDay.visibility = View.INVISIBLE
                     if(item.hasReview == false) {
+                        buttonRowScheduleReview.contentDescription = itemView.context.getString(
+                            R.string.text_write_schedule_review_description,
+                            item.title
+                        )
                         buttonRowScheduleReview.visibility = View.VISIBLE
                     }
                     if(item.hasReview == true){
