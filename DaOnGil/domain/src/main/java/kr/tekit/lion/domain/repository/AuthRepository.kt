@@ -1,9 +1,11 @@
 package kr.tekit.lion.domain.repository
 
 import kotlinx.coroutines.flow.Flow
+import kr.tekit.lion.domain.exception.Result
 
 interface AuthRepository {
     suspend fun signIn(type: String, accessToken: String, refreshToken: String)
-    suspend fun logout(): Result<Unit>
+    suspend fun logout(): kotlin.Result<Unit>
+    suspend fun withdraw(): Result<Unit>
     val loggedIn: Flow<Boolean>
 }

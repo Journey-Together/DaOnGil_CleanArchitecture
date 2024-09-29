@@ -4,6 +4,7 @@ import kr.tekit.lion.data.dto.response.SignUpResponse
 import kr.tekit.lion.data.dto.response.signin.SignInResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -30,8 +31,8 @@ internal interface AuthService {
         @Header("Authorization") refreshToken: String,
     ): SignUpResponse
 
-    @GET("auth/withdrawal")
+    @DELETE("auth/withdrawal")
     suspend fun withdraw(
-        @Tag authType: AuthType = AuthType.ACCESS_TOKEN
+        @Header("Authorization") token: String,
     )
 }

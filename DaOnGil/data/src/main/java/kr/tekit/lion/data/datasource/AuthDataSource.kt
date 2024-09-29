@@ -5,10 +5,12 @@ import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kr.tekit.lion.data.common.execute
 import kr.tekit.lion.data.database.AppSettings
 import kr.tekit.lion.data.database.dataStore
 import kr.tekit.lion.data.dto.response.SignUpResponse
 import kr.tekit.lion.data.service.AuthService
+import kr.tekit.lion.domain.exception.Result
 import okhttp3.RequestBody
 import javax.inject.Inject
 
@@ -29,20 +31,22 @@ internal class AuthDataSource @Inject constructor(
         authService.signIn(type = type, token = "Bearer $accessToken", requestBody = refreshToken)
     }
 
-    suspend fun logout(): Result<Unit> = runCatching {
+     suspend fun logout(): kotlin.Result<Unit> = runCatching{
         val accessToken = data.map { it.accessToken }.first()
         localLogout()
         authService.signOut("Bearer $accessToken")
     }
 
-    suspend fun refresh(): Result<SignUpResponse?> = runCatching {
+    suspend fun refresh(): kotlin.Result<SignUpResponse?> = runCatching{
         val refreshToken = data.map { it.refreshToken }.first()
 
         if (refreshToken.isNotBlank()) authService.refresh("Bearer $refreshToken") else null
     }
 
-    suspend fun withdraw() = runCatching {
-        authService.withdraw()
+    suspend fun withdraw(): Result<Unit> = execute{
+        val accessToken = data.map { it.accessToken }.first()
+        localLogout()
+        authService.withdraw("Bearer $accessToken")
     }
 
     private suspend fun localLogout() {
