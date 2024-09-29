@@ -85,6 +85,7 @@
                 android:layout_marginBottom="@dimen/margin_small1"
                 android:background="@drawable/background_radius_5"
                 android:minHeight="0dp"
+                android:paddingVertical="10dp"
                 android:text="@string/text_write_schedule_review"
                 android:textColor="@color/text_quinary"
                 app:backgroundTint="@color/button_quaternary"
