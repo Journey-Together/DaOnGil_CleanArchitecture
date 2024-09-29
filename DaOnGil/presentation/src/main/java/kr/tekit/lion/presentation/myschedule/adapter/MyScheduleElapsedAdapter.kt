@@ -24,7 +24,6 @@ class MyScheduleElapsedAdapter(
                 parent,
                 false
             ),
-            this,
             onReviewButtonClicked,
             onScheduleItemClicked
         )
@@ -36,7 +35,6 @@ class MyScheduleElapsedAdapter(
 
     class ElapsedScheduleViewHolder(
         private val binding: ItemMyScheduleElapsedBinding,
-        private val adapter: MyScheduleElapsedAdapter,
         private val onReviewButtonClicked: (Int) -> Unit,
         private val onScheduleItemClicked: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -77,10 +75,9 @@ class MyScheduleElapsedAdapter(
                 )
 
                 // '후기 작성 버튼'이 어떤 일정의 후기를 남기는 지 알 수 있도록 contentDescription 설정
-                val scheduleName = adapter.currentList[absoluteAdapterPosition].title
                 buttonMyScheduleElapsedReview.contentDescription = itemView.context.getString(
                     R.string.text_write_schedule_review_description,
-                    scheduleName
+                    mySchedule.title
                 )
             }
         }
