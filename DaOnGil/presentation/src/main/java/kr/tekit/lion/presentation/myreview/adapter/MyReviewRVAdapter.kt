@@ -101,16 +101,16 @@ class MyReviewRVAdapter(
                     val dateViewRight = binding.textViewMyReviewDate.right
                     val modifyButtonLeft = binding.myReviewModifyBtn.left
 
-                    val constraintSet = ConstraintSet()
-                    constraintSet.clone(binding.reviewLayout)
-
                     if (dateViewRight > modifyButtonLeft) {
+                        val constraintSet = ConstraintSet()
+                        constraintSet.clone(binding.reviewLayout)
+
                         constraintSet.connect(binding.textViewMyReviewDate.id, ConstraintSet.TOP, binding.ratingbarItemMyReview.id, ConstraintSet.BOTTOM, 8)
                         constraintSet.connect(binding.textViewMyReviewDate.id, ConstraintSet.START, binding.ratingbarItemMyReview.id, ConstraintSet.START, 0)
                         constraintSet.connect(binding.textViewMyReviewContent.id, ConstraintSet.TOP, binding.textViewMyReviewDate.id, ConstraintSet.BOTTOM, 16)
-                    }
 
-                    constraintSet.applyTo(binding.reviewLayout)
+                        constraintSet.applyTo(binding.reviewLayout)
+                    }
                 }
             }
         }
