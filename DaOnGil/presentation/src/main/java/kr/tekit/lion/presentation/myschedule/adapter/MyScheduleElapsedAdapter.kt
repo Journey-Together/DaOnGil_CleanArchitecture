@@ -10,6 +10,9 @@ import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.schedule.MyElapsedScheduleInfo
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemMyScheduleElapsedBinding
+import kr.tekit.lion.presentation.ext.convertPeriodToDate
+import kr.tekit.lion.presentation.ext.convertStringToDate
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 
 class MyScheduleElapsedAdapter(
     private val onReviewButtonClicked: (planPosition: Int) -> Unit,
@@ -74,10 +77,21 @@ class MyScheduleElapsedAdapter(
                     mySchedule.endDate
                 )
 
-                // '후기 작성 버튼'이 어떤 일정의 후기를 남기는 지 알 수 있도록 contentDescription 설정
-                buttonMyScheduleElapsedReview.contentDescription = itemView.context.getString(
-                    R.string.text_write_schedule_review_description,
-                    mySchedule.title
+                // 일정 기간을 년,월,일로 읽어주도록 설정
+                val startDate = mySchedule.startDate.convertStringToDate()
+                val endDate = mySchedule.endDate.convertStringToDate()
+
+                val schedulePeriod = startDate.convertPeriodToDate(endDate)
+                textViewMyScheduleElapsedPeriod.setAccessibilityText(
+                    schedulePeriod
+                )
+
+                // '후기 작성 버튼'이 어떤 일정의 후기를 남기는 지 알 수 있도록 설정
+                buttonMyScheduleElapsedReview.setAccessibilityText(
+                    itemView.context.getString(
+                        R.string.text_write_schedule_review_description,
+                        mySchedule.title
+                    )
                 )
             }
         }
