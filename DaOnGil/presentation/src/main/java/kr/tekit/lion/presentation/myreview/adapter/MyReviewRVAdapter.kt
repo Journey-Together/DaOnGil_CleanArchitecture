@@ -72,6 +72,9 @@ class MyReviewRVAdapter(
                 binding.layoutLocationName.setOnClickListener {
                     onMoveReviewListClick(myPlaceReview.placeId)
                 }
+
+                val locationNameDescription = binding.root.context.getString(R.string.text_my_review_location_name, myPlaceReview.name)
+                binding.textViewMyReviewLocationName.contentDescription = locationNameDescription
             } else {
                 binding.reviewLayout.visibility = View.VISIBLE
                 binding.reportLayout.visibility = View.GONE
@@ -111,6 +114,12 @@ class MyReviewRVAdapter(
                         constraintSet.applyTo(binding.reviewLayout)
                     }
                 }
+
+                val locationNameDescription = binding.root.context.getString(R.string.text_my_review_location_name, myPlaceReview.name)
+                binding.textViewMyReviewLocationName.contentDescription = locationNameDescription
+
+                val ratingDescription = binding.root.context.getString(R.string.text_my_review_rating, myPlaceReview.grade)
+                binding.ratingbarItemMyReview.contentDescription = ratingDescription
             }
         }
     }
