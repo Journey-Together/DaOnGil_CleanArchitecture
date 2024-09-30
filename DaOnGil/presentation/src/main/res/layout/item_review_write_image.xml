@@ -18,6 +18,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
+            android:contentDescription="@string/text_my_review_modify_img"
             android:src="@drawable/empty_view_small" />
 
         <ImageButton
@@ -29,6 +30,7 @@
             android:paddingStart="@dimen/margin_big4"
             android:paddingEnd="0dp"
             android:paddingBottom="@dimen/margin_big4"
+            android:contentDescription="@string/text_my_review_modify_img_delete"
             android:src="@drawable/close_icon" />
 
     </androidx.cardview.widget.CardView>
