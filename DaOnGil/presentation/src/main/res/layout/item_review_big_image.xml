@@ -18,6 +18,7 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:scaleType="centerCrop"
+            android:contentDescription="@string/text_my_review_img"
             android:src="@drawable/empty_view_small" />
 
     </androidx.cardview.widget.CardView>
