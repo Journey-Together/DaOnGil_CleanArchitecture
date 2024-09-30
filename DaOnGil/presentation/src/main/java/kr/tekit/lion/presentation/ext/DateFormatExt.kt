@@ -61,3 +61,10 @@ fun String.convertStringToDate() : Date {
 
     return date
 }
+
+fun Date.convertPeriodToDate(endDate: Date): String {
+    val startDateString = this.formatDateValue(FormDateFormat.YYYY_M_D)
+    val endDateString = endDate.formatDateValue(FormDateFormat.YYYY_M_D)
+
+    return "일정 시작일 $startDateString, 종료일 $endDateString"
+}
