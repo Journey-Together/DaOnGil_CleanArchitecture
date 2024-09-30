@@ -45,7 +45,9 @@ class MyScheduleActivity : AppCompatActivity() {
 
             // '일정 등록하러가기' 버튼을 눌렀다가 '뒤로가기 버튼'을 눌러서 취소한 경우
             if (result.resultCode == RESULT_CANCELED) {
-                showScheduleEmptyPrompt()
+                if(viewModel.isUpcomingScheduleListEmpty()) {
+                    showScheduleEmptyPrompt()
+                }
                 return@registerForActivityResult
             }
 
@@ -61,6 +63,9 @@ class MyScheduleActivity : AppCompatActivity() {
                 }
 
                 RESULT_OK -> {
+                    if(viewModel.isUpcomingScheduleListEmpty()) {
+                        showScheduleEmptyPrompt()
+                    }
                     binding.root.showSnackbar("일정이 삭제되었습니다")
                 }
             }
