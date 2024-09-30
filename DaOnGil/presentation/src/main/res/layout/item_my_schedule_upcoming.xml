@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_small1"
                 android:enabled="true"
-                android:fontFamily="@font/pretendard_semibold"
+                android:fontFamily="@font/pretendard_extrabold"
                 android:textColor="@color/color_schedule_d_day"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewMyScheduleUpcomingName"
                 app:layout_constraintStart_toEndOf="@+id/textViewMyScheduleUpcomingName"
