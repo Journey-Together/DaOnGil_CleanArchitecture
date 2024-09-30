@@ -43,6 +43,12 @@ class MyScheduleActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_SCHEDULE_REVIEW_CANCELED) return@registerForActivityResult
 
+            // '일정 등록하러가기' 버튼을 눌렀다가 '뒤로가기 버튼'을 눌러서 취소한 경우
+            if (result.resultCode == RESULT_CANCELED) {
+                showScheduleEmptyPrompt()
+                return@registerForActivityResult
+            }
+
             // 일정 목록 갱신
             viewModel.refreshScheduleList()
             when (result.resultCode) {
