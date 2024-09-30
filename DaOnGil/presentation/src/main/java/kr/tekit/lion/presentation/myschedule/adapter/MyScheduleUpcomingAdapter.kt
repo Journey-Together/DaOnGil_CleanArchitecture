@@ -9,6 +9,9 @@ import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.schedule.MyUpcomingScheduleInfo
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemMyScheduleUpcomingBinding
+import kr.tekit.lion.presentation.ext.convertPeriodToDate
+import kr.tekit.lion.presentation.ext.convertStringToDate
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 
 class MyScheduleUpcomingAdapter(
     private val onScheduleItemClicked: (layoutPosition: Int) -> Unit
@@ -58,6 +61,25 @@ class MyScheduleUpcomingAdapter(
                         .override(50, 50)
                         .into(binding.imageViewMyScheduleUpcoming)
                 }
+
+
+                // 남은 기간을 "n"일 전 이라고 읽어주도록 설정
+                val remainDateNumber = mySchedule.remainDate.filter { it.isDigit() }
+                textViewMyScheduleUpcomingDDay.setAccessibilityText(
+                    itemView.context.getString(
+                        R.string.text_schedule_remain_date,
+                        remainDateNumber
+                    )
+                )
+
+                // 일정 기간을 년,월,일로 읽어주도록 설정
+                val startDate = mySchedule.startDate.convertStringToDate()
+                val endDate = mySchedule.endDate.convertStringToDate()
+
+                val schedulePeriod = startDate.convertPeriodToDate(endDate)
+                textViewMyScheduleUpcomingPeriod.setAccessibilityText(
+                    schedulePeriod
+                )
             }
         }
     }
