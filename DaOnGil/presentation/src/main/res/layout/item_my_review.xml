@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:paddingVertical="@dimen/margin_small2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small2"
             android:layout_marginTop="1dp"
+            android:contentDescription="@string/text_my_review_move_list"
             app:srcCompat="@drawable/ic_chevron_right_24px"
             app:tint="@color/text_primary" />
     </LinearLayout>
@@ -48,6 +50,7 @@
             android:id="@+id/ratingbarItemMyReview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/text_my_review_rating"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srb_drawableEmpty="@drawable/star_icon"
@@ -81,7 +84,7 @@
             android:layout_marginEnd="@dimen/margin_big4"
             android:layout_marginBottom="@dimen/margin_big4"
             android:background="@drawable/background_radius_50"
-            android:backgroundTint="@color/primary_disabled"
+            android:backgroundTint="@color/modify_delete_button"
             android:fontFamily="@font/pretendard_medium"
             android:paddingHorizontal="14dp"
             android:paddingVertical="@dimen/margin_small2"
@@ -97,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_radius_50"
-            android:backgroundTint="@color/primary_disabled"
+            android:backgroundTint="@color/modify_delete_button"
             android:fontFamily="@font/pretendard_medium"
             android:paddingHorizontal="14dp"
             android:paddingVertical="@dimen/margin_small2"
@@ -125,6 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/font_small2"
+            android:contentDescription="@string/text_my_review_img"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
