@@ -72,7 +72,7 @@
 
     <color name="transparent">#00000000</color>
 
-    <color name="text_field_background">#414141</color>
+    <color name="text_field_background">#323231</color>
 
     <color name="photo_dialog_toolbar">#80000000</color>
 
@@ -86,7 +86,7 @@
     <color name="schedule_detail_public">#262626</color>
 
     <color name="text_box_background">#323231</color>
-    <color name="text_num_of_review_images">#7A7A7A</color>
+    <color name="text_num_of_review_images">#8C8C8C</color>
     <color name="radio_button_public_background_checked">#969390</color>
     <color name="radio_button_public_background_default">#2E2C2B</color>
     <color name="radio_button_public_text_default">#5E6161</color>
@@ -94,5 +94,8 @@
     <color name="text_input_start_icon_tint">#474746</color>
 
     <color name="detail_divider">#383838</color>
+
+    <color name="modify_delete_button">#797676</color>
+    <color name="review_date_icon">#A2A2A2</color>
 
 </resources>

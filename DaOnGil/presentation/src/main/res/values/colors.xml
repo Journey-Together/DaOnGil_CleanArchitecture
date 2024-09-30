@@ -105,7 +105,7 @@
     <color name="schedule_detail_public">#FFFFFF</color>
 
     <color name="text_box_background">#EEEEEF</color>
-    <color name="text_num_of_review_images">#878787</color>
+    <color name="text_num_of_review_images">#797676</color>
     <color name="radio_button_public_background_checked">#5F6368</color>
     <color name="radio_button_public_background_default">#F4F6F8</color>
     <color name="radio_button_public_text_default">#AFABAB</color>
@@ -115,5 +115,8 @@
     <color name="detail_divider">#1A000000</color>
 
     <color name="home_background">#FFFFFF</color>
+
+    <color name="modify_delete_button">#D9D9D9</color>
+    <color name="review_date_icon">#676767</color>
 
 </resources>
