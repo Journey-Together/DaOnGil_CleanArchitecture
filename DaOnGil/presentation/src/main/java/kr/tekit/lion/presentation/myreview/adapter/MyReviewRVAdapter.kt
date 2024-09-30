@@ -3,7 +3,6 @@ package kr.tekit.lion.presentation.myreview.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.MyPlaceReview
