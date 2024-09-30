@@ -66,15 +66,18 @@
 
         <TextView
             android:id="@+id/textViewMyReviewDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small1"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/pretendard_medium"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/text_tertiary"
             android:textSize="@dimen/font_small2"
             app:layout_constraintStart_toEndOf="@+id/ratingbarItemMyReview"
             app:layout_constraintTop_toTopOf="@+id/ratingbarItemMyReview"
+            app:layout_constraintEnd_toStartOf="@+id/myReviewModifyBtn"
             tools:text="2024.06.31" />
 
         <TextView
@@ -94,6 +97,7 @@
             app:layout_constraintBottom_toTopOf="@+id/textViewMyReviewContent"
             app:layout_constraintEnd_toStartOf="@+id/myReviewDeleteBtn"
             app:layout_constraintTop_toTopOf="@+id/textViewMyReviewDate" />
+
 
         <TextView
             android:id="@+id/myReviewDeleteBtn"
