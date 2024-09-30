@@ -41,8 +41,7 @@
         android:id="@+id/reviewLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_big4"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_small1"
         app:layout_constraintTop_toBottomOf="@+id/layoutLocationName"
         tools:layout_editor_absoluteX="24dp">
 
@@ -66,18 +65,15 @@
 
         <TextView
             android:id="@+id/textViewMyReviewDate"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small1"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/pretendard_medium"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:textColor="@color/text_tertiary"
             android:textSize="@dimen/font_small2"
             app:layout_constraintStart_toEndOf="@+id/ratingbarItemMyReview"
             app:layout_constraintTop_toTopOf="@+id/ratingbarItemMyReview"
-            app:layout_constraintEnd_toStartOf="@+id/myReviewModifyBtn"
             tools:text="2024.06.31" />
 
         <TextView
@@ -96,7 +92,7 @@
             android:textSize="@dimen/font_small2"
             app:layout_constraintBottom_toTopOf="@+id/textViewMyReviewContent"
             app:layout_constraintEnd_toStartOf="@+id/myReviewDeleteBtn"
-            app:layout_constraintTop_toTopOf="@+id/textViewMyReviewDate" />
+            app:layout_constraintTop_toTopOf="@+id/ratingbarItemMyReview" />
 
 
         <TextView

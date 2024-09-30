@@ -3,6 +3,8 @@ package kr.tekit.lion.presentation.myreview.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.MyPlaceReview
 import kr.tekit.lion.domain.model.MyPlaceReviewInfo
@@ -94,6 +96,22 @@ class MyReviewRVAdapter(
 
                 val myReviewImageRVAdapter = MyReviewImageRVAdapter(myPlaceReview.images)
                 binding.recyclerViewMyReivew.adapter = myReviewImageRVAdapter
+
+                binding.textViewMyReviewDate.post {
+                    val dateViewRight = binding.textViewMyReviewDate.right
+                    val modifyButtonLeft = binding.myReviewModifyBtn.left
+
+                    val constraintSet = ConstraintSet()
+                    constraintSet.clone(binding.reviewLayout)
+
+                    if (dateViewRight > modifyButtonLeft) {
+                        constraintSet.connect(binding.textViewMyReviewDate.id, ConstraintSet.TOP, binding.ratingbarItemMyReview.id, ConstraintSet.BOTTOM, 8)
+                        constraintSet.connect(binding.textViewMyReviewDate.id, ConstraintSet.START, binding.ratingbarItemMyReview.id, ConstraintSet.START, 0)
+                        constraintSet.connect(binding.textViewMyReviewContent.id, ConstraintSet.TOP, binding.textViewMyReviewDate.id, ConstraintSet.BOTTOM, 16)
+                    }
+
+                    constraintSet.applyTo(binding.reviewLayout)
+                }
             }
         }
     }
