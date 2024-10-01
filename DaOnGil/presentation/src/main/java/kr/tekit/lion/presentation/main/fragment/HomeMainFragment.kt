@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -62,7 +61,6 @@ import kr.tekit.lion.presentation.main.vm.home.HomeViewModel
 import kr.tekit.lion.presentation.observer.ConnectivityObserver
 import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import java.io.IOException
-import java.util.Locale
 import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.math.abs
