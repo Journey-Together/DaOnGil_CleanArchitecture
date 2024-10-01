@@ -381,9 +381,8 @@
     <string name="text_plz_check_network">인터넷 연결을 확인해주세요.</string>
     <string name="text_policy">약관 및 정책</string>
 
-    <string name="text_update_bookmark">북마크 취소하기</string>
-    <string name="text_bookmark_img">여행지 이미지</string>
-    <string name="text_bookmark_profile_img">프로필 이미지</string>
+    <string name="text_update_place_bookmark">%1$s 북마크 취소하기</string>
+    <string name="text_update_plan_bookmark">%1$s 일정 북마크 취소하기</string>
 
     <string name="text_concern_type_subtitle">관심 유형을 변경하고 싶으신가요?</string>
     <string name="text_concern_type_modify_move">관심 유형 수정하기</string>
