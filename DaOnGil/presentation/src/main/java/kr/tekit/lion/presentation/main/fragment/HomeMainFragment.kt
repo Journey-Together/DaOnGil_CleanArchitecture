@@ -59,6 +59,8 @@ import kr.tekit.lion.presentation.main.customview.ItemOffsetDecoration
 import kr.tekit.lion.presentation.main.dialog.ThemeGuideDialog
 import kr.tekit.lion.presentation.main.dialog.ThemeSettingDialog
 import kr.tekit.lion.presentation.main.vm.home.HomeViewModel
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import java.io.IOException
 import java.util.Locale
 import java.util.Timer
@@ -72,6 +74,9 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     private lateinit var locationCallback: LocationCallback
     private val retryDelayMillis = 5000L
     private var snapHelper: SnapHelper? = null
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
 
     companion object {
         const val DEFAULT_AREA = "서울특별시"
@@ -93,52 +98,14 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeMainBinding.bind(view)
-        val progressBar = binding.homeProgressbar
 
         viewModel.checkAppTheme()
 
         repeatOnViewStarted {
             supervisorScope {
-                launch {
-                    viewModel.appTheme.collect {
-                        when (it) {
-                            AppTheme.LIGHT ->
-                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-                            AppTheme.HIGH_CONTRAST ->
-                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
-                            AppTheme.SYSTEM ->
-                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-                        }
-                    }
-                }
-
-                launch {
-                    viewModel.networkState.collectLatest { state ->
-                        when (state) {
-                            is NetworkState.Loading -> {
-                                progressBar.visibility = View.VISIBLE
-                                binding.homeMainLayout.visibility = View.VISIBLE
-                                binding.homeErrorLayout.visibility = View.GONE
-                            }
-
-                            is NetworkState.Success -> {
-                                progressBar.visibility = View.GONE
-                                binding.homeMainLayout.visibility = View.VISIBLE
-                                binding.homeErrorLayout.visibility = View.GONE
-                            }
-
-                            is NetworkState.Error -> {
-                                progressBar.visibility = View.GONE
-                                binding.homeMainLayout.visibility = View.GONE
-                                binding.homeErrorLayout.visibility = View.VISIBLE
-                                binding.homeErrorTv.text = state.msg
-                            }
-                        }
-                    }
-                }
-
+                launch { collectAppTheme() }
+                launch { collectNetworkState(binding) }
+                launch { observeConnectivity(binding) }
                 launch {
                     viewModel.userActivationState.collect {
                         if (it) {
@@ -417,26 +384,34 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             val coords = "${location.longitude},${location.latitude}"
                             viewModel.getUserLocationRegion(coords)
 
-                            viewModel.area.observe(viewLifecycleOwner){
-                                it.split(" ").let{ parts ->
+                            viewModel.area.observe(viewLifecycleOwner) {
+                                it.split(" ").let { parts ->
                                     when {
                                         parts.size > 2 -> {
                                             val (STAGE1, STAGE2, STAGE3) = parts
                                             binding.homeMyLocationTv.text = "$STAGE1 $STAGE2"
                                             getAroundPlaceInfo(binding, STAGE1, STAGE2)
                                         }
+
                                         parts.size == 2 -> {
                                             val (STAGE1, STAGE2) = parts
                                             binding.homeMyLocationTv.text = "$STAGE1 $STAGE2"
                                             getAroundPlaceInfo(binding, STAGE1, STAGE2)
                                         }
+
                                         parts.size == 1 -> {
                                             getAroundPlaceInfo(binding, it, it)
                                             binding.homeMyLocationTv.text = it
                                         }
+
                                         else -> {
-                                            getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
-                                            binding.homeMyLocationTv.text = "$DEFAULT_AREA $DEFAULT_SIGUNGU"
+                                            getAroundPlaceInfo(
+                                                binding,
+                                                DEFAULT_AREA,
+                                                DEFAULT_SIGUNGU
+                                            )
+                                            binding.homeMyLocationTv.text =
+                                                "$DEFAULT_AREA $DEFAULT_SIGUNGU"
                                             binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
                                         }
                                     }
@@ -522,5 +497,75 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
     private fun isDarkTheme(configuration: Configuration): Boolean {
         return (configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+    }
+
+    private suspend fun collectAppTheme() {
+        viewModel.appTheme.collect {
+            when (it) {
+                AppTheme.LIGHT ->
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+                AppTheme.HIGH_CONTRAST ->
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+                AppTheme.SYSTEM ->
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+        }
+    }
+
+    private suspend fun collectNetworkState(binding: FragmentHomeMainBinding) {
+        with(binding) {
+            viewModel.networkState.collectLatest { state ->
+                when (state) {
+                    is NetworkState.Loading -> {
+                        homeProgressbar.visibility = View.VISIBLE
+                        homeMainLayout.visibility = View.VISIBLE
+                        homeErrorLayout.visibility = View.GONE
+                    }
+
+                    is NetworkState.Success -> {
+                        homeProgressbar.visibility = View.GONE
+                        homeMainLayout.visibility = View.VISIBLE
+                        homeErrorLayout.visibility = View.GONE
+                    }
+
+                    is NetworkState.Error -> {
+                        homeProgressbar.visibility = View.GONE
+                        homeMainLayout.visibility = View.GONE
+                        homeErrorLayout.visibility = View.VISIBLE
+                        homeErrorTv.text = state.msg
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(binding: FragmentHomeMainBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when (connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        homeProgressbar.visibility = View.GONE
+                        homeMainLayout.visibility = View.VISIBLE
+                        homeErrorLayout.visibility = View.GONE
+
+                        if (viewModel.networkState.value is NetworkState.Error) {
+                            checkLocationPermission(binding)
+                        }
+                    }
+                    // Unavailable, Losing, Lost
+                    else -> {
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                getString(R.string.text_plz_check_network)
+
+                        homeProgressbar.visibility = View.GONE
+                        homeMainLayout.visibility = View.GONE
+                        homeErrorLayout.visibility = View.VISIBLE
+                        homeErrorTv.text = msg
+                    }
+                }
+            }
+        }
     }
 }
