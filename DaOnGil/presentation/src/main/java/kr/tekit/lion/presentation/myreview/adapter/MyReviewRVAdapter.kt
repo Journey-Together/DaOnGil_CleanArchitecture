@@ -3,9 +3,11 @@ package kr.tekit.lion.presentation.myreview.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.MyPlaceReview
 import kr.tekit.lion.domain.model.MyPlaceReviewInfo
+import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemMyReviewBinding
 import kr.tekit.lion.presentation.databinding.ItemMyReviewHeaderBinding
 
@@ -46,7 +48,8 @@ class MyReviewRVAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MyReviewHeaderViewHolder) {
-            holder.bind(myReviewList)
+            val headerText = holder.itemView.context.getString(R.string.text_my_review_header, myReviewList.reviewNum)
+            holder.bind(headerText)
         } else if (holder is MyReviewViewHolder) {
             holder.bind(myReviewListInfo[position - 1])
         }
@@ -69,6 +72,9 @@ class MyReviewRVAdapter(
                 binding.layoutLocationName.setOnClickListener {
                     onMoveReviewListClick(myPlaceReview.placeId)
                 }
+
+                val locationNameDescription = binding.root.context.getString(R.string.text_my_review_location_name, myPlaceReview.name)
+                binding.textViewMyReviewLocationName.contentDescription = locationNameDescription
             } else {
                 binding.reviewLayout.visibility = View.VISIBLE
                 binding.reportLayout.visibility = View.GONE
@@ -92,6 +98,28 @@ class MyReviewRVAdapter(
 
                 val myReviewImageRVAdapter = MyReviewImageRVAdapter(myPlaceReview.images)
                 binding.recyclerViewMyReivew.adapter = myReviewImageRVAdapter
+
+                binding.textViewMyReviewDate.post {
+                    val dateViewRight = binding.textViewMyReviewDate.right
+                    val modifyButtonLeft = binding.myReviewModifyBtn.left
+
+                    if (dateViewRight > modifyButtonLeft) {
+                        val constraintSet = ConstraintSet()
+                        constraintSet.clone(binding.reviewLayout)
+
+                        constraintSet.connect(binding.textViewMyReviewDate.id, ConstraintSet.TOP, binding.ratingbarItemMyReview.id, ConstraintSet.BOTTOM, 8)
+                        constraintSet.connect(binding.textViewMyReviewDate.id, ConstraintSet.START, binding.ratingbarItemMyReview.id, ConstraintSet.START, 0)
+                        constraintSet.connect(binding.textViewMyReviewContent.id, ConstraintSet.TOP, binding.textViewMyReviewDate.id, ConstraintSet.BOTTOM, 16)
+
+                        constraintSet.applyTo(binding.reviewLayout)
+                    }
+                }
+
+                val locationNameDescription = binding.root.context.getString(R.string.text_my_review_location_name, myPlaceReview.name)
+                binding.textViewMyReviewLocationName.contentDescription = locationNameDescription
+
+                val ratingDescription = binding.root.context.getString(R.string.text_my_review_rating, myPlaceReview.grade)
+                binding.ratingbarItemMyReview.contentDescription = ratingDescription
             }
         }
     }
@@ -100,8 +128,8 @@ class MyReviewRVAdapter(
         private val binding: ItemMyReviewHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(myPlaceReview: MyPlaceReview) {
-            binding.textViewMyReivewTotal.text = myPlaceReview.reviewNum.toString()
+        fun bind(headerText: String) {
+            binding.textViewMyReivewHeader.text = headerText
         }
     }
 }

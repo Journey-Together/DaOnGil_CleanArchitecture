@@ -46,6 +46,7 @@ class PhotoDialog(
         binding.toolbarPhoto.setNavigationOnClickListener {
             dismiss()
         }
+        binding.toolbarPhoto.setNavigationContentDescription(R.string.text_back_button)
 
         binding.textViewPhotoNum.text = getString(R.string.text_num_of_images, initialPosition + 1)
         binding.textViewPhotoTotalNum.text = getString(R.string.text_num_of_total_images, imageList.size)

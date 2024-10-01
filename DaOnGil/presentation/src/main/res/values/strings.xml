@@ -341,8 +341,7 @@
 
     <string name="text_my_review_modify_btn">수정</string>
     <string name="text_my_review_delete_btn">삭제</string>
-    <string name="text_my_review_header">내가 쓴 총 후기</string>
-    <string name="text_my_review_header_cnt">개</string>
+    <string name="text_my_review_header">내가 쓴 총 후기 %1$d개</string>
     <string name="text_my_review_report">관리자에 의해 삭제된 후기입니다.</string>
 
     <string name="text_schedule_thumbnail_image">일정 대표사진</string>
@@ -390,4 +389,24 @@
     <string name="text_concern_type_modify_move">관심 유형 수정하기</string>
     <string name="text_concern_type_choose">관심 유형을 선택해주세요.</string>
     <string name="text_concern_type_modify">수정하기</string>
+
+    <string name="text_my_review_modify_title">후기 수정하기</string>
+    <string name="text_my_review_modify_rating">후기 별점 수정하기</string>
+    <string name="text_my_review_modify_subtitle_date">방문 날짜</string>
+    <string name="text_my_review_modify_subtitle_review">후기</string>
+    <string name="text_my_review_modify_subtitle_img">사진</string>
+    <string name="text_my_review_modify_submit">수정 완료</string>
+    <string name="text_my_review_modify_hint_date">방문 날짜를 선택해주세요</string>
+    <string name="text_my_review_modify_hint_review">후기를 작성해주세요</string>
+    <string name="text_my_review_modify_img">첨부한 후기 사진</string>
+    <string name="text_my_review_modify_img_delete">후기 사진 삭제</string>
+    <string name="text_my_review_modify_add_img">후기 사진 첨부하기</string>
+
+    <string name="text_my_review_location_name">%1$s의 후기입니다</string>
+    <string name="text_my_review_move_list">해당 후기의 전체 후기 목록으로 이동하기</string>
+    <string name="text_my_review_rating">별점 %1$.1f</string>
+    <string name="text_my_review_img">후기 이미지 두 번 탭하면 이미지 보기 화면으로 이동합니다</string>
+    <string name="text_my_review_modify_move">후기 수정하기</string>
+    <string name="text_my_review_delete">후기 삭제하기</string>
+
 </resources>

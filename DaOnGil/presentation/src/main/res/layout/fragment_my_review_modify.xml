@@ -14,13 +14,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/back_icon">
+        app:navigationIcon="@drawable/cancel_icon">
 
         <TextView
             style="@style/Theme.Toolbar.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="후기 수정하기"
+            android:text="@string/text_my_review_modify_title"
             tools:layout_editor_absoluteX="173dp"
             tools:layout_editor_absoluteY="19dp" />
 
@@ -58,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_big4"
+                android:contentDescription="@string/text_my_review_modify_rating"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewMyReviewModifyTitle"
@@ -90,7 +91,7 @@
                 android:layout_marginStart="@dimen/margin_basic"
                 android:layout_marginTop="@dimen/margin_big1"
                 android:fontFamily="@font/pretendard_semibold"
-                android:text="방문 날짜"
+                android:text="@string/text_my_review_modify_subtitle_date"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/font_big2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +115,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewMyReviewModifyDate"
                 app:startIconDrawable="@drawable/calendar_icon"
-                app:startIconTint="@color/text_quaternary">
+                app:startIconTint="@color/review_date_icon">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textFieldMyReviewModifyDate"
@@ -122,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:cursorVisible="false"
                     android:focusable="false"
-                    android:hint="방문 날짜를 선택해주세요"
+                    android:hint="@string/text_my_review_modify_hint_date"
                     android:paddingLeft="45dp"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_tertiary"
@@ -135,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_big1"
                 android:fontFamily="@font/pretendard_semibold"
-                android:text="후기"
+                android:text="@string/text_my_review_modify_subtitle_review"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/font_big2"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayout"
@@ -165,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="top"
-                    android:hint="후기를 작성해주세요"
+                    android:hint="@string/text_my_review_modify_hint_review"
                     android:lines="7"
                     android:maxLines="7"
                     android:textColor="@color/text_primary"
@@ -179,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_big1"
                 android:fontFamily="@font/pretendard_semibold"
-                android:text="사진"
+                android:text="@string/text_my_review_modify_subtitle_img"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/font_big2"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayoutMyReviewModifyWrite"
@@ -208,6 +209,7 @@
                         android:layout_height="0dp"
                         android:background="@color/navi_background"
                         android:paddingBottom="@dimen/margin_basic"
+                        android:contentDescription="@string/text_my_review_modify_add_img"
                         android:src="@drawable/review_image_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -219,7 +221,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:textColor="@color/days_remaining"
+                        android:textColor="@color/search_view_main"
+                        android:textSize="@dimen/font_big3"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/textViewMyReviewModifyPhotoNumMax"
@@ -234,6 +237,7 @@
                         android:layout_marginBottom="16dp"
                         android:text="@string/text_num_of_max_images"
                         android:textColor="@color/text_num_of_review_images"
+                        android:textSize="@dimen/font_big3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textViewMyReviewModifyPhotoNum" />
@@ -248,6 +252,7 @@
                 android:layout_height="80dp"
                 android:layout_marginStart="@dimen/margin_small1"
                 android:orientation="horizontal"
+                android:contentDescription="@string/text_my_review_modify_img"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="@+id/CardViewMyReviewModify"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -262,8 +267,8 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="@dimen/margin_basic"
                 android:background="@drawable/background_radius_10"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="후기 수정하기"
+                android:fontFamily="@font/pretendard_extrabold"
+                android:text="@string/text_my_review_modify_submit"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/font_big2"
                 app:layout_constraintBottom_toBottomOf="parent"

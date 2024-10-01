@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/pretendard_medium"
-            android:text="나의 여행지 후기"
+            android:text="@string/text_place_review"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/font_big2" />
 
@@ -54,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
+            android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -90,6 +91,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@null"
             app:srcCompat="@drawable/onboarding_clover" />
 
         <TextView
@@ -100,8 +102,8 @@
             android:fontFamily="@font/cafe24_oneprettynight"
             android:gravity="center"
             android:lineSpacingMultiplier="1.2"
-            android:text="TextView"
-            android:textSize="@dimen/font_big1" />
+            android:textSize="@dimen/font_big1"
+            tools:text="에러 문구 표시"/>
     </LinearLayout>
 
     <ProgressBar

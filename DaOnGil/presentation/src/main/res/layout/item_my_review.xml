@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:importantForAccessibility="no"
     android:paddingHorizontal="@dimen/margin_basic"
     android:paddingVertical="@dimen/margin_basic">
 
@@ -13,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:paddingVertical="@dimen/margin_small2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small2"
             android:layout_marginTop="1dp"
+            android:contentDescription="@string/text_my_review_move_list"
             app:srcCompat="@drawable/ic_chevron_right_24px"
             app:tint="@color/text_primary" />
     </LinearLayout>
@@ -39,10 +42,8 @@
         android:id="@+id/reviewLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_big4"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/layoutLocationName"
-        tools:layout_editor_absoluteX="24dp">
+        android:layout_marginTop="@dimen/margin_small1"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLocationName">
 
         <com.willy.ratingbar.BaseRatingBar
             android:id="@+id/ratingbarItemMyReview"
@@ -81,29 +82,32 @@
             android:layout_marginEnd="@dimen/margin_big4"
             android:layout_marginBottom="@dimen/margin_big4"
             android:background="@drawable/background_radius_50"
-            android:backgroundTint="@color/primary_disabled"
+            android:backgroundTint="@color/modify_delete_button"
             android:fontFamily="@font/pretendard_medium"
             android:paddingHorizontal="14dp"
             android:paddingVertical="@dimen/margin_small2"
             android:text="@string/text_my_review_modify_btn"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/font_small2"
+            android:contentDescription="@string/text_my_review_modify_move"
             app:layout_constraintBottom_toTopOf="@+id/textViewMyReviewContent"
             app:layout_constraintEnd_toStartOf="@+id/myReviewDeleteBtn"
-            app:layout_constraintTop_toTopOf="@+id/textViewMyReviewDate" />
+            app:layout_constraintTop_toTopOf="@+id/ratingbarItemMyReview" />
+
 
         <TextView
             android:id="@+id/myReviewDeleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_radius_50"
-            android:backgroundTint="@color/primary_disabled"
+            android:backgroundTint="@color/modify_delete_button"
             android:fontFamily="@font/pretendard_medium"
             android:paddingHorizontal="14dp"
             android:paddingVertical="@dimen/margin_small2"
             android:text="@string/text_my_review_delete_btn"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/font_small2"
+            android:contentDescription="@string/text_my_review_delete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/myReviewModifyBtn" />
 
@@ -125,6 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/font_small2"
+            android:contentDescription="@null"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"

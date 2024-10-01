@@ -113,6 +113,8 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
         binding.toolbarMyReview.setNavigationOnClickListener {
             handleBackPress()
         }
+
+        binding.toolbarMyReview.setNavigationContentDescription(R.string.text_back_button)
     }
 
     private fun settingBackPressedDispatcher() {
