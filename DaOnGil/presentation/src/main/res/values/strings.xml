@@ -196,6 +196,7 @@
     <string name="hint_report_reason_etc">자세하게 신고 사유를 입력해주시면 신고 내용에 도움이 됩니다.</string>
     <string name="text_report_notify">※ 신고해주신 내용은 관리자 검토 후 조치가 진행됩니다.</string>
     <string name="text_report_error_message">신고 내용을 입력해주세요.</string>
+    <string name="text_report_submit">신고 완료</string>
 
     <string name="text_searbar_hint">여행지를 직접 검색 해보세요!</string>
     <string name="text_search_guide1">딱 맞는 여행을 찾을 수 있도록</string>
