@@ -1,7 +1,11 @@
 package kr.tekit.lion.presentation.bookmark.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.PlaceBookmark
@@ -57,6 +61,33 @@ class PlaceBookmarkRVAdapter(
 
             val bookmarkDisabilityRVAdapter = BookmarkDisabilityRvAdapter(disabilityList)
             binding.recyclerViewLocationBookmark.adapter = bookmarkDisabilityRVAdapter
+
+            val bookmarkBtnDescription = binding.root.context.getString(R.string.text_update_place_bookmark, placeBookmark.name)
+            binding.locationBookmarkBtn.contentDescription = bookmarkBtnDescription
+
+            ViewCompat.setAccessibilityDelegate(binding.root, object : AccessibilityDelegateCompat() {
+                override fun onInitializeAccessibilityNodeInfo(
+                    host: View,
+                    info: AccessibilityNodeInfoCompat
+                ) {
+                    super.onInitializeAccessibilityNodeInfo(host, info)
+
+                    val disabilityDescriptions = bookmarkDisabilityRVAdapter
+                        .getDisabilityDescriptions(binding.root.context)
+                        .joinToString(", ")
+
+                    val combinedDescription = StringBuilder()
+                        .append(binding.textViewLocationBookmarkName.text)
+                        .append(", ")
+                        .append(binding.textViewLocationBookmark.text)
+
+                    if (disabilityDescriptions.isNotEmpty()) {
+                        combinedDescription.append(", 관심 유형 정보: ").append(disabilityDescriptions)
+                    }
+
+                    info.text = combinedDescription.toString()
+                }
+            })
         }
     }
 }
