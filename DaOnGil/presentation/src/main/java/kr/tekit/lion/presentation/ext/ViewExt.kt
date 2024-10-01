@@ -45,3 +45,8 @@ fun View.setAccessibilityText(newText: CharSequence) {
     }
 }
 
+fun View.updateVisibility(isVisible: Boolean, vararg views: View) {
+    views.forEach {
+        it.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
+}
