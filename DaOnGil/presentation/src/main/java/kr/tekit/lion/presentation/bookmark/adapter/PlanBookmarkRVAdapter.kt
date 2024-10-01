@@ -1,7 +1,11 @@
 package kr.tekit.lion.presentation.bookmark.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.PlanBookmark
@@ -59,6 +63,26 @@ class PlanBookmarkRVAdapter(
                 .placeholder(R.drawable.empty_view)
                 .error(R.drawable.empty_view)
                 .into(binding.imageViewBookmarkUserProfile)
+
+            val bookmarkBtnDescription = binding.root.context.getString(R.string.text_update_plan_bookmark, planBookmark.title)
+            binding.scheduleBookmarkBtn.contentDescription = bookmarkBtnDescription
+
+            ViewCompat.setAccessibilityDelegate(binding.root, object : AccessibilityDelegateCompat() {
+                override fun onInitializeAccessibilityNodeInfo(
+                    host: View,
+                    info: AccessibilityNodeInfoCompat
+                ) {
+                    super.onInitializeAccessibilityNodeInfo(host, info)
+
+                    val combinedDescription = StringBuilder()
+                        .append(binding.textViewScheduleBookmarkNickname.text)
+                        .append("님의, ")
+                        .append(binding.textViewScheduleBookmarkTitle.text)
+                        .append("일정")
+
+                    info.text = combinedDescription.toString()
+                }
+            })
         }
     }
 }
