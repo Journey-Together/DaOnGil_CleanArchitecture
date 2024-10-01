@@ -102,7 +102,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.detailReviewRv.visibility = View.VISIBLE
             binding.detailNoReviewTv.visibility = View.GONE
 
-            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList, loginState, reportLauncher)
+            val detailReviewRVAdapter =
+                DetailReviewRVAdapter(reviewList, loginState, reportLauncher)
             binding.detailReviewRv.adapter = detailReviewRVAdapter
             binding.detailReviewRv.layoutManager = LinearLayoutManager(applicationContext)
         }
@@ -111,7 +112,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun settingDisabilityRVAdapter(disabilityList: List<Int>) {
         val disabilityRVAdapter = DetailDisabilityRVAdapter(disabilityList)
         binding.detailDisabilityIvRv.adapter = disabilityRVAdapter
-        binding.detailDisabilityIvRv.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.detailDisabilityIvRv.layoutManager =
+            LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun settingToolbar() {
