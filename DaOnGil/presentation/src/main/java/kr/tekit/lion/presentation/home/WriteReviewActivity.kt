@@ -23,16 +23,19 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityWriteReviewBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnStarted
-import kr.tekit.lion.presentation.ext.showSnackbar
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.ext.showSoftInput
 import kr.tekit.lion.presentation.ext.toAbsolutePath
 import kr.tekit.lion.presentation.home.adapter.WriteReviewImageRVAdapter
 import kr.tekit.lion.presentation.home.vm.WriteReviewViewModel
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -47,6 +50,9 @@ class WriteReviewActivity : AppCompatActivity() {
     private val viewModel: WriteReviewViewModel by viewModels()
     private val selectedImages: ArrayList<Uri> = ArrayList()
     private lateinit var imageRVAdapter: WriteReviewImageRVAdapter
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     private val pickMedia =
@@ -63,7 +69,8 @@ class WriteReviewActivity : AppCompatActivity() {
                         binding.writeReviewImageNumTv.text = it.toString()
                     }
                 } else {
-                    Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -88,7 +95,8 @@ class WriteReviewActivity : AppCompatActivity() {
                             binding.writeReviewImageNumTv.text = it.toString()
                         }
                     } else {
-                        Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -120,21 +128,9 @@ class WriteReviewActivity : AppCompatActivity() {
         val placeName = intent.getStringExtra("reviewPlaceName") ?: "관광지"
 
         repeatOnStarted {
-            launch {
-                viewModel.networkState.collectLatest { state ->
-                    when (state) {
-                        is NetworkState.Loading -> {
-                        }
-
-                        is NetworkState.Success -> {
-                            finish()
-                        }
-
-                        is NetworkState.Error -> {
-                            binding.root.showSnackbar(state.msg)
-                        }
-                    }
-                }
+            supervisorScope {
+                launch { collectWriteReviewNetworkState() }
+                launch { observeConnectivity() }
             }
         }
         settingToolbar()
@@ -157,7 +153,7 @@ class WriteReviewActivity : AppCompatActivity() {
     }
 
     private fun settingImageRVAdapter() {
-        imageRVAdapter = WriteReviewImageRVAdapter(selectedImages) {position ->
+        imageRVAdapter = WriteReviewImageRVAdapter(selectedImages) { position ->
             viewModel.deleteImage(position)
         }
         binding.writeReviewImageRv.adapter = imageRVAdapter
@@ -253,7 +249,8 @@ class WriteReviewActivity : AppCompatActivity() {
         val visitDateValue = visitDate?.let {
             formatDateValue(visitDate)
         }
-        binding.writeReviewDateEdit.text = Editable.Factory.getInstance().newEditable(visitDateValue)
+        binding.writeReviewDateEdit.text =
+            Editable.Factory.getInstance().newEditable(visitDateValue)
     }
 
     private fun checkReviewValid(): Boolean {
@@ -273,6 +270,45 @@ class WriteReviewActivity : AppCompatActivity() {
 
         } else {
             true
+        }
+    }
+
+    private suspend fun collectWriteReviewNetworkState() {
+        viewModel.networkState.collectLatest { state ->
+            when (state) {
+                is NetworkState.Loading -> {
+                }
+
+                is NetworkState.Success -> {
+                    finish()
+                }
+
+                is NetworkState.Error -> {
+                    this@WriteReviewActivity.showInfinitySnackBar(binding.root, state.msg)
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity() {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when (connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        writeReviewBtn.isEnabled = true
+                    }
+
+                    ConnectivityObserver.Status.Unavailable -> {}
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+
+                        writeReviewBtn.isEnabled = false
+                        this@WriteReviewActivity.showInfinitySnackBar(binding.root, msg)
+                    }
+                }
+            }
         }
     }
 }
