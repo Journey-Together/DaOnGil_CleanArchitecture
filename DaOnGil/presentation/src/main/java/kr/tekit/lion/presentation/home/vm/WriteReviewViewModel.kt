@@ -37,6 +37,13 @@ class WriteReviewViewModel @Inject constructor(
     private val _newReviewImages = MutableLiveData<NewReviewImgs>()
     val newReviewImages: LiveData<NewReviewImgs> = _newReviewImages
 
+    private val _numOfImages = MutableLiveData<Int>()
+    val numOfImages: LiveData<Int> = _numOfImages
+
+    init {
+        _numOfImages.value = 0
+    }
+
     fun setPlaceVisitDate(startDate: LocalDate) {
         _placeVisitDate.value = startDate
     }
@@ -68,8 +75,8 @@ class WriteReviewViewModel @Inject constructor(
         val currentImages = _newReviewImages.value?.images?.toMutableList() ?: mutableListOf()
         currentImages.add(image)
         _newReviewImages.value = NewReviewImgs(currentImages)
+        updateNumOfImages()
     }
-
 
     fun deleteImage(position: Int) {
         val currentImages = _newReviewImages.value?.images?.toMutableList() ?: mutableListOf()
@@ -77,5 +84,11 @@ class WriteReviewViewModel @Inject constructor(
             currentImages.removeAt(position)
             _newReviewImages.value = NewReviewImgs(currentImages)
         }
+        updateNumOfImages()
+    }
+
+    private fun updateNumOfImages() {
+        val imgCount = _newReviewImages.value?.images?.size ?: 0
+        _numOfImages.value = imgCount
     }
 }
