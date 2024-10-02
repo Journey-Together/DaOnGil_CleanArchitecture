@@ -19,3 +19,53 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# 소스 파일 및 라인 정보 유지
+-keepattributes SourceFile,LineNumberTable
+
+# 소스 파일의 변수명 변경
+-renamesourcefileattribute SourceFile
+
+# Firebase Cloud Messaging
+-keep class com.google.firebase.** { *; }
+-keep interface com.google.firebase.** { *; }
+
+# Retrofit
+-keep class retrofit2.** { *; }
+-keep class com.squareup.retrofit2.** { *; }
+-keep class okhttp3.** { *; }
+
+# kakao login
+-keep interface com.kakao.sdk.** { *; }
+
+# 카카오 SDK 관련 클래스와 메서드를 난독화에서 제외
+-keep class com.kakao.sdk.** { *; }
+-keep class com.kakao.auth.** { *; }
+-keep class com.kakao.network.** { *; }
+-keep class com.kakao.util.** { *; }
+-keep class com.kakao.util.helper.** { *; }
+-keep class com.kakao.sdk.**.model.* { <fields>; }
+-keep class * extends com.google.gson.TypeAdapter
+
+# naver
+-keep class com.navercorp.nid.NaverIdLoginSDK { *; }
+-keep class org.simpleframework.xml.** { *; }
+
+
+-dontwarn org.bouncycastle.jsse.**
+-dontwarn org.conscrypt.*
+-dontwarn org.openjsse.**
+
+# 서버 응답 데이터 필드 이름 난독화 예외 처리
+-keep class kr.tekit.lion.data.dto.** {
+    <fields>;
+}
+
+-keep class kr.tekit.lion.data.database.** {
+    <fields>;
+}
+
+# Kotlin 특수 클래스 유지
+-keepclassmembers class **$WhenMappings { <fields>; }
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class kotlin.Metadata { public <methods>; }
