@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.ColorRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ import com.naver.maps.map.util.FusedLocationSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.detailplace.Review
 import kr.tekit.lion.domain.model.detailplace.SubDisability
 import kr.tekit.lion.presentation.R
@@ -31,6 +33,7 @@ import kr.tekit.lion.presentation.databinding.ActivityDetailBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.emergency.EmergencyMapActivity
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.adapter.DetailDisabilityRVAdapter
 import kr.tekit.lion.presentation.home.adapter.DetailInfoRVAdapter
@@ -38,6 +41,8 @@ import kr.tekit.lion.presentation.home.adapter.DetailReviewRVAdapter
 import kr.tekit.lion.presentation.home.model.toReviewInfo
 import kr.tekit.lion.presentation.home.vm.DetailViewModel
 import kr.tekit.lion.presentation.myreview.MyReviewActivity
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -49,8 +54,12 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocationSource: FusedLocationSource
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
+    }
 
-    private val reportLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val reportLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             when (result.resultCode) {
                 RESULT_OK -> {
                     binding.root.showSnackbar("신고가 완료되었습니다")
@@ -63,39 +72,9 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         repeatOnStarted {
-            launch {
-                viewModel.networkState.collectLatest { state ->
-                    when (state) {
-                        is NetworkState.Loading -> {
-                            binding.detailProgressbar.visibility = View.VISIBLE
-                            binding.detailErrorLayout.visibility = View.GONE
-                        }
-
-                        is NetworkState.Success -> {
-                            binding.detailProgressbar.visibility = View.GONE
-                            binding.detailErrorLayout.visibility = View.GONE
-                        }
-
-                        is NetworkState.Error -> {
-                            if (viewModel.isBookmarkError.value == true) {
-                                binding.detailProgressbar.visibility = View.GONE
-                                binding.root.showSnackbar(state.msg)
-                            } else {
-                                binding.detailProgressbar.visibility = View.GONE
-                                binding.detailToolbarTitleTv.setTextColor(ContextCompat.getColor(applicationContext, R.color.text_primary))
-                                binding.detailToolbar.navigationIcon?.setTint(ContextCompat.getColor(applicationContext, R.color.text_primary))
-                                binding.detailThumbnailIv.visibility = View.GONE
-                                binding.detailThumbnailDark.visibility = View.GONE
-                                binding.detailTitleTv.visibility = View.GONE
-                                binding.detailAddressTv.visibility = View.GONE
-                                binding.detailBookmarkBtn.visibility = View.GONE
-                                binding.detailContentLayout.visibility = View.GONE
-                                binding.detailErrorLayout.visibility = View.VISIBLE
-                                binding.detailErrorTv.text = state.msg
-                            }
-                        }
-                    }
-                }
+            supervisorScope {
+                launch { collectDetailNetworkState(binding) }
+                launch { observeConnectivity(binding) }
             }
         }
 
@@ -123,7 +102,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.detailReviewRv.visibility = View.VISIBLE
             binding.detailNoReviewTv.visibility = View.GONE
 
-            val detailReviewRVAdapter = DetailReviewRVAdapter(reviewList, loginState, reportLauncher)
+            val detailReviewRVAdapter =
+                DetailReviewRVAdapter(reviewList, loginState, reportLauncher)
             binding.detailReviewRv.adapter = detailReviewRVAdapter
             binding.detailReviewRv.layoutManager = LinearLayoutManager(applicationContext)
         }
@@ -132,7 +112,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun settingDisabilityRVAdapter(disabilityList: List<Int>) {
         val disabilityRVAdapter = DetailDisabilityRVAdapter(disabilityList)
         binding.detailDisabilityIvRv.adapter = disabilityRVAdapter
-        binding.detailDisabilityIvRv.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.detailDisabilityIvRv.layoutManager =
+            LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun settingToolbar() {
@@ -389,5 +370,95 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             width = 86
             height = 90
         }
+    }
+
+    private suspend fun collectDetailNetworkState(binding: ActivityDetailBinding) {
+        with(binding) {
+            viewModel.networkState.collectLatest { state ->
+                when (state) {
+                    is NetworkState.Loading -> {
+                        detailProgressbar.visibility = View.VISIBLE
+                        detailErrorLayout.visibility = View.GONE
+                    }
+
+                    is NetworkState.Success -> {
+                        detailProgressbar.visibility = View.GONE
+                        detailErrorLayout.visibility = View.GONE
+                    }
+
+                    is NetworkState.Error -> {
+                        detailProgressbar.visibility = View.GONE
+
+                        if (viewModel.isBookmarkError.value == true) {
+                            this@DetailActivity.showInfinitySnackBar(binding.root, state.msg)
+                        } else {
+                            updateToolbarColors(binding, R.color.text_primary)
+                            setVisibility(
+                                isVisible = false,
+                                detailThumbnailIv, detailThumbnailDark, detailTitleTv,
+                                detailAddressTv, detailBookmarkBtn, detailContentLayout
+                            )
+                            detailErrorLayout.visibility = View.VISIBLE
+                            detailErrorTv.text = state.msg
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity(binding: ActivityDetailBinding) {
+        with(binding) {
+            connectivityObserver.getFlow().collect { connectivity ->
+                when (connectivity) {
+                    ConnectivityObserver.Status.Available -> {
+                        setVisibility(
+                            isVisible = true,
+                            detailThumbnailIv, detailThumbnailDark, detailTitleTv, detailAddressTv,
+                            detailBookmarkBtn, detailContentLayout
+                        )
+                        setVisibility(isVisible = false, detailProgressbar, detailErrorLayout)
+                        updateToolbarColors(binding, R.color.white)
+
+                        if (viewModel.networkState.value is NetworkState.Error) {
+                            initMap()
+                        }
+                    }
+                    // Unavailable, Losing, Lost
+                    else -> {
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+
+                        setVisibility(
+                            isVisible = false,
+                            detailThumbnailIv, detailThumbnailDark, detailTitleTv, detailAddressTv,
+                            detailBookmarkBtn, detailContentLayout, detailProgressbar
+                        )
+                        setVisibility(isVisible = true, detailErrorLayout)
+                        detailErrorTv.text = msg
+                        updateToolbarColors(binding, R.color.text_primary)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setVisibility(isVisible: Boolean, vararg views: View) {
+        views.forEach { it.visibility = if (isVisible) View.VISIBLE else View.GONE }
+    }
+
+    private fun updateToolbarColors(binding: ActivityDetailBinding, @ColorRes colorRes: Int) {
+        binding.detailToolbarTitleTv.setTextColor(
+            ContextCompat.getColor(
+                binding.root.context,
+                colorRes
+            )
+        )
+        binding.detailToolbar.navigationIcon?.setTint(
+            ContextCompat.getColor(
+                binding.root.context,
+                colorRes
+            )
+        )
     }
 }
