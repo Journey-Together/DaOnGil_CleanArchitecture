@@ -14,6 +14,7 @@ import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import java.time.LocalDate
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
+import kr.tekit.lion.domain.model.placereview.NewReviewImages
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.home.model.NewReviewImgs
 import javax.inject.Inject
@@ -49,17 +50,16 @@ class WriteReviewViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            newReviewImages.value?.let {
-                writePlaceReviewRepository.writePlaceReviewData(
-                    placeId,
-                    NewReviewData(date, grade, content),
-                    it.toDomainModel()
-                )
-                    .onSuccess {
-                        networkErrorDelegate.handleNetworkSuccess()
-                    }.onError {
-                        networkErrorDelegate.handleNetworkError(it)
-                    }
+            val images: NewReviewImages =
+                newReviewImages.value?.toDomainModel() ?: NewReviewImages(emptyList())
+            writePlaceReviewRepository.writePlaceReviewData(
+                placeId,
+                NewReviewData(date, grade, content),
+                images
+            ).onSuccess {
+                networkErrorDelegate.handleNetworkSuccess()
+            }.onError {
+                networkErrorDelegate.handleNetworkError(it)
             }
         }
     }
