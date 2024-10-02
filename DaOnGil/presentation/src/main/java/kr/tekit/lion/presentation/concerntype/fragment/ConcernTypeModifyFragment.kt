@@ -13,6 +13,7 @@ import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.concerntype.vm.ConcernTypeViewModel
 import kr.tekit.lion.presentation.databinding.FragmentConcernTypeModifyBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
 import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.ext.showSnackbar
@@ -75,8 +76,7 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
             }
         }
     }
-
-
+    
     private fun initView(binding: FragmentConcernTypeModifyBinding) {
         with(binding) {
             toolbarConcernTypeModify.setNavigationOnClickListener {
@@ -105,6 +105,9 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
     private fun observeSelection(binding: FragmentConcernTypeModifyBinding) {
         viewModel.concernType.observe(viewLifecycleOwner) { concernType ->
             initSelection(binding, concernType)
+            if (requireContext().isTallBackEnabled()) {
+                settingDescriptions(binding, concernType)
+            }
         }
     }
 
@@ -128,6 +131,37 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
         }
 
         updateModifyButtonState(binding)
+    }
+
+    private fun settingDescriptions(binding: FragmentConcernTypeModifyBinding, concernType: ConcernType) {
+        val titleDescription = binding.textViewConcernTypeModifyTitle.text.toString()
+        val selectedDescriptions = mutableListOf<String>()
+
+        if (concernType.isPhysical) {
+            selectedDescriptions.add(getString(R.string.text_physical_disability))
+        }
+        if (concernType.isVisual) {
+            selectedDescriptions.add(getString(R.string.text_visual_impairment))
+        }
+        if (concernType.isHear) {
+            selectedDescriptions.add(getString(R.string.text_hearing_impairment))
+        }
+        if (concernType.isChild) {
+            selectedDescriptions.add(getString(R.string.text_infant_family))
+        }
+        if (concernType.isElderly) {
+            selectedDescriptions.add(getString(R.string.text_elderly_person))
+        }
+
+        val contentDescription = if (selectedDescriptions.isNotEmpty()) {
+            selectedDescriptions.joinToString(separator = ", ")
+        } else {
+            getString(R.string.text_no_concern_type_selected)
+        }
+
+        val combinedDescription = "$titleDescription, 현재 선택된 관심 유형은 $contentDescription 입니다"
+
+        binding.textViewConcernTypeModifyTitle.contentDescription = combinedDescription
     }
 
     private fun settingSelected(imageView: ImageView, selectedDrawable: Int) {
