@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@color/navi_background"
             android:minHeight="?attr/actionBarSize"
+            app:navigationContentDescription="@string/text_back_button"
             app:navigationIcon="@drawable/back_icon">
 
             <TextView
