@@ -384,10 +384,11 @@
     <string name="text_update_place_bookmark">%1$s 북마크 취소하기</string>
     <string name="text_update_plan_bookmark">%1$s 일정 북마크 취소하기</string>
 
+    <string name="text_no_concern_type_selected">선택한 관심 유형이 없습니다</string>
     <string name="text_concern_type_subtitle">관심 유형을 변경하고 싶으신가요?</string>
     <string name="text_concern_type_modify_move">관심 유형 수정하기</string>
     <string name="text_concern_type_choose">관심 유형을 선택해주세요.</string>
-    <string name="text_concern_type_modify">수정하기</string>
+    <string name="text_concern_type_modify">수정 완료</string>
 
     <string name="text_my_review_modify_title">후기 수정하기</string>
     <string name="text_my_review_modify_rating">후기 별점 수정하기</string>
