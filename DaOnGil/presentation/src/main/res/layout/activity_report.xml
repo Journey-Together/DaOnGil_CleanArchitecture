@@ -63,7 +63,7 @@
                     <RadioButton
                         android:id="@+id/radioButtonPirate"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="48dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@string/text_report_reason_pirate"
                         android:textColor="@color/text_primary"
@@ -73,7 +73,7 @@
                     <RadioButton
                         android:id="@+id/radioButtonCurse"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="48dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@string/text_report_reason_curse"
                         android:textColor="@color/text_primary"
@@ -83,7 +83,7 @@
                     <RadioButton
                         android:id="@+id/radioButtonPromote"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="48dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@string/text_report_reason_promote"
                         android:textColor="@color/text_primary"
@@ -93,7 +93,7 @@
                     <RadioButton
                         android:id="@+id/radioButtonViolence"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="48dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@string/text_report_reason_violence"
                         android:textColor="@color/text_primary"
@@ -103,7 +103,7 @@
                     <RadioButton
                         android:id="@+id/radioButtonWrong"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="48dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@string/text_report_reason_wrong"
                         android:textColor="@color/text_primary"
@@ -113,7 +113,7 @@
                     <RadioButton
                         android:id="@+id/radioButtonEtc"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="48dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@string/text_report_reason_etc"
                         android:textColor="@color/text_primary"
@@ -166,6 +166,7 @@
                         android:inputType="text|textMultiLine"
                         android:maxLength="1000"
                         android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_tertiary"
                         android:textSize="@dimen/font_small1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -186,8 +187,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
                 android:background="@drawable/background_radius_10"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/text_report_title"
+                android:fontFamily="@font/pretendard_extrabold"
+                android:text="@string/text_report_submit"
                 android:textSize="@dimen/font_big2" />
 
         </LinearLayout>

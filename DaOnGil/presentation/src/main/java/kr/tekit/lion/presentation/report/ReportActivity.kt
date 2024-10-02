@@ -88,6 +88,8 @@ class ReportActivity : AppCompatActivity() {
         binding.toolbarReport.setNavigationOnClickListener {
             finish()
         }
+
+        binding.toolbarReport.setNavigationContentDescription(R.string.text_back_button)
     }
 
     private fun settingReason() {
