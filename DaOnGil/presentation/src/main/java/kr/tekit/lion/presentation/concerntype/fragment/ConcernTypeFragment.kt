@@ -1,7 +1,6 @@
 package kr.tekit.lion.presentation.concerntype.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
@@ -11,12 +10,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.ConcernType
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.concerntype.vm.ConcernTypeViewModel
 import kr.tekit.lion.presentation.databinding.FragmentConcernTypeBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.repeatOnViewStarted
-import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.observer.ConnectivityObserver
 import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
@@ -116,6 +115,9 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
     private fun observeSelection(binding: FragmentConcernTypeBinding) {
         viewModel.concernType.observe(viewLifecycleOwner) { concernType ->
             initSelection(binding, concernType)
+            if (requireContext().isTallBackEnabled()) {
+                settingDescriptions(binding, concernType)
+            }
         }
     }
 
@@ -137,6 +139,37 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
                 settingSelected(imageViewConcernTypeElderly, R.drawable.cc_selected_elderly_people_icon)
             }
         }
+    }
+
+    private fun settingDescriptions(binding: FragmentConcernTypeBinding, concernType: ConcernType) {
+        val nicknameDescription = binding.textViewConcernTypeUseNickname.text.toString()
+        val selectedDescriptions = mutableListOf<String>()
+
+        if (concernType.isPhysical) {
+            selectedDescriptions.add(getString(R.string.text_physical_disability))
+        }
+        if (concernType.isVisual) {
+            selectedDescriptions.add(getString(R.string.text_visual_impairment))
+        }
+        if (concernType.isHear) {
+            selectedDescriptions.add(getString(R.string.text_hearing_impairment))
+        }
+        if (concernType.isChild) {
+            selectedDescriptions.add(getString(R.string.text_infant_family))
+        }
+        if (concernType.isElderly) {
+            selectedDescriptions.add(getString(R.string.text_elderly_person))
+        }
+
+        val contentDescription = if (selectedDescriptions.isNotEmpty()) {
+            selectedDescriptions.joinToString(separator = ", ")
+        } else {
+            getString(R.string.text_no_concern_type_selected)
+        }
+
+        val combinedDescription = "$nicknameDescription, $contentDescription"
+
+        binding.concernTypeLayout.contentDescription = combinedDescription
     }
 
     private fun settingSelected(imageView: ImageView, selectedDrawable: Int) {
