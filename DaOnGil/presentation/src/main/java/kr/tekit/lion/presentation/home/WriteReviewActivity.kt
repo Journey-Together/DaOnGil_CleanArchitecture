@@ -67,7 +67,8 @@ class WriteReviewActivity : AppCompatActivity() {
                     val path = this.toAbsolutePath(uri)
                     viewModel.setReviewImages(path!!)
                 } else {
-                    Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -90,7 +91,8 @@ class WriteReviewActivity : AppCompatActivity() {
                         val path = this.toAbsolutePath(uri)
                         viewModel.setReviewImages(path!!)
                     } else {
-                        Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -144,7 +146,7 @@ class WriteReviewActivity : AppCompatActivity() {
     }
 
     private fun settingImageRVAdapter() {
-        imageRVAdapter = WriteReviewImageRVAdapter(selectedImages) {position ->
+        imageRVAdapter = WriteReviewImageRVAdapter(selectedImages) { position ->
             viewModel.deleteImage(position)
         }
         binding.writeReviewImageRv.adapter = imageRVAdapter
@@ -240,7 +242,8 @@ class WriteReviewActivity : AppCompatActivity() {
         val visitDateValue = visitDate?.let {
             formatDateValue(visitDate)
         }
-        binding.writeReviewDateEdit.text = Editable.Factory.getInstance().newEditable(visitDateValue)
+        binding.writeReviewDateEdit.text =
+            Editable.Factory.getInstance().newEditable(visitDateValue)
     }
 
     private fun checkReviewValid(): Boolean {
