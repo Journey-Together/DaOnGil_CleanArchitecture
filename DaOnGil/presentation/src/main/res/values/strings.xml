@@ -99,6 +99,7 @@
     <string name="text_schedule_weather">예상 날씨</string>
     <string name="text_schedule_full">일정 보기</string>
     <string name="text_schedule_period">%s - %s</string>
+    <string name="text_schedule_remain_date">여행 %s일 전</string>
     <string name="text_schedule_days">일차</string>
     <string name="text_schedule_place_empty">해당 일자에 추가된 여행지가 없습니다</string>
     <string name="text_view_detail">상세보기</string>
@@ -162,6 +163,7 @@
 
     <string name="text_modify_schedule_review">여행 후기 수정하기</string>
     <string name="text_write_schedule_review">여행 후기 남기기</string>
+    <string name="text_write_schedule_review_description">일정 %s의 여행 후기 남기기</string>
     <string name="text_schedule_review_photo">여행 사진</string>
     <string name="text_save_schedule_review">저장하기</string>
 

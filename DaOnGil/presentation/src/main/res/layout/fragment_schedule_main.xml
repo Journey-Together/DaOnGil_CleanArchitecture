@@ -149,7 +149,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="@string/text_no_schedule"
-                            android:textColor="@color/text_quaternary"
+                            android:textColor="@color/text_tertiary"
                             android:textSize="@dimen/font_big2" />
 
                         <TextView
@@ -157,10 +157,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:padding="@dimen/margin_small1"
+                            android:paddingHorizontal="@dimen/margin_basic"
+                            android:paddingVertical="@dimen/margin_big4"
                             android:text="@string/add_schedule"
-                            android:textColor="@color/text_quaternary"
-                            android:textSize="@dimen/font_small2" />
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="@dimen/font_big3" />
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
