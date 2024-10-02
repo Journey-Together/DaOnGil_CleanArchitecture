@@ -1,5 +1,6 @@
 package kr.tekit.lion.presentation.bookmark.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,18 @@ class BookmarkDisabilityRvAdapter(private val typeList : List<String>)
                 else -> R.drawable.elderly_people_radius_icon
             }
             binding.itemDisabilityTypeIv.setImageResource(typeId)
+        }
+    }
+
+    fun getDisabilityDescriptions(context: Context): List<String> {
+        return typeList.map { type ->
+            when (type) {
+                "1" -> context.getString(R.string.text_physical_disability)
+                "2" -> context.getString(R.string.text_visual_impairment)
+                "3" -> context.getString(R.string.text_hearing_impairment)
+                "4" -> context.getString(R.string.text_infant_family)
+                else -> context.getString(R.string.text_elderly_person)
+            }
         }
     }
 }

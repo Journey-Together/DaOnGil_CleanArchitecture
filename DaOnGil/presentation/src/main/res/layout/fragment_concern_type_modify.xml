@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:importantForAccessibility="yes"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/pretendard_medium"
-            android:text="@string/text_interest_type"
+            android:text="@string/text_concern_type_modify_move"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/font_big2" />
 
