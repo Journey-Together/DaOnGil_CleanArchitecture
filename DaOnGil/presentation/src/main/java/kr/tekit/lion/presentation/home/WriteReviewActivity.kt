@@ -56,10 +56,12 @@ class WriteReviewActivity : AppCompatActivity() {
                     selectedImages.add(uri)
                     imageRVAdapter.notifyDataSetChanged()
 
-                    binding.writeReviewImageNumTv.text = selectedImages.size.toString()
-
                     val path = this.toAbsolutePath(uri)
                     viewModel.setReviewImages(path!!)
+
+                    viewModel.numOfImages.observe(this) {
+                        binding.writeReviewImageNumTv.text = it.toString()
+                    }
                 } else {
                     Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT).show()
                 }
@@ -79,10 +81,12 @@ class WriteReviewActivity : AppCompatActivity() {
                         selectedImages.add(it)
                         imageRVAdapter.notifyDataSetChanged()
 
-                        binding.writeReviewImageNumTv.text = selectedImages.size.toString()
-
                         val path = this.toAbsolutePath(uri)
                         viewModel.setReviewImages(path!!)
+
+                        viewModel.numOfImages.observe(this) {
+                            binding.writeReviewImageNumTv.text = it.toString()
+                        }
                     } else {
                         Snackbar.make(binding.root, "이미지는 최대 4장까지 첨부 가능합니다", Snackbar.LENGTH_SHORT).show()
                     }
@@ -134,7 +138,7 @@ class WriteReviewActivity : AppCompatActivity() {
             }
         }
         settingToolbar()
-        settingPlaceData(placeName)
+        settingReviewData(placeName)
         settingImageRVAdapter()
         settingBtn(placeId)
     }
@@ -145,8 +149,11 @@ class WriteReviewActivity : AppCompatActivity() {
         }
     }
 
-    private fun settingPlaceData(placeName: String) {
+    private fun settingReviewData(placeName: String) {
         binding.writeReviewTitleTv.text = placeName
+        viewModel.numOfImages.observe(this) {
+            binding.writeReviewImageNumTv.text = it.toString()
+        }
     }
 
     private fun settingImageRVAdapter() {
