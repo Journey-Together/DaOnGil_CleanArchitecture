@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.PlaceBookmark
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemPlaceBookmarkBinding
+import kr.tekit.lion.presentation.ext.isTallBackEnabled
 
 class PlaceBookmarkRVAdapter(
     private val placeBookmarkList: List<PlaceBookmark>,
@@ -65,29 +66,31 @@ class PlaceBookmarkRVAdapter(
             val bookmarkBtnDescription = binding.root.context.getString(R.string.text_update_place_bookmark, placeBookmark.name)
             binding.locationBookmarkBtn.contentDescription = bookmarkBtnDescription
 
-            ViewCompat.setAccessibilityDelegate(binding.root, object : AccessibilityDelegateCompat() {
-                override fun onInitializeAccessibilityNodeInfo(
-                    host: View,
-                    info: AccessibilityNodeInfoCompat
-                ) {
-                    super.onInitializeAccessibilityNodeInfo(host, info)
+            if (binding.root.context.isTallBackEnabled()) {
+                ViewCompat.setAccessibilityDelegate(binding.root, object : AccessibilityDelegateCompat() {
+                    override fun onInitializeAccessibilityNodeInfo(
+                        host: View,
+                        info: AccessibilityNodeInfoCompat
+                    ) {
+                        super.onInitializeAccessibilityNodeInfo(host, info)
 
-                    val disabilityDescriptions = bookmarkDisabilityRVAdapter
-                        .getDisabilityDescriptions(binding.root.context)
-                        .joinToString(", ")
+                        val disabilityDescriptions = bookmarkDisabilityRVAdapter
+                            .getDisabilityDescriptions(binding.root.context)
+                            .joinToString(", ")
 
-                    val combinedDescription = StringBuilder()
-                        .append(binding.textViewLocationBookmarkName.text)
-                        .append(", ")
-                        .append(binding.textViewLocationBookmark.text)
+                        val combinedDescription = StringBuilder()
+                            .append(binding.textViewLocationBookmarkName.text)
+                            .append(", ")
+                            .append(binding.textViewLocationBookmark.text)
 
-                    if (disabilityDescriptions.isNotEmpty()) {
-                        combinedDescription.append(", 관심 유형 정보: ").append(disabilityDescriptions)
+                        if (disabilityDescriptions.isNotEmpty()) {
+                            combinedDescription.append(", 관심 유형 정보: ").append(disabilityDescriptions)
+                        }
+
+                        info.text = combinedDescription.toString()
                     }
-
-                    info.text = combinedDescription.toString()
-                }
-            })
+                })
+            }
         }
     }
 }
