@@ -361,28 +361,19 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     }
 
     private fun retryLocationPermissionCheck(binding: FragmentHomeMainBinding) {
+        binding.root.showSnackbar("위치를 설정 중입니다. 잠시 기다려주세요.")
 
-        Log.d("FragmentState_1", "isAdded: $isAdded, view: $view")
-        Log.d("FragmentState_1", "Lifecycle state: ${viewLifecycleOwner.lifecycle.currentState}")
-
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-
-            Log.d("FragmentState_2", "isAdded: $isAdded, view: $view")
-            Log.d("FragmentState_2", "Lifecycle state: ${viewLifecycleOwner.lifecycle.currentState}")
-
-
-            binding.root.showSnackbar("위치를 설정 중입니다. 잠시 기다려주세요.")
-            delay(retryDelayMillis)
-
-            if (isAdded && view != null && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
-                    Lifecycle.State.STARTED
-                )
-            ) {
+        if (isAdded && view != null && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
+                Lifecycle.State.STARTED
+            )
+        ) {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                delay(retryDelayMillis)
                 initLocationClient(binding)
-            } else {
-                getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
-                binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
             }
+        } else {
+            getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
+            binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
         }
     }
 
