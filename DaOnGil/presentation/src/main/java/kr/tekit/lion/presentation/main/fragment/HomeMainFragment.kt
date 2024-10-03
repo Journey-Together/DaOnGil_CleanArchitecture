@@ -379,7 +379,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 delay(retryDelayMillis)
                 initLocationClient(binding)
             }
-        } else {
+        } else if (!isAdded && view == null) {
             getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
             binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
         }
