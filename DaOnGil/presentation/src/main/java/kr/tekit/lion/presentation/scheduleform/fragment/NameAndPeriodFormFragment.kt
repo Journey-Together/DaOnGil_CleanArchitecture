@@ -16,8 +16,6 @@ import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentNameAndPeriodFormBinding
-import kr.tekit.lion.presentation.ext.convertPeriodToDate
-import kr.tekit.lion.presentation.ext.formatDateValue
 import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
@@ -96,17 +94,11 @@ class NameAndPeriodFormFragment : Fragment(R.layout.fragment_name_and_period_for
     }
 
     private fun showPickedDates(binding: FragmentNameAndPeriodFormBinding) {
-        val startDate = scheduleFormViewModel.startDate.value
-        val endDate = scheduleFormViewModel.endDate.value
-        val startDateFormatted = startDate?.formatDateValue(FormDateFormat.YYYY_MM_DD_E)
-        val endDateFormatted = endDate?.formatDateValue(FormDateFormat.YYYY_MM_DD_E)
+        val schedulePeriod = scheduleFormViewModel.getSchedulePeriod(FormDateFormat.YYYY_MM_DD_E)
 
         binding.buttonNpfSetPeriod.apply {
-            if(startDate != null && endDate != null){
-                val accessibilityTextPeriod = startDate.convertPeriodToDate(endDate)
-                setAccessibilityText(accessibilityTextPeriod)
-            }
-            text = getString(R.string.picked_dates, startDateFormatted, endDateFormatted)
+            setAccessibilityText(scheduleFormViewModel.getSchedulePeriodAccessibilityText())
+            text = schedulePeriod
         }
     }
 
