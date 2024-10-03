@@ -11,6 +11,7 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
+        android:importantForAccessibility="no"
         android:layerType="software"
         android:scaleType="fitXY"
         android:visibility="visible"
@@ -28,6 +29,7 @@
         android:layout_marginStart="@dimen/margin_basic"
         android:background="@drawable/white_radius"
         android:backgroundTint="@color/primary"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toBottomOf="@+id/text_form_schedule_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_form_schedule_date" />
@@ -38,6 +40,7 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
+        android:importantForAccessibility="no"
         android:layerType="software"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
