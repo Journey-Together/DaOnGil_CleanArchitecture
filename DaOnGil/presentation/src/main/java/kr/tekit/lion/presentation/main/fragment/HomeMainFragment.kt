@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -346,21 +347,32 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
         // 위치 설정이 성공적으로 확인된 경우 위치 업데이트 시작
         task.addOnSuccessListener {
-            if (isAdded) {
+            if (isAdded && view != null) {
                 fusedLocationProviderClient =
                     LocationServices.getFusedLocationProviderClient(requireContext())
                 startLocationUpdates(binding)
+            } else {
+                retryLocationPermissionCheck(binding)
             }
-        }.addOnFailureListener { // 위치 설정 확인 실패 시 로그 기록
-            Log.d(TAG, "location client setting failure")
+        }.addOnFailureListener { // 위치 설정 확인 실패 시
             retryLocationPermissionCheck(binding)
         }
     }
 
     private fun retryLocationPermissionCheck(binding: FragmentHomeMainBinding) {
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            delay(retryDelayMillis) // 5초 지연
-            initLocationClient(binding)
+        binding.root.showSnackbar("위치를 설정 중입니다. 잠시 기다려주세요.")
+
+        if (isAdded && view != null && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
+                Lifecycle.State.STARTED
+            )
+        ) {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                delay(retryDelayMillis)
+                initLocationClient(binding)
+            }
+        } else if (!isAdded && view == null) {
+            getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
+            binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
         }
     }
 
