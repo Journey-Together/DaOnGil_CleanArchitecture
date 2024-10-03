@@ -98,4 +98,6 @@
     <color name="modify_delete_button">#797676</color>
     <color name="review_date_icon">#A2A2A2</color>
 
+    <color name="text_form_empty">#A7A7A7</color>
+
 </resources>

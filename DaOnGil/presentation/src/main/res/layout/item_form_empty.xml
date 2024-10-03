@@ -29,7 +29,7 @@
             android:fontFamily="@font/pretendard_semibold"
             android:gravity="center"
             android:text="@string/text_schedule_place_empty"
-            android:textColor="@color/text_quaternary"
+            android:textColor="@color/text_form_empty"
             android:textSize="@dimen/font_big2"
             app:layout_constraintEnd_toStartOf="@+id/button_form_place_remove"
             app:layout_constraintStart_toEndOf="@+id/image_form_place_thumbnail"
