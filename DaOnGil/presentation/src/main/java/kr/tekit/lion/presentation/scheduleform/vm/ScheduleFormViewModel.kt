@@ -25,6 +25,7 @@ import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addDays
 import kr.tekit.lion.presentation.ext.calculateDaysUntilEndDate
+import kr.tekit.lion.presentation.ext.convertPeriodToDate
 import kr.tekit.lion.presentation.ext.formatDateValue
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat.YYYY_MM_DD
@@ -98,11 +99,18 @@ class ScheduleFormViewModel @Inject constructor(
         _keyword.value = keyword
     }
 
-    fun getSchedulePeriod(): String {
-        val startDateString = _startDate.value?.formatDateValue(YYYY_MM_DD)
-        val endDateString = _endDate.value?.formatDateValue(YYYY_MM_DD)
+    fun getSchedulePeriod(pattern: String): String {
+        val startDateString = _startDate.value?.formatDateValue(pattern)
+        val endDateString = _endDate.value?.formatDateValue(pattern)
 
         return "$startDateString - $endDateString"
+    }
+
+    fun getSchedulePeriodAccessibilityText(): String {
+        val startDate = _startDate.value ?: Date()
+        val endDate = _endDate.value ?: Date()
+
+        return startDate.convertPeriodToDate(endDate)
     }
 
     private fun isScheduleEmpty(): Boolean {
