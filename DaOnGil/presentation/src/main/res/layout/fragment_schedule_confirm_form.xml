@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationContentDescription="@string/text_back_button"
         app:navigationIcon="@drawable/back_icon">
 
         <TextView
@@ -120,7 +121,7 @@
                 android:layout_marginEnd="@dimen/margin_basic"
                 android:layout_marginBottom="@dimen/margin_basic"
                 android:background="@drawable/background_radius_10"
-                android:fontFamily="@font/pretendard_bold"
+                android:fontFamily="@font/pretendard_extrabold"
                 android:text="@string/text_save_schedule_review"
                 android:textSize="@dimen/font_big2" />
 
