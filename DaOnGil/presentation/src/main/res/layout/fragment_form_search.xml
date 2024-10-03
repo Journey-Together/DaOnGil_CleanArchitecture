@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:background="@color/background_color"
             android:minHeight="?attr/actionBarSize"
+            app:navigationContentDescription="@string/text_back_button"
             app:navigationIcon="@drawable/back_icon">
 
             <TextView
@@ -32,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_search"
-            app:backgroundTint="@color/primary_disabled" />
+            app:backgroundTint="@color/item_background" />
 
         <TextView
             android:id="@+id/text_fs_bookmark_title"
