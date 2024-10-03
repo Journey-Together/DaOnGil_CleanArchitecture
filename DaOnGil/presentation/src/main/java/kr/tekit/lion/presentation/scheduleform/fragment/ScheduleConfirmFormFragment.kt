@@ -11,8 +11,10 @@ import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentScheduleConfirmFormBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.schedule.ResultCode
+import kr.tekit.lion.presentation.scheduleform.FormDateFormat.YYYY_MM_DD
 import kr.tekit.lion.presentation.scheduleform.adapter.FormConfirmScheduleAdapter
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 
@@ -64,10 +66,13 @@ class ScheduleConfirmFormFragment : Fragment(R.layout.fragment_schedule_confirm_
 
     private fun initConfirmView(binding: FragmentScheduleConfirmFormBinding){
         val title = viewModel.getScheduleTitle()
-        val period = viewModel.getSchedulePeriod()
+        val period = viewModel.getSchedulePeriod(YYYY_MM_DD)
         binding.apply {
             textScfTitle.text = getString(R.string.text_selected_title, title)
-            textScfDate.text = getString(R.string.text_selected_period, period)
+            textScfDate.apply {
+                text = getString(R.string.text_selected_period, period)
+                setAccessibilityText(viewModel.getSchedulePeriodAccessibilityText())
+            }
         }
 
         viewModel.schedule.observe(viewLifecycleOwner) {
