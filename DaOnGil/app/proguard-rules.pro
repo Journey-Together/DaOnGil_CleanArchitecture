@@ -50,16 +50,20 @@
 # naver
 -keep class com.navercorp.nid.NaverIdLoginSDK { *; }
 -keep class org.simpleframework.xml.** { *; }
-
+-keep public class com.navercorp.nid.** {
+    public *;
+}
 
 -dontwarn org.bouncycastle.jsse.**
 -dontwarn org.conscrypt.*
 -dontwarn org.openjsse.**
 
 # 서버 응답 데이터 필드 이름 난독화 예외 처리
--keep class kr.tekit.lion.data.dto.** {
-    <fields>;
-}
+-keep class kr.tekit.lion.data.dto.** { *; }
+-keep class com.squareup.moshi.** { *; }
+-keepattributes Signature
+-keepattributes Annotation
+-keep class kr.tekit.lion.data.dto.request.util.AdapterProvider { *; }
 
 -keep class kr.tekit.lion.data.database.** {
     <fields>;

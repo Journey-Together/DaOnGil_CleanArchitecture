@@ -19,6 +19,14 @@ val naverClientSecret = properties.getProperty("naver_client_secret") ?: ""
 val naverClientName = properties.getProperty("naver_client_name") ?: ""
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("/Users/jeongchanho/daongil_key.jks")
+            storePassword = "asd123"
+            keyAlias = "daongil"
+            keyPassword = "asd123!"
+        }
+    }
     namespace = "kr.tekit.lion.daongil_cleanarchitecture"
     compileSdk = 34
 
@@ -46,11 +54,12 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
