@@ -176,6 +176,7 @@
     <string name="text_schedule_form_next">다음으로</string>
     <string name="text_schedule_form_add_place">새로운 장소 추가</string>
     <string name="accessibility_text_schedule_form_add_place">%s요일 일정에 새로운 장소 추가</string>
+    <string name="accessibility_text_add_bookmarked_place">%s 일정에 추가하기</string>
 
     <string name="tab_text_place">장소</string>
     <string name="tab_text_plan">일정</string>

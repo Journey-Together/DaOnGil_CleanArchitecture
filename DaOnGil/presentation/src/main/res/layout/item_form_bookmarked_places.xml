@@ -14,17 +14,17 @@
         android:backgroundTint="@color/item_background"
         android:gravity="fill_horizontal|center_vertical"
         android:paddingHorizontal="@dimen/margin_big3"
-        android:textColor="@color/text_tertiary"
+        android:textColor="@color/text_form_empty"
         app:cornerRadius="20dp"
         app:icon="@drawable/ic_add_24px"
         app:iconGravity="end"
         app:iconPadding="@dimen/margin_small2"
-        app:iconTint="@color/text_secondary"
+        app:iconTint="@color/text_form_empty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/text_tertiary"
+        app:strokeColor="@color/text_form_empty"
         tools:text="여행지명" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
