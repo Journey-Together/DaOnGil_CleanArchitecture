@@ -1,7 +1,9 @@
 package kr.tekit.lion.presentation.scheduleform.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.tekit.lion.domain.model.scheduleform.FormPlace
@@ -58,6 +60,26 @@ class FormPlaceAdapter(
                         .error(R.drawable.empty_view)
                         .into(imageFormPlaceThumbnail)
                 }
+
+                textFormPlaceName.accessibilityDelegate = object : View.AccessibilityDelegate() {
+                    override fun onInitializeAccessibilityNodeInfo(
+                        host: View,
+                        info: AccessibilityNodeInfo
+                    ) {
+                        super.onInitializeAccessibilityNodeInfo(host, info)
+
+                        info.text = itemView.context.getString(
+                            R.string.accessibility_text_place,
+                            place.placeCategory,
+                            place.placeName
+                        )
+                    }
+                }
+
+                buttonFormPlaceRemove.contentDescription = itemView.context.getString(
+                    R.string.accessibility_text_schedule_delete,
+                    place.placeName
+                )
             }
         }
     }

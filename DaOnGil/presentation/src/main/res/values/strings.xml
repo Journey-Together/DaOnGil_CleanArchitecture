@@ -111,6 +111,8 @@
     <string name="text_schedule_manage">여행 일정</string>
     <string name="text_schedule_edit">수정하기</string>
     <string name="text_schedule_delete">삭제하기</string>
+    <string name="accessibility_text_schedule_delete">일정에서 여행지 %s 삭제하기</string>
+    <string name="accessibility_text_place">%s %s</string>
     <string name="text_schedule_make_public">일정 공개</string>
     <string name="text_schedule_make_private">일정 비공개</string>
     <string name="text_schedule_review_manage">여행 일정 후기</string>
@@ -173,6 +175,7 @@
     <string name="hint_schedule_form_period">여행 기간을 설정해주세요</string>
     <string name="text_schedule_form_next">다음으로</string>
     <string name="text_schedule_form_add_place">새로운 장소 추가</string>
+    <string name="accessibility_text_schedule_form_add_place">%s요일 일정에 새로운 장소 추가</string>
 
     <string name="tab_text_place">장소</string>
     <string name="tab_text_plan">일정</string>
