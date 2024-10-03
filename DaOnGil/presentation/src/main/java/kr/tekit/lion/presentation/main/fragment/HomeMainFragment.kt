@@ -361,6 +361,10 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     }
 
     private fun retryLocationPermissionCheck(binding: FragmentHomeMainBinding) {
+
+        Log.d("FragmentState_1", "isAdded: $isAdded, view: $view")
+        Log.d("FragmentState_1", "Lifecycle state: ${viewLifecycleOwner.lifecycle.currentState}")
+
         binding.root.showSnackbar("위치를 설정 중입니다. 잠시 기다려주세요.")
 
         if (isAdded && view != null && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
@@ -368,6 +372,10 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             )
         ) {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+
+                Log.d("FragmentState_2", "isAdded: $isAdded, view: $view")
+                Log.d("FragmentState_2", "Lifecycle state: ${viewLifecycleOwner.lifecycle.currentState}")
+
                 delay(retryDelayMillis)
                 initLocationClient(binding)
             }
