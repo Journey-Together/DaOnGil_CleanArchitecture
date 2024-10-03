@@ -14,6 +14,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
         android:backgroundTint="@color/item_background"
+        android:importantForAccessibility="yes"
         app:cardCornerRadius="5dp"
         app:cardElevation="4dp"
         app:cardPreventCornerOverlap="true"
@@ -90,12 +91,12 @@
                 android:layout_height="0dp"
                 android:background="@drawable/background_radius_50"
                 android:backgroundTint="@color/item_background"
+                android:importantForAccessibility="yes"
                 android:paddingHorizontal="@dimen/margin_big3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/form_remove_icon"
-                android:importantForAccessibility="yes"
                 app:tint="@color/primary" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
