@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
     private val _recommendPlaceInfo = MutableLiveData<List<RecommendPlace>>()
     val recommendPlaceInfo : LiveData<List<RecommendPlace>> = _recommendPlaceInfo
 
-    private val _userActivationState = MutableSharedFlow<Boolean>()
+    private val _userActivationState = MutableSharedFlow<Boolean>(replay = 1)
     val userActivationState = _userActivationState.asSharedFlow()
 
     private val _area = MutableLiveData<String>()
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             activationRepository.userActivation.collect {
                 val isUserActivated = it
-                _userActivationState.emit(isUserActivated)
+                _userActivationState.tryEmit(isUserActivated)
             }
         }
     }
