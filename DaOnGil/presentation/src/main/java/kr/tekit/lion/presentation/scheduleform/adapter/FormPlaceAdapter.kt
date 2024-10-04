@@ -78,6 +78,7 @@ class FormPlaceAdapter(
 
                 buttonFormPlaceRemove.contentDescription = itemView.context.getString(
                     R.string.accessibility_text_schedule_delete,
+                    place.placeCategory,
                     place.placeName
                 )
             }
