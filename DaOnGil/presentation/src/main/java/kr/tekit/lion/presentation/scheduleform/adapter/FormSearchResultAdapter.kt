@@ -9,6 +9,7 @@ import kr.tekit.lion.domain.model.scheduleform.PlaceSearchInfoList
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemFormSearchResultBinding
 import kr.tekit.lion.presentation.databinding.ItemFormSearchTotalBinding
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.setImageSmall
 
 class FormSearchResultAdapter(
@@ -73,6 +74,21 @@ class FormSearchResultAdapter(
                 placeSearchInfo.imageUrl?.let {
                     imageSearchResultThumbnail.context.setImageSmall(imageSearchResultThumbnail, it)
                 }
+
+                textSearchResultName.setAccessibilityText(
+                    itemView.context.getString(
+                        R.string.accessibility_text_place,
+                        placeSearchInfo.category,
+                        placeSearchInfo.placeName
+                    )
+                )
+
+                buttonSearchResultAdd.contentDescription = itemView.context.getString(
+                    R.string.accessibility_text_schedule_add,
+                    placeSearchInfo.category,
+                    placeSearchInfo.placeName
+                )
+
             }
         }
     }
