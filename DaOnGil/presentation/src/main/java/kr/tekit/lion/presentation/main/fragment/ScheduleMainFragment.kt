@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.MyMainSchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.scheduleform.ScheduleFormActivity
@@ -26,6 +28,8 @@ import kr.tekit.lion.presentation.main.adapter.SchedulePublicAdapter
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.schedule.ScheduleMainViewModel
 import kr.tekit.lion.presentation.myschedule.MyScheduleActivity
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.schedule.PublicScheduleActivity
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedulereview.WriteScheduleReviewActivity
@@ -37,6 +41,9 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
     private var isUser = true
 
     private val viewModel: ScheduleMainViewModel by viewModels()
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(requireContext())
+    }
 
     private val scheduleReviewLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == ResultCode.RESULT_REVIEW_WRITE) {
@@ -74,58 +81,93 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
         settingRecyclerView(binding)
         initButtonClickListener(binding)
 
-        with(binding){
-            repeatOnViewStarted {
-                viewModel.networkState.combine(viewModel.loginState) { networkState, loginState ->
-                    networkState to loginState
-                }.collect { (networkState, loginState) ->
+        repeatOnViewStarted {
+            supervisorScope {
+                launch { collectScheduleMainState(binding) }
+                launch { observeConnectivity(binding) }
+            }
+        }
 
-                    when (networkState) {
-                        is NetworkState.Loading -> {
-                            scheduleMainProgressBar.visibility = View.VISIBLE
-                            scheduleMainErrorLayout.visibility = View.GONE
-                            scheduleMainLayout.visibility = View.GONE
-                        }
-                        is NetworkState.Success -> {
-                            scheduleMainProgressBar.visibility = View.GONE
-                            scheduleMainErrorLayout.visibility = View.GONE
-                            scheduleMainLayout.visibility = View.VISIBLE
-                        }
-                        is NetworkState.Error -> {
-                            scheduleMainProgressBar.visibility = View.GONE
-                            scheduleMainErrorLayout.visibility = View.VISIBLE
-                            scheduleMainLayout.visibility = View.GONE
-                            scheduleMainErrorMsg.text = networkState.msg
-                        }
+    }
+
+    private suspend fun collectScheduleMainState(binding: FragmentScheduleMainBinding){
+        with(binding){
+            viewModel.networkState.combine(viewModel.loginState) { networkState, loginState ->
+                networkState to loginState
+            }.collect { (networkState, loginState) ->
+
+                when (networkState) {
+                    is NetworkState.Loading -> {
+                        scheduleMainProgressBar.visibility = View.VISIBLE
+                        scheduleMainErrorLayout.visibility = View.GONE
+                        scheduleMainLayout.visibility = View.GONE
+                    }
+                    is NetworkState.Success -> {
+                        scheduleMainProgressBar.visibility = View.GONE
+                        scheduleMainErrorLayout.visibility = View.GONE
+                        scheduleMainLayout.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Error -> {
+                        scheduleMainProgressBar.visibility = View.GONE
+                        scheduleMainErrorLayout.visibility = View.VISIBLE
+                        scheduleMainLayout.visibility = View.GONE
+                        scheduleMainErrorMsg.text = networkState.msg
+                    }
+                }
+
+
+                when (loginState) {
+                    is LogInState.Checking -> {
+                        // 로그인 상태를 아직 확인 중일 때 처리
+                        return@collect
                     }
 
+                    is LogInState.LoggedIn -> {
+                        isUser = true
+                        viewModel.getScheduleMainLists()
+                        binding.textViewMyScheduleMore.visibility = View.VISIBLE
+                        binding.recyclerViewMySchedule.visibility = View.VISIBLE
+                        binding.cardViewEmptySchedule.visibility = View.GONE
+                    }
 
-                    when (loginState) {
-                        is LogInState.Checking -> {
-                            // 로그인 상태를 아직 확인 중일 때 처리
-                            return@collect
-                        }
-
-                        is LogInState.LoggedIn -> {
-                            isUser = true
-                            viewModel.getScheduleMainLists()
-                            binding.textViewMyScheduleMore.visibility = View.VISIBLE
-                            binding.recyclerViewMySchedule.visibility = View.VISIBLE
-                            binding.cardViewEmptySchedule.visibility = View.GONE
-                        }
-
-                        is LogInState.LoginRequired -> {
-                            isUser = false
-                            viewModel.getOpenPlanList()
-                            binding.textViewMyScheduleMore.visibility = View.INVISIBLE
-                            binding.recyclerViewMySchedule.visibility = View.GONE
-                            binding.cardViewEmptySchedule.visibility = View.VISIBLE
-                        }
+                    is LogInState.LoginRequired -> {
+                        isUser = false
+                        viewModel.getOpenPlanList()
+                        binding.textViewMyScheduleMore.visibility = View.INVISIBLE
+                        binding.recyclerViewMySchedule.visibility = View.GONE
+                        binding.cardViewEmptySchedule.visibility = View.VISIBLE
                     }
                 }
             }
         }
+    }
 
+    private suspend fun observeConnectivity(binding: FragmentScheduleMainBinding) {
+        with(binding){
+            connectivityObserver.getFlow().collect { connectivity ->
+                when(connectivity){
+                    ConnectivityObserver.Status.Available -> {
+                        scheduleMainErrorLayout.visibility = View.GONE
+                        scheduleMainLayout.visibility = View.VISIBLE
+                        if (viewModel.networkState.value is NetworkState.Error) {
+                            viewModel.getOpenPlanList()
+                            if(isUser){
+                                viewModel.getScheduleMainLists()
+                            }
+                        }
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        scheduleMainLayout.visibility = View.GONE
+                        scheduleMainErrorLayout.visibility = View.VISIBLE
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        scheduleMainErrorMsg.text = msg
+                    }
+                }
+            }
+        }
     }
 
     private fun settingRecyclerView(binding: FragmentScheduleMainBinding) {
