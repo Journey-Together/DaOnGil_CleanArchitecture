@@ -22,6 +22,7 @@ import kr.tekit.lion.domain.exception.TimeoutError
 import kr.tekit.lion.domain.exception.UnknownError
 import kr.tekit.lion.domain.exception.UnknownHostError
 import kr.tekit.lion.domain.repository.PlaceRepository
+import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.main.model.Category
 import kr.tekit.lion.presentation.main.model.DisabilityType
@@ -43,7 +44,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchMapViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
-) : ViewModel(){
+) : BaseViewModel(){
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
@@ -66,7 +67,7 @@ class SearchMapViewModel @Inject constructor(
                 if (it.places.isEmpty()) _searchState.emit(false)
                 it.toUiModel()
             }
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(recordExceptionHandler)
         .catch { e: Throwable ->
             submitThrowableState(e)
         }

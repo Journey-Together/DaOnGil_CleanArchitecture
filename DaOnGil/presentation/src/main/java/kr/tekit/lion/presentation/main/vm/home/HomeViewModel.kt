@@ -26,6 +26,7 @@ import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.shareInUi
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -58,10 +59,9 @@ class HomeViewModel @Inject constructor(
     private val _recommendPlaceInfo = MutableLiveData<List<RecommendPlace>>()
     val recommendPlaceInfo: LiveData<List<RecommendPlace>> = _recommendPlaceInfo
 
-    val userActivationState = activationRepository.userActivation.shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000)
-    )
+    val userActivationState = activationRepository
+        .userActivation
+        .shareInUi(scope = viewModelScope)
 
     private val _area = MutableLiveData<String>()
     val area: LiveData<String> = _area

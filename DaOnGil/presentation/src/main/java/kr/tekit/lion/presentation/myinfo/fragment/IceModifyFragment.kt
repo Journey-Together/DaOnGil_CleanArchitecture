@@ -56,11 +56,9 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
         else binding.toolbarIceModify.menu.clear()
 
         repeatOnViewStarted {
-            supervisorScope {
-                launch { observeConnectivity(binding) }
-                launch { collectNetworkState(binding) }
-            }
+            collectConnectivity(binding)
         }
+        observeNetworkState(binding)
 
         with(binding) {
             initMyInfo(this@with)
@@ -69,10 +67,10 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
         }
     }
 
-    private suspend fun collectNetworkState(binding: FragmentIceModifyBinding){
+    private fun observeNetworkState(binding: FragmentIceModifyBinding){
         with(binding) {
-            viewModel.iceModifyState.collect {
-                when (it) {
+            viewModel.iceModifyState.observe(viewLifecycleOwner) { state ->
+                when (state) {
                     is NetworkState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
@@ -83,14 +81,14 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
                     }
                     is NetworkState.Error -> {
                         progressBar.visibility = View.GONE
-                        showSnackbar(binding, it.msg)
+                        showSnackbar(binding, state.msg)
                     }
                 }
             }
         }
     }
 
-    private suspend fun observeConnectivity(binding: FragmentIceModifyBinding) {
+    private suspend fun collectConnectivity(binding: FragmentIceModifyBinding) {
         with(binding) {
             connectivityObserver.getFlow().collect {
                 when (it) {

@@ -19,6 +19,7 @@ import kr.tekit.lion.domain.model.search.ListSearchResultList
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
+import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.main.model.AreaModel
 import kr.tekit.lion.presentation.main.model.Category
@@ -46,7 +47,7 @@ class SearchListViewModel @Inject constructor(
     private val areaCodeRepository: AreaCodeRepository,
     private val sigunguCodeRepository: SigunguCodeRepository,
     private val placeRepository: PlaceRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
@@ -58,7 +59,7 @@ class SearchListViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(recordExceptionHandler) {
             loadAreaCodes()
             loadPlaces()
         }
@@ -86,13 +87,15 @@ class SearchListViewModel @Inject constructor(
 
     private val mapChanged get() = MutableSharedFlow<Boolean>()
 
-    fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) = viewModelScope.launch(Dispatchers.IO) {
-        clearPlace()
-        val updatedOptionState = updateListOptionState(optionCodes, type)
-        listOptionState.update { updatedOptionState }
+    fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
+        viewModelScope.launch(recordExceptionHandler){
+            clearPlace()
+            val updatedOptionState = updateListOptionState(optionCodes, type)
+            listOptionState.update { updatedOptionState }
 
-        val updatedUiState = updateUiStateWithOptionCount(optionCodes, type)
-        _uiState.update { updatedUiState }
+            val updatedUiState = updateUiStateWithOptionCount(optionCodes, type)
+            _uiState.update { updatedUiState }
+        }
     }
 
     private fun updateListOptionState(optionCodes: List<Long>, type: DisabilityType): ListOptionState {
@@ -176,14 +179,18 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    fun onSelectedTab(category: Category) = viewModelScope.launch(Dispatchers.IO) {
-        clearPlace()
-        listOptionState.update { it.copy(category = category, page = 0) }
+    fun onSelectedTab(category: Category) {
+        viewModelScope.launch(Dispatchers.IO) {
+            clearPlace()
+            listOptionState.update { it.copy(category = category, page = 0) }
+        }
     }
 
-    fun modifyCategoryModel(optionState: Map<DisabilityType, Int>) = viewModelScope.launch((Dispatchers.IO)) {
-        _uiState.update { uiState ->
-            updateCategoryModel(uiState, optionState)
+    fun modifyCategoryModel(optionState: Map<DisabilityType, Int>) {
+        viewModelScope.launch((Dispatchers.IO)) {
+            _uiState.update { uiState ->
+                updateCategoryModel(uiState, optionState)
+            }
         }
     }
 
@@ -207,29 +214,33 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    private fun loadPlaces() = viewModelScope.launch((Dispatchers.IO)) {
-        listOptionState.collect { listOption ->
-            networkErrorDelegate.handleNetworkLoading()
-            placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
-                .onSuccess { result ->
-                    modifyUiState(result)
-                }
-                .onError { e ->
-                    networkErrorDelegate.handleNetworkError(e)
-                }
+    private fun loadPlaces(){
+        viewModelScope.launch(recordExceptionHandler) {
+            listOptionState.collect { listOption ->
+                networkErrorDelegate.handleNetworkLoading()
+                placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
+                    .onSuccess { result ->
+                        modifyUiState(result)
+                    }
+                    .onError { e ->
+                        networkErrorDelegate.handleNetworkError(e)
+                    }
+            }
         }
     }
 
-    private fun reloadPlace() = viewModelScope.launch(Dispatchers.IO) {
-        clearPlace()
-        listOptionState.take(1).collect { listOption ->
-            placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
-                .onSuccess { result ->
-                    modifyUiState(result)
-                }
-                .onError { e ->
-                    networkErrorDelegate.handleNetworkError(e)
-                }
+    private fun reloadPlace() {
+        viewModelScope.launch(recordExceptionHandler) {
+            clearPlace()
+            listOptionState.take(1).collect { listOption ->
+                placeRepository.getSearchPlaceResultByList(listOption.toDomainModel())
+                    .onSuccess { result ->
+                        modifyUiState(result)
+                    }
+                    .onError { e ->
+                        networkErrorDelegate.handleNetworkError(e)
+                    }
+            }
         }
     }
 
