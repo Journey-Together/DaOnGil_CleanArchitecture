@@ -40,6 +40,7 @@ googleServices = "4.4.2"
 firebaseBom = "33.1.2"
 firebaseCrashlytics = "2.9.9"
 flexbox = "3.0.0"
+firebaseCrashlyticsKtx = "19.2.0"
 
 [libraries]
 photoview = { module = "io.getstream:photoview", version.ref = "photoview" }
@@ -89,6 +90,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
+firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebaseCrashlyticsKtx" }
 
 
 [plugins]
