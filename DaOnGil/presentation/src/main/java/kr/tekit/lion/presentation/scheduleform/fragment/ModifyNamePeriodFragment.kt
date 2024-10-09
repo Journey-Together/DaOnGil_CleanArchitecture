@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentModifyNamePeriodBinding
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import kr.tekit.lion.presentation.scheduleform.model.OriginalScheduleInfo
@@ -75,7 +76,10 @@ class ModifyNamePeriodFragment : Fragment(R.layout.fragment_modify_name_period) 
         }
         viewModel.endDate.observe(viewLifecycleOwner) {
             val pickedDates = viewModel.formatPickedDates(FormDateFormat.YYYY_MM_DD_E)
-            binding.buttonModifyNpfSetPeriod.text = pickedDates
+            binding.buttonModifyNpfSetPeriod.apply {
+                text = pickedDates
+                setAccessibilityText(viewModel.getSchedulePeriodAccessibilityText())
+            }
         }
     }
 
