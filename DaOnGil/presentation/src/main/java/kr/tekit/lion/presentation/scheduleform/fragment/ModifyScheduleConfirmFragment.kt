@@ -12,6 +12,7 @@ import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentModifyScheduleConfirmBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
@@ -71,7 +72,10 @@ class ModifyScheduleConfirmFragment : Fragment(R.layout.fragment_modify_schedule
         val period = viewModel.formatPickedDates(FormDateFormat.YYYY_MM_DD)
         binding.apply {
             textMcfTitle.text = getString(R.string.text_selected_title, title)
-            textMcfDate.text = getString(R.string.text_selected_period, period)
+            textMcfDate.apply {
+                text = getString(R.string.text_selected_period, period)
+                setAccessibilityText(viewModel.getSchedulePeriodAccessibilityText())
+            }
             buttonModifyFormSubmit.setOnClickListener {
                 submitPlan(it)
             }
