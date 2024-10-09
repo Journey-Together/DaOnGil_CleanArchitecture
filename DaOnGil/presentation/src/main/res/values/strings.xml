@@ -95,6 +95,8 @@
     <string name="text_schedule_detail_review">여행 후기</string>
     <string name="text_schedule_review">후기</string>
     <string name="text_schedule_satisfaction">일정 만족도</string>
+    <string name="accessibility_text_schedule_satisfaction_default">일정 만족도를 평가해주세요. 현재 5개의 별중 0개 표시됨</string>
+    <string name="accessibility_text_schedule_satisfaction">일정 만족도를 평가해주세요. 현재 5개의 별중 %s개 표시됨</string>
     <string name="text_schedule_report_review">신고하기</string>
     <string name="text_schedule_weather">예상 날씨</string>
     <string name="text_schedule_full">일정 보기</string>
@@ -345,6 +347,7 @@
     <string name="text_num_of_images">%d</string>
     <string name="text_num_of_max_images">/4</string>
     <string name="text_num_of_total_images">/%d</string>
+    <string name="accessibility_text_photo_add">후기 사진 첨부 버튼. 현재 첨부된 사진 수는 %s장이며, %s장 더 첨부 가능합니다</string>
     <string name="text_warning_review_content_empty">후기를 작성해 주세요</string>
 
     <string name="text_my_review_modify_btn">수정</string>
