@@ -99,6 +99,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeMainBinding.bind(view)
 
+        Log.d("HomeMainFragment", "onViewCreated called")
+
         viewModel.checkAppTheme()
 
         repeatOnViewStarted {
@@ -314,6 +316,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     }
 
     private fun checkLocationPermission(binding: FragmentHomeMainBinding) {
+        Log.d("HomeMainFragment", "checkLocationPermission called")
         if (ContextCompat.checkSelfPermission(
                 requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -321,11 +324,14 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         ) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
+            Log.d("HomeMainFragment", "checkLocationPermission 권한 없음 initLocationClient 호출")
             initLocationClient(binding)
         }
     }
 
     private fun initLocationClient(binding: FragmentHomeMainBinding) {
+        Log.d("HomeMainFragment", "initLocationClient called")
+
         // 위치 요청 설정
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 3600000)
             .setWaitForAccurateLocation(false)
@@ -341,11 +347,16 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
         // 위치 설정이 성공적으로 확인된 경우 위치 업데이트 시작
         task.addOnSuccessListener {
+            Log.d("HomeMainFragment", "위치 설정 성공1")
+
             if (isAdded && view != null) {
+                Log.d("HomeMainFragment", "위치 설정 성공2 view 확인")
+
                 fusedLocationProviderClient =
                     LocationServices.getFusedLocationProviderClient(requireContext())
                 startLocationUpdates(binding)
             } else {
+                Log.d("HomeMainFragment", "위치 설정 성공2 view null retryLocationPermissionCheck 호출")
                 retryLocationPermissionCheck(binding)
             }
         }.addOnFailureListener { // 위치 설정 확인 실패 시
@@ -354,17 +365,20 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     }
 
     private fun retryLocationPermissionCheck(binding: FragmentHomeMainBinding) {
-        binding.root.showSnackbar("위치를 설정 중입니다. 잠시 기다려주세요.")
+        Log.d("HomeMainFragment", "retryLocationPermissionCheck called")
 
         if (isAdded && view != null && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
                 Lifecycle.State.STARTED
             )
         ) {
+            Log.d("HomeMainFragment", "retryLocationPermissionCheck view 확인")
+
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                 delay(retryDelayMillis)
                 initLocationClient(binding)
             }
         } else if (!isAdded && view == null) {
+            Log.d("HomeMainFragment", "retryLocationPermissionCheck view null 기본값으로 설정")
             getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
             binding.root.showSnackbar("위치를 찾을 수 없어 기본값($DEFAULT_AREA $DEFAULT_SIGUNGU)으로 설정합니다")
         }
@@ -451,6 +465,9 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
     override fun onPause() {
         super.onPause()
+
+        Log.d("HomeMainFragment", "onPause called")
+
         // locationCallback이 초기화되었는지 확인 후 초기화 된 경우에만 removeLocationUpdates()를 호출
         if (::locationCallback.isInitialized) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
@@ -468,6 +485,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         areaCode: String,
         sigunguCode: String
     ) {
+        Log.d("HomeMainFragment", "getAroundPlaceInfo called")
+        Log.d("HomeMainFragment", "getAroundPlaceInfo - Current state: ${lifecycle.currentState}")
         viewModel.getPlaceMain(areaCode, sigunguCode)
 
         viewModel.locationMessage.observe(viewLifecycleOwner) { message ->
@@ -581,4 +600,35 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("HomeMainFragment", "onStart called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("HomeMainFragment", "onResume called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("HomeMainFragment", "onStop called")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("HomeMainFragment", "onDestroyView called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("HomeMainFragment", "onDestroy called")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("HomeMainFragment", "onDetach called")
+    }
+
 }
