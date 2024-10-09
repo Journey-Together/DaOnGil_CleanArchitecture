@@ -25,6 +25,7 @@ import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.ext.addDays
 import kr.tekit.lion.presentation.ext.calculateDaysUntilEndDate
+import kr.tekit.lion.presentation.ext.convertPeriodToDate
 import kr.tekit.lion.presentation.ext.convertStringToDate
 import kr.tekit.lion.presentation.ext.formatDateValue
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
@@ -244,6 +245,13 @@ class ModifyScheduleFormViewModel @Inject constructor(
         }
 
         _schedule.value = updatedSchedule.toList()
+    }
+
+    fun getSchedulePeriodAccessibilityText(): String {
+        val startDate = _startDate.value ?: Date()
+        val endDate = _endDate.value ?: Date()
+
+        return startDate.convertPeriodToDate(endDate)
     }
 
     fun getPlaceSearchResult(isNewRequest: Boolean) {
