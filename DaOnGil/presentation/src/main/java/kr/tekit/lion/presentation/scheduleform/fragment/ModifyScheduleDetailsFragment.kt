@@ -2,7 +2,6 @@ package kr.tekit.lion.presentation.scheduleform.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -11,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentModifyScheduleDetailsBinding
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.scheduleform.FormDateFormat
 import kr.tekit.lion.presentation.scheduleform.adapter.FormScheduleAdapter
@@ -41,7 +41,10 @@ class ModifyScheduleDetailsFragment : Fragment(R.layout.fragment_modify_schedule
             val title = viewModel.getScheduleTitle()
             textModifyDetailTitle.text = getString(R.string.text_selected_title, title)
             val period = viewModel.formatPickedDates(FormDateFormat.YYYY_MM_DD)
-            textModifyDetailDate.text = getString(R.string.text_selected_period, period)
+            textModifyDetailDate.apply {
+                text = getString(R.string.text_selected_period, period)
+                setAccessibilityText(viewModel.getSchedulePeriodAccessibilityText())
+            }
 
             buttonModiyDetailNextStep.setOnClickListener { view ->
                 val action =
