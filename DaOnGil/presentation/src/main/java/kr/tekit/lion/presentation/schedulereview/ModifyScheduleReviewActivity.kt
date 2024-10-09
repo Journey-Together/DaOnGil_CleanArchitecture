@@ -23,6 +23,7 @@ import kr.tekit.lion.domain.model.schedule.ReviewImage
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityModifyScheduleReviewBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.numberToKorean
 import kr.tekit.lion.presentation.ext.setImage
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.toAbsolutePath
@@ -32,6 +33,7 @@ import kr.tekit.lion.presentation.schedulereview.adapter.ModifyReviewImageAdapte
 import kr.tekit.lion.presentation.schedulereview.model.OriginalScheduleReviewInfo
 import kr.tekit.lion.presentation.schedulereview.vm.ModifyScheduleReviewViewModel
 import java.net.URI
+import java.util.Locale
 
 @AndroidEntryPoint
 class ModifyScheduleReviewActivity : AppCompatActivity() {
@@ -161,15 +163,40 @@ class ModifyScheduleReviewActivity : AppCompatActivity() {
                         scheduleReviewInfo.imageUrl
                     )
                 }
+                cardMsrSchedule.contentDescription = viewModel.getScheduleInfoAccessibilityText()
 
                 ratingbarMsr.rating = scheduleReviewInfo.grade
                 editMsrContent.setText(scheduleReviewInfo.content)
             }
         }
 
+        // RatingBar 현재 선택한 별의 갯수 알려주기
+        binding.ratingbarMsr.apply {
+            setOnRatingChangeListener { ratingBar, rating, fromUser ->
+                val formattedRating = String.format(Locale.KOREA, "%.1f", rating)
+
+                contentDescription = getString(
+                    R.string.accessibility_text_schedule_satisfaction,
+                    formattedRating
+                )
+            }
+        }
+
         viewModel.numOfImages.observe(this@ModifyScheduleReviewActivity) { numOfImages ->
-            binding.textMsrPhotoNum.text =
-                getString(R.string.text_num_of_images, numOfImages)
+            with(binding) {
+                textMsrPhotoNum.apply {
+                    text = getString(R.string.text_num_of_images, numOfImages)
+
+                    // 첨부 가능한 이미지 수
+                    val availability = 4 - numOfImages
+                    buttonMsrAddPhoto.contentDescription =
+                        getString(
+                            R.string.accessibility_text_photo_add,
+                            numOfImages.numberToKorean(),
+                            availability.numberToKorean()
+                        )
+                }
+            }
         }
     }
 
