@@ -36,6 +36,7 @@ import com.google.android.gms.location.Priority
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -105,14 +106,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 launch { collectAppTheme() }
                 launch { collectNetworkState(binding) }
                 launch { observeConnectivity(binding) }
-                launch {
-                    viewModel.userActivationState.collect {
-                        if (it) {
-                            if (isDarkTheme(resources.configuration)) showThemeGuideDialog()
-                            else showThemeSettingDialog()
-                        }
-                    }
-                }
+                launch { observeUserActivation() }
             }
         }
 
@@ -547,6 +541,15 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                         homeErrorTv.text = state.msg
                     }
                 }
+            }
+        }
+    }
+
+    private suspend fun observeUserActivation() {
+        viewModel.userActivationState.collect{ isFirstUser ->
+            if (isFirstUser){
+                if (isDarkTheme(resources.configuration)) showThemeGuideDialog()
+                else showThemeSettingDialog()
             }
         }
     }
