@@ -411,5 +411,5 @@
     <string name="text_my_review_img">후기 이미지 두 번 탭하면 이미지 보기 화면으로 이동합니다</string>
     <string name="text_my_review_modify_move">후기 수정하기</string>
     <string name="text_my_review_delete">후기 삭제하기</string>
-
+    <string name="text_common_error">오류가 발갱했습니다. 앱 종료 후 다시 시도해주세요.</string>
 </resources>

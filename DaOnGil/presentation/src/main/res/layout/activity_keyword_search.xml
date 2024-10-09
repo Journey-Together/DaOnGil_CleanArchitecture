@@ -27,7 +27,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_big3"
         android:layout_marginEnd="@dimen/margin_big4"
         app:hintEnabled="false"

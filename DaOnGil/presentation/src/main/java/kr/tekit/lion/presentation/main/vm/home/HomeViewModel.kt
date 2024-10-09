@@ -1,29 +1,28 @@
 package kr.tekit.lion.presentation.main.vm.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.tekit.lion.domain.exception.onError
+import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.AppTheme
 import kr.tekit.lion.domain.model.mainplace.AroundPlace
 import kr.tekit.lion.domain.model.mainplace.RecommendPlace
-import kr.tekit.lion.domain.repository.AppThemeRepository
-import kr.tekit.lion.domain.repository.PlaceRepository
-import kr.tekit.lion.domain.exception.onError
-import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.ActivationRepository
+import kr.tekit.lion.domain.repository.AppThemeRepository
 import kr.tekit.lion.domain.repository.AreaCodeRepository
 import kr.tekit.lion.domain.repository.NaverMapRepository
+import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.SigunguCodeRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
@@ -39,13 +38,7 @@ class HomeViewModel @Inject constructor(
     private val sigunguCodeRepository: SigunguCodeRepository,
     private val activationRepository: ActivationRepository,
     private val naverMapRepository: NaverMapRepository
-): ViewModel() {
-
-    init {
-        viewModelScope.launch {
-            checkUserActivation()
-        }
-    }
+) : ViewModel() {
 
     companion object {
         const val DEFAULT_AREA = "서울특별시"
@@ -60,32 +53,25 @@ class HomeViewModel @Inject constructor(
     val appTheme = _appTheme.asStateFlow()
 
     private val _aroundPlaceInfo = MutableLiveData<List<AroundPlace>>()
-    val aroundPlaceInfo : LiveData<List<AroundPlace>> = _aroundPlaceInfo
+    val aroundPlaceInfo: LiveData<List<AroundPlace>> = _aroundPlaceInfo
 
     private val _recommendPlaceInfo = MutableLiveData<List<RecommendPlace>>()
-    val recommendPlaceInfo : LiveData<List<RecommendPlace>> = _recommendPlaceInfo
+    val recommendPlaceInfo: LiveData<List<RecommendPlace>> = _recommendPlaceInfo
 
-    private val _userActivationState = MutableSharedFlow<Boolean>(replay = 1)
-    val userActivationState = _userActivationState.asSharedFlow()
+    val userActivationState = activationRepository.userActivation.shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000)
+    )
 
     private val _area = MutableLiveData<String>()
-    val area : LiveData<String> = _area
+    val area: LiveData<String> = _area
 
     private val _locationMessage = MutableLiveData<String>()
     val locationMessage: LiveData<String> get() = _locationMessage
 
-    fun checkAppTheme() = viewModelScope.launch{
+    fun checkAppTheme() = viewModelScope.launch {
         val appTheme = appThemeRepository.getAppTheme()
         _appTheme.value = appTheme
-    }
-
-    private fun checkUserActivation() {
-        viewModelScope.launch {
-            activationRepository.userActivation.collect {
-                val isUserActivated = it
-                _userActivationState.tryEmit(isUserActivated)
-            }
-        }
     }
 
     private fun setAppTheme(appTheme: AppTheme) {
@@ -98,7 +84,7 @@ class HomeViewModel @Inject constructor(
     // 상단 테마 토글 버튼 클릭시
     fun onClickThemeToggleButton(isDarkTheme: Boolean) {
 
-        val newAppTheme = when(_appTheme.value){
+        val newAppTheme = when (_appTheme.value) {
             AppTheme.LIGHT -> AppTheme.HIGH_CONTRAST
             AppTheme.HIGH_CONTRAST -> AppTheme.LIGHT
             AppTheme.SYSTEM -> {
@@ -138,18 +124,24 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getAreaCode(area:String) = suspendCoroutine { continutation ->
+    private suspend fun getAreaCode(area: String) = suspendCoroutine { continutation ->
         continutation.resume(areaCodeRepository.getAreaCodeByName(area))
     }
 
-    private suspend fun getSigunguCode(sigungu:String, areaCode: String) = suspendCoroutine { continutation ->
-        continutation.resume(sigunguCodeRepository.getSigunguCodeByVillageName(sigungu, areaCode))
-    }
+    private suspend fun getSigunguCode(sigungu: String, areaCode: String) =
+        suspendCoroutine { continutation ->
+            continutation.resume(
+                sigunguCodeRepository.getSigunguCodeByVillageName(
+                    sigungu,
+                    areaCode
+                )
+            )
+        }
 
     fun getUserLocationRegion(coords: String) = viewModelScope.launch {
         naverMapRepository.getReverseGeoCode(coords).onSuccess {
-            if(it.code == 0){
-                if(it.results[0].areaDetail.isNullOrEmpty()){
+            if (it.code == 0) {
+                if (it.results[0].areaDetail.isNullOrEmpty()) {
                     _area.value = it.results[0].area.toString()
                 } else {
                     _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
