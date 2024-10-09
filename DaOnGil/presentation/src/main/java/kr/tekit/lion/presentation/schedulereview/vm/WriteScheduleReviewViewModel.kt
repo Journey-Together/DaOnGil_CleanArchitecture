@@ -17,6 +17,9 @@ import kr.tekit.lion.domain.model.schedule.ReviewImg
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.convertPeriodToDate
+import kr.tekit.lion.presentation.ext.convertStringToDate
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -111,5 +114,17 @@ class WriteScheduleReviewViewModel @Inject constructor (
             }
             callback(success, requestFlag)
         }
+    }
+
+    fun getScheduleInfoAccessibilityText(): String {
+        val title = _briefSchedule.value?.title ?: ""
+
+        val startDate = _briefSchedule.value?.startDate?.convertStringToDate() ?: Date()
+        val endDate = _briefSchedule.value?.endDate?.convertStringToDate() ?: Date()
+        val periodString = startDate.convertPeriodToDate(endDate)
+
+        val scheduleInfo = listOf("여행 일정", title, periodString).joinToString(" ")
+
+        return scheduleInfo
     }
 }
