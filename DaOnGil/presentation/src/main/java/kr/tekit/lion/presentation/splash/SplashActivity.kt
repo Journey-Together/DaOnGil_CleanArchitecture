@@ -11,6 +11,7 @@ import kotlinx.coroutines.delay
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivitySplashBinding
 import kr.tekit.lion.presentation.ext.repeatOnStarted
+import kr.tekit.lion.presentation.ext.showInfinitySnackBar
 import kr.tekit.lion.presentation.login.OnBoardingActivity
 import kr.tekit.lion.presentation.main.MainActivity
 import kr.tekit.lion.presentation.splash.vm.SplashViewModel
@@ -28,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val videoPath = "android.resource://" + packageName + "/" + R.raw.splash_video
-        with(binding.splashVideoView){
+        with(binding.splashVideoView) {
 
             setVideoURI(Uri.parse(videoPath))
 
@@ -74,12 +75,9 @@ class SplashActivity : AppCompatActivity() {
             }
 
             repeatOnStarted {
-                viewModel.err.collect{
+                viewModel.errorState.collect {
                     if (it) {
-                        viewModel.whenUserActivationIsFirst {
-                            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
-                            finish()
-                        }
+                        showInfinitySnackBar(binding.root, getString(R.string.text_common_error))
                     }
                 }
             }
