@@ -15,6 +15,8 @@ import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.tekit.lion.domain.model.ScheduleDetail
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityScheduleDetailBinding
@@ -26,6 +28,8 @@ import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.home.DetailActivity
 import kr.tekit.lion.presentation.login.LoginActivity
 import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
+import kr.tekit.lion.presentation.observer.ConnectivityObserver
+import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.report.ReportActivity
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_EDIT
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_WRITE
@@ -49,6 +53,10 @@ class ScheduleDetailActivity : AppCompatActivity() {
 
     private val binding: ActivityScheduleDetailBinding by lazy{
         ActivityScheduleDetailBinding.inflate(layoutInflater)
+    }
+
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
     }
 
     private val scheduleReviewLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -80,9 +88,51 @@ class ScheduleDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
-        checkState()
         setSnackBar()
         observeDeleteMyPlan()
+
+        repeatOnStarted {
+            supervisorScope {
+                launch { collectScheduleDetailState() }
+                launch { observeConnectivity() }
+            }
+        }
+    }
+
+    private suspend fun observeConnectivity() {
+        with(binding){
+            connectivityObserver.getFlow().collect { connectivity ->
+                when(connectivity){
+                    ConnectivityObserver.Status.Available -> {
+                        scheduleDetailErrorLayout.visibility = View.GONE
+                        scheduleDetailLayout.visibility = View.VISIBLE
+                        val planId = intent.getLongExtra("planId", -1)
+                        when (viewModel.loginState.value) {
+                            is LogInState.LoggedIn -> {
+                                viewModel.getScheduleDetailInfo(planId)
+                            }
+                            is LogInState.LoginRequired -> {
+                                viewModel.getScheduleDetailInfoGuest(planId)
+                            }
+
+                            LogInState.Checking -> {
+                                return@collect
+                            }
+                        }
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        scheduleDetailErrorLayout.visibility = View.VISIBLE
+                        scheduleDetailLayout.visibility = View.GONE
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        scheduleDetailErrorMsg.text = msg
+                    }
+                }
+
+            }
+        }
     }
 
     private fun initView(isUser: Boolean, planId: Long) {
@@ -271,7 +321,7 @@ class ScheduleDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkState(){
+    private suspend fun collectScheduleDetailState(){
         val planId = intent.getLongExtra("planId", -1)
         with(binding){
             repeatOnStarted {
