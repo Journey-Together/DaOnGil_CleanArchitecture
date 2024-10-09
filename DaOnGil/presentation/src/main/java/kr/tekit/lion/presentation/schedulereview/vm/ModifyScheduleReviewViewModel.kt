@@ -15,8 +15,11 @@ import kr.tekit.lion.domain.model.schedule.ReviewImage
 import kr.tekit.lion.domain.repository.PlanRepository
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.convertPeriodToDate
+import kr.tekit.lion.presentation.ext.convertStringToDate
 import kr.tekit.lion.presentation.schedulereview.model.OriginalScheduleReviewInfo
 import java.net.URI
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -81,7 +84,7 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
         return currentValue in 0..3
     }
 
-    fun initOriginalScheduleReviewInto(originalReviewInfo: OriginalScheduleReviewInfo){
+    fun initOriginalScheduleReviewInto(originalReviewInfo: OriginalScheduleReviewInfo) {
         _originalReview.value = originalReviewInfo
         initReviewImages()
     }
@@ -160,5 +163,17 @@ data class ModifyScheduleReviewViewModel @Inject constructor(
         val newImages = _imageList.value?.subList(startPoint, currentImageSize) ?: emptyList()
 
         return newImages
+    }
+
+    fun getScheduleInfoAccessibilityText(): String {
+        val title = _originalReview.value?.title ?: ""
+
+        val startDate = _originalReview.value?.startDate?.convertStringToDate() ?: Date()
+        val endDate = _originalReview.value?.endDate?.convertStringToDate() ?: Date()
+        val periodString = startDate.convertPeriodToDate(endDate)
+
+        val scheduleInfo = listOf("여행 일정", title, periodString).joinToString(" ")
+
+        return scheduleInfo
     }
 }
