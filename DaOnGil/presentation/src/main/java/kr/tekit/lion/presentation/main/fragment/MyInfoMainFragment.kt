@@ -29,8 +29,6 @@ import kr.tekit.lion.presentation.main.dialog.ConfirmDialog
 import kr.tekit.lion.presentation.main.vm.myinfo.MyInfoMainViewModel
 import kr.tekit.lion.presentation.myinfo.MyInfoActivity
 import kr.tekit.lion.presentation.myreview.MyReviewActivity
-import kr.tekit.lion.presentation.observer.ConnectivityObserver
-import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.tekit.lion.presentation.setting.PolicyActivity
 import kr.tekit.lion.presentation.splash.model.LogInState
 
