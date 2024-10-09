@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.BookmarkedPlace
+import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemFormBookmarkedPlacesBinding
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 
 class FormBookmarkedPlacesAdapter(
     private val bookmarkedPlaces: List<BookmarkedPlace>,
@@ -39,7 +41,17 @@ class FormBookmarkedPlacesAdapter(
         }
 
         fun bind(place: BookmarkedPlace) {
-            binding.buttonBookmarkedPlace.text = place.bookmarkedPlaceName
+            val bookmarkedPlace = place.bookmarkedPlaceName
+
+            binding.buttonBookmarkedPlace.apply {
+                text = bookmarkedPlace
+                setAccessibilityText(
+                    itemView.context.getString(
+                        R.string.accessibility_text_add_bookmarked_place,
+                        bookmarkedPlace
+                    )
+                )
+            }
         }
     }
 }

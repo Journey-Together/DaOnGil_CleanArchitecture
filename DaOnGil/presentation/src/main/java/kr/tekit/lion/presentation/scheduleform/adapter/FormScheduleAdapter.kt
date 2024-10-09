@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
+import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemFormScheduleBinding
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 
 class FormScheduleAdapter(
     private val dailyScheduleList: List<DailySchedule>,
@@ -54,6 +56,13 @@ class FormScheduleAdapter(
                 onRemoveButtonClickListener
             )
             binding.recyclerViewFormPlaces.adapter = formPlaceAdapter
+
+            binding.buttonFormAddPlace.setAccessibilityText(
+                itemView.context.getString(
+                    R.string.accessibility_text_schedule_form_add_place,
+                    dailySchedule.dailyDate
+                )
+            )
 
             binding.viewFormTopDeco.visibility = when (absoluteAdapterPosition) {
                 0 -> View.INVISIBLE

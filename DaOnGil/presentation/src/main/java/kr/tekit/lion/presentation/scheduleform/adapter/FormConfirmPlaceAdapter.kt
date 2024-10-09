@@ -3,8 +3,10 @@ package kr.tekit.lion.presentation.scheduleform.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.recyclerview.widget.RecyclerView
 import kr.tekit.lion.domain.model.scheduleform.FormPlace
+import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ItemFormEmptyBinding
 import kr.tekit.lion.presentation.databinding.ItemFormPlaceBinding
 import kr.tekit.lion.presentation.ext.setImageSmall
@@ -69,6 +71,23 @@ class FormConfirmPlaceAdapter(private val places: List<FormPlace>) :
                     imageFormPlaceThumbnail.context.setImageSmall(
                         imageFormPlaceThumbnail, it
                     )
+                }
+
+                textFormPlaceName.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+
+                cardFormPlace.accessibilityDelegate = object : View.AccessibilityDelegate() {
+                    override fun onInitializeAccessibilityNodeInfo(
+                        host: View,
+                        info: AccessibilityNodeInfo
+                    ) {
+                        super.onInitializeAccessibilityNodeInfo(host, info)
+
+                        info.contentDescription = itemView.context.getString(
+                            R.string.accessibility_text_place,
+                            place.placeCategory,
+                            place.placeName
+                        )
+                    }
                 }
             }
         }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/navi_background"
-    tools:context=".scheduleform.fragment.NameAndPeriodFormFragment" >
+    tools:context=".scheduleform.fragment.NameAndPeriodFormFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_npf"
@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationContentDescription="@string/text_back_button"
         app:navigationIcon="@drawable/back_icon">
 
         <TextView
@@ -76,6 +77,7 @@
         android:layout_marginStart="@dimen/margin_basic"
         android:layout_marginTop="@dimen/margin_big1"
         android:fontFamily="@font/pretendard_medium"
+        android:labelFor="@id/text_input_npf_title"
         android:text="@string/text_schedule_form_name"
         android:textSize="@dimen/font_big1"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,6 +114,7 @@
             android:inputType="text"
             android:maxLength="15"
             android:maxLines="1"
+            android:textColorHint="@color/text_tertiary"
             android:textSize="@dimen/font_big3" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,6 +126,7 @@
         android:layout_marginTop="@dimen/margin_big1"
         android:enabled="false"
         android:fontFamily="@font/pretendard_medium"
+        android:labelFor="@id/button_npf_set_period"
         android:text="@string/text_schedule_form_period"
         android:textSize="@dimen/font_big1"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,10 +144,11 @@
         android:gravity="start"
         android:hint="@string/hint_schedule_form_period"
         android:padding="@dimen/margin_big2"
+        android:textColorHint="@color/text_tertiary"
         android:textSize="@dimen/font_big2"
         app:cornerRadius="10dp"
         app:icon="@drawable/calendar_icon"
-        app:iconTint="@color/text_input_start_icon_tint"
+        app:iconTint="@color/review_date_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_npf_period_title" />
@@ -156,7 +161,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/background_radius_10"
-        android:fontFamily="@font/pretendard_bold"
+        android:fontFamily="@font/pretendard_extrabold"
         android:text="@string/text_schedule_form_next"
         android:textSize="@dimen/font_big2"
         app:layout_constraintBottom_toBottomOf="parent"

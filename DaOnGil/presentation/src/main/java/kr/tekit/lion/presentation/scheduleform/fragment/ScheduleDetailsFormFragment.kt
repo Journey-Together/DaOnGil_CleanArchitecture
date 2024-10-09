@@ -10,7 +10,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.tekit.lion.domain.model.scheduleform.DailySchedule
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.FragmentScheduleDetailsFormBinding
+import kr.tekit.lion.presentation.ext.setAccessibilityText
 import kr.tekit.lion.presentation.home.DetailActivity
+import kr.tekit.lion.presentation.scheduleform.FormDateFormat.YYYY_MM_DD
 import kr.tekit.lion.presentation.scheduleform.adapter.FormScheduleAdapter
 import kr.tekit.lion.presentation.scheduleform.vm.ScheduleFormViewModel
 
@@ -41,8 +43,11 @@ class ScheduleDetailsFormFragment : Fragment(R.layout.fragment_schedule_details_
         with(binding) {
             val title = viewModel.getScheduleTitle()
             textSdfTitle.text = getString(R.string.text_selected_title, title)
-            val period = viewModel.getSchedulePeriod()
-            textSdfDate.text = getString(R.string.text_selected_period, period)
+            val period = viewModel.getSchedulePeriod(YYYY_MM_DD)
+            textSdfDate.apply {
+                text = getString(R.string.text_selected_period, period)
+                setAccessibilityText(viewModel.getSchedulePeriodAccessibilityText())
+            }
 
             buttonSdfNextStep.setOnClickListener {
                 navigateToConfirmScreen()
