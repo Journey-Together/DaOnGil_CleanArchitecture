@@ -52,29 +52,32 @@ class SelectInterestFragment : Fragment(R.layout.fragment_select_interest) {
 
         repeatOnViewStarted {
             supervisorScope {
-                launch {
-                    viewModel.networkState.collect {
-                        when(it) {
-                            is NetworkState.Loading -> return@collect
-                            is NetworkState.Error -> {
-                                binding.progressBar.visibility = View.GONE
-                                Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
-                            }
-                            is NetworkState.Success -> {
-                                binding.progressBar.visibility = View.GONE
-                                startActivity(Intent(requireActivity(), MainActivity::class.java))
-                                requireActivity().finish()
-                            }
-                        }
-                    }
-                }
+                launch { collectNetworkState(binding) }
+                launch { collectConcernType(binding) }
+            }
+        }
+    }
 
-                launch {
-                    viewModel.concernType.collectLatest { concernType ->
-                        updateUI(binding, concernType)
-                    }
+    private suspend fun collectNetworkState(binding: FragmentSelectInterestBinding){
+        viewModel.networkState.collect {
+            when(it) {
+                is NetworkState.Loading -> return@collect
+                is NetworkState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_SHORT).show()
+                }
+                is NetworkState.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    requireActivity().finish()
                 }
             }
+        }
+    }
+
+    private suspend fun collectConcernType(binding: FragmentSelectInterestBinding) {
+        viewModel.concernType.collectLatest { concernType ->
+            updateUI(binding, concernType)
         }
     }
 

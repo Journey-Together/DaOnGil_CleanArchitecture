@@ -47,7 +47,6 @@ import kr.tekit.lion.presentation.myinfo.vm.MyInfoViewModel
 import kr.tekit.lion.presentation.observer.ConnectivityObserver
 import kr.tekit.lion.presentation.observer.NetworkConnectivityObserver
 
-
 @AndroidEntryPoint
 class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modify) {
     private val viewModel: MyInfoViewModel by activityViewModels()
@@ -77,9 +76,9 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         }
     }
 
-    private suspend fun collectPersonalModifyState(binding: FragmentPersonalInfoModifyBinding) {
-        viewModel.personalModifyState.collect {
-            when (it) {
+    private fun collectPersonalModifyState(binding: FragmentPersonalInfoModifyBinding) {
+        viewModel.personalModifyState.observe(viewLifecycleOwner) { state ->
+            when (state) {
                 is NetworkState.Loading ->{
                     binding.progressBar.visibility = View.VISIBLE
                 }
@@ -99,7 +98,7 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
 
                 is NetworkState.Error -> {
                     binding.progressBar.visibility = View.GONE
-                    requireContext().showSnackbar(binding.root, it.msg)
+                    requireContext().showSnackbar(binding.root, state.msg)
                 }
             }
         }

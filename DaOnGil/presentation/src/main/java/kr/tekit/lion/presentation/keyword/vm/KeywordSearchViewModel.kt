@@ -29,6 +29,7 @@ import kr.tekit.lion.domain.model.search.findKeyword
 import kr.tekit.lion.domain.model.search.toRecentlySearchKeyword
 import kr.tekit.lion.domain.repository.PlaceRepository
 import kr.tekit.lion.domain.repository.RecentlySearchKeywordRepository
+import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.keyword.model.KeywordInputState
 import kr.tekit.lion.presentation.observer.ConnectivityObserver
@@ -40,7 +41,7 @@ import javax.inject.Inject
 class KeywordSearchViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
     private val recentlySearchKeywordRepository: RecentlySearchKeywordRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     init {
         viewModelScope.launch {
@@ -79,7 +80,7 @@ class KeywordSearchViewModel @Inject constructor(
                 flow { }
             }
         }
-        .flowOn(Dispatchers.IO)
+        .flowOn(recordExceptionHandler)
         .catch { e ->
             submitThrowableState(e)
         }.retryWhen{ cause, attempt ->

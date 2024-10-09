@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.login.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +11,7 @@ import kr.tekit.lion.domain.model.ConcernType
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.MemberRepository
+import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.login.model.InterestType
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class InterestViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
-): ViewModel() {
+): BaseViewModel() {
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
@@ -51,11 +51,13 @@ class InterestViewModel @Inject constructor(
         _concernType.update { updatedInterests }
     }
 
-    fun onClickSubmitButton() = viewModelScope.launch{
-        memberRepository.updateConcernType(_concernType.value).onSuccess {
-            networkErrorDelegate.handleNetworkSuccess()
-        }.onError {
-            networkErrorDelegate.handleNetworkError(it)
+    fun onClickSubmitButton() {
+        viewModelScope.launch(recordExceptionHandler){
+            memberRepository.updateConcernType(_concernType.value).onSuccess {
+                networkErrorDelegate.handleNetworkSuccess()
+            }.onError {
+                networkErrorDelegate.handleNetworkError(it)
+            }
         }
     }
 }

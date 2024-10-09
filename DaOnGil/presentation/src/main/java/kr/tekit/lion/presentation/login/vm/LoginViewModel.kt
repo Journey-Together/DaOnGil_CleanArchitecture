@@ -1,6 +1,5 @@
 package kr.tekit.lion.presentation.login.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +10,7 @@ import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.model.hasAnyTrue
 import kr.tekit.lion.domain.repository.AuthRepository
 import kr.tekit.lion.domain.repository.MemberRepository
+import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val memberRepository: MemberRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
@@ -31,10 +31,12 @@ class LoginViewModel @Inject constructor(
     private val _isFirstUser = MutableStateFlow(false)
     val isFirstUser = _isFirstUser.asStateFlow()
 
-    fun onCompleteLogIn(type: String, accessToken: String, refreshToken: String) = viewModelScope.launch {
-        authRepository.signIn(type, accessToken, refreshToken)
-        checkIsFirstUser()
-        _sigInInUiState.value = true
+    fun onCompleteLogIn(type: String, accessToken: String, refreshToken: String){
+        viewModelScope.launch(recordExceptionHandler) {
+            authRepository.signIn(type, accessToken, refreshToken)
+            checkIsFirstUser()
+            _sigInInUiState.value = true
+        }
     }
 
     private suspend fun checkIsFirstUser(){

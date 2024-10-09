@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import kr.tekit.lion.domain.exception.onError
 import kr.tekit.lion.domain.exception.onSuccess
 import kr.tekit.lion.domain.repository.PlaceRepository
+import kr.tekit.lion.presentation.base.BaseViewModel
 import kr.tekit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.tekit.lion.presentation.delegate.NetworkState
 import kr.tekit.lion.presentation.keyword.model.KeywordSearch
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
-): ViewModel(){
+): BaseViewModel(){
 
     init {
         loadPlace()
@@ -41,7 +42,7 @@ class SearchResultViewModel @Inject constructor(
     private val _isLastPage = MutableStateFlow(false)
     val isLastPage get() = _isLastPage.asStateFlow()
 
-    private fun loadPlace() = viewModelScope.launch{
+    private fun loadPlace() = viewModelScope.launch(recordExceptionHandler){
         query.collect {
             placeRepository.getSearchPlaceResultByList(
                 it.toDomainModel()
