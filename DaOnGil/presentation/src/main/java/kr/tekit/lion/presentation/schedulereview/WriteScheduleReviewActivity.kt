@@ -23,6 +23,7 @@ import kr.tekit.lion.domain.model.schedule.NewScheduleReview
 import kr.tekit.lion.presentation.R
 import kr.tekit.lion.presentation.databinding.ActivityWriteScheduleReviewBinding
 import kr.tekit.lion.presentation.delegate.NetworkState
+import kr.tekit.lion.presentation.ext.numberToKorean
 import kr.tekit.lion.presentation.ext.setImage
 import kr.tekit.lion.presentation.ext.showSnackbar
 import kr.tekit.lion.presentation.ext.toAbsolutePath
@@ -31,6 +32,7 @@ import kr.tekit.lion.presentation.schedule.ResultCode
 import kr.tekit.lion.presentation.schedule.ResultCode.RESULT_REVIEW_WRITE
 import kr.tekit.lion.presentation.schedulereview.adapter.WriteReviewImageAdapter
 import kr.tekit.lion.presentation.schedulereview.vm.WriteScheduleReviewViewModel
+import java.util.Locale
 
 @AndroidEntryPoint
 class WriteScheduleReviewActivity : AppCompatActivity() {
@@ -103,13 +105,15 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
         with(binding) {
             lifecycleScope.launch {
                 viewModel.networkState.collectLatest { state ->
-                    when(state) {
+                    when (state) {
                         is NetworkState.Loading -> {
                             progressBarWsr.visibility = View.VISIBLE
                         }
+
                         is NetworkState.Success -> {
                             progressBarWsr.visibility = View.GONE
                         }
+
                         is NetworkState.Error -> {
                             progressBarWsr.visibility = View.GONE
                             val errorMsg = state.msg.replace("\n ".toRegex(), "\n")
@@ -142,11 +146,36 @@ class WriteScheduleReviewActivity : AppCompatActivity() {
                     imageWsrScheduleThumbnail,
                     briefSchedule?.imageUrl
                 )
+
+                cardWsrSchedule.contentDescription = viewModel.getScheduleInfoAccessibilityText()
+            }
+        }
+
+        // RatingBar 현재 선택한 별의 갯수 알려주기
+        binding.ratingbarWsr.apply {
+            setOnRatingChangeListener { ratingBar, rating, fromUser ->
+                val formattedRating = String.format(Locale.KOREA, "%.1f", rating)
+
+                contentDescription = getString(
+                    R.string.accessibility_text_schedule_satisfaction,
+                    formattedRating
+                )
             }
         }
         viewModel.numOfImages.observe(this@WriteScheduleReviewActivity) { numOfImgs ->
-            binding.apply {
-                textWsrPhotoNum.text = getString(R.string.text_num_of_images, numOfImgs)
+            with(binding) {
+                textWsrPhotoNum.apply {
+                    text = getString(R.string.text_num_of_images, numOfImgs)
+
+                    // 첨부 가능한 이미지 수 안내
+                    val availability = 4 - numOfImgs
+                    buttonWsrAddPhoto.contentDescription =
+                        getString(
+                            R.string.accessibility_text_photo_add,
+                            numOfImgs.numberToKorean(),
+                            availability.numberToKorean()
+                        )
+                }
             }
         }
     }
