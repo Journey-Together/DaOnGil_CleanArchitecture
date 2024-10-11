@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/onSearchFragment"
-        android:name="kr.tekit.lion.presentation.keyword.fragment.OnSearchFragment"
+        android:name="kr.techit.lion.presentation.keyword.fragment.OnSearchFragment"
         android:label="fragment_on_search"
         tools:layout="@layout/fragment_on_search" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"
-        android:name="kr.tekit.lion.presentation.keyword.fragment.SearchResultFragment"
+        android:name="kr.techit.lion.presentation.keyword.fragment.SearchResultFragment"
         android:label="fragment_search_result"
         tools:layout="@layout/fragment_search_result" >
         <action

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeMainFragment"
-        android:name="kr.tekit.lion.presentation.main.fragment.HomeMainFragment"
+        android:name="kr.techit.lion.presentation.main.fragment.HomeMainFragment"
         android:label="fragment_home_main"
         tools:layout="@layout/fragment_home_main" >
         <action
@@ -21,22 +21,22 @@
     </fragment>
     <fragment
         android:id="@+id/searchPlaceMainFragment"
-        android:name="kr.tekit.lion.presentation.main.fragment.SearchPlaceMainFragment"
+        android:name="kr.techit.lion.presentation.main.fragment.SearchPlaceMainFragment"
         android:label="fragment_search_place_main"
         tools:layout="@layout/fragment_search_place_main" />
     <fragment
         android:id="@+id/emergencyMainFragment"
-        android:name="kr.tekit.lion.presentation.main.fragment.EmergencyMainFragment"
+        android:name="kr.techit.lion.presentation.main.fragment.EmergencyMainFragment"
         android:label="fragment_emrgency_main"
         tools:layout="@layout/fragment_emergency_main" />
     <fragment
         android:id="@+id/myInfoMainFragment"
-        android:name="kr.tekit.lion.presentation.main.fragment.MyInfoMainFragment"
+        android:name="kr.techit.lion.presentation.main.fragment.MyInfoMainFragment"
         android:label="fragment_my_info_main"
         tools:layout="@layout/fragment_my_info_main" />
     <fragment
         android:id="@+id/scheduleMainFragment"
-        android:name="kr.tekit.lion.presentation.main.fragment.ScheduleMainFragment"
+        android:name="kr.techit.lion.presentation.main.fragment.ScheduleMainFragment"
         android:label="fragment_schedule_main"
         tools:layout="@layout/fragment_schedule_main" />
 </navigation>

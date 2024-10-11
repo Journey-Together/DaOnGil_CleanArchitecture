@@ -6,7 +6,7 @@
     app:startDestination="@id/myReviewFragment">
     <fragment
         android:id="@+id/myReviewFragment"
-        android:name="kr.tekit.lion.presentation.myreview.fragment.MyReviewFragment"
+        android:name="kr.techit.lion.presentation.myreview.fragment.MyReviewFragment"
         android:label="fragment_my_review"
         tools:layout="@layout/fragment_my_review" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/myReviewModifyFragment"
-        android:name="kr.tekit.lion.presentation.myreview.fragment.MyReviewModifyFragment"
+        android:name="kr.techit.lion.presentation.myreview.fragment.MyReviewModifyFragment"
         android:label="fragment_my_review_modify"
         tools:layout="@layout/fragment_my_review_modify" >
     </fragment>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/modifyNamePeriodFragment"
-        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifyNamePeriodFragment"
+        android:name="kr.techit.lion.presentation.scheduleform.fragment.ModifyNamePeriodFragment"
         android:label="@string/modify_schedule"
         tools:layout="@layout/fragment_modify_name_period" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/modifyScheduleDetailsFragment"
-        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifyScheduleDetailsFragment"
+        android:name="kr.techit.lion.presentation.scheduleform.fragment.ModifyScheduleDetailsFragment"
         android:label="@string/modify_schedule"
         tools:layout="@layout/fragment_modify_schedule_details" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/modifySearchFragment"
-        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifySearchFragment"
+        android:name="kr.techit.lion.presentation.scheduleform.fragment.ModifySearchFragment"
         android:label="@string/search_places_to_add"
         tools:layout="@layout/fragment_form_search" >
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/modifyScheduleConfirmFragment"
-        android:name="kr.tekit.lion.presentation.scheduleform.fragment.ModifyScheduleConfirmFragment"
+        android:name="kr.techit.lion.presentation.scheduleform.fragment.ModifyScheduleConfirmFragment"
         android:label="@string/modify_schedule"
         tools:layout="@layout/fragment_modify_schedule_confirm" >
         <action

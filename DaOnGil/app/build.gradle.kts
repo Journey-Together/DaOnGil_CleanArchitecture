@@ -19,12 +19,11 @@ val naverClientSecret = properties.getProperty("naver_client_secret") ?: ""
 val naverClientName = properties.getProperty("naver_client_name") ?: ""
 
 android {
-
-    namespace = "kr.tekit.lion.daongil_cleanarchitecture"
+    namespace = "kr.techit.lion.daongil_cleanarchitecture"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "kr.tekit.lion.daongil_cleanarchitecture"
+        applicationId = "kr.techit.lion.daongil_cleanarchitecture"
         minSdk = 26
         //noinspection OldTargetApi,EditedTargetSdkVersion
         targetSdk = 34

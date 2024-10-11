@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "kr.tekit.lion.presentation"
+    namespace = "kr.techit.lion.presentation"
     compileSdk = 34
 
     defaultConfig {

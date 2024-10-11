@@ -22,7 +22,7 @@ val naverMapId = properties.getProperty("naver_map_id") ?: ""
 val naverMapSecret = properties.getProperty("naver_map_secret") ?: ""
 
 android {
-    namespace = "kr.tekit.lion.data"
+    namespace = "kr.techit.lion.data"
     compileSdk = 34
 
     room {
