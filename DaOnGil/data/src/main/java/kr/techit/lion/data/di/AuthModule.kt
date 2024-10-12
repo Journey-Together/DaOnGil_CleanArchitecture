@@ -4,11 +4,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kr.techit.lion.data.BuildConfig
 import kr.techit.lion.data.datasource.AuthDataSource
 import kr.techit.lion.data.datasource.TokenDataSource
 import kr.techit.lion.data.service.AuthAuthenticator
 import kr.techit.lion.data.service.AuthInterceptor
+import kr.techit.lion.data.BuildConfig
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
