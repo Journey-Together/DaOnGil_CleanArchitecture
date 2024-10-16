@@ -29,11 +29,13 @@ class PharmacyMapViewModel @Inject constructor(
     private val _pharmacyMapInfo = MutableLiveData<List<PharmacyMapInfo>>()
     val pharmacyMapInfo : LiveData<List<PharmacyMapInfo>> = _pharmacyMapInfo
 
+    val networkState get() = networkErrorDelegate.networkState
+
     fun getPharmacyMapInfo(Q0: String?, Q1: String?) =
         viewModelScope.launch {
-            val areaDetail = if (Q0 == "세종특별자치시") null else Q1
             pharmacyRepository.getPharmacy(Q0, Q1).onSuccess {
                 _pharmacyMapInfo.value = it
+                networkErrorDelegate.handleNetworkSuccess()
             }.onError {
                 networkErrorDelegate.handleNetworkError(it)
             }
@@ -42,7 +44,10 @@ class PharmacyMapViewModel @Inject constructor(
         naverMapRepository.getReverseGeoCode(coords).onSuccess {
             if(it.code == 0){
                 _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
+            } else {
+                _area.value = "서울특별시 중구"
             }
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
