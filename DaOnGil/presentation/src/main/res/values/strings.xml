@@ -143,7 +143,8 @@
     <string name="text_browse_public_schedule">공개 일정 둘러보기</string>
 
     <string name="title_emergency_area_dialog">다른 지역 정보가 궁금하신가요?</string>
-    <string name="subtitle_emergency_area_dialog">내가 여행하고 싶은 지역으로 설정을 변경해보세요</string>
+    <string name="subtitle_emergency_area_dialog">내가 여행하고 싶은 지역으로\n 시도와 시군구 모두 선택해주세요</string>
+    <string name="content_emergency_area_dialog">시도와 시군구 모두 선택해주세요</string>
     <string name="text_relation">관계</string>
     <string name="text_birth">생년월일</string>
     <string name="text_plz_enter_nickname">닉네임을 입력해주세요</string>
