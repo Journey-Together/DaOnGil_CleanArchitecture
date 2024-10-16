@@ -10,6 +10,7 @@ import kr.techit.lion.domain.exception.onError
 import kr.techit.lion.domain.exception.onSuccess
 import kr.techit.lion.domain.model.EmergencyMapInfo
 import kr.techit.lion.domain.repository.NaverMapRepository
+import kr.techit.lion.domain.usecase.base.onError
 import kr.techit.lion.domain.usecase.base.onSuccess
 import kr.techit.lion.domain.usecase.emergency.GetEmergencyMapInfoUseCase
 import kr.techit.lion.presentation.delegate.NetworkErrorDelegate
@@ -30,11 +31,16 @@ class EmergencyMapViewModel @Inject constructor(
     private val _emergencyMapInfo = MutableLiveData<List<EmergencyMapInfo>>()
     val emergencyMapInfo: LiveData<List<EmergencyMapInfo>> = _emergencyMapInfo
 
+    val networkState get() = networkErrorDelegate.networkState
+
     fun getUserLocationRegion(coords: String) = viewModelScope.launch {
         naverMapRepository.getReverseGeoCode(coords).onSuccess {
             if(it.code == 0){
                 _area.value = "${it.results[0].area} ${it.results[0].areaDetail}"
+            } else {
+                _area.value = "서울특별시 중구"
             }
+            networkErrorDelegate.handleNetworkSuccess()
         }.onError {
             networkErrorDelegate.handleNetworkError(it)
         }
@@ -44,6 +50,11 @@ class EmergencyMapViewModel @Inject constructor(
         viewModelScope.launch {
             getEmergencyMapInfoUseCase(area, areaDetail).onSuccess {
                 _emergencyMapInfo.value = it
+                networkErrorDelegate.handleNetworkSuccess()
+            }.onError {
+                networkErrorDelegate.handleNetworkError(
+                    networkErrorDelegate.handleUsecaseNetworkError(it)
+                )
             }
         }
 
