@@ -7,6 +7,7 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,15 +32,20 @@ import com.naver.maps.map.util.FusedLocationSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.techit.lion.domain.model.AedMapInfo
 import kr.techit.lion.domain.model.EmergencyMapInfo
 import kr.techit.lion.domain.model.HospitalMapInfo
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.ActivityEmergencyMapBinding
+import kr.techit.lion.presentation.delegate.NetworkState
 import kr.techit.lion.presentation.emergency.fragment.EmergencyAreaDialog
 import kr.techit.lion.presentation.emergency.fragment.EmergencyBottomSheet
 import kr.techit.lion.presentation.emergency.vm.EmergencyMapViewModel
+import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.ext.showPermissionSnackBar
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class EmergencyMapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -49,6 +55,10 @@ class EmergencyMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private val viewModel: EmergencyMapViewModel by viewModels()
+
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
+    }
 
     private lateinit var launcherForPermission: ActivityResultLauncher<Array<String>>
 
@@ -103,8 +113,74 @@ class EmergencyMapActivity : AppCompatActivity(), OnMapReadyCallback {
         settingDialog()
         setAreaUi()
         setToolbar()
+
+        repeatOnStarted {
+            supervisorScope {
+                launch { observeConnectivity() }
+                launch { collectEmergencyMapState() }
+            }
+        }
     }
 
+    private suspend fun observeConnectivity() {
+        with(binding){
+            connectivityObserver.getFlow().collect { connectivity ->
+                when(connectivity){
+                    ConnectivityObserver.Status.Available -> {
+                        emergencyMapErrorLayout.visibility = View.GONE
+                        emergencyMapErrorProgressBar.visibility = View.GONE
+                        emergencyMapLayout.visibility = View.VISIBLE
+                        emergencyMapProgressBar.visibility = View.VISIBLE
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        emergencyMapErrorLayout.visibility = View.VISIBLE
+                        emergencyMapErrorProgressBar.visibility = View.GONE
+                        emergencyMapLayout.visibility = View.GONE
+                        emergencyMapProgressBar.visibility = View.GONE
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        emergencyMapErrorMsg.text = msg
+
+                        val emergencyAreaDialog = this@EmergencyMapActivity.supportFragmentManager.findFragmentByTag("EmergencyAreaDialog") as? EmergencyAreaDialog
+                        emergencyAreaDialog.let { dialog ->
+                            if (dialog?.isVisible == true) {
+                                dialog.dismiss()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun collectEmergencyMapState() {
+        with(binding){
+            viewModel.networkState.collect { networksState ->
+                when(networksState){
+                    is NetworkState.Loading -> {
+                        emergencyMapProgressBar.visibility = View.GONE
+                        emergencyMapErrorProgressBar.visibility = View.VISIBLE
+                        emergencyMapErrorLayout.visibility = View.GONE
+                    }
+                    is NetworkState.Success -> {
+                        emergencyMapProgressBar.visibility = View.VISIBLE
+                        emergencyMapLayout.visibility = View.VISIBLE
+                        emergencyMapErrorProgressBar.visibility = View.GONE
+                        emergencyMapErrorLayout.visibility = View.GONE
+                    }
+                    is NetworkState.Error -> {
+                        emergencyMapProgressBar.visibility = View.GONE
+                        emergencyMapLayout.visibility = View.GONE
+                        emergencyMapErrorProgressBar.visibility = View.GONE
+                        emergencyMapErrorLayout.visibility = View.VISIBLE
+                        emergencyMapErrorMsg.text = networksState.msg
+                    }
+                }
+            }
+        }
+    }
     private fun setToolbar(){
         binding.toolbarEmergencyMap.setNavigationOnClickListener {
             finish()

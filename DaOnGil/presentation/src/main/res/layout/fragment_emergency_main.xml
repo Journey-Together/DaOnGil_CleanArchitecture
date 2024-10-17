@@ -25,154 +25,208 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="7dp"
-            tools:context=".presentation.main.fragment.EmergencyMainFragment">
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="29dp"
-                android:fontFamily="@font/pretendard_bold"
-                android:paddingStart="17dp"
-                android:text="@string/text_emergency_main"
-                android:textColor="@color/text_secondary"
-                android:textSize="24dp" />
+            <ProgressBar
+                android:id="@+id/emergencyMainProgressBar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:indeterminateDrawable="@drawable/rotate_progress_bar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarSchedule"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_big4"
-                android:fontFamily="@font/pretendard_regular"
-                android:paddingStart="17dp"
-                android:text="@string/text_emergency_second"
-                android:textColor="@color/text_secondary"
-                android:textSize="@dimen/font_big3" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/emrAedCard"
+            <LinearLayout
+                android:id="@+id/emergencyMainErrorLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="@dimen/margin_big1"
-                android:layout_marginRight="17dp"
-                android:backgroundTint="@color/item_background"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="15dp"
-                app:strokeColor="@color/item_background">
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarSchedule"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-                <LinearLayout
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    app:srcCompat="@drawable/onboarding_clover" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_big2"
-                        android:src="@drawable/emer_aed_main_icon" />
+                <TextView
+                    android:id="@+id/emergencyMainErrorMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big4"
+                    android:lineSpacingMultiplier="1.2"
+                    android:fontFamily="@font/cafe24_oneprettynight"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textSize="@dimen/font_big1" />
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:text="@string/text_emergency_aed"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="22dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_small1"
-                        android:fontFamily="@font/pretendard_regular"
-                        android:text="@string/text_emergency_aed_first"
-                        android:textColor="@color/text_tertiary"
-                        android:textSize="@dimen/font_small1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_small2"
-                        android:layout_marginBottom="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_regular"
-                        android:text="@string/text_emergency_aed_second"
-                        android:textColor="@color/text_tertiary"
-                        android:textSize="@dimen/font_small1" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/pharmacyCard"
+            <LinearLayout
+                android:id="@+id/emergencyMainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="@dimen/margin_big2"
-                android:layout_marginRight="17dp"
-                android:layout_marginBottom="30dp"
-                android:backgroundTint="@color/item_background"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="15dp"
-                app:strokeColor="@color/item_background">
+                android:orientation="vertical"
+                android:padding="7dp"
+                android:visibility="gone"
+                tools:context=".presentation.main.fragment.EmergencyMainFragment">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="29dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:paddingStart="17dp"
+                    android:text="@string/text_emergency_main"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big4"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:paddingStart="17dp"
+                    android:text="@string/text_emergency_second"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/font_big3" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/emrAedCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="@dimen/margin_big1"
+                    android:layout_marginRight="17dp"
+                    android:backgroundTint="@color/item_background"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="15dp"
+                    app:strokeColor="@color/item_background">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_big2"
-                        android:src="@drawable/pharmacy_main_icon" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_big2"
+                            android:src="@drawable/emer_aed_main_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:text="@string/text_emergency_aed"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="22dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_small1"
+                            android:fontFamily="@font/pretendard_regular"
+                            android:text="@string/text_emergency_aed_first"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="@dimen/font_small1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_small2"
+                            android:layout_marginBottom="@dimen/margin_basic"
+                            android:fontFamily="@font/pretendard_regular"
+                            android:text="@string/text_emergency_aed_second"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="@dimen/font_small1" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/pharmacyCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="@dimen/margin_big2"
+                    android:layout_marginRight="17dp"
+                    android:layout_marginBottom="30dp"
+                    android:backgroundTint="@color/item_background"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="15dp"
+                    app:strokeColor="@color/item_background">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:text="@string/text_emergency_pharmacy"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="22dp" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_small1"
-                        android:fontFamily="@font/pretendard_regular"
-                        android:text="@string/text_emergency_pharmacy_first"
-                        android:textColor="@color/text_tertiary"
-                        android:textSize="@dimen/font_small1" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_big2"
+                            android:src="@drawable/pharmacy_main_icon" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_small2"
-                        android:layout_marginBottom="@dimen/margin_basic"
-                        android:fontFamily="@font/pretendard_regular"
-                        android:text="@string/text_emergency_pharmacy_second"
-                        android:textColor="@color/text_tertiary"
-                        android:textSize="@dimen/font_small1" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:text="@string/text_emergency_pharmacy"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="22dp" />
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_small1"
+                            android:fontFamily="@font/pretendard_regular"
+                            android:text="@string/text_emergency_pharmacy_first"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="@dimen/font_small1" />
 
-            </com.google.android.material.card.MaterialCardView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_small2"
+                            android:layout_marginBottom="@dimen/margin_basic"
+                            android:fontFamily="@font/pretendard_regular"
+                            android:text="@string/text_emergency_pharmacy_second"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="@dimen/font_small1" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+
     </ScrollView>
 
 </LinearLayout>

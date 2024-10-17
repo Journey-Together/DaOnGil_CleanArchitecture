@@ -7,6 +7,7 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,13 +32,19 @@ import com.naver.maps.map.util.FusedLocationSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.techit.lion.domain.model.PharmacyMapInfo
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.ActivityPharmacyMapBinding
+import kr.techit.lion.presentation.delegate.NetworkState
+import kr.techit.lion.presentation.emergency.fragment.EmergencyAreaDialog
 import kr.techit.lion.presentation.emergency.fragment.PharmacyAreaDialog
 import kr.techit.lion.presentation.emergency.fragment.PharmacyBottomSheet
 import kr.techit.lion.presentation.emergency.vm.PharmacyMapViewModel
+import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.ext.showPermissionSnackBar
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class PharmacyMapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -59,6 +66,10 @@ class PharmacyMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val viewModel: PharmacyMapViewModel by viewModels()
 
+    private val connectivityObserver: ConnectivityObserver by lazy {
+        NetworkConnectivityObserver.getInstance(this)
+    }
+
     private var selectedMarker: Marker? = null
     private val markers = mutableListOf<Marker>()
 
@@ -72,6 +83,13 @@ class PharmacyMapActivity : AppCompatActivity(), OnMapReadyCallback {
         setAreaUi()
         settingDialog()
         getPharmacyMap()
+
+        repeatOnStarted {
+            supervisorScope {
+                launch { observeConnectivity() }
+                launch { collectEmergencyMapState() }
+            }
+        }
 
         val contracts = ActivityResultContracts.RequestMultiplePermissions()
         launcherForPermission = registerForActivityResult(contracts) { permissions ->
@@ -101,6 +119,66 @@ class PharmacyMapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private suspend fun observeConnectivity() {
+        with(binding){
+            connectivityObserver.getFlow().collect() { connectivity ->
+                when(connectivity){
+                    ConnectivityObserver.Status.Available -> {
+                        pharmacyMapErrorLayout.visibility = View.GONE
+                        pharmacyMapErrorProgressBar.visibility = View.GONE
+                        pharmacyMapLayout.visibility = View.VISIBLE
+                        pharmacyMapProgressBar.visibility = View.VISIBLE
+                    }
+                    ConnectivityObserver.Status.Unavailable,
+                    ConnectivityObserver.Status.Losing,
+                    ConnectivityObserver.Status.Lost -> {
+                        pharmacyMapErrorLayout.visibility = View.VISIBLE
+                        pharmacyMapErrorProgressBar.visibility = View.GONE
+                        pharmacyMapLayout.visibility = View.GONE
+                        pharmacyMapProgressBar.visibility = View.GONE
+                        val msg = "${getString(R.string.text_network_is_unavailable)}\n" +
+                                "${getString(R.string.text_plz_check_network)} "
+                        pharmacyMapErrorMsg.text = msg
+
+                        val emergencyAreaDialog = this@PharmacyMapActivity.supportFragmentManager.findFragmentByTag("PharmacyAreaDialog") as? PharmacyAreaDialog
+                        emergencyAreaDialog.let { dialog ->
+                            if (dialog?.isVisible == true) {
+                                dialog.dismiss()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun collectEmergencyMapState() {
+        with(binding){
+            viewModel.networkState.collect { networksState ->
+                when(networksState){
+                    is NetworkState.Loading -> {
+                        pharmacyMapProgressBar.visibility = View.GONE
+                        pharmacyMapErrorProgressBar.visibility = View.VISIBLE
+                        pharmacyMapErrorLayout.visibility = View.GONE
+                    }
+                    is NetworkState.Success -> {
+                        pharmacyMapProgressBar.visibility = View.VISIBLE
+                        pharmacyMapLayout.visibility = View.VISIBLE
+                        pharmacyMapErrorProgressBar.visibility = View.GONE
+                        pharmacyMapErrorLayout.visibility = View.GONE
+                    }
+                    is NetworkState.Error -> {
+                        pharmacyMapProgressBar.visibility = View.GONE
+                        pharmacyMapLayout.visibility = View.GONE
+                        pharmacyMapErrorProgressBar.visibility = View.GONE
+                        pharmacyMapErrorLayout.visibility = View.VISIBLE
+                        pharmacyMapErrorMsg.text = networksState.msg
+                    }
+                }
+            }
+        }
+    }
+
     private fun setToolbar(){
         binding.toolbarPharmacyMap.setNavigationOnClickListener {
             finish()
@@ -124,7 +202,7 @@ class PharmacyMapActivity : AppCompatActivity(), OnMapReadyCallback {
         dialog.isCancelable = false
 
         binding.pharamcyMapAreaButton.setOnClickListener {
-            dialog.show(this.supportFragmentManager, "PharamcyAreaDialog")
+            dialog.show(this.supportFragmentManager, "PharmacyAreaDialog")
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
