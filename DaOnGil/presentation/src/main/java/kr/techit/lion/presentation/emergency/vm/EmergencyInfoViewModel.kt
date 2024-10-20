@@ -18,7 +18,6 @@ class EmergencyInfoViewModel @Inject constructor(
     private val emergencyRepository: EmergencyRepository
 ): ViewModel() {
 
-
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
 
