@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Singleton
 
+@Singleton
 class NetworkConnectivityObserver(
     context: Context
 ): ConnectivityObserver {
@@ -57,17 +59,5 @@ class NetworkConnectivityObserver(
                 connectivityManager.unregisterNetworkCallback(callback)
             }
         }.distinctUntilChanged()
-    }
-
-    companion object{
-
-        @Volatile
-        private var INSTANCE: NetworkConnectivityObserver? = null
-
-        fun getInstance(context: Context): ConnectivityObserver{
-            return INSTANCE ?: synchronized(this){
-                INSTANCE ?: NetworkConnectivityObserver(context).also { INSTANCE = it }
-            }
-        }
     }
 }
