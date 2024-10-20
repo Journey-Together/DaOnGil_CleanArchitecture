@@ -42,7 +42,7 @@ class IceModifyFragment : Fragment(R.layout.fragment_ice_modify) {
 
     private val viewModel: MyInfoViewModel by activityViewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
     private val myInfoAnnounce = StringBuilder()
 

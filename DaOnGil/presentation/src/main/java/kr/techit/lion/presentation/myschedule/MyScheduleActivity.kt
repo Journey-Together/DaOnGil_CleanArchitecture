@@ -36,7 +36,7 @@ class MyScheduleActivity : AppCompatActivity() {
     }
 
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(this)
+        NetworkConnectivityObserver(applicationContext)
     }
 
     private val scheduleLauncher =

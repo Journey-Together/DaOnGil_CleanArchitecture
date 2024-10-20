@@ -28,7 +28,7 @@ import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
     private val viewModel: SearchResultViewModel by viewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

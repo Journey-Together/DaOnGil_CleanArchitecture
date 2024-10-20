@@ -14,9 +14,7 @@ import kr.techit.lion.presentation.databinding.DialogEmergencyAreaBinding
 import kr.techit.lion.presentation.emergency.vm.EmergencyMapViewModel
 
 @AndroidEntryPoint
-class EmergencyAreaDialog(
-
-) : DialogFragment(R.layout.dialog_emergency_area) {
+class EmergencyAreaDialog : DialogFragment(R.layout.dialog_emergency_area) {
 
     private val viewModel: EmergencyMapViewModel by activityViewModels()
 

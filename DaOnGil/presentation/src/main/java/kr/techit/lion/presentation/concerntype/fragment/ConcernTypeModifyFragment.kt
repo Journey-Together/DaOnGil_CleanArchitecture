@@ -24,7 +24,7 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
 
     private val viewModel: ConcernTypeViewModel by activityViewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
     private val selectedConcernType = mutableSetOf<Int>()
 

@@ -73,7 +73,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     private val retryDelayMillis = 5000L
     private var snapHelper: SnapHelper? = null
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
 
     companion object {
