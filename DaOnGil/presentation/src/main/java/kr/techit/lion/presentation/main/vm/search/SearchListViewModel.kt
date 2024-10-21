@@ -350,22 +350,26 @@ class SearchListViewModel @Inject constructor(
         }
     }
 
-    fun onMapChanged(state: Boolean) = viewModelScope.launch {
-        mapChanged.emit(state)
+    fun onMapChanged(state: Boolean) {
+        viewModelScope.launch {
+            mapChanged.emit(state)
+        }
     }
 
-    fun onChangeMapState(state: SharedOptionState) = viewModelScope.launch(Dispatchers.IO) {
-        listOptionState.update {
-            if (state.detailFilter.isEmpty()) {
-                it.copy(
-                    disabilityType = TreeSet(),
-                    detailFilter = TreeSet()
-                )
-            } else {
-                it.copy(
-                    disabilityType = state.disabilityType,
-                    detailFilter = state.detailFilter
-                )
+    fun onChangeMapState(state: SharedOptionState) {
+        viewModelScope.launch(Dispatchers.IO) {
+            listOptionState.update {
+                if (state.detailFilter.isEmpty()) {
+                    it.copy(
+                        disabilityType = TreeSet(),
+                        detailFilter = TreeSet()
+                    )
+                } else {
+                    it.copy(
+                        disabilityType = state.disabilityType,
+                        detailFilter = state.detailFilter
+                    )
+                }
             }
         }
     }
