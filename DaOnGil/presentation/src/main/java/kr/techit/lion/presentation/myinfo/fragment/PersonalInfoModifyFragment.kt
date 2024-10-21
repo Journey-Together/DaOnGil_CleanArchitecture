@@ -51,7 +51,7 @@ import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modify) {
     private val viewModel: MyInfoViewModel by activityViewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var albumLauncher: ActivityResultLauncher<Intent>

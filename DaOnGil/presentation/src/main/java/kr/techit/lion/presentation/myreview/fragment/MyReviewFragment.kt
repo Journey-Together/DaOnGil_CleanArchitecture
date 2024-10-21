@@ -30,7 +30,7 @@ class MyReviewFragment : Fragment(R.layout.fragment_my_review) {
 
     private val viewModel: MyReviewViewModel by activityViewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

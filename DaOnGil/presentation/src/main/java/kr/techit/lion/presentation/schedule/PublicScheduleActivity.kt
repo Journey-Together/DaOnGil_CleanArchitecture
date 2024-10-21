@@ -24,7 +24,7 @@ class PublicScheduleActivity : AppCompatActivity() {
     private val viewModel: PublicScheduleViewModel by viewModels()
 
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(this)
+        NetworkConnectivityObserver(applicationContext)
     }
 
     private val binding: ActivityPublicScheduleBinding by lazy {

@@ -51,7 +51,7 @@ class WriteReviewActivity : AppCompatActivity() {
     private val selectedImages: ArrayList<Uri> = ArrayList()
     private lateinit var imageRVAdapter: WriteReviewImageRVAdapter
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(this)
+        NetworkConnectivityObserver(applicationContext)
     }
 
     @SuppressLint("NotifyDataSetChanged")

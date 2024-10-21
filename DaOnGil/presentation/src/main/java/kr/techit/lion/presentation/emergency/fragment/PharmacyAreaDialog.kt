@@ -14,9 +14,7 @@ import kr.techit.lion.presentation.databinding.DialogEmergencyAreaBinding
 import kr.techit.lion.presentation.emergency.vm.PharmacyMapViewModel
 
 @AndroidEntryPoint
-class PharmacyAreaDialog(
-
-) : DialogFragment(R.layout.dialog_emergency_area) {
+class PharmacyAreaDialog: DialogFragment(R.layout.dialog_emergency_area) {
     private val viewModel: PharmacyMapViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

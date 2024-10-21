@@ -31,7 +31,7 @@ class BookmarkActivity : AppCompatActivity() {
     }
     private val viewModel: BookmarkViewModel by viewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(this)
+        NetworkConnectivityObserver(applicationContext)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

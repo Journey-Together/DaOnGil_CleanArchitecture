@@ -28,7 +28,7 @@ class ReportActivity : AppCompatActivity() {
     }
     private val viewModel: ReportViewModel by viewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(this@ReportActivity)
+        NetworkConnectivityObserver(applicationContext)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

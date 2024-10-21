@@ -40,7 +40,7 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
 
     private val viewModel: ScheduleMainViewModel by viewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
 
     private val scheduleReviewLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

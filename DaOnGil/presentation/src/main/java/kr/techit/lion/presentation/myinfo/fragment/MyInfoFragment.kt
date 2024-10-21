@@ -29,7 +29,7 @@ import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 class MyInfoFragment : Fragment(R.layout.fragment_my_info) {
     private val viewModel: MyInfoViewModel by activityViewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
     private val myInfoAnnounce = StringBuilder()
 

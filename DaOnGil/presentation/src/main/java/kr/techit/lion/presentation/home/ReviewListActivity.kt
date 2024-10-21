@@ -34,7 +34,7 @@ class ReviewListActivity : AppCompatActivity() {
         ActivityReviewListBinding.inflate(layoutInflater)
     }
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(this)
+        NetworkConnectivityObserver(this.applicationContext)
     }
 
     private val reportLauncher =

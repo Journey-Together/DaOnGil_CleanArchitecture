@@ -48,7 +48,7 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
     private val viewModel: MyReviewViewModel by activityViewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
     private val selectedImages: ArrayList<Uri> = ArrayList()
     private val imageRVAdapter: MyReviewModifyImageRVAdapter by lazy {

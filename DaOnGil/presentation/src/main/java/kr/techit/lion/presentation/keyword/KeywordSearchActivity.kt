@@ -29,7 +29,7 @@ import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 class KeywordSearchActivity : AppCompatActivity() {
     private val viewModel: KeywordSearchViewModel by viewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(this)
+        NetworkConnectivityObserver(applicationContext)
     }
 
     private lateinit var backPressedCallback: OnBackPressedCallback

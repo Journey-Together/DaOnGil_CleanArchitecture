@@ -24,7 +24,7 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
     private val viewModel: ConcernTypeViewModel by activityViewModels()
     private val connectivityObserver: ConnectivityObserver by lazy {
-        NetworkConnectivityObserver.getInstance(requireContext())
+        NetworkConnectivityObserver(requireContext().applicationContext)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
