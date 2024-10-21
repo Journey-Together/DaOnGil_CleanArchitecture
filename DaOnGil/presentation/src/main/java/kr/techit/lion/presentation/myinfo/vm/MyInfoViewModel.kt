@@ -84,16 +84,18 @@ class MyInfoViewModel @Inject constructor(
         }
     }
 
-    fun onCompleteModifyPersonal(nickname: String, phone: String) = viewModelScope.launch {
-        _myPersonalInfo.update { it.copy(nickname = nickname, phone = phone) }
-        _personalModifyState.value = NetworkState.Loading
-        memberRepository.modifyMyPersonalInfo(PersonalInfo(nickname, phone))
-            .onSuccess {
-                _isPersonalInfoModified.value = true
-                _personalModifyState.value = NetworkState.Success
-            }.onError { e ->
-                _personalModifyState.value = NetworkState.Error("${e.title} \n ${e.message}")
-            }
+    fun onCompleteModifyPersonal(nickname: String, phone: String) {
+        viewModelScope.launch {
+            _myPersonalInfo.update { it.copy(nickname = nickname, phone = phone) }
+            _personalModifyState.value = NetworkState.Loading
+            memberRepository.modifyMyPersonalInfo(PersonalInfo(nickname, phone))
+                .onSuccess {
+                    _isPersonalInfoModified.value = true
+                    _personalModifyState.value = NetworkState.Success
+                }.onError { e ->
+                    _personalModifyState.value = NetworkState.Error("${e.title} \n ${e.message}")
+                }
+        }
     }
 
     fun onCompleteModifyPersonalWithImg(nickname: String, phone: String) {
@@ -109,7 +111,8 @@ class MyInfoViewModel @Inject constructor(
                     _personalModifyState.value = NetworkState.Success
                 }.onError { e ->
                     networkErrorDelegate.handleNetworkError(e)
-                    _personalModifyState.value = NetworkState.Error("${e.title} \n ${e.message}")
+                    _personalModifyState.value =
+                        NetworkState.Error("${e.title} \n ${e.message}")
                 }
         }
     }
