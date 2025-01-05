@@ -16,8 +16,8 @@ import kr.techit.lion.presentation.concerntype.vm.ConcernTypeViewModel
 import kr.techit.lion.presentation.databinding.FragmentConcernTypeBinding
 import kr.techit.lion.presentation.delegate.NetworkState
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {

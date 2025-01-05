@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".main.search.SearchPlaceMainFragment">
+    tools:context=".main.fragment.SearchPlaceMainFragment">
 
     <LinearLayout
         android:id="@+id/searchbar_header"
@@ -84,7 +84,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="kr.techit.lion.presentation.main.search.SearchListFragment"
+        android:name="kr.techit.lion.presentation.main.fragment.SearchListFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

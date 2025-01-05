@@ -23,8 +23,8 @@ import kr.techit.lion.presentation.ext.updateToolbarColors
 import kr.techit.lion.presentation.ext.updateVisibility
 import kr.techit.lion.presentation.home.adapter.ReviewListRVAdapter
 import kr.techit.lion.presentation.home.vm.ReviewListViewModel
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.techit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -125,10 +125,17 @@ class ReviewListActivity : AppCompatActivity() {
     private suspend fun collectLoginState(placeId: Long) {
         viewModel.loginState.collect { uiState ->
             when (uiState) {
-                LogInState.Checking -> return@collect
-                LogInState.LoggedIn -> getReviewListInfo(placeId)
-                LogInState.LoginRequired -> getReviewListInfoGuest(placeId)
+                is LogInState.Checking -> {
+                    return@collect
+                }
 
+                is LogInState.LoggedIn -> {
+                    getReviewListInfo(placeId)
+                }
+
+                is LogInState.LoginRequired -> {
+                    getReviewListInfoGuest(placeId)
+                }
             }
         }
     }

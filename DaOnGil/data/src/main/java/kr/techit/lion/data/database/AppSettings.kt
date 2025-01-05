@@ -6,7 +6,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import kr.techit.lion.domain.model.Activation
 import kr.techit.lion.domain.model.AppTheme
 import java.io.InputStream
 import java.io.OutputStream
@@ -15,7 +14,7 @@ import java.io.OutputStream
 internal data class AppSettings(
     val accessToken: String = "",
     val refreshToken: String = "",
-    val activation: Activation = Activation.DeActivate,
+    val activation: Boolean = true,
     val appTheme: AppTheme = AppTheme.LOADING
 )
 

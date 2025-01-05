@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.ItemPlaceHighBinding
 import kr.techit.lion.presentation.main.adapter.DisabilityRVAdapter
-import kr.techit.lion.presentation.main.search.vm.model.PlaceModel
+import kr.techit.lion.presentation.main.model.PlaceModel
 
 class PlaceHighViewHolder(
     private val binding: ItemPlaceHighBinding,

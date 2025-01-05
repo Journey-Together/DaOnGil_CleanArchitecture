@@ -8,7 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.PlaceBottomSheetBinding
 import kr.techit.lion.presentation.main.adapter.RedDisabilityRVAdapter
-import kr.techit.lion.presentation.main.search.vm.model.MapPlaceModel
+import kr.techit.lion.presentation.main.model.MapPlaceModel
 
 class PlaceBottomSheet(
     private val place: MapPlaceModel,

@@ -1,7 +1,6 @@
 plugins {
     id("java-library")
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 
 java {
@@ -12,5 +11,4 @@ java {
 dependencies {
     implementation(libs.coroutines.core.jvm)
     implementation(libs.javax.inject)
-    implementation(libs.kotlinx.serialization.json)
 }

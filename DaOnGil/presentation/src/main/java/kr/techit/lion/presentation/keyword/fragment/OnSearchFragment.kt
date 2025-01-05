@@ -9,21 +9,19 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kr.techit.lion.domain.model.search.AutoCompleteKeyword
-import kr.techit.lion.domain.model.search.RecentlySearchKeyword
+import kotlinx.coroutines.supervisorScope
 import kr.techit.lion.presentation.R
-import kr.techit.lion.presentation.connectivity.connectivity.ConnectivityStatus
 import kr.techit.lion.presentation.databinding.FragmentOnSearchBinding
 import kr.techit.lion.presentation.delegate.NetworkState
 import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.home.DetailActivity
 import kr.techit.lion.presentation.keyword.adapter.SearchSuggestionsAdapter
+import kr.techit.lion.presentation.keyword.model.KeywordInputState
 import kr.techit.lion.presentation.keyword.vm.KeywordSearchViewModel
-import kr.techit.lion.presentation.keyword.vm.model.KeywordInputStatus
 import kr.techit.lion.presentation.main.adapter.RecentlyKeywordAdapter
 import kr.techit.lion.presentation.main.dialog.ConfirmDialog
+import kr.techit.lion.presentation.observer.ConnectivityObserver
 
 @AndroidEntryPoint
 class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
@@ -32,7 +30,6 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentOnSearchBinding.bind(view)
-        viewModel.loadSavedKeyword()
 
         val recentlyKeywordAdapter = RecentlyKeywordAdapter(
             onClick = {
@@ -46,17 +43,16 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
             }
         )
 
-        val searchAdapter = SearchSuggestionsAdapter { keyword ->
-            viewModel.insertKeyword(keyword.placeName)
-            val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("detailPlaceId", keyword.placeId)
-            startActivity(intent)
+        val searchAdapter = SearchSuggestionsAdapter {
+            viewModel.insertKeyword(it.keyword) {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra("detailPlaceId", it.placeId)
+                startActivity(intent)
+            }
         }
 
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val keywordLayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val keywordLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
 
         with(binding) {
             searchSuggestions.adapter = searchAdapter
@@ -69,47 +65,80 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
             tvDeleteAll.setOnClickListener {
                 showDeleteConfirmDialog()
             }
+        }
 
+        with(binding) {
             repeatOnStarted {
-                launch {
-                    viewModel.uiState.collect {
-                        checkSavedKeyword(it.keywordList.value, binding, recentlyKeywordAdapter)
-                        whenInputChanged(it.inputStatus, binding)
-                    }
-                }
-
-                launch {
-                    viewModel.autocompleteKeyword.collect { suggestKeywords ->
-                        if (suggestKeywords.isEmpty() &&
-                            viewModel.uiState.value.inputStatus == KeywordInputStatus.NotEmpty
-                        ) {
-                            showNoSearchResultPage(binding)
-                        } else {
-                            showAutoCompletePage(binding, searchAdapter, suggestKeywords)
+                supervisorScope {
+                    launch {
+                        viewModel.recentlySearchKeyword.collect {
+                            if (it.list.isEmpty()) {
+                                rvRecentSearches.visibility = View.GONE
+                                tvNoSearch.visibility = View.VISIBLE
+                            } else {
+                                rvRecentSearches.visibility = View.VISIBLE
+                                tvNoSearch.visibility = View.GONE
+                            }
+                            recentlyKeywordAdapter.submitList(it.list)
                         }
                     }
-                }
 
-                launch {
-                    viewModel.errorState.collect {
-                        when (it) {
-                            is NetworkState.Loading -> Unit
-                            NetworkState.Success -> showRecentSearchKeywordPage(binding)
-                            is NetworkState.Error -> showNetworkErrorPage(it.msg, binding)
+                    launch {
+                        viewModel.searchState.collect { state ->
+                            when (state) {
+                                KeywordInputState.Initial -> {
+                                    searchRecentSearchesContainer.visibility = View.VISIBLE
+                                    searchSuggestions.visibility = View.GONE
+                                    noSearchResultContainer.visibility = View.GONE
+                                }
+
+                                KeywordInputState.NotEmpty -> {
+                                    if (viewModel.networkStatus.value != ConnectivityObserver.Status.Available){
+                                        textMsg.text = "서버에 연결할 수 없어요 \n 인터넷 연결을 확인해주세요."
+                                        noSearchResultContainer.visibility = View.VISIBLE
+                                        searchRecentSearchesContainer.visibility = View.GONE
+                                        searchSuggestions.visibility = View.GONE
+                                    }
+                                    searchRecentSearchesContainer.visibility = View.GONE
+                                }
+
+                                KeywordInputState.Empty -> {
+                                    viewModel.keywordInputStateChanged(KeywordInputState.Initial)
+                                }
+
+                                KeywordInputState.Erasing -> {
+                                    return@collect
+                                }
+                            }
                         }
                     }
-                }
 
-                launch {
-                    viewModel.connectivityStatus.collectLatest { status ->
-                        when (status) {
-                            ConnectivityStatus.Loading -> Unit
-                            ConnectivityStatus.Available -> showRecentSearchKeywordPage(binding)
-                            is ConnectivityStatus.OnLost -> {
-                                showNetworkErrorPage(
-                                    requireContext().getString(R.string.can_not_access_network),
-                                    binding
-                                )
+                    launch {
+                        viewModel.autocompleteKeyword.collect { suggestKeywords ->
+                            if (suggestKeywords.isEmpty() &&
+                                viewModel.searchState.value == KeywordInputState.NotEmpty
+                            ) {
+                                noSearchResultContainer.visibility = View.VISIBLE
+                            } else {
+                                searchSuggestions.visibility = View.VISIBLE
+                                noSearchResultContainer.visibility = View.GONE
+                                searchAdapter.submitList(suggestKeywords)
+                            }
+                        }
+                    }
+
+                    launch {
+                        viewModel.errorState.collect {
+                            when (it) {
+                                is NetworkState.Loading, NetworkState.Success -> {
+                                    searchSuggestions.visibility = View.VISIBLE
+                                }
+                                is NetworkState.Error -> {
+                                    textMsg.text = it.msg
+                                    noSearchResultContainer.visibility = View.VISIBLE
+                                    searchRecentSearchesContainer.visibility = View.GONE
+                                    searchSuggestions.visibility = View.GONE
+                                }
                             }
                         }
                     }
@@ -118,110 +147,13 @@ class OnSearchFragment : Fragment(R.layout.fragment_on_search) {
         }
     }
 
-    private fun whenInputChanged(state: KeywordInputStatus, binding: FragmentOnSearchBinding) {
-        when (state) {
-            KeywordInputStatus.Initial -> whenInputSearchKeywordIsInitialized(binding)
-            KeywordInputStatus.NotEmpty -> whenInputSearchKeywordIsNotEmpty(binding)
-            KeywordInputStatus.Empty -> whenInputSearchKeywordIsEmpty()
-            KeywordInputStatus.Erasing -> Unit
-        }
-    }
-
-    private fun checkSavedKeyword(
-        keywordList: List<RecentlySearchKeyword>,
-        binding: FragmentOnSearchBinding,
-        recentlyKeywordAdapter: RecentlyKeywordAdapter
-    ) {
-        with(binding) {
-            if (keywordList.isEmpty()) {
-                rvRecentSearches.visibility = View.GONE
-                tvNoSearch.visibility = View.VISIBLE
-            } else {
-                rvRecentSearches.visibility = View.VISIBLE
-                tvNoSearch.visibility = View.GONE
-                recentlyKeywordAdapter.submitList(keywordList)
-            }
-        }
-    }
-
-    private fun whenInputSearchKeywordIsInitialized(binding: FragmentOnSearchBinding) {
-        with(binding) {
-            searchRecentSearchesContainer.visibility = View.VISIBLE
-            searchSuggestions.visibility = View.GONE
-            noSearchResultContainer.visibility = View.GONE
-        }
-    }
-
-    private fun whenInputSearchKeywordIsEmpty() {
-        viewModel.keywordInputStateChanged(KeywordInputStatus.Initial)
-    }
-
-    private fun whenInputSearchKeywordIsNotEmpty(binding: FragmentOnSearchBinding) {
-        binding.searchRecentSearchesContainer.visibility = View.GONE
-    }
-
-    private fun showRecentSearchKeywordPage(binding: FragmentOnSearchBinding) {
-        with(binding) {
-            when (viewModel.uiState.value.inputStatus) {
-                KeywordInputStatus.Empty,
-                KeywordInputStatus.Initial -> showResult(binding)
-                KeywordInputStatus.NotEmpty -> {
-                    searchRecentSearchesContainer.visibility = View.GONE
-                    showResult(binding)
-                }
-                KeywordInputStatus.Erasing -> Unit
-            }
-        }
-    }
-
-    private fun showAutoCompletePage(
-        binding: FragmentOnSearchBinding,
-        adapter: SearchSuggestionsAdapter,
-        suggestKeywords: List<AutoCompleteKeyword>
-    ) {
-        showResult(binding)
-        adapter.submitList(suggestKeywords)
-    }
-
-    private fun showNoSearchResultPage(binding: FragmentOnSearchBinding) {
-        with(binding) {
-            textMsg.text = requireContext().getString(R.string.text_no_search_result)
-            hideResult(binding)
-        }
-    }
-
-    private fun showNetworkErrorPage(
-        errorMsg: String,
-        binding: FragmentOnSearchBinding
-    ) {
-        with(binding) {
-            textMsg.text = errorMsg
-            searchRecentSearchesContainer.visibility = View.GONE
-            hideResult(binding)
-        }
-    }
-
-    private fun showResult(binding: FragmentOnSearchBinding) {
-        with(binding) {
-            searchSuggestions.visibility = View.VISIBLE
-            noSearchResultContainer.visibility = View.GONE
-        }
-    }
-
-    private fun hideResult(binding: FragmentOnSearchBinding){
-        with(binding) {
-            noSearchResultContainer.visibility = View.VISIBLE
-            searchSuggestions.visibility = View.GONE
-        }
-    }
-
     private fun showDeleteConfirmDialog() {
         val dialog = ConfirmDialog(
-            title = requireContext().getString(R.string.text_remove_all_recently_search_keyword),
-            subtitle = requireContext().getString(R.string.text_ask_remove_recently_search_keyword),
-            posBtnTitle = requireContext().getString(R.string.text_remove_keyword),
+            "검색어 전체 삭제",
+            "최근 검색어를 모두\n삭제하시겠습니까?",
+            "삭제하기",
         ) {
-            viewModel.deleteAllKeyword()
+            viewModel.onClickDeleteButton()
         }
         dialog.isCancelable = false
         dialog.show(childFragmentManager, "showDeleteConfirmDialog")

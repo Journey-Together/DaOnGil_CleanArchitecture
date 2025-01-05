@@ -12,7 +12,7 @@ data class AutoCompleteKeywordResponse(
     fun toDomainModel(): List<AutoCompleteKeyword> {
         return data.map {
             AutoCompleteKeyword(
-                placeName = it.keyword,
+                keyword = it.keyword,
                 placeId = it.placeId
             )
         }

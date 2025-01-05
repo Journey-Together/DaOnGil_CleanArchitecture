@@ -41,8 +41,8 @@ import kr.techit.lion.presentation.home.adapter.DetailReviewRVAdapter
 import kr.techit.lion.presentation.home.model.toReviewInfo
 import kr.techit.lion.presentation.home.vm.DetailViewModel
 import kr.techit.lion.presentation.myreview.MyReviewActivity
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.techit.lion.presentation.splash.model.LogInState
 
 @AndroidEntryPoint
@@ -344,15 +344,15 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         repeatOnStarted {
             viewModel.loginState.collect { uiState ->
                 when (uiState) {
-                    LogInState.Checking -> {
+                    is LogInState.Checking -> {
                         return@collect
                     }
 
-                    LogInState.LoggedIn -> {
+                    is LogInState.LoggedIn -> {
                         getDetailPlaceInfo(recommendPlaceId)
                     }
 
-                    LogInState.LoginRequired -> {
+                    is LogInState.LoginRequired -> {
                         getDetailPlaceInfoGuest(recommendPlaceId)
                     }
                 }

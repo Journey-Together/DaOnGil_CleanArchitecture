@@ -15,10 +15,10 @@ import kr.techit.lion.domain.repository.AuthRepository
 import kr.techit.lion.domain.repository.BookmarkRepository
 import kr.techit.lion.domain.repository.PlaceRepository
 import kr.techit.lion.presentation.delegate.NetworkErrorDelegate
+import kr.techit.lion.presentation.splash.model.LogInState
 import kr.techit.lion.domain.exception.onError
 import kr.techit.lion.domain.exception.onSuccess
 import kr.techit.lion.presentation.delegate.NetworkState
-import kr.techit.lion.presentation.splash.model.LogInState
 import javax.inject.Inject
 
 @HiltViewModel

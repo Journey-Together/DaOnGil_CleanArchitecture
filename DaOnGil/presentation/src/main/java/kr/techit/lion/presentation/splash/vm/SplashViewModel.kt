@@ -7,29 +7,27 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.stateIn
-import kr.techit.lion.domain.model.Activation
 import kr.techit.lion.domain.repository.ActivationRepository
 import kr.techit.lion.domain.usecase.areacode.InitAreaCodeInfoUseCase
 import kr.techit.lion.domain.usecase.base.onError
 import kr.techit.lion.domain.usecase.base.onSuccess
-import kr.techit.lion.presentation.ext.stateInUi
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val activationRepository: ActivationRepository,
+    activationRepository: ActivationRepository,
     private val initAreaCodeInfoUseCase: InitAreaCodeInfoUseCase,
 ): ViewModel() {
 
     private val _errorState = MutableStateFlow(false)
     val errorState get() = _errorState.asStateFlow()
 
-    val userActivationState = activationRepository
-        .activation
-        .stateInUi(scope = viewModelScope, initialValue = Activation.Loading)
+    val userActivationState = activationRepository.userActivation.shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000)
+    )
 
-    suspend fun whenUserActivationIsDeActivate(onComplete: () -> Unit){
+    suspend fun whenUserActivationIsFirst(onComplete: () -> Unit){
         initAreaCodeInfoUseCase().onSuccess {
             onComplete()
         }.onError {

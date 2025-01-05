@@ -13,8 +13,8 @@ import kr.techit.lion.presentation.databinding.ActivityPublicScheduleBinding
 import kr.techit.lion.presentation.delegate.NetworkState
 import kr.techit.lion.presentation.ext.gridAddOnScrollEndListener
 import kr.techit.lion.presentation.ext.repeatOnStarted
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.techit.lion.presentation.schedule.adapter.PublicScheduleAdapter
 import kr.techit.lion.presentation.schedule.vm.PublicScheduleViewModel
 

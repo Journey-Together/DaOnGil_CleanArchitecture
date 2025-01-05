@@ -19,18 +19,18 @@ import kr.techit.lion.presentation.main.adapter.viewholder.NoPlaceViewHolder
 import kr.techit.lion.presentation.main.adapter.viewholder.PlaceHighViewHolder
 import kr.techit.lion.presentation.main.adapter.viewholder.SigunguViewHolder
 import kr.techit.lion.presentation.main.adapter.viewholder.ItemCountViewHolder
-import kr.techit.lion.presentation.main.search.vm.model.AreaModel
-import kr.techit.lion.presentation.main.search.vm.model.CategoryModel
-import kr.techit.lion.presentation.main.search.vm.model.ElderlyPeople
-import kr.techit.lion.presentation.main.search.vm.model.HearingImpairment
-import kr.techit.lion.presentation.main.search.vm.model.InfantFamily
-import kr.techit.lion.presentation.main.search.vm.model.ListSearchUIModel
-import kr.techit.lion.presentation.main.search.vm.model.NoPlaceModel
-import kr.techit.lion.presentation.main.search.vm.model.PhysicalDisability
-import kr.techit.lion.presentation.main.search.vm.model.PlaceModel
-import kr.techit.lion.presentation.main.search.vm.model.SigunguModel
-import kr.techit.lion.presentation.main.search.vm.model.SortModel
-import kr.techit.lion.presentation.main.search.vm.model.VisualImpairment
+import kr.techit.lion.presentation.main.model.AreaModel
+import kr.techit.lion.presentation.main.model.CategoryModel
+import kr.techit.lion.presentation.main.model.ElderlyPeople
+import kr.techit.lion.presentation.main.model.HearingImpairment
+import kr.techit.lion.presentation.main.model.InfantFamily
+import kr.techit.lion.presentation.main.model.ListSearchUIModel
+import kr.techit.lion.presentation.main.model.NoPlaceModel
+import kr.techit.lion.presentation.main.model.PhysicalDisability
+import kr.techit.lion.presentation.main.model.PlaceModel
+import kr.techit.lion.presentation.main.model.SigunguModel
+import kr.techit.lion.presentation.main.model.SortModel
+import kr.techit.lion.presentation.main.model.VisualImpairment
 
 class ListSearchAdapter(
     private val uiScope: CoroutineScope,

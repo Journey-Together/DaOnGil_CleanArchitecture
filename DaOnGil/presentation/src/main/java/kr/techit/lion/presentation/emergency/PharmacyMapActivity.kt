@@ -37,13 +37,14 @@ import kr.techit.lion.domain.model.PharmacyMapInfo
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.ActivityPharmacyMapBinding
 import kr.techit.lion.presentation.delegate.NetworkState
+import kr.techit.lion.presentation.emergency.fragment.EmergencyAreaDialog
 import kr.techit.lion.presentation.emergency.fragment.PharmacyAreaDialog
 import kr.techit.lion.presentation.emergency.fragment.PharmacyBottomSheet
 import kr.techit.lion.presentation.emergency.vm.PharmacyMapViewModel
 import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.ext.showPermissionSnackBar
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class PharmacyMapActivity : AppCompatActivity(), OnMapReadyCallback {

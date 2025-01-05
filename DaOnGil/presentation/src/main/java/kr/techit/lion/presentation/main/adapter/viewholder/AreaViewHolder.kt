@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.techit.lion.presentation.databinding.ItemListSearchAreaBinding
 import kr.techit.lion.presentation.ext.announceForAccessibility
 import kr.techit.lion.presentation.ext.isTallBackEnabled
-import kr.techit.lion.presentation.main.search.vm.model.AreaModel
+import kr.techit.lion.presentation.main.model.AreaModel
 
 class AreaViewHolder(
     private val binding: ItemListSearchAreaBinding,

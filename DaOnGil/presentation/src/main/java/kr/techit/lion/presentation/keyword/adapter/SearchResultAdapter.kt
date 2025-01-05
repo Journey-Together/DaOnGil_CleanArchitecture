@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import kr.techit.lion.presentation.databinding.ItemPlaceHighBinding
 import kr.techit.lion.presentation.main.adapter.viewholder.PlaceHighViewHolder
-import kr.techit.lion.presentation.main.search.vm.model.PlaceModel
+import kr.techit.lion.presentation.main.model.PlaceModel
 
 class SearchResultAdapter(
     private val onSelectPlace: (Long) -> Unit

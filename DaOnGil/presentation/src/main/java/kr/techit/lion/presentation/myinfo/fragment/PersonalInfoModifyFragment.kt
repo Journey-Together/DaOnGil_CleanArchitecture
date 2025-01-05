@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.ext.SdkExtensions
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -27,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kr.techit.lion.domain.model.PersonalInfo
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
@@ -37,12 +39,16 @@ import kr.techit.lion.presentation.ext.isPhoneNumberValid
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
 import kr.techit.lion.presentation.ext.setAccessibilityText
+import kr.techit.lion.presentation.ext.showInfinitySnackBar
 import kr.techit.lion.presentation.ext.showSnackbar
 import kr.techit.lion.presentation.ext.showSoftInput
 import kr.techit.lion.presentation.ext.toAbsolutePath
 import kr.techit.lion.presentation.main.dialog.ConfirmDialog
 import kr.techit.lion.presentation.myinfo.intent.MyInfoIntent
+import kr.techit.lion.presentation.myinfo.model.ImgModifyState
 import kr.techit.lion.presentation.myinfo.vm.MyInfoViewModel
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modify) {

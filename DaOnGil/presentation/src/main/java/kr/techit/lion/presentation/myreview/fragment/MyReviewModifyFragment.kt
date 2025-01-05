@@ -35,8 +35,8 @@ import kr.techit.lion.presentation.ext.toAbsolutePath
 import kr.techit.lion.presentation.main.dialog.ConfirmDialog
 import kr.techit.lion.presentation.myreview.adapter.MyReviewModifyImageRVAdapter
 import kr.techit.lion.presentation.myreview.vm.MyReviewViewModel
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

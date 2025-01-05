@@ -1,6 +1,6 @@
 package kr.techit.lion.domain.model.search
 
 data class AutoCompleteKeyword(
-    val placeName: String,
+    val keyword: String,
     val placeId: Long
 )

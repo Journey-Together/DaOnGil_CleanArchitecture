@@ -12,32 +12,26 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.retryWhen
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.techit.lion.domain.exception.NetworkError
 import kr.techit.lion.domain.exception.TimeoutError
 import kr.techit.lion.domain.exception.UnknownError
 import kr.techit.lion.domain.exception.UnknownHostError
-import kr.techit.lion.domain.model.search.AutoCompleteKeyword
+import kr.techit.lion.domain.model.search.RecentlySearchKeywordList
+import kr.techit.lion.domain.model.search.findKeyword
 import kr.techit.lion.domain.model.search.toRecentlySearchKeyword
 import kr.techit.lion.domain.repository.PlaceRepository
 import kr.techit.lion.domain.repository.RecentlySearchKeywordRepository
 import kr.techit.lion.presentation.base.BaseViewModel
 import kr.techit.lion.presentation.delegate.NetworkErrorDelegate
-import kr.techit.lion.presentation.keyword.vm.model.KeywordInputStatus
-import kr.techit.lion.presentation.keyword.vm.model.KeywordSearchState
-import kr.techit.lion.presentation.connectivity.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.connectivity.ConnectivityStatus
-import kr.techit.lion.presentation.delegate.NetworkState
-import kr.techit.lion.presentation.ext.stateInUi
+import kr.techit.lion.presentation.keyword.model.KeywordInputState
+import kr.techit.lion.presentation.observer.ConnectivityObserver
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 import javax.inject.Inject
@@ -46,107 +40,105 @@ import javax.inject.Inject
 class KeywordSearchViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
     private val recentlySearchKeywordRepository: RecentlySearchKeywordRepository,
-    connectivityObserver: ConnectivityObserver
 ) : BaseViewModel() {
+
+    init {
+        viewModelScope.launch {
+            loadSavedKeyword()
+        }
+    }
 
     @Inject
     lateinit var networkErrorDelegate: NetworkErrorDelegate
     val errorState get() = networkErrorDelegate.networkState
 
+    private val _networkStatus = MutableStateFlow(ConnectivityObserver.Status.Available)
+    val networkStatus = _networkStatus.asStateFlow()
+
+    private val _recentlySearchKeyword = MutableStateFlow(RecentlySearchKeywordList(emptyList()))
+    val recentlySearchKeyword = _recentlySearchKeyword.asStateFlow()
+
     private val _keyword = MutableStateFlow("")
     val keyword = _keyword.asStateFlow()
 
-    private val _uiState = MutableStateFlow(KeywordSearchState())
-    val uiState = _uiState.asStateFlow()
+    private val _searchState = MutableStateFlow(KeywordInputState.Initial)
+    val searchState = _searchState.asStateFlow()
 
-    val connectivityStatus = connectivityObserver.observe()
-        .stateInUi(
-            scope = viewModelScope,
-            initialValue = ConnectivityStatus.Loading
-        )
+    @OptIn(FlowPreview:: class, ExperimentalCoroutinesApi:: class)
+    val autocompleteKeyword = keyword
+        .debounce(DEBOUNCE_INTERVAL)
+        .distinctUntilChanged()
+        .filter { it.isNotEmpty() }
+        .combine(_networkStatus){keyword, status -> keyword to status}
+        .flatMapLatest { (keyword, status) ->
+            if (status == ConnectivityObserver.Status.Available && searchState.value != KeywordInputState.Erasing) {
+                val response = placeRepository.getAutoCompleteKeyword(keyword)
+                networkErrorDelegate.handleNetworkSuccess()
+                response
+            } else {
+                flow { }
+            }
+        }
+        .flowOn(recordExceptionHandler)
+        .catch { e ->
+            submitThrowableState(e)
+        }.retryWhen{ cause, attempt ->
+            if (cause is TimeoutException && attempt < 3) {
+                delay(1000)
+                true
+            } else {
+                false
+            }
+        }
 
-    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val autocompleteKeyword = combine(
-        _keyword,
-        connectivityStatus,
-        uiState.map { it.inputStatus }
-    ) { keyword, networkStatus, keywordInputStatus ->
-        Triple(keyword, networkStatus, keywordInputStatus)
-    }.filter { (keyword, status, inputStatus) ->
-        keyword.isNotEmpty() &&
-                status == ConnectivityStatus.Available &&
-                inputStatus != KeywordInputStatus.Erasing
-    }.map { (keyword, _, _) ->
-        keyword
-    }.debounce(DEBOUNCE_INTERVAL)
-    .distinctUntilChanged()
-    .flatMapLatest { keyword ->
-        val response = placeRepository.getAutoCompleteKeyword(keyword)
-        networkErrorDelegate.handleNetworkSuccess()
-        response
-    }
-    .flowOn(recordExceptionHandler)
-    .catch { e ->
-        submitThrowableState(e)
+    fun onChangeNetworkState(state: ConnectivityObserver.Status) {
+        _networkStatus.value = state
     }
 
     fun inputTextChanged(keyword: String) {
-        if (_uiState.value.inputStatus != KeywordInputStatus.Erasing) {
-            _keyword.value = keyword
+        if (searchState.value != KeywordInputState.Erasing) {
+            _keyword.update { keyword }
         }
     }
 
-    fun keywordInputStateChanged(status: KeywordInputStatus) {
-        _uiState.value = _uiState.value.copy(inputStatus = status)
+    fun keywordInputStateChanged(state: KeywordInputState) {
+        _searchState.value = state
     }
 
-    fun loadSavedKeyword() {
-        recentlySearchKeywordRepository
-            .savedKeyword
-            .onEach {
-                _uiState.value = _uiState.value.copy(
-                    keywordList = it
-                )
-            }.launchIn(viewModelScope)
-    }
-
-    fun insertKeyword(keyword: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val existingKeyword = _uiState.value.keywordList.isExistKeyword(keyword)
-            if (existingKeyword) {
-                val findKeyword = _uiState.value.keywordList.findKeyword(keyword)
-                recentlySearchKeywordRepository.deleteKeyword(findKeyword)
-            }
-            recentlySearchKeywordRepository.insertKeyword(keyword)
+    private fun loadSavedKeyword() = viewModelScope.launch(Dispatchers.IO){
+        recentlySearchKeywordRepository.readAllKeyword().collect{
+            _recentlySearchKeyword.value =  it
         }
     }
 
-    fun deleteKeyword(id: Long) {
-        viewModelScope.launch {
-            recentlySearchKeywordRepository.deleteKeyword(id)
+    fun insertKeyword(keyword: String, onSuccess: () -> Unit) = viewModelScope.launch(Dispatchers.IO) {
+        val existingKeyword = _recentlySearchKeyword.value.findKeyword(keyword)
+        if (existingKeyword != null) {
+            existingKeyword.id?.let { recentlySearchKeywordRepository.deleteKeyword(it) }
         }
+        recentlySearchKeywordRepository.insertKeyword(keyword.toRecentlySearchKeyword())
+        onSuccess()
     }
 
-    fun deleteAllKeyword() {
-        viewModelScope.launch {
-            recentlySearchKeywordRepository.deleteAllKeyword()
-        }
+    fun deleteKeyword(id: Long) = viewModelScope.launch(Dispatchers.IO) {
+        recentlySearchKeywordRepository.deleteKeyword(id)
     }
 
-    private fun submitThrowableState(e: Throwable) {
+    fun onClickDeleteButton() = viewModelScope.launch(Dispatchers.IO) {
+        recentlySearchKeywordRepository.deleteAllKeyword()
+    }
+
+    private fun submitThrowableState(e: Throwable){
         when (e) {
-            is TimeoutException -> {
+            is TimeoutException ->{
                 networkErrorDelegate.handleNetworkError(TimeoutError)
             }
-
             is UnknownHostException -> {
                 networkErrorDelegate.handleNetworkError(UnknownHostError)
             }
-
             is UnknownError -> {
                 networkErrorDelegate.handleNetworkError(UnknownError)
             }
-
             else -> {
                 networkErrorDelegate.handleNetworkError(e as NetworkError)
             }

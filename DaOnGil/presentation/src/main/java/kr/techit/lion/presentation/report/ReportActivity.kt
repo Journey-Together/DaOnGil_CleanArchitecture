@@ -16,8 +16,8 @@ import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.ext.showInfinitySnackBar
 import kr.techit.lion.presentation.ext.showSnackbar
 import kr.techit.lion.presentation.ext.showSoftInput
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.techit.lion.presentation.report.vm.ReportViewModel
 
 @AndroidEntryPoint

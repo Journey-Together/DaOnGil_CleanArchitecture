@@ -44,8 +44,8 @@ import kr.techit.lion.presentation.emergency.fragment.EmergencyBottomSheet
 import kr.techit.lion.presentation.emergency.vm.EmergencyMapViewModel
 import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.ext.showPermissionSnackBar
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class EmergencyMapActivity : AppCompatActivity(), OnMapReadyCallback {

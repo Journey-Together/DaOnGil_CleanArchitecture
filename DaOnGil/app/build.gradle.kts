@@ -2,7 +2,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kapt)
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
@@ -20,14 +20,15 @@ val naverClientName = properties.getProperty("naver_client_name") ?: ""
 
 android {
     namespace = "kr.techit.lion.daongil_cleanarchitecture"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = libs.versions.packgeName.get()
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
+        applicationId = "kr.techit.lion.daongil_cleanarchitecture"
+        minSdk = 26
+        //noinspection OldTargetApi,EditedTargetSdkVersion
+        targetSdk = 34
+        versionCode = 4
+        versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

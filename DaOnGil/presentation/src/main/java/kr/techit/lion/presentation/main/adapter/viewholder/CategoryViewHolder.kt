@@ -10,12 +10,12 @@ import kr.techit.lion.presentation.databinding.ItemListSearchCategoryBinding
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.ext.setAccessibilityText
 import kr.techit.lion.presentation.ext.setClickEvent
-import kr.techit.lion.presentation.main.search.vm.model.CategoryModel
-import kr.techit.lion.presentation.main.search.vm.model.ElderlyPeople
-import kr.techit.lion.presentation.main.search.vm.model.HearingImpairment
-import kr.techit.lion.presentation.main.search.vm.model.InfantFamily
-import kr.techit.lion.presentation.main.search.vm.model.PhysicalDisability
-import kr.techit.lion.presentation.main.search.vm.model.VisualImpairment
+import kr.techit.lion.presentation.main.model.CategoryModel
+import kr.techit.lion.presentation.main.model.ElderlyPeople
+import kr.techit.lion.presentation.main.model.HearingImpairment
+import kr.techit.lion.presentation.main.model.InfantFamily
+import kr.techit.lion.presentation.main.model.PhysicalDisability
+import kr.techit.lion.presentation.main.model.VisualImpairment
 
 class CategoryViewHolder(
     private val binding: ItemListSearchCategoryBinding,

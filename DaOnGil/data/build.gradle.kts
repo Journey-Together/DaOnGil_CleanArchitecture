@@ -1,12 +1,12 @@
 import java.util.Properties
 
 plugins {
+    id("kotlinx-serialization")
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kapt)
     alias(libs.plugins.room)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 val properties = Properties()
@@ -23,14 +23,14 @@ val naverMapSecret = properties.getProperty("naver_map_secret") ?: ""
 
 android {
     namespace = "kr.techit.lion.data"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = 34
 
     room {
         schemaDirectory("$projectDir/schemas")
     }
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -75,7 +75,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)

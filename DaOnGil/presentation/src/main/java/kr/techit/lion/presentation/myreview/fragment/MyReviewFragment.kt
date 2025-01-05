@@ -22,8 +22,8 @@ import kr.techit.lion.presentation.home.ReviewListActivity
 import kr.techit.lion.presentation.main.dialog.ConfirmDialog
 import kr.techit.lion.presentation.myreview.adapter.MyReviewRVAdapter
 import kr.techit.lion.presentation.myreview.vm.MyReviewViewModel
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 
 @AndroidEntryPoint
 class MyReviewFragment : Fragment(R.layout.fragment_my_review) {

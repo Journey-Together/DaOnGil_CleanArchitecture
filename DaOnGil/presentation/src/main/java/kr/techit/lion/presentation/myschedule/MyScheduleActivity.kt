@@ -19,8 +19,8 @@ import kr.techit.lion.presentation.ext.addOnScrollEndListener
 import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.ext.showSnackbar
 import kr.techit.lion.presentation.myschedule.vm.MyScheduleViewModel
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.observer.ConnectivityObserver
+import kr.techit.lion.presentation.observer.NetworkConnectivityObserver
 import kr.techit.lion.presentation.schedule.ResultCode
 import kr.techit.lion.presentation.schedule.ResultCode.RESULT_SCHEDULE_REVIEW_CANCELED
 import kr.techit.lion.presentation.schedule.ScheduleDetailActivity
