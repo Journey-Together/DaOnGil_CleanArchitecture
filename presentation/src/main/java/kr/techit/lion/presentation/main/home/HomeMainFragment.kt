@@ -60,6 +60,7 @@ import kr.techit.lion.presentation.main.dialog.ThemeSettingDialog
 import kr.techit.lion.presentation.main.home.vm.HomeViewModel
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.main.dialog.ThemeSystemDialog
 import java.io.IOException
 import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
@@ -100,6 +101,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             launch { observeConnectivity(binding) }
             launch { observeUserActivation() }
         }
+
+        binding.homeHighcontrastBtn.visibility = View.GONE // 고대비 버튼 숨김 처리
 
         settingAppTheme(binding)
         checkLocationPermission(binding)
@@ -302,6 +305,12 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         val dialog = ThemeGuideDialog()
         dialog.isCancelable = false
         dialog.show(childFragmentManager, "ThemeGuideDialog")
+    }
+
+    private fun showThemeSystemDialog() {
+        val dialog = ThemeSystemDialog()
+        dialog.isCancelable = false
+        dialog.show(childFragmentManager, "ThemeTempDialog")
     }
 
     private fun checkLocationPermission(binding: FragmentHomeMainBinding) {
@@ -540,11 +549,13 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 Activation.Activate -> return@collect
 
                 Activation.DeActivate -> {
-                    if (isDarkTheme(resources.configuration)) {
-                        showThemeGuideDialog()
-                    } else {
-                        showThemeSettingDialog()
-                    }
+//                    if (isDarkTheme(resources.configuration)) {
+//                        showThemeGuideDialog()
+//                    } else {
+//                        showThemeSettingDialog()
+//                    }
+
+                    showThemeSystemDialog()
                 }
             }
         }
@@ -577,6 +588,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
             }
         }
     }
+
     companion object {
         const val DEFAULT_AREA = "서울특별시"
         const val DEFAULT_SIGUNGU = "중구"
