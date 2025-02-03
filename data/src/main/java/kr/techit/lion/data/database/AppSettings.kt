@@ -16,7 +16,7 @@ internal data class AppSettings(
     val accessToken: String = "",
     val refreshToken: String = "",
     val activation: Activation = Activation.DeActivate,
-    val appTheme: AppTheme = AppTheme.LOADING
+    val appTheme: AppTheme = AppTheme.SYSTEM
 )
 
 internal object AppSettingsSerializer: Serializer<AppSettings> {
