@@ -61,7 +61,7 @@ class HomeViewModel @Inject constructor(
     val locationMessage: LiveData<String> get() = _locationMessage
 
     val appTheme = appThemeRepository.getAppTheme().stateInUi(
-        viewModelScope, AppTheme.LOADING
+        viewModelScope, AppTheme.SYSTEM
     )
 
     private fun setAppTheme(appTheme: AppTheme) {
