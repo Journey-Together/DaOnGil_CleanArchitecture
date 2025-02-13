@@ -26,16 +26,6 @@ internal fun Project.configureKotlinAndroid(
             targetCompatibility = JavaVersion.VERSION_17
         }
 
-//        buildTypes {
-//            getByName("release") {
-//                isMinifyEnabled = true
-//                proguardFiles(
-//                    getDefaultProguardFile("proguard-android.txt"),
-//                    "proguard-rules.pro"
-//                )
-//            }
-//        }
-
         tasks.withType<KotlinCompile>().configureEach {
             compilerOptions {
                 jvmTarget.set(JvmTarget.JVM_17)
