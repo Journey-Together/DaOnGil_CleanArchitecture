@@ -14,6 +14,16 @@ val naverClientSecret = properties.getProperty("naver_client_secret") ?: ""
 val naverClientName = properties.getProperty("naver_client_name") ?: ""
 
 android {
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
     namespace = "kr.techit.lion.daongil_cleanarchitecture"
 
     defaultConfig {
