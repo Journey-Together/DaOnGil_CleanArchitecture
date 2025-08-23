@@ -469,5 +469,24 @@
 
     <string name="http_error_server_title">서버에 오류가 발생했어요</string>
     <string name="http_error_server_message">잠시후 다시 시도해주세요.</string>
+
+    <!-- 워크쓰루 -->
+    <string name="walkthrough_count_tv">%1d/%2d</string>
+    <string name="walkthrough_dialog_skip_tv">skip ></string>
+    <string name="walkthrough_dialog_next_tv">다음</string>
+    <string name="walkthrough_dialog_finish_tv">완료</string>
+    
+    <string name="walkthrough_setting_theme_title_tv">시스템 설정을 통해\n테마를 변경해 보세요!</string>
+    <string name="walkthrough_setting_theme_message_tv">시스템 설정에서 야간 모드로 설정 시\n고대비 테마가 적용됩니다</string>
+    
+    <string name="walkthrough_home_title_tv">관심 유형과 현재 위치에\n딱 맞는 여행지를 추천해요</string>
+    <string name="walkthrough_home_message_tv">더 많은 정보는 관광 정보에서 확인할 수 있어요</string>
+
+    <string name="walkthrough_schedule_title_tv">나만의 여행 일정을 작성하고\n추억을 나눠보세요</string>
+    <string name="walkthrough_schedule_message_tv">다른 사람들의 공개 일정도 둘러볼 수 있어요</string>
+
+    <string name="walkthrough_emergency_title_tv">위급 상황에도 안심하고\n여행할 수 있도록 도와드려요</string>
+    <string name="walkthrough_emergency_title_message">응급실, 심장제세동기, 약국을\n지도로 한눈에 확인할 수 있어요</string>
+    
 </resources>
 
