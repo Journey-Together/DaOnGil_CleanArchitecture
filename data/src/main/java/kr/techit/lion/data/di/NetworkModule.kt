@@ -78,7 +78,7 @@ internal object NetworkModule {
     @Provides
     fun provideKorWithService(okHttpClient: OkHttpClient): KorWithService =
         Retrofit.Builder()
-            .baseUrl("https://apis.data.go.kr/B551011/KorWithService1/")
+            .baseUrl("https://apis.data.go.kr/B551011/KorWithService2/")
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .client(okHttpClient)
             .build()
