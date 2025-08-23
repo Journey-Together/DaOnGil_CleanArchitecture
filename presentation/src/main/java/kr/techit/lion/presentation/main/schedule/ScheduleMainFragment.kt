@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,6 +28,8 @@ import kr.techit.lion.presentation.main.schedule.vm.ScheduleMainViewModel
 import kr.techit.lion.presentation.myschedule.MyScheduleActivity
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.ext.announceForAccessibility
+import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.schedule.PublicScheduleActivity
 import kr.techit.lion.presentation.schedule.ResultCode
 import kr.techit.lion.presentation.schedulereview.WriteScheduleReviewActivity
@@ -77,6 +80,7 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
 
         settingRecyclerView(binding)
         initButtonClickListener(binding)
+        initializeAccessibility(binding)
 
         repeatOnViewStarted {
                 launch { collectScheduleMainState(binding) }
@@ -233,6 +237,32 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                 // 공개 일정 더보기
                 val intent = Intent(requireActivity(), PublicScheduleActivity::class.java)
                 startActivity(intent)
+            }
+        }
+    }
+
+    private fun initializeAccessibility(binding: FragmentScheduleMainBinding) {
+        if (requireContext().isTallBackEnabled()) {
+            setupAccessibility(binding)
+        } else {
+            binding.toolbarSchedule.menu.clear()
+        }
+    }
+
+    private fun setupAccessibility(binding: FragmentScheduleMainBinding) {
+        requireActivity().announceForAccessibility(
+            getString(R.string.text_script_this_is_schedule) +
+                    getString(R.string.text_script_read_all_text)
+        )
+
+        binding.toolbarSchedule.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.read_script -> {
+                    requireActivity().announceForAccessibility(getString(R.string.text_script_guide_for_schedule))
+                    true
+                }
+
+                else -> false
             }
         }
     }
