@@ -60,7 +60,7 @@ import kr.techit.lion.presentation.main.dialog.ThemeSettingDialog
 import kr.techit.lion.presentation.main.home.vm.HomeViewModel
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
-import kr.techit.lion.presentation.main.dialog.ThemeSystemDialog
+import kr.techit.lion.presentation.main.dialog.WalkthroughDialog
 import java.io.IOException
 import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
@@ -307,10 +307,10 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         dialog.show(childFragmentManager, "ThemeGuideDialog")
     }
 
-    private fun showThemeSystemDialog() {
-        val dialog = ThemeSystemDialog()
+    private fun showWalkthroughDialog() {
+        val dialog = WalkthroughDialog()
         dialog.isCancelable = false
-        dialog.show(childFragmentManager, "ThemeTempDialog")
+        dialog.show(childFragmentManager, "WalkthroughDialog")
     }
 
     private fun checkLocationPermission(binding: FragmentHomeMainBinding) {
@@ -555,7 +555,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 //                        showThemeSettingDialog()
 //                    }
 
-                    showThemeSystemDialog()
+                    showWalkthroughDialog()
                 }
             }
         }
