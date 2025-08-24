@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kr.techit.lion.presentation.onboarding.model.FocusOn
 import kr.techit.lion.presentation.onboarding.model.OnBoardingUiState
 import javax.inject.Inject
@@ -16,10 +17,10 @@ class OnBoardingViewModel @Inject constructor(
     val uiState: StateFlow<OnBoardingUiState> get() = _uiState.asStateFlow()
 
     fun setFocusOn(focusOn: FocusOn) {
-        _uiState.value = _uiState.value.copy(focusOn = focusOn)
+        _uiState.update { it.copy(focusOn = focusOn) }
     }
 
     fun setCurrentPage(position: Int) {
-        _uiState.value = _uiState.value.copy(currentPage = position)
+        _uiState.update { it.copy(currentPage = position) }
     }
 }
