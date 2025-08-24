@@ -364,8 +364,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             position = LatLng(mapX, mapY)
             zIndex = 0
             map = naverMap
-            width = 86
-            height = 90
+            width = 91.38.toInt()
+            height = 114
         }
     }
 
