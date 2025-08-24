@@ -177,6 +177,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         binding.homeVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         binding.homeVpIndicator.setViewPager(binding.homeVp)
+        binding.homeVpIndicator.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+
         startAutoSlide(homeVPAdapter, binding)
     }
 
