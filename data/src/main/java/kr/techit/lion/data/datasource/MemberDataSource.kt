@@ -3,7 +3,7 @@ package kr.techit.lion.data.datasource
 import kr.techit.lion.domain.model.MyInfo
 import kr.techit.lion.data.service.MemberService
 import kr.techit.lion.data.common.execute
-import kr.techit.lion.domain.model.ConcernType
+import kr.techit.lion.domain.model.concern.Concerns
 import kr.techit.lion.domain.model.MyDefaultInfo
 import kr.techit.lion.domain.exception.Result
 import okhttp3.MultipartBody
@@ -33,7 +33,7 @@ internal class MemberDataSource @Inject constructor(
         memberService.modifyMyIceInfo(request)
     }
 
-    suspend fun getConcernType(): Result<ConcernType> = execute{
+    suspend fun getConcernType(): Result<Concerns> = execute{
         memberService.getConcernType().toDomainModel()
     }
 
