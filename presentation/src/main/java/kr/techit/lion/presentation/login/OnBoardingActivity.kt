@@ -113,8 +113,8 @@ class OnBoardingActivity : AppCompatActivity() {
                     super.onPageSelected(position)
                     // 마지막 페이지인지 확인
                     if (position == onBoardingVp.adapter?.itemCount?.minus(1)) {
-                        nextButton.text = "시작하기"
-                        textView.text = "로그인/회원가입 진행하기"
+                        nextButton.text = getString(R.string.text_app_start)
+                        textView.text = getString(R.string.text_login_signup)
 
                         nextButton.setOnClickListener {
                             val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
@@ -136,8 +136,8 @@ class OnBoardingActivity : AppCompatActivity() {
                         }
 
                     } else {
-                        nextButton.text = "다음"
-                        textView.text = "건너뛰기"
+                        nextButton.text = getString(R.string.text_onboarding_next)
+                        textView.text = getString(R.string.text_onboarding_skip)
 
                         nextButton.setOnClickListener {
                             // 다음 페이지로 이동

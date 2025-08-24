@@ -365,6 +365,11 @@
     <string name="text_explore_public_schedule">공개일정 둘러보기</string>
     <string name="text_add_new_schedule">새 여행 일정 추가하기</string>
 
+    <string name="text_app_start">시작하기</string>
+    <string name="text_login_signup">로그인/회원가입 진행하기</string>
+    <string name="text_onboarding_next">다음</string>
+    <string name="text_onboarding_skip">건너뛰기</string>
+
     <string name="text_script_guide_onboarding">
         온보딩 화면입니다.좌우스와이프로 페이지를 넘길수있습니다.
         스킵하시려면 화면하단건너뛰기버튼을 눌러주세요.</string>
