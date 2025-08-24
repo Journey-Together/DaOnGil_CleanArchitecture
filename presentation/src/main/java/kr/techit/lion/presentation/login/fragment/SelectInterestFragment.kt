@@ -16,7 +16,7 @@ import kr.techit.lion.presentation.databinding.FragmentSelectInterestBinding
 import kr.techit.lion.presentation.delegate.NetworkEvent
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
-import kr.techit.lion.presentation.login.model.InterestType
+import kr.techit.lion.domain.model.InterestType
 import kr.techit.lion.presentation.login.vm.InterestViewModel
 import kr.techit.lion.presentation.main.MainActivity
 

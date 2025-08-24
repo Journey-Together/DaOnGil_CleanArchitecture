@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.FragmentLoginBinding
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
-import kr.techit.lion.presentation.login.model.LoginType
+import kr.techit.lion.domain.model.LoginType
 import kr.techit.lion.presentation.login.model.UserType
 import kr.techit.lion.presentation.login.vm.LoginViewModel
 import kr.techit.lion.presentation.main.MainActivity

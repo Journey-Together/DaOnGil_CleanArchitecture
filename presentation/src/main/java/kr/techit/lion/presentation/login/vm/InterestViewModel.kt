@@ -14,8 +14,7 @@ import kr.techit.lion.domain.repository.MemberRepository
 import kr.techit.lion.presentation.base.BaseViewModel
 import kr.techit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.techit.lion.presentation.delegate.NetworkEventDelegate
-import kr.techit.lion.presentation.delegate.NetworkState
-import kr.techit.lion.presentation.login.model.InterestType
+import kr.techit.lion.domain.model.InterestType
 import javax.inject.Inject
 
 @HiltViewModel
