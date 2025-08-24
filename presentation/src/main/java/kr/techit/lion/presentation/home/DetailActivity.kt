@@ -1,5 +1,6 @@
 package kr.techit.lion.presentation.home
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,6 +11,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -28,6 +30,8 @@ import kotlinx.coroutines.launch
 import kr.techit.lion.domain.model.detailplace.Review
 import kr.techit.lion.domain.model.detailplace.SubDisability
 import kr.techit.lion.presentation.R
+import kr.techit.lion.presentation.connectivity.ConnectivityObserver
+import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
 import kr.techit.lion.presentation.databinding.ActivityDetailBinding
 import kr.techit.lion.presentation.delegate.NetworkState
 import kr.techit.lion.presentation.emergency.EmergencyMapActivity
@@ -40,9 +44,8 @@ import kr.techit.lion.presentation.home.adapter.DetailReviewRVAdapter
 import kr.techit.lion.presentation.home.model.toReviewInfo
 import kr.techit.lion.presentation.home.vm.DetailViewModel
 import kr.techit.lion.presentation.myreview.MyReviewActivity
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
 import kr.techit.lion.presentation.splash.model.LogInStatus
+import java.net.URLEncoder
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -65,6 +68,10 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+    companion object {
+        private const val NMAP_PACKAGE_NAME = "com.nhn.android.nmap"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -225,6 +232,31 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
         naverMap.moveCamera(cameraUpdate)
 
         addMapMarker(longitude, latitude)
+
+        setOnMapClickListener(name, longitude, latitude)
+
+    }
+
+    private fun setOnMapClickListener(name: String, longitude: Double, latitude: Double) {
+        naverMap.setOnMapClickListener { pointF, latLng ->
+            val encodedName = URLEncoder.encode(name, "UTF-8")
+            val url = "nmap://place?lat=${longitude}&lng=${latitude}&name=${encodedName}&appname=${packageName}"
+            val uri = url.toUri()
+            val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                setPackage(NMAP_PACKAGE_NAME)
+            }
+
+            try {
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        "market://details?id=${NMAP_PACKAGE_NAME}".toUri()
+                    )
+                )
+            }
+        }
     }
 
     private fun getDetailPlaceInfo(placeId: Long) {
