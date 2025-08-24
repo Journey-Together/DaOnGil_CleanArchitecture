@@ -471,7 +471,7 @@
     <string name="http_error_server_message">잠시후 다시 시도해주세요.</string>
 
     <!-- 워크쓰루 -->
-    <string name="walkthrough_count_tv">%1d/%2d</string>
+    <string name="walkthrough_count_tv">%1$d/%2$d</string>
     <string name="walkthrough_dialog_skip_tv">skip ></string>
     <string name="walkthrough_dialog_next_tv">다음</string>
     <string name="walkthrough_dialog_finish_tv">완료</string>
