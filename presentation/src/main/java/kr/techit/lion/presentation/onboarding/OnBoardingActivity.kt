@@ -8,14 +8,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.ActivityOnBoardingBinding
 import kr.techit.lion.presentation.ext.announceForAccessibility
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.login.LoginActivity
-import kr.techit.lion.presentation.onboarding.FocusOn
+import kr.techit.lion.presentation.onboarding.model.FocusOn
 import kr.techit.lion.presentation.onboarding.vm.OnBoardingViewModel
 import kr.techit.lion.presentation.main.MainActivity
 import kr.techit.lion.presentation.splash.adapter.OnBoardingImageVPAdapter
@@ -30,6 +29,7 @@ class OnBoardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupUiState()
         initAccessibility()
         setUpOnBoardingViewPager()
     }
@@ -37,6 +37,16 @@ class OnBoardingActivity : AppCompatActivity() {
     private fun initAccessibility() {
         if (this.isTallBackEnabled()) {
             this.announceForAccessibility(getString(R.string.text_script_guide_onboarding))
+        }
+    }
+
+    private fun setupUiState() {
+        repeatOnStarted {
+            viewModel.uiState.collect { state ->
+                if (isTallBackEnabled()) {
+                    setViewPagerTallBack(state.currentPage, state.focusOn)
+                }
+            }
         }
     }
 
@@ -101,9 +111,7 @@ class OnBoardingActivity : AppCompatActivity() {
                 if (isLastPage) setupLastPage()
                 else setupNormalPage(position, lastPosition)
 
-                if (this@OnBoardingActivity.isTallBackEnabled()) {
-                    setViewPagerTallBack(position)
-                }
+                viewModel.setCurrentPage(position)
             }
         })
     }
@@ -128,32 +136,29 @@ class OnBoardingActivity : AppCompatActivity() {
         btnSkip.setOnClickListener { moveToLogin() }
 
         if (this@OnBoardingActivity.isTallBackEnabled()) {
-            repeatOnStarted {
-                delay(3000)
-                this@OnBoardingActivity.announceForAccessibility(
-                    getString(R.string.text_script_guide_last_onboarding_page)
-                )
-            }
+            this@OnBoardingActivity.announceForAccessibility(
+                getString(R.string.text_script_guide_last_onboarding_page)
+            )
         }
     }
 
-    private fun setViewPagerTallBack(position: Int) {
+    private fun setViewPagerTallBack(position: Int, focusOn: FocusOn) {
         when (position) {
             1 -> {
-                if (viewModel.focusOn.value != FocusOn.ViewPager) {
+                if (focusOn != FocusOn.ViewPager) {
                     this@OnBoardingActivity.announceForAccessibility(
                         getString(R.string.text_onboarding_second_text1) +
                                 getString(R.string.text_onboarding_second_text2)
                     )
                 }
             }
-            2 -> if (viewModel.focusOn.value != FocusOn.ViewPager) {
+            2 -> if (focusOn != FocusOn.ViewPager) {
                 this@OnBoardingActivity.announceForAccessibility(
                     getString(R.string.text_onboarding_third_text1) +
                             getString(R.string.text_onboarding_third_text2)
                 )
             }
-            3 -> if (viewModel.focusOn.value != FocusOn.ViewPager) {
+            3 -> if (focusOn != FocusOn.ViewPager) {
                 this@OnBoardingActivity.announceForAccessibility(
                     getString(R.string.text_onboarding_fourth_text1) +
                             getString(R.string.text_onboarding_fourth_text2) +
