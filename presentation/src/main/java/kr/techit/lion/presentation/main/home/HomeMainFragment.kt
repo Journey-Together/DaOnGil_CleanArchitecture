@@ -60,6 +60,7 @@ import kr.techit.lion.presentation.main.dialog.ThemeSettingDialog
 import kr.techit.lion.presentation.main.home.vm.HomeViewModel
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.ext.announceForAccessibility
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.main.dialog.WalkthroughDialog
 import java.io.IOException
@@ -110,6 +111,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         settingVPAdapter(binding)
         getRecommendPlaceInfo(binding)
         settingSearchBanner(binding)
+        initializeAccessibility(binding)
     }
 
     private fun settingAppTheme(binding: FragmentHomeMainBinding) {
@@ -194,6 +196,32 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 null,
                 navOptions
             )
+        }
+    }
+
+    private fun initializeAccessibility(binding: FragmentHomeMainBinding) {
+        if (requireContext().isTallBackEnabled()) {
+            setupAccessibility(binding)
+        } else {
+            binding.homeToolbar.menu.clear()
+        }
+    }
+
+    private fun setupAccessibility(binding: FragmentHomeMainBinding) {
+        requireActivity().announceForAccessibility(
+            getString(R.string.text_script_this_is_home) +
+                    getString(R.string.text_script_read_all_text)
+        )
+
+        binding.homeToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.read_script -> {
+                    requireActivity().announceForAccessibility(getString(R.string.text_script_guide_for_home))
+                    true
+                }
+
+                else -> false
+            }
         }
     }
 
