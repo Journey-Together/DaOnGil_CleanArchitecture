@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -17,10 +16,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.FragmentLoginBinding
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
-import kr.techit.lion.presentation.login.model.LoginType
+import kr.techit.lion.domain.model.LoginType
 import kr.techit.lion.presentation.login.model.UserType
 import kr.techit.lion.presentation.login.vm.LoginViewModel
 import kr.techit.lion.presentation.main.MainActivity
+import androidx.navigation.findNavController
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -51,7 +51,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     UserType.Checking -> return@collect
                     UserType.NewUser -> {
                         binding.progressbar.visibility = View.VISIBLE
-                        Navigation.findNavController(view).navigate(R.id.to_selectInterestFragment)
+                        view.findNavController().navigate(R.id.to_selectInterestFragment)
                     }
 
                     UserType.ExistingUser -> {

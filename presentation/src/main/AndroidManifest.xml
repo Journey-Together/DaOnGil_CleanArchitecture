@@ -84,7 +84,7 @@
             android:name=".main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".login.OnBoardingActivity"
+            android:name=".onboarding.OnBoardingActivity"
             android:exported="false" />
         <activity
             android:name=".keyword.KeywordSearchActivity"
