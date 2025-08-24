@@ -1,4 +1,4 @@
-package kr.techit.lion.presentation.login.model
+package kr.techit.lion.presentation.onboarding
 
 import android.graphics.drawable.Drawable
 

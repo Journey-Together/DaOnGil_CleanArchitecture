@@ -1,10 +1,10 @@
-package kr.techit.lion.presentation.login.vm
+package kr.techit.lion.presentation.onboarding.vm
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kr.techit.lion.presentation.login.model.FocusOn
+import kr.techit.lion.presentation.onboarding.FocusOn
 import javax.inject.Inject
 
 @HiltViewModel

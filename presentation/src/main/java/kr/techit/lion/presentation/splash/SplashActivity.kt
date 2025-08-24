@@ -14,7 +14,7 @@ import kr.techit.lion.presentation.databinding.ActivitySplashBinding
 import kr.techit.lion.presentation.delegate.NetworkEvent
 import kr.techit.lion.presentation.ext.repeatOnStarted
 import kr.techit.lion.presentation.ext.showInfinitySnackBar
-import kr.techit.lion.presentation.login.OnBoardingActivity
+import kr.techit.lion.presentation.onboarding.OnBoardingActivity
 import kr.techit.lion.presentation.main.MainActivity
 import kr.techit.lion.presentation.splash.vm.SplashViewModel
 

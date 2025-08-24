@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.techit.lion.presentation.databinding.ItemOnboardingVpBinding
-import kr.techit.lion.presentation.login.model.OnBoardingPage
+import kr.techit.lion.presentation.onboarding.OnBoardingPage
 
 class OnBoardingImageVPAdapter(
     private val pages: List<OnBoardingPage>,
@@ -25,10 +25,10 @@ class OnBoardingImageVPAdapter(
 
     class ImageViewHolder(private val binding: ItemOnboardingVpBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(page: OnBoardingPage) {
-            binding.itemOnboardingIv.setImageDrawable(page.imageId)
-            binding.itemOnboardingTv1.text = page.text1
-            binding.itemOnboardingTv2.text = page.text2
-            binding.itemOnboardingTv3.text = page.text3
+            binding.itemOnboardingIv.setImageDrawable(page.image)
+            binding.itemOnboardingTv1.text = page.title
+            binding.itemOnboardingTv2.text = page.description
+            binding.itemOnboardingTv3.text = page.extra
         }
     }
 }
