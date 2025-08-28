@@ -15,11 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ConcernViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
-    private val networkEventDelegate: NetworkEventDelegate,
+    networkEventDelegate: NetworkEventDelegate,
     connectivityObserver: ConnectivityObserver,
 ) : BaseViewModel2<ConcernUiEvent>(networkEventDelegate, connectivityObserver) {
-
-    val networkEvent get() = networkEventDelegate.event
 
     private val _uiState = MutableStateFlow(Concerns())
     val uiState get() = _uiState.asStateFlow()
