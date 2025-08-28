@@ -474,5 +474,7 @@
 
     <string name="http_error_server_title">서버에 오류가 발생했어요</string>
     <string name="http_error_server_message">잠시후 다시 시도해주세요.</string>
+
+    <string name="error_fail_to_login">로그인에 실패 했습니다. 잠시 후 다시 시도해주세요</string>
 </resources>
 

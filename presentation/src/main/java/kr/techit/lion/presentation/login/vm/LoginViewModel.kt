@@ -9,7 +9,10 @@ import kotlinx.coroutines.launch
 import kr.techit.lion.domain.repository.AuthRepository
 import kr.techit.lion.domain.repository.MemberRepository
 import kr.techit.lion.presentation.base.BaseViewModel
+import kr.techit.lion.presentation.base.BaseViewModel2
+import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.delegate.NetworkEventDelegate
+import kr.techit.lion.presentation.login.LoginUiEvent
 import kr.techit.lion.presentation.login.model.UserType
 import javax.inject.Inject
 
@@ -17,29 +20,22 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val memberRepository: MemberRepository,
-    private val networkEventDelegate: NetworkEventDelegate,
-) : BaseViewModel() {
+    networkEventHandler: NetworkEventDelegate,
+    connectivityObserver: ConnectivityObserver,
+) : BaseViewModel2<LoginUiEvent>(networkEventHandler, connectivityObserver) {
 
-    val networkEvent get() = networkEventDelegate.event
+    fun signIn(type: String, accessToken: String, refreshToken: String) = runAsync(
+        action = { authRepository.signIn(type, accessToken, refreshToken) },
+        onSuccess = { checkUserState() }
+    )
 
-    private val _userType = MutableStateFlow(UserType.Checking)
-    val userType get() = _userType.asStateFlow()
-
-    fun signIn(type: String, accessToken: String, refreshToken: String) {
-        viewModelScope.launch(recordExceptionHandler) {
-            authRepository.signIn(type, accessToken, refreshToken)
-            checkUserState()
-        }
-    }
-
-    private fun checkUserState() = execute(
+    private fun checkUserState() = runAsync(
         action = { memberRepository.getConcernType() },
-        eventHandler = networkEventDelegate,
         onSuccess = { type ->
             if (type.anyTrue()) {
-                _userType.update { UserType.ExistingUser }
+                emitEvent(LoginUiEvent.NavigateToMain)
             } else {
-                _userType.update { UserType.NewUser }
+                emitEvent(LoginUiEvent.NavigateToSelectConcern)
             }
         }
     )
