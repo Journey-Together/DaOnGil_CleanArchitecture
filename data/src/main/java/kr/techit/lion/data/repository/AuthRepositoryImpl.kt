@@ -7,6 +7,7 @@ import kr.techit.lion.data.dto.request.SignInRequest
 import kr.techit.lion.data.dto.request.toRequestBody
 import kr.techit.lion.domain.repository.AuthRepository
 import kr.techit.lion.domain.exception.Result
+import kr.techit.lion.domain.exception.onSuccess
 import javax.inject.Inject
 
 internal class AuthRepositoryImpl @Inject constructor(
@@ -17,13 +18,13 @@ internal class AuthRepositoryImpl @Inject constructor(
     override val loggedIn: Flow<Boolean>
         get() = authDataSource.loggedIn
 
-    override suspend fun signIn(type: String, accessToken: String, refreshToken: String) {
+    override suspend fun signIn(
+        type: String,
+        accessToken: String,
+        refreshToken: String,
+    ): Result<Unit> {
         val request = SignInRequest(refreshToken).toRequestBody()
-        authDataSource.signIn(type, accessToken, request).onSuccess { response ->
-            tokenDataSource.saveTokens(response.data.accessToken, response.data.refreshToken)
-        }.onFailure {
-            it.printStackTrace()
-        }
+        return authDataSource.signIn(type, accessToken, request)
     }
 
     override suspend fun logout(): kotlin.Result<Unit> = authDataSource.logout()

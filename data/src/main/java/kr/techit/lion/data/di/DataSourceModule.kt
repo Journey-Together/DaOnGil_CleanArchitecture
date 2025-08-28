@@ -21,8 +21,9 @@ internal object DataSourceModule {
     @Provides
     fun provideAuthDataStore(
         @ApplicationContext context: Context,
-        authService: AuthService
-    ): AuthDataSource = AuthDataSource(context, authService)
+        authService: AuthService,
+        tokenDataSource: TokenDataSource
+    ): AuthDataSource = AuthDataSource(context, authService, tokenDataSource)
 
     @Singleton
     @Provides
