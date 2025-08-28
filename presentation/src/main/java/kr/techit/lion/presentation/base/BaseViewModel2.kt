@@ -16,7 +16,7 @@ import kr.techit.lion.domain.exception.Result
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.delegate.NetworkEventDelegate
 
-open class BaseViewModel2<UiEvent>(
+abstract class BaseViewModel2<UiEvent>(
     private val networkEventHandler: NetworkEventDelegate,
     private val connectivityObserver: ConnectivityObserver,
 ) : ViewModel() {
@@ -26,6 +26,8 @@ open class BaseViewModel2<UiEvent>(
             FirebaseCrashlytics.getInstance().recordException(throwable)
         }
     }
+
+    val networkEvent get() = networkEventHandler.event
 
     private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
     val uiEvent get() = _uiEvent.receiveAsFlow()
