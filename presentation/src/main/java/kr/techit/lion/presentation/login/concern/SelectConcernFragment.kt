@@ -30,8 +30,9 @@ class SelectConcernFragment : Fragment(R.layout.fragment_select_concern) {
         initView(binding)
 
         repeatOnViewStarted {
+            launch { collectUiState(binding) }
+            launch { collectUiEvent() }
             launch { collectNetworkEvent(binding) }
-            launch { collectConcernType(binding) }
         }
     }
 
@@ -46,17 +47,27 @@ class SelectConcernFragment : Fragment(R.layout.fragment_select_concern) {
 
         interestImageViews.map { (type, imageView) ->
             imageView.setOnClickListener {
-                viewModel.onSelectInterest(type)
+                viewModel.modifyInterest(type)
             }
         }
 
         btnSubmit.setOnClickListener {
             progressBar.visibility = View.VISIBLE
-            viewModel.onClickSubmitButton()
+            viewModel.fetchConcern()
         }
+    }
 
-        btnRetry.setOnClickListener {
-            viewModel.onClickSubmitButton()
+    private suspend fun collectUiState(binding: FragmentSelectConcernBinding) {
+        viewModel.uiState.collect { concerns ->
+            updateUI(binding, concerns)
+        }
+    }
+
+    private suspend fun collectUiEvent() {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                ConcernUiEvent.NavigateToMain -> moveToMain()
+            }
         }
     }
 
@@ -70,7 +81,6 @@ class SelectConcernFragment : Fragment(R.layout.fragment_select_concern) {
                 }
 
                 is NetworkEvent.Error -> {
-                    btnRetry.visibility = View.VISIBLE
                     progressBar.visibility = View.GONE
                     showErrorSnackBar(binding)
                 }
@@ -89,12 +99,6 @@ class SelectConcernFragment : Fragment(R.layout.fragment_select_concern) {
             getString(R.string.plz_retry),
             Snackbar.LENGTH_SHORT
         ).show()
-    }
-
-    private suspend fun collectConcernType(binding: FragmentSelectConcernBinding) {
-        viewModel.uiState.collect { concerns ->
-            updateUI(binding, concerns)
-        }
     }
 
     private fun updateUI(binding: FragmentSelectConcernBinding, concerns: Concerns) {
