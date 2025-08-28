@@ -119,22 +119,6 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_retry"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginBottom="@dimen/margin_big4"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="@string/text_retry"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        android:backgroundTint="@color/button_tertiary"
-        android:textSize="@dimen/font_big1"
-        app:layout_constraintBottom_toTopOf="@id/btn_submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="55dp"

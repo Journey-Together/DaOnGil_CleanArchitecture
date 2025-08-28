@@ -12,11 +12,11 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/to_selectInterestFragment"
-            app:destination="@id/selectInterestFragment" />
+            app:destination="@id/selectConcernFragment" />
     </fragment>
     <fragment
-        android:id="@+id/selectInterestFragment"
+        android:id="@+id/selectConcernFragment"
         android:name="kr.techit.lion.presentation.login.concern.SelectConcernFragment"
-        android:label="fragment_select_interest"
+        android:label="fragment_select_concern"
         tools:layout="@layout/fragment_select_concern" />
 </navigation>
