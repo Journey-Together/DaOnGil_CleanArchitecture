@@ -26,7 +26,7 @@ class SplashViewModel @Inject constructor(
         .activation
         .stateInUi(scope = viewModelScope, initialValue = Activation.Loading)
 
-    suspend fun whenUserActivationIsDeActivate() {
+    suspend fun loadAreaCode() {
         initAreaCodeInfoUseCase()
             .onSuccess {
                 networkEventDelegate.event(viewModelScope, NetworkEvent.Success)

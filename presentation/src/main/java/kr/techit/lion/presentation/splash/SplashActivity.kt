@@ -17,6 +17,7 @@ import kr.techit.lion.presentation.ext.showInfinitySnackBar
 import kr.techit.lion.presentation.onboarding.OnBoardingActivity
 import kr.techit.lion.presentation.main.MainActivity
 import kr.techit.lion.presentation.splash.vm.SplashViewModel
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -30,10 +31,19 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        initView()
+
+        repeatOnStarted {
+            collectNetworkEvent()
+            collectActivationState()
+        }
+    }
+
+    private fun initView() {
         val videoPath = "android.resource://" + packageName + "/" + R.raw.splash_video
         with(binding.splashVideoView) {
 
-            setVideoURI(Uri.parse(videoPath))
+            setVideoURI(videoPath.toUri())
 
             setOnPreparedListener { mp ->
                 val videoWidth = mp.videoWidth.toFloat()
@@ -60,41 +70,44 @@ class SplashActivity : AppCompatActivity() {
 
                 this.start()
             }
+        }
+    }
 
-            repeatOnStarted {
-                viewModel.userActivationState.collect {
-                    when (it) {
-                        Activation.Activate -> {
-                            delay(DELAY_FOR_DISPLAY_SPLASH_ANIMATION)
-                            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                            finish()
-                        }
-
-                        Activation.DeActivate -> {
-                            viewModel.whenUserActivationIsDeActivate()
-                        }
-                        Activation.Loading -> Unit
-                    }
+    private suspend fun collectActivationState() {
+        viewModel.userActivationState.collect {
+            when (it) {
+                Activation.Loading -> Unit
+                Activation.Activate -> {
+                    delay(DELAY_FOR_DISPLAY_SPLASH_ANIMATION)
+                    moveToMain()
                 }
-            }
 
-            repeatOnStarted {
-                viewModel.networkEvent.collect { event ->
-                    when (event) {
-                        NetworkEvent.Loading -> Unit
-                        NetworkEvent.Success -> {
-                            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
-                            finish()
-                        }
-                        is NetworkEvent.Error -> {
-                            showInfinitySnackBar(binding.root, event.msg)
-                        }
-                    }
-                }
+                Activation.DeActivate -> viewModel.loadAreaCode()
             }
         }
     }
-    companion object{
+
+    private fun moveToMain() {
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        finish()
+    }
+
+    private suspend fun collectNetworkEvent() {
+        viewModel.networkEvent.collect { event ->
+            when (event) {
+                NetworkEvent.Loading -> Unit
+                NetworkEvent.Success -> moveToOnBoarding()
+                is NetworkEvent.Error -> showInfinitySnackBar(binding.root, event.msg)
+            }
+        }
+    }
+
+    private fun moveToOnBoarding() {
+        startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
+        finish()
+    }
+
+    companion object {
         private const val DELAY_FOR_DISPLAY_SPLASH_ANIMATION = 2700L
     }
 }
