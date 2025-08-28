@@ -11,8 +11,7 @@ import kr.techit.lion.presentation.onboarding.model.OnBoardingUiState
 import javax.inject.Inject
 
 @HiltViewModel
-class OnBoardingViewModel @Inject constructor(
-) : ViewModel() {
+class OnBoardingViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(OnBoardingUiState())
     val uiState: StateFlow<OnBoardingUiState> get() = _uiState.asStateFlow()
 
