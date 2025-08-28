@@ -60,6 +60,8 @@ import kr.techit.lion.presentation.main.dialog.ThemeSettingDialog
 import kr.techit.lion.presentation.main.home.vm.HomeViewModel
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.ext.announceForAccessibility
+import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.main.dialog.WalkthroughDialog
 import java.io.IOException
 import java.util.Timer
@@ -109,6 +111,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         settingVPAdapter(binding)
         getRecommendPlaceInfo(binding)
         settingSearchBanner(binding)
+        initializeAccessibility(binding)
     }
 
     private fun settingAppTheme(binding: FragmentHomeMainBinding) {
@@ -177,6 +180,8 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         binding.homeVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         binding.homeVpIndicator.setViewPager(binding.homeVp)
+        binding.homeVpIndicator.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+
         startAutoSlide(homeVPAdapter, binding)
     }
 
@@ -194,19 +199,48 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         }
     }
 
-    private fun startAutoSlide(adpater: HomeVPAdapter, binding: FragmentHomeMainBinding) {
+    private fun initializeAccessibility(binding: FragmentHomeMainBinding) {
+        if (requireContext().isTallBackEnabled()) {
+            setupAccessibility(binding)
+        } else {
+            binding.homeToolbar.menu.clear()
+        }
+    }
+
+    private fun setupAccessibility(binding: FragmentHomeMainBinding) {
+        requireActivity().announceForAccessibility(
+            getString(R.string.text_script_this_is_home) +
+                    getString(R.string.text_script_read_all_text)
+        )
+
+        binding.homeToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.read_script -> {
+                    requireActivity().announceForAccessibility(getString(R.string.text_script_guide_for_home))
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
+
+    private fun startAutoSlide(adapter: HomeVPAdapter, binding: FragmentHomeMainBinding) {
         val timer = Timer()
         val handler = Handler(Looper.getMainLooper())
 
-        // 일정 간격으로 슬라이드 변경 (4초마다)
-        timer.scheduleAtFixedRate(3000, 4000) {
+        // TalkBack 활성화 여부 확인 후 슬라이드 간격 설정(기본 4초, TalkBack: 10초)
+        val isTalkBackEnabled = requireContext().isTallBackEnabled()
+        val interval = if (isTalkBackEnabled) 10000L else 4000L
+
+        timer.scheduleAtFixedRate(3000L, interval) {
             handler.post {
                 val nextItem = binding.homeVp.currentItem + 1
-                if (nextItem < adpater.itemCount) {
-                    binding.homeVp.currentItem = nextItem
-                } else {
-                    binding.homeVp.currentItem = 0 // 마지막 페이지에서 첫 페이지로 순환
-                }
+                val targetItem = if (nextItem < adapter.itemCount) nextItem else 0
+
+                // 자동 슬라이드 TalkBack 읽기 방지
+                binding.homeVp.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+                binding.homeVp.currentItem = targetItem
             }
         }
     }
