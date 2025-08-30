@@ -18,6 +18,7 @@ import kr.techit.lion.presentation.onboarding.OnBoardingActivity
 import kr.techit.lion.presentation.main.MainActivity
 import kr.techit.lion.presentation.splash.vm.SplashViewModel
 import androidx.core.net.toUri
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -34,8 +35,8 @@ class SplashActivity : AppCompatActivity() {
         initView()
 
         repeatOnStarted {
-            collectNetworkEvent()
-            collectActivationState()
+            launch { collectActivationState() }
+            launch { collectNetworkEvent() }
         }
     }
 
