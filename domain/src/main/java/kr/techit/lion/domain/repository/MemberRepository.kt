@@ -2,7 +2,7 @@ package kr.techit.lion.domain.repository
 
 import kr.techit.lion.domain.model.IceInfo
 import kr.techit.lion.domain.model.MyInfo
-import kr.techit.lion.domain.model.ConcernType
+import kr.techit.lion.domain.model.concern.Concerns
 import kr.techit.lion.domain.model.MyDefaultInfo
 import kr.techit.lion.domain.model.PersonalInfo
 import kr.techit.lion.domain.model.ProfileImage
@@ -20,7 +20,7 @@ interface MemberRepository {
 
     suspend fun modifyMyIceInfo(request: IceInfo): Result<Unit>
 
-    suspend fun getConcernType(): Result<ConcernType>
+    suspend fun getConcernType(): Result<Concerns>
 
-    suspend fun updateConcernType(request: ConcernType): Result<Unit>
+    suspend fun updateConcernType(request: Concerns): Result<Unit>
 }

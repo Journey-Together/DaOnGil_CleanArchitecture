@@ -3,6 +3,7 @@ package kr.techit.lion.presentation.connectivity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.awaitClose
@@ -12,26 +13,40 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkConnectivityObserver(
-    context: Context
-): ConnectivityObserver {
+class NetworkConnectivityObserver @Inject constructor(
+    @ApplicationContext context: Context,
+) : ConnectivityObserver {
 
-    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     @OptIn(DelicateCoroutinesApi::class)
     private val status: Flow<ConnectivityObserver.Status> =
-        observe().stateIn(GlobalScope, WhileSubscribed(5000), ConnectivityObserver.Status.Unavailable)
+        observe().stateIn(
+            GlobalScope,
+            WhileSubscribed(5000),
+            ConnectivityObserver.Status.Unavailable
+        )
 
     override fun getFlow(): Flow<ConnectivityObserver.Status> {
         return status
     }
 
+    override fun value(): ConnectivityObserver.Status {
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+        return capabilities?.let { ConnectivityObserver.Status.Available }
+            ?: ConnectivityObserver.Status.Unavailable
+    }
+
     private fun observe(): Flow<ConnectivityObserver.Status> {
         return callbackFlow {
-            val callback = object : ConnectivityManager.NetworkCallback(){
+            val callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
                     launch { send(ConnectivityObserver.Status.Available) }
@@ -47,7 +62,7 @@ class NetworkConnectivityObserver(
                     launch { send(ConnectivityObserver.Status.Lost) }
                 }
 
-                override fun onUnavailable(){
+                override fun onUnavailable() {
                     super.onUnavailable()
                     launch { send(ConnectivityObserver.Status.Unavailable) }
                 }
@@ -55,7 +70,7 @@ class NetworkConnectivityObserver(
 
             connectivityManager.registerDefaultNetworkCallback(callback)
 
-            awaitClose{
+            awaitClose {
                 connectivityManager.unregisterNetworkCallback(callback)
             }
         }.distinctUntilChanged()

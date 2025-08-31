@@ -291,9 +291,6 @@
         나의응급정보읽기버튼은 화면최상단오른쪽 화면정보읽기버튼 왼쪽에있습니다.
     </string>
 
-    <string name="text_logout_guide">
-
-    </string>
     <string name="text_script_for_no_login_user">
         마이페이지 화면입니다.
         로그인한 사용자분들께서만 이용 가능합니다.
@@ -458,6 +455,7 @@
     <string name="text_concern_type_modify_move">관심 유형 수정하기</string>
     <string name="text_concern_type_choose">관심 유형을 선택해주세요.</string>
     <string name="text_concern_type_modify">수정 완료</string>
+    <string name="description_modify_concern_type">%s 현재 선택된 관심 유형은 %s 입니다</string>
 
     <string name="text_my_review_modify_title">후기 수정하기</string>
     <string name="text_my_review_modify_rating">후기 별점 수정하기</string>
@@ -523,6 +521,9 @@
 
     <string name="http_error_server_title">서버에 오류가 발생했어요</string>
     <string name="http_error_server_message">잠시후 다시 시도해주세요.</string>
+
+
+    <string name="error_fail_to_login">로그인에 실패 했습니다. 잠시 후 다시 시도해주세요</string>
 
     <!-- 워크쓰루 -->
     <string name="walkthrough_count_tv">%1$d/%2$d</string>

@@ -5,7 +5,7 @@ import kr.techit.lion.domain.model.MyInfo
 import kr.techit.lion.data.datasource.MemberDataSource
 import kr.techit.lion.data.dto.request.toRequestBody
 import kr.techit.lion.data.dto.request.toMultipartBody
-import kr.techit.lion.domain.model.ConcernType
+import kr.techit.lion.domain.model.concern.Concerns
 import kr.techit.lion.domain.model.MyDefaultInfo
 import kr.techit.lion.domain.model.PersonalInfo
 import kr.techit.lion.domain.model.ProfileImage
@@ -37,11 +37,11 @@ internal class MemberRepositoryImpl @Inject constructor(
         return memberDataSource.modifyMyIceInfo(request.toRequestBody())
     }
 
-    override suspend fun getConcernType(): Result<ConcernType> {
+    override suspend fun getConcernType(): Result<Concerns> {
         return memberDataSource.getConcernType()
     }
 
-    override suspend fun updateConcernType(request: ConcernType): Result<Unit> {
+    override suspend fun updateConcernType(request: Concerns): Result<Unit> {
         return memberDataSource.updateConcernType(request.toRequestBody())
     }
 }

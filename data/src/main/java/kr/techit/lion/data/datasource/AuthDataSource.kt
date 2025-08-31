@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 internal class AuthDataSource @Inject constructor(
     private val context: Context,
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val tokenDataSource: TokenDataSource,
 ) {
     private val dataStore: DataStore<AppSettings>
         get() = context.dataStore
@@ -27,23 +28,28 @@ internal class AuthDataSource @Inject constructor(
     val loggedIn: Flow<Boolean>
         get() = data.map { it.accessToken.isNotBlank() }
 
-    suspend fun signIn(type: String, accessToken: String, refreshToken: RequestBody) = runCatching {
-        authService.signIn(type = type, token = "Bearer $accessToken", requestBody = refreshToken)
+    suspend fun signIn(type: String, accessToken: String, refreshToken: RequestBody) = execute {
+        val response = authService.signIn(
+            type = type,
+            token = "Bearer $accessToken",
+            requestBody = refreshToken
+        )
+        tokenDataSource.saveTokens(response.data.accessToken, response.data.refreshToken)
     }
 
-     suspend fun logout(): kotlin.Result<Unit> = runCatching{
+    suspend fun logout(): kotlin.Result<Unit> = runCatching {
         val accessToken = data.map { it.accessToken }.first()
         localLogout()
         authService.signOut("Bearer $accessToken")
     }
 
-    suspend fun refresh(): kotlin.Result<SignUpResponse?> = runCatching{
+    suspend fun refresh(): kotlin.Result<SignUpResponse?> = runCatching {
         val refreshToken = data.map { it.refreshToken }.first()
 
         if (refreshToken.isNotBlank()) authService.refresh("Bearer $refreshToken") else null
     }
 
-    suspend fun withdraw(): Result<Unit> = execute{
+    suspend fun withdraw(): Result<Unit> = execute {
         val accessToken = data.map { it.accessToken }.first()
         localLogout()
         authService.withdraw("Bearer $accessToken")

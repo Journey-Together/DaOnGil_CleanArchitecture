@@ -169,8 +169,7 @@ class OnBoardingActivity : AppCompatActivity() {
     }
 
     private fun moveToMain() {
-        val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
-        startActivity(intent)
+        startActivity(MainActivity.newIntent(this))
         finish()
     }
 

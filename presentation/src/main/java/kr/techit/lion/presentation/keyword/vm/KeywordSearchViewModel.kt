@@ -69,12 +69,12 @@ class KeywordSearchViewModel @Inject constructor(
     .distinctUntilChanged()
     .flatMapLatest { keyword ->
         val response = placeRepository.getAutoCompleteKeyword(keyword)
-        networkEventDelegate.event(viewModelScope, NetworkEvent.Success)
+        networkEventDelegate.emitEvent(viewModelScope, NetworkEvent.Success)
         response
     }
     .flowOn(recordExceptionHandler)
     .catch { e ->
-        networkEventDelegate.submitThrowableEvent(viewModelScope, e)
+        networkEventDelegate.handleErrorEvent(viewModelScope, e)
     }
 
     fun inputTextChanged(keyword: String) {

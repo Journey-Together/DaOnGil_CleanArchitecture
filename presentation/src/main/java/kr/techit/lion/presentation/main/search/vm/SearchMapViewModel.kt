@@ -14,14 +14,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kr.techit.lion.domain.exception.NetworkError
-import kr.techit.lion.domain.exception.NetworkError.TimeoutError
-import kr.techit.lion.domain.exception.NetworkError.UnknownHostError
-import kr.techit.lion.domain.exception.NetworkError.UnknownError
 import kr.techit.lion.domain.repository.PlaceRepository
 import kr.techit.lion.presentation.base.BaseViewModel
-import kr.techit.lion.presentation.delegate.NetworkErrorDelegate
 import kr.techit.lion.presentation.delegate.NetworkEvent
 import kr.techit.lion.presentation.delegate.NetworkEventDelegate
 import kr.techit.lion.presentation.main.search.vm.model.Category
@@ -35,9 +29,7 @@ import kr.techit.lion.presentation.main.search.vm.model.PhysicalDisability
 import kr.techit.lion.presentation.main.search.vm.model.SharedOptionState
 import kr.techit.lion.presentation.main.search.vm.model.VisualImpairment
 import kr.techit.lion.presentation.main.search.vm.model.toUiModel
-import java.net.UnknownHostException
 import java.util.TreeSet
-import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -59,7 +51,7 @@ class SearchMapViewModel @Inject constructor(
         .debounce(DEBOUNCE_INTERVAL)
         .flatMapLatest { request ->
             val response = placeRepository.getSearchPlaceResultByMap(request.toDomainModel())
-            networkEventDelegate.event(
+            networkEventDelegate.emitEvent(
                 scope = viewModelScope,
                 event = NetworkEvent.Success
             )
@@ -69,11 +61,11 @@ class SearchMapViewModel @Inject constructor(
             }
         }.flowOn(recordExceptionHandler)
         .catch { e: Throwable ->
-            networkEventDelegate.submitThrowableEvent(viewModelScope, e)
+            networkEventDelegate.handleErrorEvent(viewModelScope, e)
         }
 
     fun onSelectedTab(category: Category) {
-        networkEventDelegate.event(viewModelScope, NetworkEvent.Loading)
+        networkEventDelegate.emitEvent(viewModelScope, NetworkEvent.Loading)
 
         if (_mapOptionState.value.category != category) {
             _mapOptionState.update { it.copy(category = category) }
@@ -81,7 +73,7 @@ class SearchMapViewModel @Inject constructor(
     }
 
     fun onCameraPositionChanged(locate: Locate) {
-        networkEventDelegate.event(viewModelScope, NetworkEvent.Loading)
+        networkEventDelegate.emitEvent(viewModelScope, NetworkEvent.Loading)
 
         if (_mapOptionState.value.location != locate) {
             _mapOptionState.update { it.copy(location = locate) }
@@ -89,7 +81,7 @@ class SearchMapViewModel @Inject constructor(
     }
 
     fun onChangeMapState(state: SharedOptionState) {
-        networkEventDelegate.event(viewModelScope, NetworkEvent.Loading)
+        networkEventDelegate.emitEvent(viewModelScope, NetworkEvent.Loading)
 
         _mapOptionState.update {
             if (state.detailFilter.isEmpty()) {
@@ -107,7 +99,7 @@ class SearchMapViewModel @Inject constructor(
     }
 
     fun onSelectOption(optionCodes: List<Long>, type: DisabilityType) {
-        networkEventDelegate.event(viewModelScope, NetworkEvent.Loading)
+        networkEventDelegate.emitEvent(viewModelScope, NetworkEvent.Loading)
 
         val currentOptionState = _mapOptionState.value
         val mapUpdatedTypes = TreeSet(currentOptionState.disabilityType)
