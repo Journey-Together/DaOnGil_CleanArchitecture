@@ -19,7 +19,6 @@ import kr.techit.lion.presentation.concerntype.ConcernTypeActivity
 import kr.techit.lion.presentation.connectivity.connectivity.ConnectivityStatus
 import kr.techit.lion.presentation.databinding.FragmentMyInfoMainBinding
 import kr.techit.lion.presentation.delegate.NetworkEvent
-import kr.techit.lion.presentation.delegate.NetworkState
 import kr.techit.lion.presentation.ext.announceForAccessibility
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
@@ -79,7 +78,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private suspend fun handleConnectivityAndLoginState(
         binding: FragmentMyInfoMainBinding,
         isTalkbackEnabled: Boolean,
-        talkbackText: StringBuilder
+        talkbackText: StringBuilder,
     ) {
         combine(
             viewModel.connectivityStatus,
@@ -94,6 +93,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                     binding.mainContainer.visibility = View.VISIBLE
                     handleLoginState(binding, isTalkbackEnabled, talkbackText, loginStatus)
                 }
+
                 is ConnectivityStatus.OnLost -> {
                     showErrorPage(binding, getString(R.string.can_not_access_network))
                 }
@@ -105,7 +105,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         binding: FragmentMyInfoMainBinding,
         isTalkbackEnabled: Boolean,
         talkbackText: StringBuilder,
-        loginStatus: LogInStatus
+        loginStatus: LogInStatus,
     ) {
         when (loginStatus) {
             is LogInStatus.Checking -> Unit
@@ -123,7 +123,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private suspend fun collectMyInfo(
         binding: FragmentMyInfoMainBinding,
         isTalkbackEnabled: Boolean,
-        talkbackText: StringBuilder
+        talkbackText: StringBuilder,
     ) {
         viewModel.uiState.collect {
             setUiLoggedInState(binding)
@@ -135,7 +135,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
         binding: FragmentMyInfoMainBinding,
         isTalkbackEnabled: Boolean,
         talkbackText: StringBuilder,
-        myInfo: MyInfoUiModel
+        myInfo: MyInfoUiModel,
     ) {
         with(binding) {
             val name = myInfo.name
@@ -182,6 +182,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
                         progressBar.visibility = View.GONE
                         errorContainer.visibility = View.GONE
                     }
+
                     is NetworkEvent.Error -> {
                         mainContainer.visibility = View.GONE
                         binding.progressBar.visibility = View.GONE
@@ -215,7 +216,7 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
     private fun setUiLoginRequiredState(
         binding: FragmentMyInfoMainBinding,
         isTalkbackEnabled: Boolean,
-        talkbackText: StringBuilder
+        talkbackText: StringBuilder,
     ) {
         with(binding) {
             progressBar.visibility = View.GONE
@@ -226,7 +227,8 @@ class MyInfoMainFragment : Fragment(R.layout.fragment_my_info_main) {
             readScriptBtn.visibility = View.GONE
             tvReview.text = getString(R.string.text_NameOrLogin)
             tvNameOrLogin.text = getString(R.string.text_myInfo_Review)
-            tvNameOrLogin.contentDescription = requireContext().getString(R.string.text_login_button)
+            tvNameOrLogin.contentDescription =
+                requireContext().getString(R.string.text_login_button)
             layoutProfile.setOnClickListener {
                 val intent = Intent(requireActivity(), LoginActivity::class.java)
                 startActivity(intent)
