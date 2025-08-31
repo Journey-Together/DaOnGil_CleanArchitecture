@@ -7,6 +7,8 @@ data class Concerns(
 
     fun anyTrue(): Boolean = values.containsValue(true)
 
+    fun selectedType(): Set<ConcernType> = values.filterValues { it }.keys
+
     fun toMap(): Map<ConcernType, Boolean> = values.toMap()
 
     fun update(type: ConcernType): Concerns {
