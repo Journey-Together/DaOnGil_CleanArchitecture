@@ -1,7 +1,6 @@
 package kr.techit.lion.presentation.splash
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.activity.viewModels
@@ -89,7 +88,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun moveToMain() {
-        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        startActivity(MainActivity.newIntent(this))
         finish()
     }
 

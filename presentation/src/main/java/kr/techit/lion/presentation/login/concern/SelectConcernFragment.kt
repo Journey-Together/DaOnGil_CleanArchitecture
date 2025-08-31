@@ -1,6 +1,5 @@
 package kr.techit.lion.presentation.login.concern
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -89,7 +88,7 @@ class SelectConcernFragment : Fragment(R.layout.fragment_select_concern) {
     }
 
     private fun moveToMain() {
-        startActivity(Intent(requireActivity(), MainActivity::class.java))
+        startActivity(MainActivity.newIntent(requireContext()))
         requireActivity().finish()
     }
 

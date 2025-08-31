@@ -1,5 +1,7 @@
 package kr.techit.lion.presentation.main
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
@@ -20,5 +22,9 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
         NavigationUI.setupWithNavController(binding.navigationView, navController)
+    }
+
+    companion object {
+        fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
     }
 }
