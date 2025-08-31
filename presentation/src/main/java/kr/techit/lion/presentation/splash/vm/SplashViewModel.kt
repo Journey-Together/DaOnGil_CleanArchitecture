@@ -29,10 +29,10 @@ class SplashViewModel @Inject constructor(
     suspend fun loadAreaCode() {
         initAreaCodeInfoUseCase()
             .onSuccess {
-                networkEventDelegate.event(viewModelScope, NetworkEvent.Success)
+                networkEventDelegate.emitEvent(viewModelScope, NetworkEvent.Success)
             }
             .onError { exception ->
-                networkEventDelegate.submitThrowableEvent(viewModelScope, exception)
+                networkEventDelegate.handleErrorEvent(viewModelScope, exception)
             }
     }
 }

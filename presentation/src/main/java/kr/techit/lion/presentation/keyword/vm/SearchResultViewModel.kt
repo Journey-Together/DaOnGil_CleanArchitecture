@@ -51,7 +51,7 @@ class SearchResultViewModel @Inject constructor(
                 updatePlace(response)
             }.onError { e ->
                 val msg = networkEventDelegate.asUiText(e)
-                networkEventDelegate.event(viewModelScope, NetworkEvent.Error(msg))
+                networkEventDelegate.emitEvent(viewModelScope, NetworkEvent.Error(msg))
             }
         }
     }
@@ -63,7 +63,7 @@ class SearchResultViewModel @Inject constructor(
             page = uiState.page + 1
         )
         if (response.isLastPage) _uiState.value = uiState.copy(isLastPage = true)
-        networkEventDelegate.event(
+        networkEventDelegate.emitEvent(
             scope = viewModelScope,
             event = NetworkEvent.Success
         )

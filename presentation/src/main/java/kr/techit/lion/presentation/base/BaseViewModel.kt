@@ -26,12 +26,12 @@ open class BaseViewModel : ViewModel() {
         onSuccess: (T) -> Unit,
     ) {
         viewModelScope.launch(recordExceptionHandler){
-            eventHandler.event(viewModelScope, NetworkEvent.Loading)
+            eventHandler.emitEvent(viewModelScope, NetworkEvent.Loading)
             action().onSuccess {
                 onSuccess(it)
-                eventHandler.event(viewModelScope, NetworkEvent.Success)
+                eventHandler.emitEvent(viewModelScope, NetworkEvent.Success)
             }.onError { throwable ->
-                eventHandler.event(
+                eventHandler.emitEvent(
                     viewModelScope,
                     NetworkEvent.Error(eventHandler.asUiText(throwable))
                 )

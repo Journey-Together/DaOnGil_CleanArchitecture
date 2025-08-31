@@ -15,6 +15,7 @@ import kr.techit.lion.presentation.delegate.NetworkEvent
 import kr.techit.lion.domain.exception.Result
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.delegate.NetworkEventDelegate
+import kr.techit.lion.presentation.ext.stateInUi
 
 abstract class BaseViewModel2<UiEvent>(
     private val networkEventHandler: NetworkEventDelegate,
@@ -28,6 +29,13 @@ abstract class BaseViewModel2<UiEvent>(
     }
 
     val networkEvent get() = networkEventHandler.event
+
+    val connectivityState = connectivityObserver
+        .getFlow()
+        .stateInUi(
+            viewModelScope,
+            ConnectivityObserver.Status.Available
+        )
 
     private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
     val uiEvent get() = _uiEvent.receiveAsFlow()
@@ -47,12 +55,12 @@ abstract class BaseViewModel2<UiEvent>(
         onSuccess: (T) -> Unit,
     ) {
         viewModelScope.launch(recordExceptionHandler) {
-            networkEventHandler.event(viewModelScope, NetworkEvent.Loading)
+            networkEventHandler.emitEvent(viewModelScope, NetworkEvent.Loading)
             action().onSuccess {
                 onSuccess(it)
-                networkEventHandler.event(viewModelScope, NetworkEvent.Success)
+                networkEventHandler.emitEvent(viewModelScope, NetworkEvent.Success)
             }.onError { throwable ->
-                networkEventHandler.event(
+                networkEventHandler.emitEvent(
                     viewModelScope,
                     NetworkEvent.Error(networkEventHandler.asUiText(throwable))
                 )
@@ -61,7 +69,7 @@ abstract class BaseViewModel2<UiEvent>(
     }
 
     private fun submitNetworkException() {
-        networkEventHandler.submitThrowableEvent(viewModelScope, NetworkError.UnknownHostError)
+        networkEventHandler.handleErrorEvent(viewModelScope, NetworkError.UnknownHostError)
     }
 
     protected fun emitEvent(event: UiEvent) {
