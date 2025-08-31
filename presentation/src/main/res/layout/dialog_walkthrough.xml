@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_radius_10"
+    android:backgroundTint="@color/card_background_color"
+    android:gravity="center"
+    android:minWidth="300dp">
+
+    <TextView
+        android:id="@+id/walkthrough_dialog_page_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_basic"
+        android:fontFamily="@font/pretendard_regular"
+        android:text="@string/walkthrough_count_tv"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_small2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/walkthrough_dialog_skip_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_big4"
+        android:layout_marginTop="@dimen/margin_big4"
+        android:fontFamily="@font/pretendard_regular"
+        android:padding="@dimen/margin_big4"
+        android:text="@string/walkthrough_dialog_skip_tv"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_small2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/walkthrough_dialog_vp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_big4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walkthrough_dialog_skip_tv" />
+
+    <Button
+        android:id="@+id/walkthrough_dialog_positive_btn"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="@dimen/margin_basic"
+        android:layout_marginTop="@dimen/margin_big1"
+        android:layout_marginBottom="@dimen/margin_basic"
+        android:background="@drawable/background_radius_5"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="확인"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_big3"
+        app:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walkthrough_dialog_vp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
