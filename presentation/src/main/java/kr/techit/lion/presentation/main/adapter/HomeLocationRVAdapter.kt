@@ -44,7 +44,7 @@ class HomeLocationRVAdapter(
 
             Glide.with(binding.touristLocationIv.context)
                 .load(aroundPlace.image)
-                .error(R.drawable.empty_view)
+                .error(R.drawable.empty_view_long)
                 .into(binding.touristLocationIv)
 
             val disabilityList = aroundPlace.disability

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import kotlinx.coroutines.launch
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.FragmentEmergencyMainBinding
 import kr.techit.lion.presentation.emergency.EmergencyMapActivity
@@ -12,6 +11,8 @@ import kr.techit.lion.presentation.emergency.PharmacyMapActivity
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
+import kr.techit.lion.presentation.ext.announceForAccessibility
+import kr.techit.lion.presentation.ext.isTallBackEnabled
 
 class EmergencyMainFragment : Fragment(R.layout.fragment_emergency_main) {
 
@@ -34,6 +35,8 @@ class EmergencyMainFragment : Fragment(R.layout.fragment_emergency_main) {
             val intent = Intent(requireActivity(), PharmacyMapActivity::class.java)
             startActivity(intent)
         }
+
+        initializeAccessibility(binding)
 
         repeatOnViewStarted {
             observeConnectivity(binding)
@@ -61,6 +64,32 @@ class EmergencyMainFragment : Fragment(R.layout.fragment_emergency_main) {
                         emergencyMainErrorMsg.text = msg
                     }
                 }
+            }
+        }
+    }
+
+    private fun initializeAccessibility(binding: FragmentEmergencyMainBinding) {
+        if (requireContext().isTallBackEnabled()) {
+            setupAccessibility(binding)
+        } else {
+            binding.toolbarEmerMain.menu.clear()
+        }
+    }
+
+    private fun setupAccessibility(binding: FragmentEmergencyMainBinding) {
+        requireActivity().announceForAccessibility(
+            getString(R.string.text_script_this_is_emergency) +
+                    getString(R.string.text_script_read_all_text)
+        )
+
+        binding.toolbarEmerMain.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.read_script -> {
+                    requireActivity().announceForAccessibility(getString(R.string.text_script_guide_for_emergency))
+                    true
+                }
+
+                else -> false
             }
         }
     }

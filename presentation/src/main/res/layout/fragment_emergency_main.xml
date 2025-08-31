@@ -10,18 +10,19 @@
         android:id="@+id/toolbarEmerMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/margin_basic">
+        android:paddingStart="@dimen/margin_basic"
+        app:menu="@menu/menu_read_script">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/toolbar_clover_icon"/>
+            android:src="@drawable/toolbar_clover_icon" />
 
         <TextView
+            style="@style/Theme.Toolbar.Main.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small1"
-            style="@style/Theme.Toolbar.Main.Title"/>
+            android:layout_marginStart="@dimen/margin_small1" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
