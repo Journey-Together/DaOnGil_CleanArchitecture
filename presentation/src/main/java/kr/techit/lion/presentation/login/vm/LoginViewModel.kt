@@ -1,19 +1,12 @@
 package kr.techit.lion.presentation.login.vm
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kr.techit.lion.domain.repository.AuthRepository
 import kr.techit.lion.domain.repository.MemberRepository
-import kr.techit.lion.presentation.base.BaseViewModel
 import kr.techit.lion.presentation.base.BaseViewModel2
 import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.delegate.NetworkEventDelegate
 import kr.techit.lion.presentation.login.LoginUiEvent
-import kr.techit.lion.presentation.login.model.UserType
 import javax.inject.Inject
 
 @HiltViewModel
