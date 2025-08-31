@@ -140,7 +140,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 LoginUiEvent.NavigateToMain -> {
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    startActivity(MainActivity.newIntent(requireContext()))
                     requireActivity().finish()
                 }
 
