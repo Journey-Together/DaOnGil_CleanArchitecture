@@ -7,13 +7,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kr.techit.lion.domain.model.concern.ConcernType
+import kr.techit.lion.domain.model.concern.Concerns
 import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.concerntype.vm.ConcernTypeViewModel
-import kr.techit.lion.presentation.concerntype.vm.model.ConcernTypeUiModel
-import kr.techit.lion.presentation.concerntype.vm.model.ConcernTypes
-import kr.techit.lion.presentation.connectivity.connectivity.ConnectivityStatus
+import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.databinding.FragmentConcernTypeBinding
-import kr.techit.lion.presentation.delegate.NetworkState
+import kr.techit.lion.presentation.delegate.NetworkEvent
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
 
@@ -24,7 +24,7 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentConcernTypeBinding.bind(view)
-        viewModel.getConcernType()
+
         settingToolbar(binding)
         moveConcernTypeModify(binding)
 
@@ -37,30 +37,21 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
     private suspend fun collectUiState(binding: FragmentConcernTypeBinding) {
         viewModel.uiState.collect { uiState ->
-            setNickName(binding, uiState.nickName)
-            setSelectedConcernTypeImage(binding, uiState.savedConcernType)
+            displayNickName(binding, uiState.nickName)
+            setSelectedConcernTypeImage(binding, uiState.concernType)
         }
     }
 
     private suspend fun collectConcernTypeState(binding: FragmentConcernTypeBinding) {
         with(binding) {
-            viewModel.networkState.collect { networkState ->
+            viewModel.networkEvent.collect { networkState ->
                 when (networkState) {
-                    is NetworkState.Loading -> {
-                        concernTypeProgressBar.visibility = View.VISIBLE
-                    }
-
-                    is NetworkState.Success -> {
-                        concernTypeProgressBar.visibility = View.GONE
-                    }
-
-                    is NetworkState.Error -> {
-                        concernTypeProgressBar.visibility = View.GONE
-                        concernTypeLayout.visibility = View.GONE
-                        concernTypeDivider.visibility = View.GONE
-                        concernTypeModifyLayout.visibility = View.GONE
-                        concernTypeErrorLayout.visibility = View.VISIBLE
+                    NetworkEvent.Loading -> concernTypeProgressBar.visibility = View.VISIBLE
+                    NetworkEvent.Success -> concernTypeProgressBar.visibility = View.GONE
+                    is NetworkEvent.Error -> {
+                        showExceptionView(binding)
                         concernTypeErrorMsg.text = networkState.msg
+                        concernTypeProgressBar.visibility = View.GONE
                     }
                 }
             }
@@ -69,27 +60,30 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
 
     private suspend fun observeConnectivity(binding: FragmentConcernTypeBinding) {
         with(binding) {
-            viewModel.connectivityStatus.collect { status ->
+            viewModel.connectivityState.collect { status ->
                 when (status) {
-                    ConnectivityStatus.Loading -> Unit
-                    ConnectivityStatus.Available -> {
+                    ConnectivityObserver.Status.Available -> {
                         concernTypeLayout.visibility = View.VISIBLE
                         concernTypeDivider.visibility = View.VISIBLE
                         concernTypeModifyLayout.visibility = View.VISIBLE
-                        concernTypeErrorLayout.visibility = View.GONE
+                        concernTypeErrorMsg.visibility = View.GONE
                     }
 
-                    is ConnectivityStatus.OnLost -> {
-                        concernTypeLayout.visibility = View.GONE
-                        concernTypeDivider.visibility = View.GONE
-                        concernTypeModifyLayout.visibility = View.GONE
-                        concernTypeErrorLayout.visibility = View.VISIBLE
+                    else -> {
+                        showExceptionView(binding)
                         concernTypeErrorMsg.text =
                             requireContext().getString(R.string.can_not_access_network)
                     }
                 }
             }
         }
+    }
+
+    private fun showExceptionView(binding: FragmentConcernTypeBinding) = with(binding) {
+        concernTypeLayout.visibility = View.GONE
+        concernTypeDivider.visibility = View.GONE
+        concernTypeModifyLayout.visibility = View.GONE
+        concernTypeErrorMsg.visibility = View.VISIBLE
     }
 
     private fun settingToolbar(binding: FragmentConcernTypeBinding) {
@@ -101,51 +95,57 @@ class ConcernTypeFragment : Fragment(R.layout.fragment_concern_type) {
         }
     }
 
-    private fun setNickName(binding: FragmentConcernTypeBinding, nickName: String) {
-        binding.textViewConcernTypeUseNickname.text =
-            getString(R.string.concern_type_nickname, nickName)
+    private fun displayNickName(binding: FragmentConcernTypeBinding, nickName: String) {
+        binding.tvNickname.text = getString(R.string.concern_type_nickname, nickName)
     }
 
     private fun setSelectedConcernTypeImage(
         binding: FragmentConcernTypeBinding,
-        concernType: ConcernTypeUiModel
-    ) {
-        with(binding) {
-            concernType.selectedConcernTypes.forEach {
-                when (it) {
-                    ConcernTypes.Physical -> {
-                        imageViewConcernTypePhysical.setImageResource(R.drawable.cc_selected_physical_disability_icon)
-                    }
-                    ConcernTypes.Child -> {
-                        imageViewConcernTypeInfant.setImageResource(R.drawable.cc_selected_infant_family_icon)
-                    }
-                    ConcernTypes.Elderly -> {
-                        imageViewConcernTypeElderly.setImageResource(R.drawable.cc_selected_elderly_people_icon)
-                    }
-                    ConcernTypes.Hear -> {
-                        imageViewConcernTypeHearing.setImageResource(R.drawable.cc_selected_hearing_impairment_icon)
-                    }
-                    ConcernTypes.Visual -> {
-                        imageViewConcernTypeVisual.setImageResource(R.drawable.cc_selected_visual_impairment_icon)
-                    }
-                }
+        concerns: Concerns,
+    ) = with(binding) {
+        concerns.toMap().forEach { (type, isSelected) ->
+            when (type) {
+                ConcernType.Physical -> binding.imageViewConcernTypePhysical.setImageResource(
+                    if (isSelected) R.drawable.cc_selected_physical_disability_icon
+                    else R.drawable.cc_unselected_physical_disability_icon
+                )
+
+                ConcernType.Hear -> binding.imageViewConcernTypeHearing.setImageResource(
+                    if (isSelected) R.drawable.cc_selected_hearing_impairment_icon
+                    else R.drawable.cc_unselected_hearing_impairment_icon
+                )
+
+                ConcernType.Visual -> binding.imageViewConcernTypeVisual.setImageResource(
+                    if (isSelected) R.drawable.cc_selected_visual_impairment_icon
+                    else R.drawable.cc_unselected_visual_impairment_icon
+                )
+
+                ConcernType.Elderly -> binding.imageViewConcernTypeElderly.setImageResource(
+                    if (isSelected) R.drawable.cc_selected_elderly_people_icon
+                    else R.drawable.cc_unselected_elderly_people_icon
+                )
+
+                ConcernType.Child -> binding.imageViewConcernTypeInfant.setImageResource(
+                    if (isSelected) R.drawable.cc_selected_infant_family_icon
+                    else R.drawable.cc_unselected_infant_family_icon
+                )
             }
         }
         if (requireContext().isTallBackEnabled()) {
-            settingDescriptions(binding, concernType)
+            settingDescriptions(binding, concerns)
         }
     }
 
-    private fun settingDescriptions(binding: FragmentConcernTypeBinding, concernType: ConcernTypeUiModel) {
-        val nicknameDescription = binding.textViewConcernTypeUseNickname.text.toString()
+    private fun settingDescriptions(binding: FragmentConcernTypeBinding, concernType: Concerns) {
+        val nicknameDescription = binding.tvNickname.text.toString()
         val selectedDescriptions = StringBuilder()
-        concernType.selectedConcernTypes.forEach {
-            when (it) {
-                ConcernTypes.Physical -> selectedDescriptions.append(getString(R.string.text_physical_disability))
-                ConcernTypes.Child -> selectedDescriptions.append(getString(R.string.text_infant_family))
-                ConcernTypes.Elderly -> selectedDescriptions.append(getString(R.string.text_elderly_person))
-                ConcernTypes.Hear -> selectedDescriptions.append(getString(R.string.text_hearing_impairment))
-                ConcernTypes.Visual -> selectedDescriptions.append(getString(R.string.text_visual_impairment))
+        concernType.selectedType().forEach { type ->
+            when (type) {
+                ConcernType.Physical -> selectedDescriptions.append(getString(R.string.text_physical_disability))
+                ConcernType.Hear -> selectedDescriptions.append(getString(R.string.text_hearing_impairment))
+                ConcernType.Visual -> selectedDescriptions.append(getString(R.string.text_visual_impairment))
+                ConcernType.Elderly -> selectedDescriptions.append(getString(R.string.text_elderly_person))
+                ConcernType.Child -> selectedDescriptions.append(getString(R.string.text_infant_family))
             }
         }
         val combinedDescription = "$nicknameDescription $selectedDescriptions"

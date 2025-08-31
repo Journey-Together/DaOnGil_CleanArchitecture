@@ -6,13 +6,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
+import kr.techit.lion.domain.model.concern.ConcernType
+import kr.techit.lion.domain.model.concern.Concerns
 import kr.techit.lion.presentation.R
+import kr.techit.lion.presentation.concerntype.ConcernTypeUiEvent
 import kr.techit.lion.presentation.concerntype.vm.ConcernTypeViewModel
-import kr.techit.lion.presentation.concerntype.vm.model.ConcernTypeUiModel
-import kr.techit.lion.presentation.concerntype.vm.model.ConcernTypes
-import kr.techit.lion.presentation.connectivity.connectivity.ConnectivityStatus
+import kr.techit.lion.presentation.connectivity.ConnectivityObserver
 import kr.techit.lion.presentation.databinding.FragmentConcernTypeModifyBinding
-import kr.techit.lion.presentation.delegate.NetworkState
+import kr.techit.lion.presentation.delegate.NetworkEvent
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
 import kr.techit.lion.presentation.ext.showInfinitySnackBar
 import kr.techit.lion.presentation.ext.showSnackbar
@@ -27,50 +28,10 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
         initView(binding)
 
         repeatOnViewStarted {
-            launch { collectConcernTypeModifyState(binding) }
+            launch { collectNetworkEvent(binding) }
             launch { collectConnectivity(binding) }
             launch { collectUiState(binding) }
-        }
-    }
-
-    private suspend fun collectUiState(binding: FragmentConcernTypeModifyBinding){
-        viewModel.uiState.collect{ uiState ->
-            setSelectedConcernTypeImage(binding, uiState.selectedConcernType)
-        }
-    }
-
-    private suspend fun collectConcernTypeModifyState(binding: FragmentConcernTypeModifyBinding) {
-        viewModel.networkState.collect { networkState ->
-            when (networkState) {
-                is NetworkState.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is NetworkState.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                }
-                is NetworkState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    requireContext().showSnackbar(requireView(), networkState.msg)
-                }
-            }
-        }
-    }
-
-    private suspend fun collectConnectivity(binding: FragmentConcernTypeModifyBinding) {
-        with(binding) {
-            viewModel.connectivityStatus.collect { connectivity ->
-                when (connectivity) {
-                    ConnectivityStatus.Loading -> Unit
-                    ConnectivityStatus.Available -> buttonConcernTypeModify.isEnabled = true
-                    is ConnectivityStatus.OnLost -> {
-                        buttonConcernTypeModify.isEnabled = false
-                        requireContext().showInfinitySnackBar(
-                            buttonConcernTypeModify,
-                            requireContext().getString(R.string.can_not_access_network)
-                        )
-                    }
-                }
-            }
+            launch { collectUiEvent() }
         }
     }
 
@@ -82,84 +43,132 @@ class ConcernTypeModifyFragment : Fragment(R.layout.fragment_concern_type_modify
             toolbarConcernTypeModify.setNavigationContentDescription(R.string.text_back_button)
 
             imageViewConcernTypeModifyPhysical.setOnClickListener {
-                viewModel.onChangeConcernType(ConcernTypes.Physical)
+                viewModel.updateConcernType(ConcernType.Physical)
             }
             imageViewConcernTypeModifyVisual.setOnClickListener {
-                viewModel.onChangeConcernType(ConcernTypes.Visual)
+                viewModel.updateConcernType(ConcernType.Visual)
             }
             imageViewConcernTypeModifyHearing.setOnClickListener {
-                viewModel.onChangeConcernType(ConcernTypes.Hear)
+                viewModel.updateConcernType(ConcernType.Hear)
             }
             imageViewConcernTypeModifyInfant.setOnClickListener {
-                viewModel.onChangeConcernType(ConcernTypes.Child)
+                viewModel.updateConcernType(ConcernType.Child)
             }
             imageViewConcernTypeModifyElderly.setOnClickListener {
-                viewModel.onChangeConcernType(ConcernTypes.Elderly)
+                viewModel.updateConcernType(ConcernType.Elderly)
             }
             buttonConcernTypeModify.setOnClickListener {
-                viewModel.updateConcernType{
-                    findNavController().popBackStack()
-                }
+                viewModel.saveModifiedConcernType()
             }
         }
     }
 
-    private fun setSelectedConcernTypeImage(
+    private suspend fun collectUiState(binding: FragmentConcernTypeModifyBinding) {
+        viewModel.uiState.collect { uiState ->
+            setConcernTypeImage(binding, uiState.concernType)
+        }
+    }
+
+    private fun setConcernTypeImage(
         binding: FragmentConcernTypeModifyBinding,
-        concernType: ConcernTypeUiModel
+        concernType: Concerns,
     ) {
-        setDefaultConcernTypeImage(binding)
         with(binding) {
-            concernType.selectedConcernTypes.forEach {
-                when (it) {
-                    ConcernTypes.Physical -> {
-                        imageViewConcernTypeModifyPhysical.setImageResource(R.drawable.cc_selected_physical_disability_icon)
-                    }
+            concernType.toMap().forEach { type, isSelected ->
+                when (type) {
+                    ConcernType.Physical -> binding.imageViewConcernTypeModifyPhysical.setImageResource(
+                        if (isSelected) R.drawable.cc_selected_physical_disability_icon else R.drawable.physical_no_select
+                    )
 
-                    ConcernTypes.Child -> {
-                        imageViewConcernTypeModifyInfant.setImageResource(R.drawable.cc_selected_infant_family_icon)
-                    }
+                    ConcernType.Hear -> binding.imageViewConcernTypeModifyHearing.setImageResource(
+                        if (isSelected) R.drawable.cc_selected_hearing_impairment_icon else R.drawable.hearing_no_select
+                    )
 
-                    ConcernTypes.Elderly -> {
-                        imageViewConcernTypeModifyElderly.setImageResource(R.drawable.cc_selected_elderly_people_icon)
-                    }
+                    ConcernType.Visual -> binding.imageViewConcernTypeModifyVisual.setImageResource(
+                        if (isSelected) R.drawable.cc_selected_visual_impairment_icon else R.drawable.visual_no_select
+                    )
 
-                    ConcernTypes.Hear -> {
-                        imageViewConcernTypeModifyHearing.setImageResource(R.drawable.cc_selected_hearing_impairment_icon)
-                    }
+                    ConcernType.Elderly -> binding.imageViewConcernTypeModifyElderly.setImageResource(
+                        if (isSelected) R.drawable.cc_selected_elderly_people_icon else R.drawable.elderly_people_no_select
+                    )
 
-                    ConcernTypes.Visual -> {
-                        imageViewConcernTypeModifyVisual.setImageResource(R.drawable.cc_selected_visual_impairment_icon)
-                    }
+                    ConcernType.Child -> binding.imageViewConcernTypeModifyInfant.setImageResource(
+                        if (isSelected) R.drawable.cc_selected_infant_family_icon else R.drawable.infant_family_no_select
+                    )
                 }
             }
         }
         settingDescriptions(binding, concernType)
     }
 
-    private fun setDefaultConcernTypeImage(binding: FragmentConcernTypeModifyBinding){
-        with(binding){
-            imageViewConcernTypeModifyPhysical.setImageResource(R.drawable.physical_no_select)
-            imageViewConcernTypeModifyInfant.setImageResource(R.drawable.infant_family_no_select)
-            imageViewConcernTypeModifyElderly.setImageResource(R.drawable.elderly_people_no_select)
-            imageViewConcernTypeModifyHearing.setImageResource(R.drawable.hearing_no_select)
-            imageViewConcernTypeModifyVisual.setImageResource(R.drawable.visual_no_select)
+
+    private fun settingDescriptions(
+        binding: FragmentConcernTypeModifyBinding,
+        concernType: Concerns,
+    ) {
+        val titleDescription = binding.textViewConcernTypeModifyTitle.text.toString()
+        val selectedDescriptions = StringBuilder().apply {
+            concernType.selectedType().forEach { type ->
+                when (type) {
+                    ConcernType.Physical -> append(getString(R.string.text_physical_disability))
+                    ConcernType.Hear -> append(getString(R.string.text_hearing_impairment))
+                    ConcernType.Visual -> append(getString(R.string.text_visual_impairment))
+                    ConcernType.Elderly -> append(getString(R.string.text_elderly_person))
+                    ConcernType.Child -> append(getString(R.string.text_infant_family))
+                }
+            }
+        }
+
+        val combinedDescription =
+            requireContext().getString(R.string.description_modify_concern_type)
+                .format(titleDescription, selectedDescriptions)
+        binding.textViewConcernTypeModifyTitle.contentDescription = combinedDescription
+    }
+
+    private suspend fun collectUiEvent() {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                ConcernTypeUiEvent.NavigateToBack -> findNavController().popBackStack()
+            }
         }
     }
 
-    private fun settingDescriptions(binding: FragmentConcernTypeModifyBinding, concernType: ConcernTypeUiModel) {
-        val titleDescription = binding.textViewConcernTypeModifyTitle.text.toString()
-        val selectedDescriptions = StringBuilder()
-        concernType.selectedConcernTypes.forEach {
-            when (it) {
-                ConcernTypes.Physical -> selectedDescriptions.append("${getString(R.string.text_physical_disability)}\n")
-                ConcernTypes.Child -> selectedDescriptions.append("${getString(R.string.text_infant_family)}\n")
-                ConcernTypes.Elderly -> selectedDescriptions.append("${getString(R.string.text_elderly_person)}\n")
-                ConcernTypes.Hear -> selectedDescriptions.append("${getString(R.string.text_hearing_impairment)}\n")
-                ConcernTypes.Visual -> selectedDescriptions.append("${getString(R.string.text_visual_impairment)}\n")
+
+    private suspend fun collectNetworkEvent(binding: FragmentConcernTypeModifyBinding) {
+        viewModel.networkEvent.collect { networkState ->
+            when (networkState) {
+                NetworkEvent.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                is NetworkEvent.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+
+                is NetworkEvent.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    requireContext().showSnackbar(requireView(), networkState.msg)
+                }
             }
         }
-        val combinedDescription = "$titleDescription, 현재 선택된 관심 유형은 $selectedDescriptions 입니다"
-        binding.textViewConcernTypeModifyTitle.contentDescription = combinedDescription
+    }
+
+    private suspend fun collectConnectivity(binding: FragmentConcernTypeModifyBinding) {
+        with(binding) {
+            viewModel.connectivityState.collect { connectivity ->
+                when (connectivity) {
+                    ConnectivityObserver.Status.Available ->
+                        buttonConcernTypeModify.isEnabled = true
+
+                    else -> {
+                        buttonConcernTypeModify.isEnabled = false
+                        requireContext().showInfinitySnackBar(
+                            buttonConcernTypeModify,
+                            requireContext().getString(R.string.can_not_access_network)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
