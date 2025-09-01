@@ -12,6 +12,7 @@
         <!-- 이 설정은 window를 투명으로 설정할지 말지에 대한 설정 -->
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 
     <style name="Theme.DaOnGil" parent="Base.Theme.DaOnGil" />

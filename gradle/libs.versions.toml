@@ -2,7 +2,7 @@
 # SDK Versions
 minSdk = "26"
 applicationId = "kr.techit.lion.daongil_cleanarchitecture"
-targetSdk = "34"
+targetSdk = "35"
 compileSdk = "35"
 jdkVersion = "17"
 
