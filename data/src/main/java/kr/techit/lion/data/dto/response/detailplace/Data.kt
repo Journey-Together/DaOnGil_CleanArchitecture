@@ -15,7 +15,7 @@ internal data class Data(
     val mapX: String,
     val mapY: String,
     val name: String,
-    val overview: String,
+    val overview: String?,
     val tel: String?,
     val homepage: String?,
     val isReview: Boolean,
