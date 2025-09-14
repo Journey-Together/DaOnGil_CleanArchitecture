@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/margin_small1">
+    android:paddingVertical="@dimen/margin_small1">
 
     <ImageView
         android:id="@+id/item_detail_info_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/info_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,13 +19,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small1"
         android:fontFamily="@font/pretendard_semibold"
+        android:includeFontPadding="false"
         android:text="편의 시설"
         android:textColor="@color/text_primary"
         android:textSize="@dimen/font_big2"
-        app:layout_constraintBottom_toBottomOf="@id/item_detail_info_iv"
         app:layout_constraintEnd_toStartOf="@+id/item_detail_info_guideline"
         app:layout_constraintStart_toEndOf="@+id/item_detail_info_iv"
-        app:layout_constraintTop_toTopOf="@+id/item_detail_info_iv" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_detail_info_content_tv"
@@ -34,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small1"
         android:fontFamily="@font/pretendard_medium"
+        android:includeFontPadding="false"
         android:text="시설 정보"
         android:textColor="@color/text_secondary"
         android:textSize="@dimen/font_big2"

@@ -22,7 +22,7 @@ internal data class DetailPlaceGuestResponse(
             latitude = data.mapX,
             longitude = data.mapY,
             name = data.name,
-            overview = data.overview,
+            overview = data.overview.orEmpty(),
             tel = data.tel.orEmpty(),
             homepage = data.homepage.orEmpty(),
             placeId = data.placeId,
