@@ -117,7 +117,6 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
                 when (loginState) {
                     LogInStatus.Checking -> return@collect
 
-
                     LogInStatus.LoggedIn -> {
                         isUser = true
                         viewModel.getScheduleMainLists()
@@ -143,8 +142,8 @@ class ScheduleMainFragment : Fragment(R.layout.fragment_schedule_main) {
             connectivityObserver.getFlow().collect { connectivity ->
                 when(connectivity){
                     ConnectivityObserver.Status.Available -> {
-                        scheduleMainErrorLayout.visibility = View.GONE
-                        scheduleMainLayout.visibility = View.VISIBLE
+                        /*scheduleMainErrorLayout.visibility = View.GONE
+                        scheduleMainLayout.visibility = View.VISIBLE*/
                         if (viewModel.networkState.value is NetworkState.Error) {
                             viewModel.getOpenPlanList()
                             if(isUser){
