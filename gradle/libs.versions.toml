@@ -7,8 +7,8 @@ compileSdk = "35"
 jdkVersion = "17"
 
 # App Version
-versionCode = "9"
-versionName = "1.5.2"
+versionCode = "10"
+versionName = "1.6.0"
 
 # Build Tools
 agp = "8.7.3"
