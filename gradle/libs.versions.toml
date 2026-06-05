@@ -64,7 +64,7 @@ gson = "2.10.1"
 
 # Naver
 navercorp = "5.9.1"
-naver-map = "3.17.0"
+naver-map = "3.19.1"
 
 # Kakao
 kakao = "2.20.1"
@@ -81,7 +81,7 @@ espressoCore = "3.5.1"
 
 # Etc
 simple-rating-bar = "1.5.1"
-droidsonroids = "1.2.28"
+droidsonroids = "1.2.31"
 circleindicator = "2.1.6"
 flexbox = "3.0.0"
 photoview = "1.0.2"
