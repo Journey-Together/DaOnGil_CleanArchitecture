@@ -192,6 +192,23 @@
                     app:layout_constraintTop_toBottomOf="@+id/home_my_location_iv"
                     app:spanCount="2" />
 
+                <TextView
+                    android:id="@+id/home_my_location_empty_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_basic"
+                    android:layout_marginTop="@dimen/margin_big3"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:paddingVertical="40dp"
+                    android:text="@string/text_around_place_empty"
+                    android:textColor="@color/text_quaternary"
+                    android:textSize="@dimen/font_small1"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/home_my_location_rv" />
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/item_home_card"
                     android:layout_width="match_parent"
@@ -204,7 +221,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_my_location_rv">
+                    app:layout_constraintTop_toBottomOf="@+id/home_my_location_empty_tv">
 
                     <ImageView
                         android:id="@+id/home_search_banner_iv"
