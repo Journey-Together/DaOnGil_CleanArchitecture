@@ -63,7 +63,6 @@ import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
 import kr.techit.lion.presentation.ext.announceForAccessibility
 import kr.techit.lion.presentation.ext.isTallBackEnabled
 import kr.techit.lion.presentation.main.dialog.WalkthroughDialog
-import java.io.IOException
 import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.coroutines.resume
@@ -77,6 +76,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private var snapHelper: SnapHelper? = null
+    private var hideAroundSection = false
     private val connectivityObserver: ConnectivityObserver by lazy {
         NetworkConnectivityObserver(requireContext().applicationContext)
     }
@@ -87,8 +87,11 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         if (isGranted) {
             initLocationClient(FragmentHomeMainBinding.bind(requireView()))
         } else {
-            requireContext().showPermissionSnackBar(FragmentHomeMainBinding.bind(requireView()).root)
-            hideLocationRv(FragmentHomeMainBinding.bind(requireView()))
+            // 위치 권한 거부 시, 주변 장소 섹션은 숨기고 추천 장소만 노출
+            val binding = FragmentHomeMainBinding.bind(requireView())
+            hideAroundSection = true
+            requireContext().showPermissionSnackBar(binding.root)
+            showPermissionDeniedLabel(binding)
             viewModel.getPlaceMain(DEFAULT_AREA, DEFAULT_SIGUNGU)
         }
     }
@@ -106,10 +109,11 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
         binding.homeHighcontrastBtn.visibility = View.GONE // 고대비 버튼 숨김 처리
 
+        observePlaceData(binding)
+        observeUserLocation(binding)
         settingAppTheme(binding)
         checkLocationPermission(binding)
         settingVPAdapter(binding)
-        getRecommendPlaceInfo(binding)
         settingSearchBanner(binding)
         initializeAccessibility(binding)
     }
@@ -381,16 +385,22 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 }
 
                 withContext(Dispatchers.Main) {
-                    if (result.locationSettingsStates?.isLocationUsable == true) {
-                        fusedLocationProviderClient =
-                            LocationServices.getFusedLocationProviderClient(requireContext())
-                        startLocationUpdates(binding)
-                    } else {
-                        getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
+                    fusedLocationProviderClient =
+                        LocationServices.getFusedLocationProviderClient(requireContext())
+                    startLocationUpdates(binding)
+
+                    if (result.locationSettingsStates?.isLocationUsable != true) {
+                        loadDefaultPlace(binding)
                     }
                 }
             } catch (e: Exception) {
-                getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
+                // 위치 설정 확인 실패 시 기본 위치로 우선 표시하되, 업데이트 구독은 유지
+                withContext(Dispatchers.Main) {
+                    fusedLocationProviderClient =
+                        LocationServices.getFusedLocationProviderClient(requireContext())
+                    startLocationUpdates(binding)
+                    loadDefaultPlace(binding)
+                }
             }
         }
     }
@@ -415,52 +425,15 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         locationCallback = object : LocationCallback() {
             @SuppressLint("SetTextI18n")
             override fun onLocationResult(locationResult: LocationResult) {
-                for (location in locationResult.locations) {
-
-                    for (i in 1..3) {
-                        try {
-
-                            val coords = "${location.longitude},${location.latitude}"
-                            viewModel.getUserLocationRegion(coords)
-
-                            viewModel.area.observe(viewLifecycleOwner) {
-                                it.split(" ").let { parts ->
-                                    when {
-                                        parts.size > 2 -> {
-                                            val (STAGE1, STAGE2, _) = parts
-                                            binding.homeMyLocationTv.text = "$STAGE1 $STAGE2"
-                                            getAroundPlaceInfo(binding, STAGE1, STAGE2)
-                                        }
-
-                                        parts.size == 2 -> {
-                                            val (STAGE1, STAGE2) = parts
-                                            binding.homeMyLocationTv.text = "$STAGE1 $STAGE2"
-                                            getAroundPlaceInfo(binding, STAGE1, STAGE2)
-                                        }
-
-                                        parts.size == 1 -> {
-                                            getAroundPlaceInfo(binding, it, it)
-                                            binding.homeMyLocationTv.text = it
-                                        }
-
-                                        else -> {
-                                            getAroundPlaceInfo(
-                                                binding,
-                                                DEFAULT_AREA,
-                                                DEFAULT_SIGUNGU
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                            return
-                        } catch (e: IOException) {
-                            getAroundPlaceInfo(binding, DEFAULT_AREA, DEFAULT_SIGUNGU)
-                        }
-                        // 재시도 전 대기 시간
-                        Thread.sleep(1000)
-                    }
+                // 위치를 받지 못하면 기본 위치로 설정
+                val location = locationResult.locations.firstOrNull()
+                if (location == null) {
+                    loadDefaultPlace(binding)
+                    return
                 }
+
+                val coords = "${location.longitude},${location.latitude}"
+                viewModel.getUserLocationRegion(coords)
             }
         }
 
@@ -486,44 +459,68 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         }
     }
 
-    private fun hideLocationRv(binding: FragmentHomeMainBinding) {
-        binding.homeMyLocationRv.visibility = View.GONE
+    private fun showPermissionDeniedLabel(binding: FragmentHomeMainBinding) {
         binding.homeMyLocationTv.text = "위치 권한을 허용해주세요"
     }
 
     @SuppressLint("SetTextI18n")
-    private fun getAroundPlaceInfo(
-        binding: FragmentHomeMainBinding,
-        areaCode: String,
-        sigunguCode: String
-    ) {
-        viewModel.getPlaceMain(areaCode, sigunguCode)
+    private fun loadDefaultPlace(binding: FragmentHomeMainBinding) {
+        hideAroundSection = false
+        binding.homeMyLocationTv.text = "$DEFAULT_AREA $DEFAULT_SIGUNGU"
+        viewModel.getPlaceMain(DEFAULT_AREA, DEFAULT_SIGUNGU)
+    }
+
+    private fun observePlaceData(binding: FragmentHomeMainBinding) {
+        viewModel.aroundPlaceInfo.observe(viewLifecycleOwner) { aroundPlaceList ->
+            when {
+                // 위치 권한 거부 시 주변 관광지 리스트 숨김
+                hideAroundSection -> {
+                    binding.homeMyLocationRv.visibility = View.GONE
+                    binding.homeMyLocationEmptyTv.visibility = View.GONE
+                }
+                // 주변 장소가 있을 시 리스트 노출
+                aroundPlaceList.isNotEmpty() -> {
+                    settingLocationRVAdapter(binding, aroundPlaceList)
+                    binding.homeMyLocationRv.visibility = View.VISIBLE
+                    binding.homeMyLocationEmptyTv.visibility = View.GONE
+                }
+                // 해당 지역에 주변 장소가 0건일 경우 빈 안내문 노출
+                else -> {
+                    binding.homeMyLocationRv.visibility = View.GONE
+                    binding.homeMyLocationEmptyTv.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        viewModel.recommendPlaceInfo.observe(viewLifecycleOwner) { recommendPlaceList ->
+            if (recommendPlaceList.isNotEmpty()) {
+                settingRecommendRVAdapter(binding, recommendPlaceList)
+            }
+        }
 
         viewModel.locationMessage.observe(viewLifecycleOwner) { message ->
             binding.root.showSnackbar(message)
-
             binding.homeMyLocationTv.text = "$DEFAULT_AREA $DEFAULT_SIGUNGU"
-        }
-
-        viewModel.aroundPlaceInfo.observe(viewLifecycleOwner) { aroundPlaceInfo ->
-            if (aroundPlaceInfo.isNotEmpty()) {
-                val aroundPlaceList = aroundPlaceInfo.map {
-                    AroundPlace(it.address, it.disability, it.image, it.name, it.placeId)
-                }
-                settingLocationRVAdapter(binding, aroundPlaceList)
-            }
         }
     }
 
-    private fun getRecommendPlaceInfo(binding: FragmentHomeMainBinding) {
-        viewModel.getPlaceMain(DEFAULT_AREA, DEFAULT_SIGUNGU)
-
-        viewModel.recommendPlaceInfo.observe(viewLifecycleOwner) { recommendPlaceInfo ->
-            if (recommendPlaceInfo.isNotEmpty()) {
-                val recommendPlaceList = recommendPlaceInfo.map {
-                    RecommendPlace(it.address, it.disability, it.image, it.name, it.placeId)
+    @SuppressLint("SetTextI18n")
+    private fun observeUserLocation(binding: FragmentHomeMainBinding) {
+        viewModel.area.observe(viewLifecycleOwner) { area ->
+            hideAroundSection = false
+            val parts = area.split(" ")
+            when {
+                parts.size >= 2 -> {
+                    binding.homeMyLocationTv.text = "${parts[0]} ${parts[1]}"
+                    viewModel.getPlaceMain(parts[0], parts[1])
                 }
-                settingRecommendRVAdapter(binding, recommendPlaceList)
+                parts.size == 1 -> {
+                    binding.homeMyLocationTv.text = parts[0]
+                    viewModel.getPlaceMain(parts[0], parts[0])
+                }
+                else -> {
+                    loadDefaultPlace(binding)
+                }
             }
         }
     }
