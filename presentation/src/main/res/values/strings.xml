@@ -186,6 +186,7 @@
     <string name="tab_text_place">장소</string>
     <string name="tab_text_plan">일정</string>
 
+    <string name="text_around_place_empty">주변에 추천할 장소가 없어요</string>
     <string name="text_place_bookmark">북마크한 장소가 없습니다.\n가고 싶은 장소를 추가해보세요!</string>
     <string name="text_plan_bookmark">북마크한 일정이 없습니다.\n관심 있는 일정을 추가해보세요!</string>
 
