@@ -7,7 +7,7 @@ compileSdk = "35"
 jdkVersion = "17"
 
 # App Version
-versionCode = "11"
+versionCode = "12"
 versionName = "1.7.0"
 
 # Build Tools
