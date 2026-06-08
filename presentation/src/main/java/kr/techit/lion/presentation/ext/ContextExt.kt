@@ -8,6 +8,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.provider.DocumentsContract
+import java.io.File
 import android.provider.MediaStore
 import android.provider.Settings
 import android.view.View
@@ -89,6 +90,23 @@ fun Context.toAbsolutePath(uri: Uri): String? {
     }
 
     return null
+}
+
+/**
+ * 포토 피커 등에서 받은 content URI 를 앱 전용 캐시 디렉터리에 복사하고 그 파일 경로를 반환합니다.
+ * contentResolver 로 읽으므로 저장소 권한 필요 없음
+ */
+fun Context.copyUriToCacheFile(uri: Uri): String? {
+    return try {
+        val extension = contentResolver.getType(uri)?.substringAfterLast('/')?.takeIf { it.isNotBlank() } ?: "jpg"
+        val file = File(cacheDir, "upload_${System.nanoTime()}.$extension")
+        contentResolver.openInputStream(uri)?.use { input ->
+            file.outputStream().use { output -> input.copyTo(output) }
+        } ?: return null
+        file.absolutePath
+    } catch (e: Exception) {
+        null
+    }
 }
 
 fun Context.getDataColumn(uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
