@@ -1,20 +1,15 @@
 package kr.techit.lion.presentation.myreview.fragment
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.ext.SdkExtensions
 import android.provider.Settings
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
@@ -24,18 +19,17 @@ import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kr.techit.lion.presentation.R
+import kr.techit.lion.presentation.connectivity.ConnectivityObserver
+import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
 import kr.techit.lion.presentation.databinding.FragmentMyReviewModifyBinding
 import kr.techit.lion.presentation.delegate.NetworkState
+import kr.techit.lion.presentation.ext.copyUriToCacheFile
 import kr.techit.lion.presentation.ext.repeatOnViewStarted
 import kr.techit.lion.presentation.ext.showInfinitySnackBar
 import kr.techit.lion.presentation.ext.showSnackbar
 import kr.techit.lion.presentation.ext.showSoftInput
-import kr.techit.lion.presentation.ext.toAbsolutePath
-import kr.techit.lion.presentation.main.dialog.ConfirmDialog
 import kr.techit.lion.presentation.myreview.adapter.MyReviewModifyImageRVAdapter
 import kr.techit.lion.presentation.myreview.vm.MyReviewViewModel
-import kr.techit.lion.presentation.connectivity.ConnectivityObserver
-import kr.techit.lion.presentation.connectivity.NetworkConnectivityObserver
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -63,48 +57,8 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
                 selectedImages.add(uri)
                 imageRVAdapter.notifyDataSetChanged()
 
-                val path = requireContext().toAbsolutePath(uri)
+                val path = requireContext().copyUriToCacheFile(uri)
                 viewModel.addNewImage(path!!)
-            }
-        }
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    private val albumLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            // 사진 선택을 완료한 후 돌아왔다면
-            if (result.resultCode == Activity.RESULT_OK) {
-                // 선택한 이미지의 Uri 가져오기
-                val uri = result.data?.data
-                uri?.let {
-                    if (selectedImages.size < 4) {
-                        // 이미지를 리스트에 추가하고 어댑터에 데이터 변경을 알림
-                        selectedImages.add(it)
-                        imageRVAdapter.notifyDataSetChanged()
-
-                        val path = requireContext().toAbsolutePath(uri)
-                        viewModel.setReviewImages(path!!)
-                    } else {
-                        requireContext().showSnackbar(requireView(), "이미지는 최대 4장까지 첨부 가능합니다.")
-                    }
-                }
-            }
-        }
-
-    private val permissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                startAlbumLauncher()
-            } else {
-                val permissionDialog = ConfirmDialog(
-                    "권한 설정",
-                    "갤러리 이용을 위해 권한 설정이 필요합니다",
-                    "권한 설정"
-                ) {
-                    openPermissionsSettings()
-                }
-                permissionDialog.isCancelable = false
-                permissionDialog.show(requireActivity().supportFragmentManager, "PermissionDialog")
             }
         }
 
@@ -198,11 +152,7 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
                 return@setOnClickListener
             }
 
-            if (isPhotoPickerAvailable()) {
-                this.pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            } else {
-                checkPermission()
-            }
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         binding.textFieldMyReviewModifyDate.setOnClickListener {
@@ -264,38 +214,6 @@ class MyReviewModifyFragment : Fragment(R.layout.fragment_my_review_modify) {
 
     private fun settingImageRVAdapter(binding: FragmentMyReviewModifyBinding) {
         binding.recyclerViewMyReviewModify.adapter = imageRVAdapter
-    }
-
-    private fun isPhotoPickerAvailable(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            true
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            SdkExtensions.getExtensionVersion(Build.VERSION_CODES.R) >= 2
-        } else {
-            false
-        }
-    }
-
-    private fun checkPermission() {
-        val permissionReadExternal = android.Manifest.permission.READ_EXTERNAL_STORAGE
-
-        val permissionReadExternalGranted = ContextCompat.checkSelfPermission(
-            requireContext().applicationContext,
-            permissionReadExternal
-        ) == PackageManager.PERMISSION_GRANTED
-
-        // 포토피커를 사용하지 못하는 버전만 권한 확인 (SDK 30 미만)
-        if (permissionReadExternalGranted) {
-            startAlbumLauncher()
-        } else {
-            permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-    }
-
-    private fun startAlbumLauncher() {
-        val albumIntent = Intent(Intent.ACTION_GET_CONTENT)
-        albumIntent.type = "image/*"  // 이미지 타입만 선택하도록 설정
-        albumLauncher.launch(albumIntent)
     }
 
     private fun isFormValid(binding: FragmentMyReviewModifyBinding): Boolean {

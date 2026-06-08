@@ -1,13 +1,7 @@
 package kr.techit.lion.presentation.myinfo.fragment
 
-import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.ext.SdkExtensions
-import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,6 +26,7 @@ import kr.techit.lion.presentation.R
 import kr.techit.lion.presentation.databinding.FragmentPersonalInfoModifyBinding
 import kr.techit.lion.presentation.delegate.NetworkState
 import kr.techit.lion.presentation.ext.announceForAccessibility
+import kr.techit.lion.presentation.ext.copyUriToCacheFile
 import kr.techit.lion.presentation.ext.formatPhoneNumber
 import kr.techit.lion.presentation.ext.isPhoneNumberValid
 import kr.techit.lion.presentation.ext.isTallBackEnabled
@@ -39,8 +34,6 @@ import kr.techit.lion.presentation.ext.repeatOnViewStarted
 import kr.techit.lion.presentation.ext.setAccessibilityText
 import kr.techit.lion.presentation.ext.showSnackbar
 import kr.techit.lion.presentation.ext.showSoftInput
-import kr.techit.lion.presentation.ext.toAbsolutePath
-import kr.techit.lion.presentation.main.dialog.ConfirmDialog
 import kr.techit.lion.presentation.myinfo.event.MyInfoEvent
 import kr.techit.lion.presentation.myinfo.vm.MyInfoViewModel
 
@@ -48,8 +41,6 @@ import kr.techit.lion.presentation.myinfo.vm.MyInfoViewModel
 class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modify) {
     private val viewModel: MyInfoViewModel by activityViewModels()
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-    private lateinit var albumLauncher: ActivityResultLauncher<Intent>
-    private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private val myInfoAnnounce = StringBuilder()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,13 +70,7 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
             }
 
             btnImgModify.setOnClickListener {
-                if (isPhotoPickerAvailable()) {
-                    this@PersonalInfoModifyFragment
-                        .pickMedia
-                        .launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                } else {
-                    checkPermission()
-                }
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
     }
@@ -185,8 +170,6 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
 
     private fun initLauncher(binding: FragmentPersonalInfoModifyBinding) {
         setPickMediaLauncher(binding)
-        setAlbumLauncher(binding)
-        setPermissionLauncher()
     }
 
     private fun setPickMediaLauncher(binding: FragmentPersonalInfoModifyBinding) {
@@ -201,49 +184,6 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
                 }
             }
         }
-    }
-
-    private fun setAlbumLauncher(binding: FragmentPersonalInfoModifyBinding) {
-        albumLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val uri = result.data?.data
-                if (uri == null && requireContext().isTallBackEnabled()) {
-                    requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_unselected))
-                }
-                uri?.let {
-                    drawImage(binding.imgProfile, uri)
-                    if (requireContext().isTallBackEnabled()) {
-                        requireActivity().announceForAccessibility(getString(R.string.text_modify_profile_img_selected))
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setPermissionLauncher() {
-        permissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) {
-                    startAlbumLauncher()
-                } else {
-                    val permissionDialog = ConfirmDialog(
-                        "권한 설정",
-                        "갤러리 이용을 위해 권한 설정이 필요합니다",
-                        "권한 설정하기"
-                    ) {
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val packageName = requireContext().packageName
-                        val uri = Uri.fromParts("package", packageName, null)
-                        intent.data = uri
-
-                        startActivity(intent)
-                    }
-                    permissionDialog.isCancelable = false
-                    permissionDialog.show(childFragmentManager, "PermissionDialog")
-                }
-            }
     }
 
     private fun setupAccessibility(binding: FragmentPersonalInfoModifyBinding) {
@@ -273,44 +213,12 @@ class PersonalInfoModifyFragment : Fragment(R.layout.fragment_personal_info_modi
         }
     }
 
-    private fun checkPermission() {
-        val permissionReadExternal = android.Manifest.permission.READ_EXTERNAL_STORAGE
-
-        val permissionReadExternalGranted = ContextCompat.checkSelfPermission(
-            requireContext(),
-            permissionReadExternal
-        ) == PackageManager.PERMISSION_GRANTED
-
-        if (permissionReadExternalGranted) {
-            startAlbumLauncher()
-        } else {
-            permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-    }
-
-    private fun startAlbumLauncher() {
-        val albumIntent = Intent(Intent.ACTION_GET_CONTENT)
-        albumIntent.type = "image/*"
-        albumLauncher.launch(albumIntent)
-    }
-
-    private fun isPhotoPickerAvailable(): Boolean {
-        return when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> true
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> SdkExtensions.getExtensionVersion(
-                Build.VERSION_CODES.R
-            ) >= 2
-
-            else -> false
-        }
-    }
-
     private fun drawImage(view: ImageView, imgUrl: Uri) {
         Glide.with(requireContext())
             .load(imgUrl)
             .fallback(R.drawable.default_profile)
             .into(view)
-        val path = requireContext().toAbsolutePath(imgUrl)
+        val path = requireContext().copyUriToCacheFile(imgUrl)
         viewModel.onChangeUiEvent(MyInfoEvent.OnUiEventSelectProfileImage(path))
     }
 
